@@ -1,0 +1,6 @@
+.lake
+__pycache__
+.claude
+.venv
+book
+papers

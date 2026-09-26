@@ -1,0 +1,213 @@
+/-
+  Statistical differences between binary forecasts and real-world payoffs.
+    Taleb, arXiv:1907.11162v3 (Dec 2019).
+
+  ## Stats.BinaryForecasts.ParetoSensitivity — paper Eq. 9 and Remarks 1–5.
+
+  Contains:
+    * Pareto sensitivity `∂²(I_1/I_2)/∂α² = 2K/(α-1)³` (Eq. 9).
+    * Inseparability of probability (Remark 5): convex Jensen gap.
+    * Brier-score boundedness (Theorem 2).
+
+  See `Stats/BinaryForecasts.lean` for the umbrella module.
+-/
+import Stats.BinaryForecasts.Conflation
+
+open Real Set MeasureTheory Filter Topology
+open scoped NNReal
+
+namespace TailOptionPricing
+
+open ProbabilityTheory
+
+/-! ## Pareto sensitivity (paper Eq. 9).
+
+    For fixed `K > 0`, the conditional-mean function
+        m(α) := α · K / (α − 1)
+    (equivalently `E[X | X > K]` under Pareto) has second derivative
+        m''(α) = 2 K / (α − 1)³.
+    Positive and diverging as `α → 1⁺` — small perturbations in the
+    tail index `α` produce large changes in the expected tail payoff,
+    *with the sensitivity growing as the tails get heavier*.  Combined
+    with Jensen's inequality (Remark 1), this means stochastic `α`
+    increases the conflation discrepancy. -/
+
+/-- **First derivative of the Pareto conditional mean in `α`:**
+        d/dα [α K / (α − 1)] = −K / (α − 1)². -/
+theorem paretoTailMean_hasDerivAt_alpha {α K : ℝ} (hα : 1 < α) :
+    HasDerivAt (fun a => a * K / (a - 1)) (-K / (α - 1) ^ 2) α := by
+  have hα1_ne : (α - 1 : ℝ) ≠ 0 := by linarith
+  have h_num : HasDerivAt (fun a : ℝ => a * K) (1 * K) α :=
+    (hasDerivAt_id α).mul_const K
+  have h_den : HasDerivAt (fun a : ℝ => a - 1) 1 α := by
+    simpa using (hasDerivAt_id α).sub_const 1
+  have h_den_ne : (fun a : ℝ => a - 1) α ≠ 0 := by simpa using hα1_ne
+  have h_div := h_num.div h_den h_den_ne
+  convert h_div using 1
+  show (-K / (α - 1) ^ 2 : ℝ) = (1 * K * (α - 1) - α * K * 1) / (α - 1) ^ 2
+  field_simp
+  ring
+
+/-- **Second derivative of the Pareto conditional mean in `α` (paper Eq. 9):**
+        d²/dα² [α K / (α − 1)] = 2 K / (α − 1)³.
+    Positive for any `K > 0` and `α > 1`; diverges as `α → 1⁺` — the
+    fatter the tail, the more sensitive the expected payoff to small
+    changes in `α`.  Direct calculation. -/
+theorem paretoTailMean_hasDerivAt_alpha_second {α K : ℝ} (hα : 1 < α) :
+    HasDerivAt (fun a : ℝ => -K / (a - 1) ^ 2) (2 * K / (α - 1) ^ 3) α := by
+  have hα1_ne : (α - 1 : ℝ) ≠ 0 := by linarith
+  have hα1_sq_ne : (α - 1 : ℝ) ^ 2 ≠ 0 := pow_ne_zero 2 hα1_ne
+  have h_num : HasDerivAt (fun _ : ℝ => (-K : ℝ)) 0 α := hasDerivAt_const α (-K)
+  have h_id : HasDerivAt (fun a : ℝ => a) 1 α := hasDerivAt_id α
+  have h_sub : HasDerivAt (fun a : ℝ => a - 1) 1 α := by
+    simpa using (hasDerivAt_id α).sub_const 1
+  have h_sq : HasDerivAt (fun a : ℝ => (a - 1) ^ 2) (2 * (α - 1)) α := by
+    have h := h_sub.pow 2
+    convert h using 1; ring
+  have h_sq_ne : (fun a : ℝ => (a - 1) ^ 2) α ≠ 0 := by simpa using hα1_sq_ne
+  have h_div := h_num.div h_sq h_sq_ne
+  convert h_div using 1
+  show (2 * K / (α - 1) ^ 3 : ℝ) =
+       (0 * (α - 1) ^ 2 - (-K) * (2 * (α - 1))) / ((α - 1) ^ 2) ^ 2
+  have h_pow_eq : ((α - 1) ^ 2) ^ 2 = (α - 1) ^ 4 := by ring
+  rw [h_pow_eq]
+  have h_pow_split : (α - 1) ^ 4 = (α - 1) ^ 3 * (α - 1) := by ring
+  rw [h_pow_split]
+  field_simp
+  ring
+
+/-- **Sensitivity sign (paper Remark 1):** `∂²(I_1/I_2 · K) / ∂α² > 0`.
+    The conditional mean's second derivative in `α` is strictly
+    positive for any `K > 0` and `α > 1`.  By Jensen's inequality,
+    under stochastic `α` (parameter uncertainty), `E[m(α)] > m(E[α])`,
+    so the discrepancy `I_1 − I_2` grows under parameter uncertainty. -/
+theorem paretoTailMean_secondDeriv_alpha_pos {α K : ℝ}
+    (hα : 1 < α) (hK : 0 < K) :
+    0 < 2 * K / (α - 1) ^ 3 := by
+  have hα1_pos : 0 < α - 1 := by linarith
+  have hα1_cube_pos : 0 < (α - 1) ^ 3 := by positivity
+  positivity
+
+/-- **Eq. 9 in literal `deriv^[2]` form.**  The iterated derivative
+        `(d²/dα²) [α · K / (α − 1)] = 2 · K / (α − 1)³`
+    is what the paper writes.  Combines `paretoTailMean_hasDerivAt_alpha`
+    and `paretoTailMean_hasDerivAt_alpha_second` via the standard
+    `HasDerivAt.deriv` chain.  Note: the inner `deriv` is computed
+    only locally around `α` (via `EventuallyEq`), so the conclusion
+    is on the second derivative evaluated at `α`. -/
+theorem paretoTailMean_iteratedDeriv_two {α K : ℝ} (hα : 1 < α) :
+    deriv (deriv (fun a : ℝ => a * K / (a - 1))) α = 2 * K / (α - 1) ^ 3 := by
+  have h_local : deriv (fun a : ℝ => a * K / (a - 1)) =ᶠ[𝓝 α]
+                 (fun a : ℝ => -K / (a - 1) ^ 2) := by
+    -- First derivative agrees with `-K/(a-1)²` on a neighborhood of α.
+    have h_open : ∀ᶠ a in 𝓝 α, 1 < a := eventually_gt_nhds hα
+    filter_upwards [h_open] with a ha
+    exact (paretoTailMean_hasDerivAt_alpha ha).deriv
+  -- Replace deriv by the closed form, then differentiate it.
+  rw [Filter.EventuallyEq.deriv_eq h_local]
+  exact (paretoTailMean_hasDerivAt_alpha_second hα).deriv
+
+/-! ## Inseparability of probability (paper Remark 5).
+
+    "Probability is just a kernel inside an integral, not a real thing
+    on its own."  Formally:
+        ∫ g(x) · f(x) dx  ≠  (∫ f(x) dx) · g(mean of x)
+    in general (with equality iff `g` is affine).  Direct consequence
+    of Jensen's inequality for convex / concave `g`.
+
+    Discrete version (paper Eq. 17): for non-degenerate `f` and
+    non-affine `g`, `Σ π(x) · g(x) ≠ Σ π(x) · g(mean)`. -/
+
+/-- **Inseparability identity for constant payoff.**  When `g` is
+    constant `c` on the integration domain, the conflation is *exact*:
+        ∫_K^∞ c · f(x) dx = c · ∫_K^∞ f(x) dx.
+    Trivial integral linearity.  This is the *only* case where binary
+    forecasts coincide with continuous payoffs (Remark 5). -/
+theorem inseparability_const {f : ℝ → ℝ} {K c : ℝ} :
+    ∫ x in Ioi K, c * f x = c * ∫ x in Ioi K, f x :=
+  MeasureTheory.integral_const_mul c _
+
+/-- **Inseparability gap is the linearity defect.**  For *affine* `g`
+    `g(x) = a · x + b`, the conflation gap reduces to the
+    expectation-vs-evaluation gap of the linear part:
+        ∫_K^∞ (a·x + b) · f(x) dx
+            = a · ∫_K^∞ x · f(x) dx + b · ∫_K^∞ f(x) dx.
+    Direct integral linearity.  When `g` is non-affine, no such clean
+    decomposition holds — Jensen's inequality is strict. -/
+theorem inseparability_affine_linearity {f : ℝ → ℝ} {K a b : ℝ}
+    (hf_int : IntegrableOn f (Ioi K))
+    (hxf_int : IntegrableOn (fun x : ℝ => x * f x) (Ioi K)) :
+    ∫ x in Ioi K, (a * x + b) * f x
+      = a * (∫ x in Ioi K, x * f x) + b * (∫ x in Ioi K, f x) := by
+  have h_pt : (fun x : ℝ => (a * x + b) * f x)
+      = fun x => a * (x * f x) + b * f x := by funext x; ring
+  rw [h_pt]
+  rw [MeasureTheory.integral_add (hxf_int.const_mul a) (hf_int.const_mul b)]
+  rw [MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul]
+
+/-- **Strict Jensen (paper Eq. 17 / Remark 5).**  For a strictly convex
+    payoff `g` on `ℝ` and any *two distinct* points `x ≠ y` with
+    positive weights `(a, b)` summing to `1`:
+        g(a·x + b·y) < a·g(x) + b·g(y),
+    i.e., the expected payoff `a·g(x) + b·g(y)` strictly exceeds the
+    payoff at the average `a·x + b·y`.  This is the two-point form of
+    Jensen's inequality — the discrete kernel of Eq. 17.  By induction
+    on the number of points / a measure-theoretic Jensen, this extends
+    to the general "inseparability of probability" claim.
+
+    For non-affine `g`, the conflation `E[g(X)] = g(E[X])` *fails*
+    strictly — binary forecasts cannot capture continuous-payoff
+    expectations. -/
+theorem inseparability_jensen_strict {g : ℝ → ℝ}
+    (hg : StrictConvexOn ℝ Set.univ g) {x y a b : ℝ}
+    (hxy : x ≠ y) (ha : 0 < a) (hb : 0 < b) (hab : a + b = 1) :
+    g (a * x + b * y) < a * g x + b * g y := by
+  have h := hg.2 (Set.mem_univ x) (Set.mem_univ y) hxy ha hb hab
+  simpa [smul_eq_mul] using h
+
+/-! ## Brier-score boundedness (paper Theorem 2).
+
+    The Brier score `λ_n := (1/n) Σ (f_t − 𝟙_{X_t ∈ χ_t})²` always lies
+    in `[0, 1]` (each summand is at most 1).  Consequently all
+    moments `E[λ_n^q]` are finite, regardless of the distribution of
+    the underlying `X` — Brier-score-based calibration metrics are
+    "thin-tailed" by construction (Remark 2). -/
+
+/-- **Per-term Brier-score bound.**  Each Brier summand `(f − 𝟙)²`
+    lies in `[0, 1]` whenever both `f ∈ [0, 1]` and `𝟙 ∈ [0, 1]`. -/
+theorem brierTerm_bounded {f y : ℝ}
+    (hf_lb : 0 ≤ f) (hf_ub : f ≤ 1) (hy_lb : 0 ≤ y) (hy_ub : y ≤ 1) :
+    0 ≤ (f - y) ^ 2 ∧ (f - y) ^ 2 ≤ 1 := by
+  refine ⟨sq_nonneg _, ?_⟩
+  have h_diff_bound : -1 ≤ f - y ∧ f - y ≤ 1 := by
+    constructor <;> linarith
+  rcases h_diff_bound with ⟨hl, hr⟩
+  have h_abs_le_one : |f - y| ≤ 1 := abs_le.mpr ⟨hl, hr⟩
+  calc (f - y) ^ 2 = |f - y| ^ 2 := by rw [sq_abs]
+    _ ≤ 1 ^ 2 := by exact pow_le_pow_left₀ (abs_nonneg _) h_abs_le_one 2
+    _ = 1 := by ring
+
+/-- **Brier-score moment boundedness (paper Theorem 2).**  Any
+    nonnegative real `λ ∈ [0, 1]` raised to any nonnegative power
+    `q ≥ 0` stays bounded above by `1`.  Direct corollary; applied
+    pointwise per summand of the Brier average, this gives the
+    "every moment of `λ_n^q` is finite" claim. -/
+theorem brierScore_moment_bounded {lam q : ℝ}
+    (h_lb : 0 ≤ lam) (h_ub : lam ≤ 1) (hq : 0 ≤ q) :
+    lam ^ q ≤ 1 := by
+  rcases eq_or_lt_of_le h_lb with h_zero | h_pos
+  · rcases eq_or_lt_of_le hq with hq_zero | hq_pos
+    · rw [← hq_zero, Real.rpow_zero]
+    · rw [← h_zero, Real.zero_rpow hq_pos.ne']
+      linarith
+  · exact Real.rpow_le_one h_pos.le h_ub hq
+
+/-- **Brier-score boundedness with positivity** (`λ ∈ [0, 1]` ⇒
+    `0 ≤ λ^q ≤ 1` for any `q ≥ 0`). -/
+theorem brierScore_moment_in_unit_interval {lam q : ℝ}
+    (h_lb : 0 ≤ lam) (h_ub : lam ≤ 1) (hq : 0 ≤ q) :
+    0 ≤ lam ^ q ∧ lam ^ q ≤ 1 :=
+  ⟨Real.rpow_nonneg h_lb _, brierScore_moment_bounded h_lb h_ub hq⟩
+
+
+end TailOptionPricing
