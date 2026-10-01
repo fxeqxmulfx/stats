@@ -5,7 +5,7 @@
   ## Stats.BinaryForecasts.SigmaSensitivity — paper Eq. 8 σ-derivation.
 
   Contains:
-    * Gaussian σ-sensitivity polynomial positivity.
+    * Gaussian σ-sensitivity polynomial positivity at σ = 1.
     * Full σ-derivation underlying Eq. 8.
 
   See `Stats/BinaryForecasts.lean` for the umbrella module.
@@ -21,13 +21,15 @@ open ProbabilityTheory
 
 /-! ## Gaussian σ-sensitivity (paper Eq. 8) — polynomial positivity.
 
-    The full Eq. 8 statement involves the σ-derivative of Gaussian
-    tail integrals; deriving it from scratch is research-scale (requires
-    σ-parametric Gaussian tail integrals with erfc).  Here we capture
-    the *sign-of-formula* — the polynomial `K⁴ − K³ − K² + 2K` (the
-    numerator at `σ = 1`) is strictly positive for `K > 0`, which is
-    the paper's stated sufficient condition for Eq. 8 positivity at
-    unit variance.
+    The derivative of the displayed Eq. 8 expression is proved below;
+    its integral closures are in `SigmaClosures.lean`. The polynomial
+    `K⁴ − K³ − K² + 2K` is its numerator at `σ = 1` and is positive
+    for `K > 0`. This does not establish the source's claimed sign for
+    every positive σ; see REVIEW.md, BF-21.
+
+    Eq. 8 differentiates A − B, where A is the tail first moment and
+    B the tail probability. For the linear payoff, the originally
+    defined gap I₁ − I₂ is A − K·B; see REVIEW.md, BF-20.
 
     Proof: the algebraic identity
         K⁴ − K³ − K² + 2·K = K · ((K − 1)² · (K + 1) + 1)
@@ -115,7 +117,8 @@ private theorem gaussianPDF_K_div_sigma_hasDerivAt {K σ : ℝ} (hσ : σ ≠ 0)
   have h_comp := h_pdf.comp σ h_inner
   -- h_comp : HasDerivAt (φ ∘ (·/·)) ((-(K/σ)·φ(K/σ)) · (-K/σ²)) σ.
   convert h_comp using 1
-  field_simp
+  · rfl
+  · field_simp
 
 open ProbabilityTheory MeasureTheory in
 /-- **Eq. 8 — second σ-derivative of `σ·φ(K/σ)`.**  Identifying

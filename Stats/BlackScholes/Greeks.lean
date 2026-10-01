@@ -231,7 +231,8 @@ theorem callPriceBS_riskNeutral_gamma
     convert h using 1; field_simp
   have h := (stdNormalCdf_hasDerivAt _).comp S₀ h_d₁_deriv
   convert h using 1
-  rw [div_eq_mul_inv, one_div, mul_comm]
+  · rfl
+  · rw [div_eq_mul_inv, one_div, mul_comm]
 
 open ProbabilityTheory MeasureTheory in
 /-- **Risk-neutral specialisation of the BSC tail dominance theorem (Eq. 9).**

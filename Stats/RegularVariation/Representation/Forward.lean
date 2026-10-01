@@ -356,7 +356,7 @@ private lemma η_minus_ξ_tendsto_zero {L : ℝ → ℝ}
       ∫ s in t..(t + 1), (η L t - η L s) := by
     unfold ξ
     rw [intervalIntegral.integral_sub
-          intervalIntegral.intervalIntegrable_const h_int_t_t1, h_const]
+          intervalIntegrable_const h_int_t_t1, h_const]
   rw [Real.dist_eq, sub_zero, h_diff_eq]
   -- Translate to s = t + u.
   have h_translate : (∫ s in t..(t + 1), (η L t - η L s)) =

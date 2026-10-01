@@ -49,8 +49,7 @@ theorem putShadow_hasDerivAt_l {l α K : ℝ} (hα : 1 < α) (hl : 0 < l) (hlK :
     have h := (h_id.const_mul α).div_const (α - 1)
     convert h using 1; field_simp
   have h_aff : HasDerivAt (fun l' : ℝ => K - α * l' / (α - 1)) (-(α / (α - 1))) l := by
-    have := (hasDerivAt_const l K).sub h_div
-    simpa using this
+    simpa using h_div.const_sub K
   have h_sum : HasDerivAt (fun l' : ℝ => callPrice l' α K + (K - α * l' / (α - 1)))
       (α * l ^ (α - 1) * K ^ (1 - α) / (α - 1) + (-(α / (α - 1)))) l :=
     h_call.add h_aff
@@ -75,7 +74,7 @@ theorem callPrice_hasDerivAt_alpha {l α K : ℝ} (hα : 1 < α) (hl : 0 < l) (h
   have h_lpow : HasDerivAt (fun α' : ℝ => l ^ α') (Real.log l * 1 * l ^ α) α :=
     h_id.const_rpow hl
   have h_one_sub : HasDerivAt (fun α' : ℝ => 1 - α') (-1) α := by
-    simpa using (hasDerivAt_const α (1 : ℝ)).sub h_id
+    simpa using h_id.const_sub (1 : ℝ)
   have h_Kpow : HasDerivAt (fun α' : ℝ => K ^ (1 - α'))
       (Real.log K * (-1) * K ^ (1 - α)) α :=
     h_one_sub.const_rpow hK_pos

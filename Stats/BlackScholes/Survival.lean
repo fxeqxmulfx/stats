@@ -89,7 +89,7 @@ theorem survivalLN_le_quadratic {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀)
       simp [gaussianPDFReal_zero_var]
     rw [h0]
     positivity
-  haveI : NoAtoms (gaussianReal μ v) := noAtoms_gaussianReal hv
+  have : NullSingletonClass (gaussianReal μ v) := nullSingletonClass_gaussianReal hv
   have h_eq : survivalLN S₀ μ v s =
       (gaussianReal μ v).real (Set.Ici (Real.log (s / S₀))) := by
     unfold survivalLN

@@ -63,12 +63,12 @@ open ProbabilityTheory MeasureTheory in
 /-- **Standard normal symmetry.**  `Φ(-c) = 1 - Φ(c)`.  Follows from the fact
     that the standard Gaussian is symmetric about the origin. -/
 theorem stdNormalCdf_neg (c : ℝ) : stdNormalCdf (-c) = 1 - stdNormalCdf c := by
-  haveI : NoAtoms (gaussianReal 0 1) := noAtoms_gaussianReal one_ne_zero
+  have : NullSingletonClass (gaussianReal 0 1) := nullSingletonClass_gaussianReal one_ne_zero
   -- Symmetry of `gaussianReal 0 1` under negation.
   have h_map : (gaussianReal 0 1).map (fun z : ℝ => -z) = gaussianReal 0 1 := by
     have h := gaussianReal_map_const_mul (μ := 0) (v := 1) (-1)
     have h_arg_zero : (-1 : ℝ) * (0 : ℝ) = 0 := by ring
-    have h_arg_var : (⟨(-1 : ℝ) ^ 2, sq_nonneg _⟩ * 1 : ℝ≥0) = 1 := by
+    have h_arg_var : (NNReal.mk ((-1 : ℝ) ^ 2) (sq_nonneg _) * 1 : ℝ≥0) = 1 := by
       rw [mul_one]; apply NNReal.eq
       show ((-1 : ℝ)) ^ 2 = (1 : ℝ); norm_num
     rw [h_arg_zero, h_arg_var] at h
@@ -145,7 +145,7 @@ theorem gaussianReal_map_locScale {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
   have hsqrt_sq : Real.sqrt (v : ℝ) ^ 2 = (v : ℝ) := Real.sq_sqrt hv_pos.le
   have h1 := gaussianReal_map_const_mul (μ := 0) (v := 1) (Real.sqrt (v : ℝ))
   have h_zero : Real.sqrt (v : ℝ) * (0 : ℝ) = 0 := by ring
-  have h_var : (⟨Real.sqrt (v : ℝ) ^ 2, sq_nonneg _⟩ * 1 : ℝ≥0) = v := by
+  have h_var : (NNReal.mk (Real.sqrt (v : ℝ) ^ 2) (sq_nonneg _) * 1 : ℝ≥0) = v := by
     rw [mul_one]
     apply NNReal.eq
     simp [hsqrt_sq]
@@ -239,7 +239,7 @@ theorem hasDerivAt_neg_gaussianPDFReal_std (x : ℝ) :
   have h_exp : HasDerivAt (fun y : ℝ => Real.exp (-(y^2) / 2))
       (-x * Real.exp (-(x^2) / 2)) x := by
     have h_chain := (Real.hasDerivAt_exp (-(x^2) / 2)).comp x h_inner
-    convert h_chain using 1; ring
+    convert h_chain using 1 <;> simp [Function.comp_def, mul_comm]
   have h_g : HasDerivAt (fun y : ℝ => Cπ * Real.exp (-(y^2) / 2))
       (Cπ * (-x * Real.exp (-(x^2) / 2))) x := h_exp.const_mul Cπ
   have h_neg_g : HasDerivAt (fun y : ℝ => -(Cπ * Real.exp (-(y^2) / 2)))

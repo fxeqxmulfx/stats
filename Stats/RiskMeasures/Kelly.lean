@@ -63,8 +63,7 @@ theorem kelly_log_hasDerivAt {f s : ℝ} (h : 0 < 1 + f * s) :
   have h_ne : (1 + f * s) ≠ 0 := h.ne'
   have h_inner : HasDerivAt (fun f : ℝ => 1 + f * s) s f := by
     have h1 := ((hasDerivAt_id f).mul_const s).const_add (1:ℝ)
-    convert h1 using 1
-    ring
+    convert h1 using 1 <;> simp [mul_comm]
   have h_log := (Real.hasDerivAt_log h_ne).comp f h_inner
   -- h_log : HasDerivAt (log ∘ fun f => 1 + f * s) ((1 + f * s)⁻¹ * s) f
   have h_eq_val : ((1 + f * s)⁻¹ * s) = s / (1 + f * s) := by
@@ -80,8 +79,7 @@ theorem kelly_log_hasDerivAt_second {f s : ℝ} (h : 0 < 1 + f * s) :
   have h_ne : (1 + f * s) ≠ 0 := h.ne'
   have h_inner : HasDerivAt (fun f : ℝ => 1 + f * s) s f := by
     have h1 := ((hasDerivAt_id f).mul_const s).const_add (1:ℝ)
-    convert h1 using 1
-    ring
+    convert h1 using 1 <;> simp [mul_comm]
   -- d/df [s / (1 + f*s)] = -s · (d/df (1 + f*s)) / (1 + f*s)^2 = -s^2 / (1+f*s)^2
   have h_div : HasDerivAt (fun f : ℝ => s / (1 + f * s))
       ((0 * (1 + f * s) - s * s) / (1 + f * s) ^ 2) f := by

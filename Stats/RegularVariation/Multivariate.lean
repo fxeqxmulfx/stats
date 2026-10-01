@@ -8,18 +8,16 @@
   linear projection `v · X` (for unit-vector `v`) is scalar regularly
   varying with the same index `-α`, with limiting ratio `σ v`.
 
-  This is the Resnick-style projection formulation — it is equivalent
-  to the spectral-measure formulation but easier to reason about for
-  finite-dimensional purposes (`κ`-invariance across directions, etc.).
+  This module defines a projection condition with pure-power normalization
+  and proves elementary inner-product/norm identities. Equivalence with a
+  standard spectral-measure formulation and invariance of κ across
+  directions are not proved here.
 
   Uses `Fin d → ℝ` with an explicit inner product (no
   `EuclideanSpace`/`InnerProductSpace` dependency).
 -/
 import Stats.Theorem1
 import Mathlib.Analysis.InnerProductSpace.Basic
--- The Mathlib import isn't strictly needed (we don't use InnerProductSpace),
--- but it gives us `Real.sqrt` and related infrastructure.  If it fails,
--- replace with `import Mathlib.Analysis.SpecialFunctions.Pow.Real`.
 
 open Real Set MeasureTheory Filter Topology
 

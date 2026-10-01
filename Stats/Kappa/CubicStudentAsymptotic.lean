@@ -13,10 +13,10 @@
   that is a typo — taking the `log` is missing.  The correct limit
   is `log(π²/4) ≈ 0.903`, derived here.
 
-  Built on the axiom
+  Built on the proved theorem
       `incompleteGamma_laplace_asymptotic`
-  (Loulakis-style Laplace asymptotic for `Γ(n+1, n)`); the full
-  DCT-based derivation is ~500-1000 lines of Lean work, deferred.
+  (Loulakis-style Laplace asymptotic for `Γ(n+1, n)`). Its DCT-based
+  proof is in `Stats/Kappa/CubicStudentLaplace.lean`.
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
@@ -57,10 +57,8 @@ namespace TailOptionPricing
        combined with `log(n)/D(n) → 2`, yields
        `log(n) · κ(1, n) → 2 · (log(π/2)/2) · 2 = 2 · log(π/2) = log(π²/4)`.
 
-    Step 1 (the Laplace asymptotic) is taken as an `axiom`:
-    `incompleteGamma_laplace_asymptotic`.  Discharging it requires
-    ~500-1000 lines of DCT machinery on the substituted integrand,
-    deferred. -/
+    Step 1 uses `incompleteGamma_laplace_asymptotic`, proved by
+    dominated convergence in `Stats/Kappa/CubicStudentLaplace.lean`. -/
 
 /-- **Laplace asymptotic for the upper incomplete Gamma at the saddle
     point** (paper Appendix A / Loulakis).
@@ -218,7 +216,7 @@ private theorem tendsto_log_incompleteGamma_sub_one_minus_half_log :
     *Note*: paper Appendix A claims the limit as `π²/4`, but this is a
     typo (missing `log`).  The correct asymptotic, derivable from the
     Laplace asymptotic on `Γ(n+1, n)`, is `log(π²/4) = 2·log(π/2)`.
-    Depends on the `incompleteGamma_laplace_asymptotic` axiom. -/
+    Uses the proved `incompleteGamma_laplace_asymptotic` theorem. -/
 theorem kappa_cubicStudent_asymptotic :
     Tendsto (fun n : ℕ => Real.log n * kappa cubicStudentSumMAD 1 n)
       atTop (𝓝 (Real.log (Real.pi ^ 2 / 4))) := by

@@ -2,22 +2,21 @@
   What You See and What You Don't See: The Hidden Moments of a
   Probability Distribution.  Taleb, arXiv:2004.05894v1 (Apr 2020).
 
-  Headline thesis: for an iid sample `X_1, …, X_n` of a Pareto-tailed
-  random variable with sample maximum `K_n := max X_i`, the "hidden"
-  moments above `K_n` admit closed forms.  In particular, the
-  *sample survival ratio* `(L/K_n)^α` has an **exact** Beta(1, n)
-  distribution (paper Remark 1 cites it as "exponential with mean
-  1/n" — that's the Fréchet asymptotic; the exact mean is **1/(n+1)**).
-
-  Formalised:
+  Formalized analytic ingredients:
     1. **Eq. (2):** Pareto p-th tail moment
           ∫_K^∞ x^p · α·L^α·x^{−α−1} dx = α·L^α·K^{p−α} / (α − p),
        generalising `paretoTailExpectation_eq` (p = 1) and recovering
        the survival function (p = 0).
-    2. **Exact sample-survival-ratio CDF** `1 − (1 − y)^n` on `[0, 1]`,
-       via `paretoSampleMaxCDF`.
-    3. **Exact mean of `(L/K_n)^α` = 1/(n+1)** (paper's 1/n is the
-       Fréchet asymptotic; exact value is `1/(n+1)` via Beta(1, n)).
+    2. Candidate Beta(1, n) CDF `1 − (1 − y)^n`, its polynomial
+       derivative and its algebraic substitution into the candidate
+       maximum-CDF expression.
+    3. The integral of y against this candidate PDF on `[0, 1]` is
+       `1/(n+1)`, with an exact comparison to `1/n`.
+
+  The actual iid sample, maximum law and survival-ratio pushforward
+  are not constructed here. Consequently the function identities do
+  not yet constitute an exact Beta-law theorem for `(L/K_n)^α`.
+  See REVIEW.md, HM-01–HM-20.
 
   Out of scope:
     * Eq. (1) hidden-moment density (Fréchet form requires change of
@@ -125,8 +124,8 @@ noncomputable def paretoSampleSurvivalRatioPDF (n : ℕ) (y : ℝ) : ℝ :=
     `k = l · y^(−1/α)`:
         `paretoSampleSurvivalRatioCDF n y
             = 1 − paretoSampleMaxCDF n l α (l · y^(−1/α))`.
-    This realises the formal identity
-        `ℙ((L/K_n)^α ≤ y) = ℙ(K_n ≥ L · y^(−1/α))`. -/
+    This is a function substitution; its probability interpretation
+    requires the actual iid maximum law and continuity assumptions. -/
 theorem paretoSampleSurvivalRatioCDF_eq_one_sub_maxCDF
     {l α y : ℝ} {n : ℕ}
     (hl : 0 < l) (hα_pos : 0 < α) (hy_pos : 0 < y) :
@@ -157,7 +156,7 @@ theorem paretoSampleSurvivalRatioPDF_eq_deriv (n : ℕ) (y : ℝ) :
   unfold paretoSampleSurvivalRatioCDF paretoSampleSurvivalRatioPDF
   -- d/dy[1 - (1 - y)^n] = -d/dy[(1 - y)^n] = -n · (1 - y)^(n-1) · (-1) = n · (1 - y)^(n-1).
   have h_base : HasDerivAt (fun y : ℝ => 1 - y) (-1) y := by
-    simpa using (hasDerivAt_const y (1:ℝ)).sub (hasDerivAt_id y)
+    simpa using (hasDerivAt_id y).const_sub (1 : ℝ)
   have h_pow : HasDerivAt (fun y : ℝ => (1 - y) ^ n)
       ((n : ℝ) * (1 - y) ^ (n - 1) * (-1)) y :=
     h_base.pow n
@@ -211,7 +210,7 @@ theorem paretoSampleSurvivalRatio_mean (n : ℕ) (hn : 1 ≤ n) :
           ((1 - y) ^ (n - 1)) y := by
         intro y
         have h_base : HasDerivAt (fun y : ℝ => 1 - y) (-1) y := by
-          simpa using (hasDerivAt_const y (1:ℝ)).sub (hasDerivAt_id y)
+          simpa using (hasDerivAt_id y).const_sub (1 : ℝ)
         have h_pow : HasDerivAt (fun y : ℝ => (1 - y) ^ n)
             ((n : ℝ) * (1 - y) ^ (n - 1) * (-1)) y := h_base.pow n
         have := (h_pow.neg).div_const (n : ℝ)
@@ -230,7 +229,7 @@ theorem paretoSampleSurvivalRatio_mean (n : ℕ) (hn : 1 ≤ n) :
           ((1 - y) ^ n) y := by
         intro y
         have h_base : HasDerivAt (fun y : ℝ => 1 - y) (-1) y := by
-          simpa using (hasDerivAt_const y (1:ℝ)).sub (hasDerivAt_id y)
+          simpa using (hasDerivAt_id y).const_sub (1 : ℝ)
         have h_pow : HasDerivAt (fun y : ℝ => (1 - y) ^ (n + 1))
             (((n : ℝ) + 1) * (1 - y) ^ n * (-1)) y := by
           have h := h_base.pow (n + 1)

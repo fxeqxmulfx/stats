@@ -76,7 +76,9 @@ theorem survivalLN_hasDerivAt {S₀ μ K : ℝ} {v : ℝ≥0}
     exact h_log_diff.congr_of_eventuallyEq h_ev
   have h_chain := h_outer.comp K h_inner
   convert h_chain using 1
-  ring
+  · funext s
+    rfl
+  · ring
 
 open ProbabilityTheory in
 /-- **Strict antitonicity of the lognormal survival.**  For `v ≠ 0`, the

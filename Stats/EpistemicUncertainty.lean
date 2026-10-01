@@ -2,28 +2,21 @@
   Branching epistemic uncertainty and thickness of tails.
     Taleb & Cirillo, arXiv:1912.00277v2 (Dec 2019).
 
-  Headline thesis: layered ±ε multiplicative perturbations of a base
-  Gaussian's standard deviation σ generate fat tails *purely from
-  epistemic uncertainty* (errors on the parameter estimate), even when
-  the base distribution is thin-tailed.
+  Formal scope: finite binomial-weighted scale moments, a candidate
+  kurtosis expression and its inequalities, finite decaying-error
+  products, and log-additivity for positive multiplicative factors.
 
-  Section III (constant error rate ε) — exact moments after n layers:
-    Var(X)        = σ² · (1 + ε²)^n.
-    E[X^4]        = 3 σ⁴ · (1 + 6ε² + ε⁴)^n.
-    Kurtosis(X)   = 3 · (1 + 6ε² + ε⁴)^n / (1 + ε²)^{2n}.
+  The scale-moment identities are
+    E[σ_n²] = σ² · (1 + ε²)^n,
+    E[σ_n⁴] = σ⁴ · (1 + 6ε² + ε⁴)^n,
+  where E here abbreviates the explicitly defined weighted finite sum.
+  The candidate raw kurtosis is strictly greater than 3 when n ≥ 1,
+  σ ≠ 0 and ε ≠ 0.
 
-  The kurtosis is *strictly greater than 3* for any ε ≠ 0, and diverges
-  geometrically in n.
-
-  Section IV (decaying error rates ε_i = κ^(i-1) ε_1):
-    Var(X) = σ² · ∏_{i=0}^{n-1} (1 + ε_1² · κ^{2i})       (q-Pochhammer).
-
-  Section V (CLT argument): log-additivity of multiplicative errors.
-    log λ = log λ̂ + Σ log(1 + ε_i).
-
-  Section VI (Student-t emergence) is research-scale (requires the
-  full Normal-Gamma compound integral with `Real.Gamma`) and is left
-  for future work.
+  A Gaussian-mixture law, its outcome moments, divergence limits,
+  a CLT and the Normal-Gamma compound-law theorem are not constructed
+  here. Higher kurtosis alone does not establish a power-law tail.
+  See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
@@ -103,9 +96,10 @@ theorem epistemicSigmaMoment_eq (n k : ℕ) (σ ε : ℝ) :
           = ((1 + ε)^k + (1 - ε)^k)^n / 2^n from by rw [div_pow]]
     field_simp
 
-/-- **Variance under epistemic uncertainty (paper Eq. 2 specialisation):**
-        Var(X) = E[σ_n²] = σ² · (1 + ε²)^n.
-    Direct corollary of `epistemicSigmaMoment_eq` at `k = 2`. -/
+/-- **Weighted scale second moment (paper Eq. 2 ingredient):**
+        E[σ_n²] = σ² · (1 + ε²)^n.
+    Direct corollary of `epistemicSigmaMoment_eq` at `k = 2`.
+    Identifying this with an outcome variance needs a mixture-law bridge. -/
 theorem epistemicVariance_eq (n : ℕ) (σ ε : ℝ) :
     epistemicSigmaMoment n 2 σ ε = σ^2 * (1 + ε^2)^n := by
   rw [epistemicSigmaMoment_eq, epistemicMomentFactor_two]
@@ -118,9 +112,9 @@ theorem epistemicSigmaFourthMoment_eq (n : ℕ) (σ ε : ℝ) :
 
 /-! ### Kurtosis formula and the tail-thickening inequality. -/
 
-/-- **Kurtosis of `X` under epistemic uncertainty.**  For `X ~ N(0, σ_n)`,
-    the (raw) kurtosis equals `3 · E[σ_n^4] / E[σ_n²]²`, since the
-    Gaussian fourth moment satisfies `E[X^4 | σ_n] = 3 · σ_n^4`. -/
+/-- **Candidate raw kurtosis expression.** The factor 3 is motivated
+    by a centered Gaussian conditional fourth moment. This definition
+    does not itself construct a mixture or prove its moment identities. -/
 noncomputable def epistemicKurtosis (n : ℕ) (σ ε : ℝ) : ℝ :=
   3 * epistemicSigmaMoment n 4 σ ε / (epistemicSigmaMoment n 2 σ ε)^2
 
@@ -206,9 +200,9 @@ theorem epistemicExcessKurtosis_nonneg (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) 
   unfold epistemicExcessKurtosis
   linarith [epistemicKurtosis_ge_three n σ ε hσ]
 
-/-- **Strict kurtosis > 3 for genuine uncertainty.**  For any `n ≥ 1`,
-    `ε ≠ 0`, and `σ ≠ 0`, Kurt(X) > 3 — fat tails emerge from
-    *any* nonzero epistemic uncertainty. -/
+/-- **Strict candidate kurtosis > 3 for nonzero uncertainty.**
+    Requires `n ≥ 1`, `ε ≠ 0`, and `σ ≠ 0`. This scalar inequality
+    does not establish regular variation of a mixture tail. -/
 theorem epistemicKurtosis_gt_three {n : ℕ} {σ ε : ℝ}
     (hn : 1 ≤ n) (hσ : σ ≠ 0) (hε : ε ≠ 0) :
     3 < epistemicKurtosis n σ ε := by
@@ -253,7 +247,7 @@ theorem decayingErrorVariance_ge_base (n : ℕ) (σ ε₁ κ : ℝ) (hσ : 0 ≤
   have h_prod_ge : 1 ≤ ∏ i ∈ Finset.range n, (1 + ε₁^2 * κ^(2 * i)) := by
     have h_aux : (∏ _i ∈ Finset.range n, (1 : ℝ))
         ≤ ∏ i ∈ Finset.range n, (1 + ε₁^2 * κ^(2 * i)) := by
-      apply Finset.prod_le_prod
+      apply Finset.prod_le_prod₀
       · intros i _; exact zero_le_one
       · intros i hi; exact h_factor_ge i hi
     simpa using h_aux
@@ -297,7 +291,7 @@ theorem decayingErrorVariance_mono (σ ε₁ κ : ℝ) {n m : ℕ} (hnm : n ≤ 
   have h_tail_ge_one : 1 ≤ ∏ i ∈ Finset.Ico n m, (1 + ε₁^2 * κ^(2 * i)) := by
     have h_aux : (∏ _i ∈ Finset.Ico n m, (1 : ℝ))
         ≤ ∏ i ∈ Finset.Ico n m, (1 + ε₁^2 * κ^(2 * i)) := by
-      apply Finset.prod_le_prod
+      apply Finset.prod_le_prod₀
       · intros i _; exact zero_le_one
       · intros i _; exact h_factor_ge_one i
     simpa using h_aux
@@ -313,10 +307,9 @@ theorem decayingErrorVariance_mono (σ ε₁ κ : ℝ) {n m : ℕ} (hnm : n ≤ 
 
     Eq. 10:  `λ = λ̂ · ∏_{i=1}^n (1 + ε_i)`.
     Eq. 11:  `log λ = log λ̂ + Σ_{i=1}^n log(1 + ε_i)`.
-    The CLT then applies to `log λ` under the iid `(ε_i)` assumption,
-    giving `λ → Lognormal` in the large-`n` limit (Section V).  The
-    CLT step itself is beyond Mathlib v4.29 and is left for future work;
-    we capture the algebraic log-additivity below. -/
+    Only the finite log-additivity identity is proved here. A CLT for
+    the log factors needs a probability model, moment hypotheses,
+    centering and normalization; it is not established by this identity. -/
 
 /-- **Log-additivity of the multiplicative composition (paper Eq. 11).**
     `log(λ̂ · ∏ (1 + ε_i)) = log λ̂ + Σ log(1 + ε_i)`,
@@ -331,10 +324,10 @@ theorem log_multiplicative_error {n : ℕ} (lamHat : ℝ) (ε : ℕ → ℝ)
   congr 1
   exact Real.log_prod (fun i hi => (hε i hi).ne')
 
-/-- **Linear approximation `log(1 + ε) ≤ ε` (paper Eq. 12, upper side).**
+/-- **Upper bound `log(1 + ε) ≤ ε` (paper Eq. 12, upper side).**
     Standard `log(1 + x) ≤ x` for `x > -1`, derived from
-    `1 + x ≤ exp(x)`.  Together with the lower bound `x - x²/2 ≤
-    log(1 + x)` for small `|x|`, justifies the CLT linearisation. -/
+    `1 + x ≤ exp(x)`. This one-sided estimate does not control the
+    absolute remainder or justify the accumulated CLT linearization. -/
 theorem log_one_add_le_self {ε : ℝ} (hε : -1 < ε) :
     Real.log (1 + ε) ≤ ε := by
   have h_pos : 0 < 1 + ε := by linarith

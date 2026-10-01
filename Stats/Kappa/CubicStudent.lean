@@ -166,7 +166,7 @@ private lemma loulakisAntideriv_hasDerivAt (n : ℕ) (t : ℝ) :
   | zero =>
     have h_neg_exp : HasDerivAt (fun s : ℝ => -Real.exp (-s)) (Real.exp (-t)) t := by
       have := (hasDerivAt_exp_neg' t).neg
-      simpa using this
+      convert this using 1 <;> simp
     have heq : loulakisAntideriv 0 = fun s : ℝ => -Real.exp (-s) := by
       funext s; exact loulakisAntideriv_zero_eq s
     rw [heq]

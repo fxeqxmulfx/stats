@@ -75,7 +75,7 @@ theorem pearsonIV_aux_deriv {f : ℝ → ℝ} {a₀ a₁ b₀ b₁ b₂ : ℝ}
   have h_b1y : HasDerivAt (fun y : ℝ => b₁ * y) b₁ x := by
     simpa using h_id.const_mul b₁
   have h_y2 : HasDerivAt (fun y : ℝ => y ^ 2) (2 * x) x := by
-    simpa using h_id.pow 2
+    convert h_id.pow 2 using 1 <;> simp
   have h_b2y2 : HasDerivAt (fun y : ℝ => b₂ * y ^ 2) (b₂ * (2 * x)) x :=
     h_y2.const_mul b₂
   have h_const : HasDerivAt (fun _ : ℝ => b₀) 0 x := hasDerivAt_const x b₀

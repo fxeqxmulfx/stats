@@ -109,20 +109,17 @@ theorem paretoTailMean_iteratedDeriv_two {α K : ℝ} (hα : 1 < α) :
 
 /-! ## Inseparability of probability (paper Remark 5).
 
-    "Probability is just a kernel inside an integral, not a real thing
-    on its own."  Formally:
-        ∫ g(x) · f(x) dx  ≠  (∫ f(x) dx) · g(mean of x)
-    in general (with equality iff `g` is affine).  Direct consequence
-    of Jensen's inequality for convex / concave `g`.
-
-    Discrete version (paper Eq. 17): for non-degenerate `f` and
-    non-affine `g`, `Σ π(x) · g(x) ≠ Σ π(x) · g(mean)`. -/
+    The theorems below prove constant-payoff integral linearity,
+    affine-payoff integral decomposition, and strict Jensen for two
+    distinct points with a strictly convex payoff and positive weights.
+    Non-affinity alone does not imply strict Jensen for every law.
+    A general probability version also needs normalization and
+    integrability; see REVIEW.md, BF-28. -/
 
 /-- **Inseparability identity for constant payoff.**  When `g` is
     constant `c` on the integration domain, the conflation is *exact*:
         ∫_K^∞ c · f(x) dx = c · ∫_K^∞ f(x) dx.
-    Trivial integral linearity.  This is the *only* case where binary
-    forecasts coincide with continuous payoffs (Remark 5). -/
+    This is a sufficient equality case, by integral linearity. -/
 theorem inseparability_const {f : ℝ → ℝ} {K c : ℝ} :
     ∫ x in Ioi K, c * f x = c * ∫ x in Ioi K, f x :=
   MeasureTheory.integral_const_mul c _
@@ -132,8 +129,7 @@ theorem inseparability_const {f : ℝ → ℝ} {K c : ℝ} :
     expectation-vs-evaluation gap of the linear part:
         ∫_K^∞ (a·x + b) · f(x) dx
             = a · ∫_K^∞ x · f(x) dx + b · ∫_K^∞ f(x) dx.
-    Direct integral linearity.  When `g` is non-affine, no such clean
-    decomposition holds — Jensen's inequality is strict. -/
+    Direct integral linearity under the stated integrability assumptions. -/
 theorem inseparability_affine_linearity {f : ℝ → ℝ} {K a b : ℝ}
     (hf_int : IntegrableOn f (Ioi K))
     (hxf_int : IntegrableOn (fun x : ℝ => x * f x) (Ioi K)) :
@@ -151,13 +147,8 @@ theorem inseparability_affine_linearity {f : ℝ → ℝ} {K a b : ℝ}
         g(a·x + b·y) < a·g(x) + b·g(y),
     i.e., the expected payoff `a·g(x) + b·g(y)` strictly exceeds the
     payoff at the average `a·x + b·y`.  This is the two-point form of
-    Jensen's inequality — the discrete kernel of Eq. 17.  By induction
-    on the number of points / a measure-theoretic Jensen, this extends
-    to the general "inseparability of probability" claim.
-
-    For non-affine `g`, the conflation `E[g(X)] = g(E[X])` *fails*
-    strictly — binary forecasts cannot capture continuous-payoff
-    expectations. -/
+    Jensen's inequality. A general discrete or measure-theoretic
+    extension requires its own hypotheses and proof. -/
 theorem inseparability_jensen_strict {g : ℝ → ℝ}
     (hg : StrictConvexOn ℝ Set.univ g) {x y a b : ℝ}
     (hxy : x ≠ y) (ha : 0 < a) (hb : 0 < b) (hab : a + b = 1) :

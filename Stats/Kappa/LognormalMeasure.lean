@@ -47,7 +47,7 @@ private lemma measurable_exp : Measurable (Real.exp) := Real.continuous_exp.meas
 instance instIsProbabilityMeasureLognormalReal (μ : ℝ) (v : ℝ≥0) :
     IsProbabilityMeasure (lognormalReal μ v) := by
   unfold lognormalReal
-  exact Measure.isProbabilityMeasure_map measurable_exp.aemeasurable
+  exact (Measure.isProbabilityMeasure_map_iff measurable_exp.aemeasurable).mpr inferInstance
 
 /-- **`lognormalReal` is supported on `(0, ∞)`.**  Since `Real.exp y > 0`
     for all `y ∈ ℝ`, the push-forward has full mass on `Ioi 0`. -/

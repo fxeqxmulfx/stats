@@ -3,13 +3,19 @@
     Taleb–Yarckin–Mann–Delic–Spitznagel,
     "Tail Option Pricing Under Power Laws", arXiv:1908.02347v3 (March 2023).
 
-  The development is split across the following sub-modules:
+  The development is split across the following sub-modules. Entries
+  list mathematical ingredients, not complete paper formalizations;
+  see REVIEW.md for the statement-by-statement assessment.
 
     Stats/Pareto.lean       — strong-Pareto core; Results 1, 2, 3 (Eqs. 2–7)
                               + calibration formula (Section II.B inversion).
     Stats/Theorem1.lean     — `IsRegularlyVarying` class; Theorem 1
                               (log returns NOT in `RV_α`), strong-Pareto and
                               Karamata-constant versions.
+    Stats/RegularVariation.lean — measurable slowly varying theory,
+                              full log-return theorem and call asymptotics.
+    Stats/Pareto/Measure.lean — the supported Pareto probability measure.
+    Stats/Copula/Basic.lean — generic copula ingredients.
     Stats/Calculus.lean     — generic FTC for `K ↦ ∫_K^∞ F(s) ds`;
                               Breeden–Litzenberger 1st/2nd derivatives;
                               continuity on `Ici l`; strict convexity on
@@ -32,12 +38,12 @@
                               distribution, Pareto-priced static replication,
                               and K-decay rates of Greeks (Pareto vs BS).
     Stats/Kappa.lean        — Taleb's κ-metric (arXiv:1802.05495v3): abstract
-                              definition, stable-basin invariance κ = 2 − ᾱ,
-                              Gaussian/Cauchy special cases, additive
-                              decomposition, exponential/Gamma closed form,
-                              cubic Student T closed form via local
-                              incomplete-Gamma, Loulakis' lognormal bound,
-                              and the n_ν sample-size approximation.
+                              MAD interface and scaling algebra, additive
+                              decomposition, supplied exponential/Gamma and
+                              cubic Student MAD expressions, incomplete-Gamma
+                              analysis, genuine Loulakis lognormal limit,
+                              and sample-size power identities. Several
+                              distributional MAD bridges remain unproved.
     Stats/BinaryForecasts.lean — binary vs. continuous payoff conflation
                               (arXiv:1907.11162v3): characteristic scale,
                               I_1/I_2 conflation identity, Pareto closed
@@ -47,22 +53,21 @@
                               boundedness, Bernoulli cumulants.
     Stats/EpistemicUncertainty.lean — branching epistemic uncertainty
                               (arXiv:1912.00277v2): binomial-tree moment
-                              factor M_k(ε), variance σ²·(1+ε²)^n, 4th
-                              moment 3σ⁴·(1+6ε²+ε⁴)^n, kurtosis ≥ 3 (strict
-                              for ε ≠ 0), decaying-error variance product,
+                              factor M_k(ε), weighted scale second/fourth
+                              moments, candidate kurtosis inequalities,
+                              decaying-error product bounds,
                               log-additivity of multiplicative errors.
     Stats/HiddenMoments.lean  — hidden moments of a probability distribution
                               (arXiv:2004.05894v1): Pareto p-th tail moment
                               closed form α·L^α·K^(p−α)/(α−p) (Eq. 2);
-                              exact distribution of sample survival ratio
-                              `(L/K_n)^α ~ Beta(1, n)` with mean 1/(n+1),
-                              correcting paper's Fréchet-asymptotic 1/n.
+                              candidate Beta(1, n) CDF/PDF function identities
+                              and its mean integral 1/(n+1). Actual iid
+                              maximum and pushforward-law bridges remain.
     Stats/SinglePointForecasts.lean — single-point forecasts for fat-tailed
                               variables (arXiv:2007.16096v1): exponential
-                              growth → Pareto density `X₀·exp(r·t)` with
-                              r ~ Exp(λ) ⇒ Pareto(X₀, λ/t); tail
-                              index/variance relation α = 1/(t·√Var(r));
-                              empirical-survival std bound 1/(2√n) via
+                              growth/Pareto density-expression equality;
+                              scalar reciprocal index/variance identity;
+                              scalar std bound 1/(2√n) via
                               Bernoulli p(1−p) ≤ 1/4; Pareto mean diverges
                               at α ≤ 1 (Remark 3).
 
@@ -86,3 +91,6 @@ import Stats.BinaryForecasts
 import Stats.EpistemicUncertainty
 import Stats.HiddenMoments
 import Stats.SinglePointForecasts
+import Stats.RegularVariation
+import Stats.Pareto.Measure
+import Stats.Copula.Basic

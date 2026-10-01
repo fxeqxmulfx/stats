@@ -6,13 +6,13 @@
   ## Stats.Kappa.LognormalCumulants — closed-form lognormal cumulants
   (paper Appendix B).
 
-  Mathlib has no `cumulant` (only `mgf`), and the lognormal mgf does
-  not converge on any open interval around `0`, so the analytic
-  derivative-of-log-mgf definition does not apply.  We work directly
+  A nondegenerate lognormal mgf is not finite on any open interval
+  around `0`, so the analytic derivative-of-log-mgf definition does
+  not apply. This module works directly
   from the closed-form (non-central) moments
       m_k(μ, σ) = exp(k·μ + k²·σ²/2)
-  of `X ~ LogNormal(μ, σ²)` (taken as definitional here — Mathlib has
-  no lognormal density yet), define cumulants of `X` via the
+  of `X ~ LogNormal(μ, σ²)` (taken as definitional here), defines
+  cumulant expressions via the
   moment-cumulant relations, and cumulants of the iid sum
   `S_n = X_1 + ⋯ + X_n` by additivity (`K_i(S_n) = n · K_i(X_1)`).
 
@@ -25,10 +25,10 @@
     cumulant proxy (excess kurtosis), which vanishes for Gaussian
     (where κ = 0).
 
-  The proxy interpretation matches the TODO's "Heuristic / algebraic
-  via cumulant expansion" framing: the strict MAD-based κ_{1,n} for
-  the lognormal would need either Loulakis' subexponential bound
-  (Section IV-B) or the explicit erf formula (B.1), both pending.
+  These proxy limits do not prove the corresponding limits of the
+  MAD-based κ_{1,n}. The genuine large-σ MAD limit is established
+  separately in `Stats/Kappa/LoulakisLognormal.lean`; the small-σ
+  and large-n MAD limits still need their probability bridges.
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
@@ -310,12 +310,10 @@ theorem lognormalKurtosis (n : ℕ) (μ σ : ℝ) (hn : 0 < n) (hσ : σ ≠ 0) 
 
 /-! ## Cumulant proxy for κ (excess kurtosis) and its limits.
 
-    Without a closed form `κ_{1, n}(μ, σ)` for the lognormal (paper
-    Section IV-B and B.1 explicit erf formula are pending), we work
-    at the level of the cumulant-expansion *proxy*: the excess
-    kurtosis of the iid sum.  This vanishes for Gaussian (where `κ
-    = 0`), and the two limit laws in paper Appendix B (σ → 0 and
-    n → ∞) are both elementary at this level. -/
+    This module uses the cumulant-expansion proxy: the excess-kurtosis
+    expression of the iid sum. It vanishes at the Gaussian reference.
+    The small-σ and large-n proxy limits below do not identify this
+    expression with the MAD-based κ or prove its corresponding limits. -/
 
 /-- Cumulant-expansion proxy for `κ_{1, n}` of the lognormal iid sum:
     excess kurtosis, equal to zero for the Gaussian limit. -/

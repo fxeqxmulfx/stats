@@ -73,7 +73,7 @@ private lemma hasDerivAt_putShadowAntideriv {l α K s : ℝ}
       (α * l ^ α * ((1 - α) * s ^ (-α)) / (α - 1)) s :=
     (h_one_α.const_mul (α * l ^ α)).div_const (α - 1)
   have h_sum := h_F1.add h_F2
-  convert h_sum using 1
+  convert h_sum using 1 <;> try rfl
   have hpow_pos : 0 < s ^ (α + 1) := Real.rpow_pos_of_pos hs _
   have hpow_ne : s ^ (α + 1) ≠ 0 := hpow_pos.ne'
   have h1 : s ^ (-α - 1) = (s ^ (α + 1))⁻¹ := by
@@ -221,7 +221,7 @@ private lemma hasDerivAt_putShadowReturnsAntideriv {l α S₀ K s : ℝ}
       (α * (l * S₀) ^ α * ((1 - α) * (s - S₀) ^ (-α)) / (α - 1)) s :=
     (h_one_α.const_mul (α * (l * S₀) ^ α)).div_const (α - 1)
   have h_sum := h_F1.add h_F2
-  convert h_sum using 1
+  convert h_sum using 1 <;> try rfl
   have hpow_pos : 0 < (s - S₀) ^ (α + 1) := Real.rpow_pos_of_pos hs_S₀ _
   have hpow_ne : (s - S₀) ^ (α + 1) ≠ 0 := hpow_pos.ne'
   have h1 : (s - S₀) ^ (-α - 1) = ((s - S₀) ^ (α + 1))⁻¹ := by

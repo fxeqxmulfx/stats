@@ -300,7 +300,7 @@ theorem tendsto_M_ratio_lognormal_eq_n {n : ℕ} (hn : 1 ≤ n) :
       ((hAn.const_mul (n : ℝ)).sub (hBn.const_mul (n.choose 2 : ℝ))).const_mul 2
     have h_target : Tendsto g atTop (𝓝
         ((2 : ℝ) * ((n : ℝ) * 1 - (n.choose 2 : ℝ) * 0) / 2)) := by
-      simpa [hg_def] using h_num_tend.div hM1 (by norm_num : (2 : ℝ) ≠ 0)
+      convert h_num_tend.div hM1 (by norm_num : (2 : ℝ) ≠ 0) using 1
     have h_eq : ((2 : ℝ) * ((n : ℝ) * 1 - (n.choose 2 : ℝ) * 0) / 2) = (n : ℝ) := by ring
     rw [h_eq] at h_target
     exact h_target

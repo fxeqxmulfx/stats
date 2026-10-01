@@ -6,19 +6,20 @@
   Remarks 1–9 about COVID-19, systemic risk, ergodicity, ruin
   problems, etc.).  The formalisable mathematical content is sparse:
 
-  1. **Exponential growth → power law** ("Uncertainty goes one way"):
-     `X = X₀·exp(r·t)` with `r ~ Exponential(λ)` gives `X ~ Pareto`
-     with scale `X₀` and tail index `α = λ/t`.  Higher Var(r) ⇒
-     smaller α ⇒ fatter tail of X.
+  1. Pointwise equality between the candidate exponential-growth
+     density and the Pareto density expression, plus the scalar
+     reciprocal tail-index/variance relation. The probability-law
+     transformation itself is not constructed here.
 
-  2. **Empirical survival function rate `O(1/√n)`** (footnote claim):
-     for an iid sample, `Ŝ_n(x)` has variance `p(1−p)/n` (Bernoulli
-     sample-mean variance), bounded by `1/(4n)` via `p(1−p) ≤ 1/4`.
+  2. Scalar bounds on `p(1−p)/n` and its square root. The actual iid
+     indicator sample and empirical-survival variance are not defined.
 
-  3. **Remark 3** ("Fat-tailed random variables with tail exponent
-     α ≤ 1 are simply not forecastable"): Pareto first moment
-     diverges for `α ≤ 1`.  Direct corollary of
+  3. The strong-Pareto first-moment integrand is nonintegrable for
+     `0 < α ≤ 1`. Direct corollary of
      `paretoMomentIntegrand_integrableOn_iff`.
+
+  These results do not establish a general impossibility of forecasting,
+  an LLN theorem or the policy conclusions. See REVIEW.md, SP-01–SP-21.
 -/
 import Stats.Pareto
 import Stats.RiskMeasures
@@ -38,8 +39,8 @@ namespace TailOptionPricing
 
 /-- **Density-after-exponential-growth identity.**  Pointwise
     identity `λ/(t·x) · (X₀/x)^(λ/t) = paretoDensity X₀ (λ/t) x`,
-    capturing the change of variable for `X = X₀·exp(r·t)` with
-    `r ~ Exp(λ)`. -/
+    matching the candidate change-of-variables expression for
+    `X = X₀·exp(r·t)` with `r ~ Exp(λ)`. No law is asserted here. -/
 theorem exp_growth_density_eq_pareto {X₀ t lam x : ℝ}
     (hX₀ : 0 < X₀) (ht : 0 < t) (hlam : 0 < lam) (hx : 0 < x) :
     lam / (t * x) * (X₀ / x) ^ (lam / t)
@@ -133,7 +134,7 @@ theorem empirical_survival_std_bound {p : ℝ} {n : ℕ}
     finite first moment — the moment integrand
     `paretoMomentIntegrand l α 1` is *not* integrable on `(l, ∞)`.
     Direct corollary of `paretoMomentIntegrand_integrableOn_iff` at
-    `k = 1`.  No LLN: the sample mean cannot converge. -/
+    `k = 1`. An iid-sample/LLN statement needs a separate proof. -/
 theorem paretoMean_not_integrable_when_alpha_le_one {l α : ℝ}
     (hα_pos : 0 < α) (hα_le : α ≤ 1) (hl : 0 < l) :
     ¬ IntegrableOn (paretoMomentIntegrand l α 1) (Ioi l) volume := by
@@ -141,8 +142,9 @@ theorem paretoMean_not_integrable_when_alpha_le_one {l α : ℝ}
   have h := (paretoMomentIntegrand_integrableOn_iff hl hα_pos).mp h_int
   linarith
 
-/-- **Strict Remark 3** at `α = 1`: borderline case where the mean
-    integrand diverges (logarithmically), so the LLN still fails. -/
+/-- **Strong-Pareto boundary case** at `α = 1`: the first-moment
+    integrand is nonintegrable. This does not settle the boundary for
+    a general regularly varying tail with a nonconstant slow factor. -/
 theorem paretoMean_not_integrable_at_alpha_one {l : ℝ} (hl : 0 < l) :
     ¬ IntegrableOn (paretoMomentIntegrand l 1 1) (Ioi l) volume :=
   paretoMean_not_integrable_when_alpha_le_one (by norm_num) (le_refl _) hl

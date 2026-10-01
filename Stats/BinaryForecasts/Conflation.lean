@@ -21,7 +21,9 @@ open ProbabilityTheory
 /-! ## Conflation `I_1` vs `I_2` (paper Definition 5).
 
     `I_1 := ∫_K^∞ g(x) f(x) dx` and `I_2 := g(K) · ∫_K^∞ f(x) dx`.
-    The conflation becomes an identity *iff* `g` is constant above `K`.
+    The conflation becomes an identity if `g` equals `g(K)` almost
+    everywhere above `K`. A converse needs additional assumptions;
+    see REVIEW.md, BF-09.
     For the binary payoff `g = θ_K`, `g ≡ 1` on `(K, ∞)`, so `I_1 = I_2`.
     For continuous `g(x) = x`, the substitution introduces a
     multiplicative gap captured by `characteristicScale_pareto`. -/
@@ -36,8 +38,7 @@ noncomputable def I2 (g f : ℝ → ℝ) (K : ℝ) : ℝ :=
 
 /-- **Conflation identity for constant `g` above `K`.**  If `g` is
     a.e. equal to `g K` on `(K, ∞)`, then `I_1 = I_2`.  This is the
-    paper's Definition 5 "iff" direction: substitution becomes an
-    identity precisely under constant-`g`.  In particular, applies
+    sufficient direction of paper Definition 5. In particular, it applies
     to the Heaviside `θ_K` (binary payoff). -/
 theorem I1_eq_I2_of_constantOn {g f : ℝ → ℝ} {K : ℝ}
     (h_const : ∀ᵐ x ∂(volume.restrict (Ioi K)), g x = g K) :

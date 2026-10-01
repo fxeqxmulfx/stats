@@ -52,7 +52,7 @@ private theorem hasDerivAt_neg_σ_phi_div {σ : ℝ} (hσ : σ ≠ 0) (x : ℝ) 
     gaussianPDFReal_std_hasDerivAt (x / σ)
   have h_comp := h_phi.comp x h_inner
   have h_const := h_comp.const_mul (-σ)
-  convert h_const using 1
+  convert h_const using 1 <;> try rfl
   unfold gaussianPDF_σ
   field_simp
 
@@ -67,7 +67,7 @@ private theorem hasDerivAt_stdNormalCdf_div {σ : ℝ} (_hσ : σ ≠ 0) (x : �
   have h_cdf : HasDerivAt stdNormalCdf (gaussianPDFReal 0 1 (x / σ)) (x / σ) :=
     stdNormalCdf_hasDerivAt (x / σ)
   have h_comp := h_cdf.comp x h_inner
-  convert h_comp using 1
+  convert h_comp using 1 <;> try rfl
   unfold gaussianPDF_σ
   ring
 
@@ -103,7 +103,7 @@ private theorem tendsto_stdNormalCdf_div_atTop {σ : ℝ} (hσ : 0 < σ) :
     have h_comp := h_toReal_at_one.comp h_ennreal
     -- h_comp : Tendsto (fun y => ((gaussianReal 0 1)(Iic y)).toReal) atTop (𝓝 1)
     simp only [ENNReal.toReal_one] at h_comp
-    convert h_comp using 1
+    convert h_comp using 1 <;> rfl
   exact h_atTop.comp h_div
 
 open ProbabilityTheory MeasureTheory in

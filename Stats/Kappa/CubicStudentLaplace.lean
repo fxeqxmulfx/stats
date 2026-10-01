@@ -52,13 +52,13 @@ private lemma log_one_add_le_sub_sq_div (x : ℝ) (hx : 0 ≤ x) :
     have h21t_ne : (2 : ℝ) * (1 + t) ≠ 0 := h21t_pos.ne'
     have hd1 : HasDerivAt (fun s : ℝ => s) 1 t := hasDerivAt_id t
     have hd2 : HasDerivAt (fun s : ℝ => 1 + s) 1 t := by
-      simpa using (hasDerivAt_const t (1:ℝ)).add hd1
+      simpa using hd1.const_add (1 : ℝ)
     have hd_log : HasDerivAt (fun s : ℝ => Real.log (1 + s)) (1 / (1 + t)) t := by
       have h := (Real.hasDerivAt_log h1t_ne).comp t hd2
-      simpa [mul_one] using h
+      convert h using 1 <;> simp [Function.comp_def]
     have hd_sq : HasDerivAt (fun s : ℝ => s^2) (2 * t) t := by
       have := hd1.pow 2
-      simpa [pow_one] using this
+      convert this using 1 <;> simp
     have hd_2_1t : HasDerivAt (fun s : ℝ => 2 * (1 + s)) (2 : ℝ) t := by
       have := hd2.const_mul (2 : ℝ)
       simpa using this

@@ -1,19 +1,15 @@
 /-
   Karamata's theory of regular variation — **umbrella module**.
 
-  Lays out definitions and the chain of target theorems needed to close the
-  gap in `survivalLogReturn_not_regularlyVarying_slow` (Theorem 1, full
-  slowly-varying version), where the *Karamata bound*
-  `log L(s · e^t) − log L(s) = o(t)` is currently passed as an explicit
-  hypothesis (`h_subexp`).  Karamata's representation theorem turns that
-  hypothesis into a consequence of "L is slowly varying".
+  Proves the structural results needed for the full slowly-varying version
+  of Theorem 1.  In particular, the Karamata bound
+  `log L(s · e^t) − log L(s) = o(t)` follows from slow variation,
+  eventual positivity, and measurability (or the stated monotonicity).
 
-  The module is **deliberately not imported by `Stats.TailOptionPricing`**.
-  It still contains `sorry` placeholders for non-trivial structural results
-  so that the published API rooted at `Stats.lean → Stats.TailOptionPricing`
-  remains axiom-clean (still: 80 theorems, 0 `sorry`).  Individual results
-  here can be migrated piece-by-piece into the main API once closed,
-  and ultimately upstreamed to `Mathlib/Analysis/SpecialFunctions/`.
+  All proofs are closed.  This module is imported by
+  `Stats.TailOptionPricing`, so the full Theorem 1 and the full
+  slowly-varying Abelian theorem are available through `import Stats`.
+  `Stats.AxiomAudit` checks transitive axiom dependencies across the library.
 
   ## Sub-modules
 
@@ -29,9 +25,12 @@
                         `L(s) = c(s) · exp(∫_T^s ε(u)/u du)` (both
                         directions); follows the BGT 1.3.1 recipe.
   * `Application`     — Theorem 1 full slowly-varying via the Karamata bound.
-  * `Abelian`         — Karamata's Abelian theorem (bounded-`L` form):
+  * `Abelian`         — Karamata's Abelian theorem (bounded and full
+                        measurable slowly varying forms):
                         `∫_K^∞ L(s)·s^(-α) ds ~ L(K)·K^(1-α)/(α-1)`,
                         and the asymptotic ratio version of Result 1 / Eq. (3).
+  * `Multivariate`    — finite-dimensional projection definitions and
+                        elementary inner-product/norm identities.
 
   ## Roadmap
 
@@ -73,3 +72,4 @@ import Stats.RegularVariation.Karamata
 import Stats.RegularVariation.Representation
 import Stats.RegularVariation.Application
 import Stats.RegularVariation.Abelian
+import Stats.RegularVariation.Multivariate

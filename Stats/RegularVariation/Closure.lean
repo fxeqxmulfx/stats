@@ -81,7 +81,7 @@ theorem IsSlowlyVarying.div {L M : ℝ → ℝ}
   have h_quot : Tendsto (fun t : ℝ => (L (t * x) / L t) / (M (t * x) / M t))
       atTop (𝓝 1) := by
     have := (hL x hx).div (hM x hx) one_ne_zero
-    simpa using this
+    convert this using 1 <;> simp
   exact h_quot.congr' h_ratio_eq.symm
 
 /-- **Translation invariance under monotonicity.**  For slowly varying

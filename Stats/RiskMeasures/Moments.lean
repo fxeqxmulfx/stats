@@ -148,7 +148,7 @@ theorem paretoSecondMoment_integrableOn_iff {l α : ℝ}
     IntegrableOn (paretoMomentIntegrand l α 2) (Ioi l) volume ↔ 2 < α :=
   paretoMomentIntegrand_integrableOn_iff hl hα_pos
 
-/-- **Closed form of `E[S^2]` for `α > 2`:** `2 · α · l² / (α − 2)`
+/-- **Closed form of `E[S^2]` for `α > 2`:** `α · l² / (α − 2)`
     (writing `l^2 = l*l` rather than `Real.rpow l 2`).  The variance
     itself is `E[S²] − (E[S])² = α · l² / ((α − 1)² · (α − 2))`. -/
 theorem paretoSecondMoment_eq {l α : ℝ} (hα : 2 < α) (hl : 0 < l) :

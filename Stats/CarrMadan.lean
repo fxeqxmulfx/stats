@@ -51,7 +51,7 @@ theorem integral_taylor_remainder_two
   have hu_deriv : ∀ x ∈ Set.Ioo (min a b) (max a b), HasDerivAt u (u' x) x := by
     intro x _
     show HasDerivAt (fun t : ℝ => b - t) (-1) x
-    simpa using (hasDerivAt_const x b).sub (hasDerivAt_id x)
+    simpa using (hasDerivAt_id x).const_sub b
   have hu'_int : IntervalIntegrable u' volume a b := by
     apply ContinuousOn.intervalIntegrable
     show ContinuousOn (fun _ : ℝ => (-1 : ℝ)) _; fun_prop

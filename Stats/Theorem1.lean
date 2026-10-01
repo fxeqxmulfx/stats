@@ -127,8 +127,7 @@ theorem survivalLogReturn_not_regularlyVarying_general
     h_lim.comp h_s2t
   have h_Lratio : Tendsto
       (fun t => L (s₀ * Real.exp (t * 2)) / L (s₀ * Real.exp t)) atTop (𝓝 1) := by
-    have := h_L2t.div h_Lt hLinf.ne'
-    simpa [div_self hLinf.ne'] using this
+    convert h_L2t.div h_Lt hLinf.ne' using 1 <;> simp [div_self hLinf.ne']
   have h_exp_decay : Tendsto (fun t : ℝ => Real.exp (-α * t)) atTop (𝓝 0) :=
     Real.tendsto_exp_atBot.comp
       (Tendsto.const_mul_atTop_of_neg (by linarith : (-α : ℝ) < 0) tendsto_id)

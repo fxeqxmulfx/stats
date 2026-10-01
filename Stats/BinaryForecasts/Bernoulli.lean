@@ -70,9 +70,10 @@ theorem bernoulliCGF_hasDerivAt_zero (p : ℝ) :
   have h_log := (Real.hasDerivAt_log h_inner_ne).comp 0 h_inner
   -- h_log : HasDerivAt (log ∘ inner) ((1 - p + p·exp 0)⁻¹ · (p · exp 0)) 0
   convert h_log using 1
-  simp only [Real.exp_zero, mul_one]
-  show p = (1 - p + p)⁻¹ * p
-  rw [show (1 - p + p : ℝ) = 1 from by ring, inv_one, one_mul]
+  · rfl
+  · simp only [Real.exp_zero, mul_one]
+    show p = (1 - p + p)⁻¹ * p
+    rw [show (1 - p + p : ℝ) = 1 from by ring, inv_one, one_mul]
 
 /-- **Bernoulli CGF at zero is zero**: `ψ(p, 0) = log(1) = 0`. -/
 theorem bernoulliCGF_zero {p : ℝ} :
@@ -105,10 +106,11 @@ theorem bernoulliCGF_hasDerivAt {p t : ℝ}
     exact h_inner_pos.ne'
   have h_log := (Real.hasDerivAt_log h_inner_ne).comp t h_inner
   convert h_log using 1
-  show p * Real.exp t / (1 - p + p * Real.exp t)
-      = ((fun s : ℝ => 1 - p + p * Real.exp s) t)⁻¹ * (p * Real.exp t)
-  simp only
-  rw [div_eq_mul_inv, mul_comm]
+  · rfl
+  · show p * Real.exp t / (1 - p + p * Real.exp t)
+        = ((fun s : ℝ => 1 - p + p * Real.exp s) t)⁻¹ * (p * Real.exp t)
+    simp only
+    rw [div_eq_mul_inv, mul_comm]
 
 /-- **Second cumulant `κ_2 = p(1 − p)`** (paper Appendix A).  Computed
     as the derivative-of-the-derivative of the Bernoulli CGF at zero.

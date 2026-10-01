@@ -66,7 +66,7 @@ private lemma hasDerivAt_putAntideriv {l α S₀ K S : ℝ} (hα : 1 < α)
     ring
   have h_sum := (h_neg_α.const_mul ((l * S₀) ^ α * (K - S₀))).add
                   ((h_one_α.const_mul (α * (l * S₀) ^ α)).div_const (α - 1))
-  convert h_sum using 1
+  convert h_sum using 1 <;> try rfl
   unfold putIntegrand
   have hpow_neg : (S₀ - S) ^ (-α - 1) = ((S₀ - S) ^ (α + 1))⁻¹ := by
     rw [show (-α - 1 : ℝ) = -(α + 1) from by ring, Real.rpow_neg hS₀_S.le]

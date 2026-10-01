@@ -72,7 +72,7 @@ private lemma paretoMomentIntegrand_zero_eq_density {l α : ℝ}
 
 /-- **Pareto measure is a probability measure.**  For `0 < l` and `0 < α`,
 the density integrates to 1 on `Ioi l`, hence total mass is 1. -/
-instance instIsProbabilityMeasureParetoMeasure
+theorem instIsProbabilityMeasureParetoMeasure
     (l α : ℝ) (hl : 0 < l) (hα : 0 < α) :
     IsProbabilityMeasure (paretoMeasure l α) := by
   refine ⟨?_⟩

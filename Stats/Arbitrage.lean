@@ -30,9 +30,9 @@ theorem deriv_le_of_matched_butterfly {f g : ℝ → ℝ} {f' g' K₁ : ℝ}
   have hf_at : HasDerivAt f f' (K₁ + 0) := by rw [add_zero]; exact hf
   have hg_at : HasDerivAt g g' (K₁ - 0) := by rw [sub_zero]; exact hg
   have hf_comp : HasDerivAt (fun ΔK : ℝ => f (K₁ + ΔK)) f' 0 := by
-    simpa [Function.comp, mul_one] using hf_at.comp 0 h_inner_add
+    convert hf_at.comp 0 h_inner_add using 1 <;> simp [Function.comp_def]
   have hg_comp : HasDerivAt (fun ΔK : ℝ => g (K₁ - ΔK)) (-g') 0 := by
-    simpa [Function.comp, mul_neg_one] using hg_at.comp 0 h_inner_sub
+    convert hg_at.comp 0 h_inner_sub using 1 <;> simp [Function.comp_def]
   have hφ : HasDerivAt φ (f' - g') 0 := by
     have h_sum : HasDerivAt (fun ΔK : ℝ => f (K₁ + ΔK) + g (K₁ - ΔK))
         (f' + (-g')) 0 := hf_comp.add hg_comp

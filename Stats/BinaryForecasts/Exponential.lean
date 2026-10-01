@@ -43,7 +43,9 @@ theorem exp_survival_eq {lam K : ℝ} (hlam : 0 < lam) (_hK : 0 ≤ K) :
     intro x
     have h_inner : HasDerivAt (fun y : ℝ => -(lam * y)) (-lam) x := by
       have h := (hasDerivAt_id x).const_mul lam
-      simpa using h.neg
+      convert h.neg using 1
+      · rfl
+      · simp
     have h_exp := Real.hasDerivAt_exp (-(lam * x))
     have h_comp := h_exp.comp x h_inner
     -- h_comp : HasDerivAt (exp ∘ ...) (exp(-(lam*x)) * (-lam)) x
@@ -94,7 +96,9 @@ theorem exp_tail_expectation_eq {lam K : ℝ} (hlam : 0 < lam) (hK : 0 ≤ K) :
       convert h_neg using 1
     have h_inner : HasDerivAt (fun y : ℝ => -(lam * y)) (-lam) x := by
       have h := (hasDerivAt_id x).const_mul lam
-      simpa using h.neg
+      convert h.neg using 1
+      · rfl
+      · simp
     have h_exp_inner : HasDerivAt (fun y : ℝ => Real.exp (-(lam * y)))
         (Real.exp (-(lam * x)) * (-lam)) x :=
       (Real.hasDerivAt_exp _).comp x h_inner
@@ -131,7 +135,7 @@ theorem exp_tail_expectation_eq {lam K : ℝ} (hlam : 0 < lam) (hK : 0 ≤ K) :
         rwa [h_eq2] at h_pol_exp
       have h_t1_inner : Tendsto (fun x : ℝ => lam * x * Real.exp (-(lam * x))) atTop (𝓝 0) := by
         have := h_t1_exp.comp h_t1
-        simpa [Function.comp] using this
+        convert this using 1 <;> rfl
       have h_t1_div : Tendsto (fun x : ℝ => lam * x * Real.exp (-(lam * x)) / lam)
           atTop (𝓝 (0 / lam)) :=
         h_t1_inner.div_const lam
