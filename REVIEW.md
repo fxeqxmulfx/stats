@@ -16,7 +16,7 @@ returns-tail parameterization.
 | Paper and reviewed version | Complete? | Established coverage | Main remaining gap |
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Most of the corrected analytic core; full slowly varying log-return theorem and call asymptotics | Final returns-tail bound with an actual volatility smile; literal errors in the paper |
-| [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD bridges; defective Pareto Beta expression and minimum-size definition; proxy limits |
+| [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected positive minimum-size definition, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; defective Pareto Beta expression; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, Bernoulli CGF derivatives | General Theorem 1, probabilistic Theorem 2, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Deterministic tail-moment integral and Beta(1,n) function identities | Main Proposition 1, actual iid maximum law, asymptotics and Gaussian comparison |
@@ -66,11 +66,11 @@ proofs have been adapted to Lean/mathlib 4.34.1.
 | Locked mathlib revision | `d13f23b723b8a846827a245b89c10fc7d3f11612` |
 | Original main-root build after compatibility fixes | **ok**, 3256 Lake jobs |
 | Expanded default build, including all project modules and audits | **ok**, 3843 Lake jobs |
-| Transitive axiom audit | **ok**, 1260 declarations, including 1080 theorem declarations; zero non-core axioms |
+| Transitive axiom audit | **ok**, 1269 declarations, including 1088 theorem declarations; zero non-core axioms |
 | Axioms found | `propext`, `Classical.choice`, `Quot.sound` only |
 
 These counts include private and generated declarations; they are not counts of
-paper theorems. The five new semantic diagnostic theorems are included.
+paper theorems. The semantic diagnostic and regression theorems are included.
 Warnings about deprecated APIs and proof style remain; they do not prevent the
 build or introduce proof gaps.
 
@@ -114,7 +114,8 @@ lake env lean Stats/AxiomAudit.lean
 ```
 
 [Stats/ReviewChecks.lean](Stats/ReviewChecks.lean) contains proof certificates
-for two semantic defects described in K-11 and K-14.
+for the historical minimum-size defect, its repair, and the Pareto defect
+described in K-11 and K-14.
 [Stats/AxiomAudit.lean](Stats/AxiomAudit.lean) checks transitive axiom dependencies
 of all imported declarations originating in Stats modules, including private
 declarations. A dependency other than the three core axioms causes an error.
@@ -476,22 +477,35 @@ The ordinary κ definition cannot be applied literally to Cauchy in this way.
 These prove properties of $n_ν=n_g^{1/(1-κ)}$ and its inverse.
 
 **Missing:** nothing for these power identities.
-For fixed $0<κ<1$, growth is a fixed power of $n_g$; the old comment
-“super-polynomial” is inaccurate.
+For fixed $0<κ<1$, growth is a fixed power of $n_g$.
 
-### K-11. Actual minimum sufficient sample size — not ok; certified defect
+### K-11. Actual minimum sufficient sample size — not ok fully; zero-size defect fixed
 
-The paper requires $n_ν>0$. The current `n_min` includes all natural numbers,
-including zero. Lean has `sampleMeanMAD M 0 = M 0 / 0 = 0`.
-Thus zero is a candidate whenever the reference deviation is nonnegative.
+The source is Section III.B, "Practical significance for sample sufficiency",
+the display labeled `md` in `papers/arXiv-1802.05495v3/kappa-n-final.tex`
+(lines 389–392). The paper requires $n_ν>0$. The former `n_min` admitted zero because Lean has
+`sampleMeanMAD M 0 = M 0 / 0 = 0`. The candidate set now explicitly requires
+`0 < n_ν`.
 
 [ReviewChecks.lean](Stats/ReviewChecks.lean):
-`StatsReview.n_min_eq_zero_of_nonneg` proves **the current minimum is zero**
-under a nonnegative reference deviation.
+`StatsReview.legacy_n_min_eq_zero_of_nonneg` retains a certificate of the old
+bug using a separate historical definition. Regression theorems prove that
+a zero-MAD example now has minimum one and that a $1/n$ deviation first
+reaches $1/3$ at sample size three.
 
-**Missing:** the condition $0<n_ν$ in the candidate set, corresponding updates to
-`n_min_le_of_witness`/`n_min_mem`, nonemptiness conditions and real MAD bridges.
-Even then, Eq. 7 needs a separate approximation-error justification.
+**Missing:** genuine distributional MAD oracles, a positive baseline sample
+size in the probabilistic application, and Eq. 7's approximation-error
+justification. The positive-index minimum itself is repaired.
+
+### K-11a. Positive-index minimum and empty-set sentinel — ok
+
+`n_min_le_of_witness`, `n_min_mem`, `n_min_pos` and `n_min_eq_zero_iff`
+prove that a positive admissible witness bounds the minimum, that a nonempty
+candidate set has an attained positive minimum, and that the value zero occurs
+exactly when no positive candidate exists.
+
+**Missing:** nothing for the abstract minimum on supplied MAD functions.
+The probability interpretation remains the separate task K-11.
 
 ### K-12. Table I: general Student T — not ok
 
@@ -1955,9 +1969,9 @@ as a substitute for this source-to-statement mapping.
    The Pareto Table I Beta expression uses a nonintegrable real interval
    integral and yields the constant κ value two. It needs a valid integral or
    a correctly defined analytic continuation, followed by the genuine MAD
-   identification. The minimum sample-size definition admits $n=0$ and can
-   collapse to zero; require a positive sample size and prove the intended
-   comparison rather than relying on totalized division.
+   identification. The minimum sample-size definition has already been
+   repaired to exclude zero; its distributional sufficiency interpretation
+   still needs the actual MAD functions and approximation proof.
 2. **Add probability-law and MAD bridges.**
    Prioritize the exponential MAD integral, Student and stable sum laws,
    Gaussian mixtures, actual iid maxima, and measurable Brier averages.
@@ -2001,8 +2015,10 @@ chart labels and printed messages. All eleven code cells passed Python syntax
 checks and executed with a headless plotting backend. New project
 documentation and comments are also in English.
 
-The new diagnostic proofs establish two concrete defects of the current
-definitions; they do not repair those definitions by changing their meaning.
+The minimum-size definition is now repaired, with positivity, attainment and
+empty-set characterization theorems plus regression certificates. The old
+zero-collapse certificate is retained against a clearly named historical
+definition. The Pareto diagnostic still describes an unresolved current defect.
 The deeper probability bridges, false literal paper assertions and missing
 asymptotic theorems remain explicitly marked **not ok**. Completing them is
 substantive mathematical work, rather than a compiler-version adjustment.

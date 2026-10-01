@@ -2321,12 +2321,15 @@ theorem n_nu_bidirectional : the n-ν / n_g bijection
 -/
 #print axioms TailOptionPricing.n_nu_bidirectional
 /-
-theorem n_min_le_of_witness {P : ℕ → Prop} (hP : ∃ n, P n) (k : ℕ) (hk : P k) :
-    n_min hP ≤ k
+theorem n_min_le_of_witness {Mν Mg : ℕ → ℝ} {ng k : ℕ}
+    (hk : 0 < k) (h : sampleMeanMAD Mν k ≤ sampleMeanMAD Mg ng) :
+    n_min Mν Mg ng ≤ k
 -/
 #print axioms TailOptionPricing.n_min_le_of_witness
 /-
-theorem n_min_mem {P : ℕ → Prop} (hP : ∃ n, P n) : P (n_min hP)
+theorem n_min_mem {Mν Mg : ℕ → ℝ} {ng : ℕ}
+    (hw : ∃ k, 0 < k ∧ sampleMeanMAD Mν k ≤ sampleMeanMAD Mg ng) :
+    0 < n_min Mν Mg ng ∧ sampleMeanMAD Mν (n_min Mν Mg ng) ≤ sampleMeanMAD Mg ng
 -/
 #print axioms TailOptionPricing.n_min_mem
 

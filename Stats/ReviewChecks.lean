@@ -65,18 +65,58 @@ theorem paretoKappa_eq_two {α : ℝ} (hα : 1 < α) :
     TailOptionPricing.paretoKappa α = 2 := by
   simp [TailOptionPricing.paretoKappa, paretoRatio_eq_zero hα]
 
-/-- The current minimum-size definition includes the zero-size sample. -/
-theorem n_min_eq_zero_of_nonneg {Mν Mg : ℕ → ℝ} {ng : ℕ}
+/-- Historical minimum-size definition, retained only to certify the old bug. -/
+noncomputable def legacyNMin (Mν Mg : ℕ → ℝ) (ng : ℕ) : ℕ :=
+  sInf {n : ℕ | TailOptionPricing.sampleMeanMAD Mν n ≤
+    TailOptionPricing.sampleMeanMAD Mg ng}
+
+/-- The historical candidate set incorrectly includes a zero-size sample. -/
+theorem legacy_n_min_eq_zero_of_nonneg {Mν Mg : ℕ → ℝ} {ng : ℕ}
     (h : 0 ≤ TailOptionPricing.sampleMeanMAD Mg ng) :
-    TailOptionPricing.n_min Mν Mg ng = 0 := by
+    legacyNMin Mν Mg ng = 0 := by
   apply Nat.le_zero.mp
-  apply TailOptionPricing.n_min_le_of_witness
+  apply Nat.sInf_le
+  show TailOptionPricing.sampleMeanMAD Mν 0 ≤ TailOptionPricing.sampleMeanMAD Mg ng
   simpa only [TailOptionPricing.sampleMeanMAD, Nat.cast_zero, div_zero] using h
+
+/-- A zero-MAD model needs one observation, rather than the old zero answer. -/
+theorem n_min_zero_mad_eq_one :
+    TailOptionPricing.n_min (fun _ => 0) (fun _ => 0) 1 = 1 := by
+  have hw : ∃ k : ℕ, 0 < k ∧
+      TailOptionPricing.sampleMeanMAD (fun _ => 0) k ≤
+        TailOptionPricing.sampleMeanMAD (fun _ => 0) 1 :=
+    ⟨1, by norm_num [TailOptionPricing.sampleMeanMAD]⟩
+  have hpos := TailOptionPricing.n_min_pos hw
+  have hle := TailOptionPricing.n_min_le_of_witness
+    (M_ν := fun _ => 0) (M_g := fun _ => 0) (n_g := 1) (n_ν := 1)
+    (by norm_num) (by norm_num [TailOptionPricing.sampleMeanMAD])
+  omega
+
+/-- The corrected minimum can exceed one: 1/n reaches 1/3 first at n = 3. -/
+theorem n_min_unit_mad_eq_three :
+    TailOptionPricing.n_min (fun _ => 1) (fun _ => 1) 3 = 3 := by
+  have hw : ∃ k : ℕ, 0 < k ∧
+      TailOptionPricing.sampleMeanMAD (fun _ => 1) k ≤
+        TailOptionPricing.sampleMeanMAD (fun _ => 1) 3 :=
+    ⟨3, by norm_num [TailOptionPricing.sampleMeanMAD]⟩
+  have hmem := TailOptionPricing.n_min_mem hw
+  have hle := TailOptionPricing.n_min_le_of_witness
+    (M_ν := fun _ => 1) (M_g := fun _ => 1) (n_g := 3) (n_ν := 3)
+    (by norm_num) (by norm_num [TailOptionPricing.sampleMeanMAD])
+  have hreal : (0 : ℝ) < TailOptionPricing.n_min (fun _ => 1) (fun _ => 1) 3 :=
+    Nat.cast_pos.mpr hmem.1
+  have hcmp := (div_le_div_iff₀ hreal (by norm_num : (0 : ℝ) < 3)).mp hmem.2
+  have hge : 3 ≤ TailOptionPricing.n_min (fun _ => 1) (fun _ => 1) 3 := by
+    exact_mod_cast (show (3 : ℝ) ≤
+      TailOptionPricing.n_min (fun _ => 1) (fun _ => 1) 3 by simpa using hcmp)
+  omega
 
 #print axioms incompleteBeta_pareto_eq_zero
 #print axioms paretoIntegrand_eq_zero
 #print axioms paretoRatio_eq_zero
 #print axioms paretoKappa_eq_two
-#print axioms n_min_eq_zero_of_nonneg
+#print axioms legacy_n_min_eq_zero_of_nonneg
+#print axioms n_min_zero_mad_eq_one
+#print axioms n_min_unit_mad_eq_three
 
 end StatsReview

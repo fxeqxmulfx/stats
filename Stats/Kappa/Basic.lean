@@ -200,7 +200,7 @@ theorem n_nu_gaussian (n_g : ℕ) (_hn_g : 0 < n_g) :
   unfold n_nu
   rw [sub_zero, div_one, Real.rpow_one]
 
-/-- **`n_nu` is super-polynomial in `n_g` for fat tails.**  For any
+/-- **`n_nu` grows as a fixed power of `n_g` for a fixed tail index.**  For any
     `0 < κ_g < 1`, the exponent `1/(1 − κ_g) > 1`, so `n_ν > n_g`
     (more summands needed than for the Gaussian baseline). -/
 theorem n_nu_gt_n_g {n_g : ℕ} {κ_g : ℝ}
@@ -286,7 +286,7 @@ theorem n_nu_bidirectional {n_g n_ν : ℝ} {κ_g κ_ν : ℝ}
     needed for the ν-distribution's sample-mean MAD to match (be at
     least as concentrated as) the Gaussian baseline's at sample size
     `n_g`:
-        n_min := inf {n_ν ∈ ℕ : E[|S_ν,n_ν − m_p|]/n_ν
+        n_min := inf {n_ν ∈ ℕ : 0 < n_ν ∧ E[|S_ν,n_ν − m_p|]/n_ν
                                 ≤ E[|S_g,n_g − m_g|]/n_g}.
     Under the stable approximation, `n_min` is well-approximated by
     `n_nu` (paper Eq. 7); the linkage is captured by
@@ -305,10 +305,12 @@ noncomputable def sampleMeanMAD (M : ℕ → ℝ) (n : ℕ) : ℝ :=
     target-distribution MAD oracle `M_ν` and Gaussian baseline `M_g`
     at sample size `n_g`, the minimum number of target summands for
     sample-mean MAD concentration to match the Gaussian's is
-        `n_min := inf {n_ν ∈ ℕ : M_ν(n_ν)/n_ν ≤ M_g(n_g)/n_g}`.
-    Returns `0` by Mathlib convention when the set is empty. -/
+        `n_min := inf {n_ν ∈ ℕ : 0 < n_ν ∧ M_ν(n_ν)/n_ν ≤ M_g(n_g)/n_g}`.
+    Zero is excluded from the candidate set. The result is `0` only
+    when no positive candidate exists. A probabilistic interpretation
+    also requires a positive reference size and actual MAD oracles. -/
 noncomputable def n_min (M_ν M_g : ℕ → ℝ) (n_g : ℕ) : ℕ :=
-  sInf {n_ν : ℕ | sampleMeanMAD M_ν n_ν ≤ sampleMeanMAD M_g n_g}
+  sInf {n_ν : ℕ | 0 < n_ν ∧ sampleMeanMAD M_ν n_ν ≤ sampleMeanMAD M_g n_g}
 
 /-- **n_min upper bound by witness.**  Any sample size `n_ν` that
     satisfies the sample-mean MAD condition is an upper bound on
@@ -316,10 +318,11 @@ noncomputable def n_min (M_ν M_g : ℕ → ℝ) (n_g : ℕ) : ℕ :=
     `n_nu`: producing any explicit witness (e.g. from the stable
     approximation) bounds `n_min` above. -/
 theorem n_min_le_of_witness {M_ν M_g : ℕ → ℝ} {n_g n_ν : ℕ}
+    (hn : 0 < n_ν)
     (h : sampleMeanMAD M_ν n_ν ≤ sampleMeanMAD M_g n_g) :
     n_min M_ν M_g n_g ≤ n_ν := by
   unfold n_min
-  exact Nat.sInf_le h
+  exact Nat.sInf_le ⟨hn, h⟩
 
 /-- **n_min is realised when the witness set is nonempty.**  If any
     sample size `k` satisfies the sample-mean MAD condition, then
@@ -327,10 +330,33 @@ theorem n_min_le_of_witness {M_ν M_g : ℕ → ℝ} {n_g n_ν : ℕ}
     infimum is attained at a natural number.  This is the operational
     converse of `n_min_le_of_witness`. -/
 theorem n_min_mem {M_ν M_g : ℕ → ℝ} {n_g : ℕ}
-    (h_witness : ∃ k, sampleMeanMAD M_ν k ≤ sampleMeanMAD M_g n_g) :
-    sampleMeanMAD M_ν (n_min M_ν M_g n_g) ≤ sampleMeanMAD M_g n_g := by
+    (h_witness : ∃ k, 0 < k ∧ sampleMeanMAD M_ν k ≤ sampleMeanMAD M_g n_g) :
+    0 < n_min M_ν M_g n_g ∧
+      sampleMeanMAD M_ν (n_min M_ν M_g n_g) ≤ sampleMeanMAD M_g n_g := by
   unfold n_min
   exact Nat.sInf_mem h_witness
+
+/-- A nonempty set of admissible positive sample sizes has a positive minimum. -/
+theorem n_min_pos {M_ν M_g : ℕ → ℝ} {n_g : ℕ}
+    (h_witness : ∃ k, 0 < k ∧ sampleMeanMAD M_ν k ≤ sampleMeanMAD M_g n_g) :
+    0 < n_min M_ν M_g n_g := (n_min_mem h_witness).1
+
+/-- The zero sentinel occurs exactly when no positive sample size suffices. -/
+theorem n_min_eq_zero_iff {M_ν M_g : ℕ → ℝ} {n_g : ℕ} :
+    n_min M_ν M_g n_g = 0 ↔
+      ¬ ∃ k, 0 < k ∧ sampleMeanMAD M_ν k ≤ sampleMeanMAD M_g n_g := by
+  constructor
+  · intro hzero hw
+    have hpos := n_min_pos hw
+    omega
+  · intro hnone
+    unfold n_min
+    have hempty : {k : ℕ | 0 < k ∧ sampleMeanMAD M_ν k ≤ sampleMeanMAD M_g n_g} = ∅ := by
+      ext k
+      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      exact fun hk => hnone ⟨k, hk⟩
+    rw [hempty]
+    exact Nat.sInf_empty
 
 /-! ## κ additive decomposition (paper Eq. 2).
 
