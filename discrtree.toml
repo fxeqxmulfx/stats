@@ -1,0 +1,29 @@
+# Lean declaration search for this project and its pinned dependencies.
+
+[project]
+root = "."
+src = "Stats"
+namespace = "TailOptionPricing"
+imports = "Stats.lean"
+vendor = "Stats/Vendor"
+
+[index]
+db = ".discrtree/index.db"
+raw = ".discrtree/jsonl"
+
+[[source]]
+name = "project"
+kind = "local"
+path = "."
+root = "Stats"
+
+[[source]]
+name = "mathlib"
+kind = "lake"
+path = ".lake/packages/mathlib"
+root = "Mathlib"
+rev = "v4.34.1"
+
+[[source]]
+name = "core"
+kind = "core"
