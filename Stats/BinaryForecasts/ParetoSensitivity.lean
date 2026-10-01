@@ -7,11 +7,11 @@
   Contains:
     * Pareto sensitivity `∂²(I_1/I_2)/∂α² = 2K/(α-1)³` (Eq. 9).
     * Inseparability of probability (Remark 5): convex Jensen gap.
-    * Brier-score boundedness (Theorem 2).
 
   See `Stats/BinaryForecasts.lean` for the umbrella module.
 -/
 import Stats.BinaryForecasts.Conflation
+import Stats.BinaryForecasts.Brier
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal
@@ -156,49 +156,6 @@ theorem inseparability_jensen_strict {g : ℝ → ℝ}
   have h := hg.2 (Set.mem_univ x) (Set.mem_univ y) hxy ha hb hab
   simpa [smul_eq_mul] using h
 
-/-! ## Brier-score boundedness (paper Theorem 2).
-
-    The Brier score `λ_n := (1/n) Σ (f_t − 𝟙_{X_t ∈ χ_t})²` always lies
-    in `[0, 1]` (each summand is at most 1).  Consequently all
-    moments `E[λ_n^q]` are finite, regardless of the distribution of
-    the underlying `X` — Brier-score-based calibration metrics are
-    "thin-tailed" by construction (Remark 2). -/
-
-/-- **Per-term Brier-score bound.**  Each Brier summand `(f − 𝟙)²`
-    lies in `[0, 1]` whenever both `f ∈ [0, 1]` and `𝟙 ∈ [0, 1]`. -/
-theorem brierTerm_bounded {f y : ℝ}
-    (hf_lb : 0 ≤ f) (hf_ub : f ≤ 1) (hy_lb : 0 ≤ y) (hy_ub : y ≤ 1) :
-    0 ≤ (f - y) ^ 2 ∧ (f - y) ^ 2 ≤ 1 := by
-  refine ⟨sq_nonneg _, ?_⟩
-  have h_diff_bound : -1 ≤ f - y ∧ f - y ≤ 1 := by
-    constructor <;> linarith
-  rcases h_diff_bound with ⟨hl, hr⟩
-  have h_abs_le_one : |f - y| ≤ 1 := abs_le.mpr ⟨hl, hr⟩
-  calc (f - y) ^ 2 = |f - y| ^ 2 := by rw [sq_abs]
-    _ ≤ 1 ^ 2 := by exact pow_le_pow_left₀ (abs_nonneg _) h_abs_le_one 2
-    _ = 1 := by ring
-
-/-- **Brier-score moment boundedness (paper Theorem 2).**  Any
-    nonnegative real `λ ∈ [0, 1]` raised to any nonnegative power
-    `q ≥ 0` stays bounded above by `1`.  Direct corollary; applied
-    pointwise per summand of the Brier average, this gives the
-    "every moment of `λ_n^q` is finite" claim. -/
-theorem brierScore_moment_bounded {lam q : ℝ}
-    (h_lb : 0 ≤ lam) (h_ub : lam ≤ 1) (hq : 0 ≤ q) :
-    lam ^ q ≤ 1 := by
-  rcases eq_or_lt_of_le h_lb with h_zero | h_pos
-  · rcases eq_or_lt_of_le hq with hq_zero | hq_pos
-    · rw [← hq_zero, Real.rpow_zero]
-    · rw [← h_zero, Real.zero_rpow hq_pos.ne']
-      linarith
-  · exact Real.rpow_le_one h_pos.le h_ub hq
-
-/-- **Brier-score boundedness with positivity** (`λ ∈ [0, 1]` ⇒
-    `0 ≤ λ^q ≤ 1` for any `q ≥ 0`). -/
-theorem brierScore_moment_in_unit_interval {lam q : ℝ}
-    (h_lb : 0 ≤ lam) (h_ub : lam ≤ 1) (hq : 0 ≤ q) :
-    0 ≤ lam ^ q ∧ lam ^ q ≤ 1 :=
-  ⟨Real.rpow_nonneg h_lb _, brierScore_moment_bounded h_lb h_ub hq⟩
 
 
 end TailOptionPricing

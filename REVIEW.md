@@ -17,7 +17,7 @@ returns-tail parameterization.
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Most of the corrected analytic core; full slowly varying log-return theorem and call asymptotics | Final returns-tail bound with an actual volatility smile; literal errors in the paper |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected positive minimum-size definition, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; defective Pareto Beta expression; proxy limits |
-| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, Bernoulli CGF derivatives | General Theorem 1, probabilistic Theorem 2, CLT and appendices |
+| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Deterministic tail-moment integral and Beta(1,n) function identities | Main Proposition 1, actual iid maximum law, asymptotics and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Pointwise density algebra, scalar variance bounds, infinite first moment of strong Pareto | Distribution transformation, actual empirical-survival variance, LLN/rates and formal risk models |
@@ -65,8 +65,8 @@ proofs have been adapted to Lean/mathlib 4.34.1.
 | mathlib release | `v4.34.1` |
 | Locked mathlib revision | `d13f23b723b8a846827a245b89c10fc7d3f11612` |
 | Original main-root build after compatibility fixes | **ok**, 3256 Lake jobs |
-| Expanded default build, including all project modules and audits | **ok**, 3843 Lake jobs |
-| Transitive axiom audit | **ok**, 1269 declarations, including 1088 theorem declarations; zero non-core axioms |
+| Expanded default build, including all project modules and audits | **ok**, 3844 Lake jobs |
+| Transitive axiom audit | **ok**, 1279 declarations, including 1096 theorem declarations; zero non-core axioms |
 | Axioms found | `propext`, `Classical.choice`, `Quot.sound` only |
 
 These counts include private and generated declarations; they are not counts of
@@ -1094,12 +1094,16 @@ belongs to the conditional mean.
 
 ### BF-23. Remark 2: binary forecasts and Brier scores have thin tails — not ok fully
 
-`brierTerm_bounded` proves bounds on $(f-y)^2$
-for $f,y∈[0,1]$.
+`brierTerm_bounded` proves bounds on $(f-y)^2$ for $f,y∈[0,1]$.
+[Brier.lean](Stats/BinaryForecasts/Brier.lean) now constructs the measurable
+score average, proves its bounds and all nonnegative-order moment
+integrability, and proves that its upper tail beyond one has measure zero.
 
-**Missing:** the measurable score random variable and a probability-law theorem
-connecting these pointwise bounds to bounded support, moment integrability or
-a specified thin-tail definition.
+**Missing:** a stated interpretation of "thin tails" connecting bounded
+support to the particular tail-class definition used elsewhere in the paper,
+and the corresponding empirical binary-frequency construction. A bounded
+distribution makes some tail-ratio denominators identically zero, so it
+cannot be inserted into those definitions without checking their conventions.
 
 ### BF-24. Definition 7: M4 forecasting scores — not ok
 
@@ -1118,17 +1122,28 @@ variance bounds, and the Bernoulli module contains scalar CGF derivatives.
 the central limit theorem. Without independence or an appropriate dependence
 condition, the stated $1/n$ variance and normal limit need not hold.
 
-### BF-26. Theorem 2: every finite-sample Brier-score moment is finite — not ok
+### BF-26. Theorem 2: every finite-sample Brier-score moment is finite — ok
 
-`brierScore_moment_bounded` and
-`brierScore_moment_in_unit_interval` prove $0≤λ^q≤1$ for a scalar
-$λ∈[0,1]$, $q≥0$.
+The source is the Brier-score definition at lines 585–595 and Theorem 2 at
+lines 629–635 in
+`papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`.
+The underlying events may be any measurable events; in the paper they are
+preimages of forecast ranges under the observed random variables.
 
-**Missing:** define the paper's score $λ_n(ω)$ from measurable forecasts and
-event indicators, assume $n>0$, prove the average lies in $[0,1]$, and derive
-integrability of its powers on a probability space. Independence is
-unnecessary for this result, exactly as the source says. The missing step is
-the actual random-variable construction and moment theorem.
+[Brier.lean](Stats/BinaryForecasts/Brier.lean) defines `brierOutcome` and
+`brierAverage` from measurable forecasts and event indicators on a probability
+space. For $n>0$ and forecasts in $[0,1]$:
+
+- `measurable_brierAverage` proves measurability;
+- `brierAverage_mem_unit_interval` proves $0≤λ_n(ω)≤1$;
+- `integrable_brierAverage_rpow` proves integrability of $λ_n^q$ for every
+  real $q≥0$;
+- `brierAverage_moment_mem_unit_interval` proves $0≤\mathbb{E}[λ_n^q]≤1$.
+
+**Missing:** nothing for the usual nonnegative-order moment claim.
+No independence assumption is used. Negative orders are excluded: a zero
+score can have a divergent reciprocal moment, so those are not covered by
+the paper's boundedness argument.
 
 ### BF-27. Remark 4: profit/loss conditional on survival follows the payoff law — not ok
 
@@ -1954,7 +1969,7 @@ are distinguished where necessary.
 | Tail Option Pricing | Result 3, line 272: put pricing | **not ok** literally | OP-12–OP-14; correct signed powers/dimensional terms, then use the proved integral/cross-multiplied core and state nonzero denominators for quotient pricing |
 | How Much Data Do You Need? | Proposition 1, line 562: κ of an iid cubic Student sum | **not ok** | K-19–K-22; identify the supplied closed expression with the actual MAD of the iid sum |
 | Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **not ok** | BF-10–BF-14; payoff restrictions and general distributional limit; strong-Pareto linear-payoff specialization is proved |
-| Binary Forecasts | Theorem 2, line 629: all finite-sample Brier-score moments | **not ok** | BF-26; measurable score construction, average bound and actual moment integrability |
+| Binary Forecasts | Theorem 2, line 629: all finite-sample Brier-score moments | **ok** | BF-26; measurable score construction, average bound and actual moment integrability proved without independence |
 | Hidden Moments | Proposition 1, line 189: hidden-moment density | **not ok** | HM-04–HM-06; iid maximum law, asymptotic qualification and hidden-moment pushforward density |
 | Epistemic Uncertainty | No active named Theorem/Proposition/Result | — | EU-01–EU-34 cover both numbered Remarks and the mathematical claims |
 | Single Point Forecasts | No active named Theorem/Proposition/Result | — | SP-01–SP-21 cover all nine numbered Remarks and Main Statements |
@@ -1974,7 +1989,8 @@ as a substitute for this source-to-statement mapping.
    still needs the actual MAD functions and approximation proof.
 2. **Add probability-law and MAD bridges.**
    Prioritize the exponential MAD integral, Student and stable sum laws,
-   Gaussian mixtures, actual iid maxima, and measurable Brier averages.
+   Gaussian mixtures and actual iid maxima. The measurable Brier average
+   and its moment integrability are now proved.
    These are the most common missing links between proved algebra and paper
    theorems.
 3. **Replace proxy asymptotics with results for the paper's quantities.**

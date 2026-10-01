@@ -20,7 +20,9 @@
   * `Stats.BinaryForecasts.Conflation` — paper Definitions 5–6
     (`I_1`/`I_2`, Gaussian closed form, corrected probability `p*`).
   * `Stats.BinaryForecasts.ParetoSensitivity` — paper Eq. 9 and
-    Remarks 1, 5 (Pareto sensitivity, inseparability, Brier score).
+    Remarks 1, 5 (Pareto sensitivity and inseparability).
+  * `Stats.BinaryForecasts.Brier` — paper Theorem 2
+    (measurable Brier averages and integrability of every nonnegative moment).
   * `Stats.BinaryForecasts.Bernoulli` — paper Appendix A
     (Bernoulli cumulants κ_3/κ_4 via cumulant-generating function).
   * `Stats.BinaryForecasts.Exponential` — paper Definition 4
@@ -33,6 +35,7 @@
 import Stats.BinaryForecasts.CharacteristicScale
 import Stats.BinaryForecasts.Conflation
 import Stats.BinaryForecasts.ParetoSensitivity
+import Stats.BinaryForecasts.Brier
 import Stats.BinaryForecasts.Bernoulli
 import Stats.BinaryForecasts.Exponential
 import Stats.BinaryForecasts.SigmaSensitivity
