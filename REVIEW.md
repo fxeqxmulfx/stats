@@ -2586,6 +2586,42 @@ The Gamma-moment and matching modules have 178 and 113 lines; the
 lognormal moment module has 148. Their moment-order conditions, actual
 CV signs and rate-parameter matching were checked against local Section VI.
 
+### 2026-10-19: corrected actual Gamma hazard limit
+
+[GammaTail.lean](Stats/Probability/GammaTail.lean) expresses the actual
+Gamma survival as its density integral and proves that it tends to zero
+from the actual probability CDF. The unit-shape population has the exact
+survival `exp(-beta*x)` and constant hazard beta on `x>=0`. The proper
+`Gamma(1,rate=2)` population formally refutes the printed hazard limit
+`1/2` under the source's own rate parametrization.
+
+[GammaCalculus.lean](Stats/Probability/GammaCalculus.lean) proves the
+actual density derivative `((alpha-1)/x-beta)*density` on positive inputs.
+Its L1 follows independently from the Euler kernel. The actual survival
+therefore has derivative minus that density by the half-line FTC, and
+its value is strictly positive throughout the positive domain.
+
+[GammaHazard.lean](Stats/Probability/GammaHazard.lean) proves
+`gammaHazard_tendsto_rate` for every positive shape and rate. The actual
+density and actual survival both tend to zero; their derivative ratio
+is `beta-(alpha-1)/x`, tending to beta. L'Hopital then gives the limit
+of the actual density-to-survival ratio. The source's `1/beta` is the
+scale-convention formula and is false with the rate in its printed
+density and parameter match. A theorem excludes that reciprocal limit
+for every positive rate other than one. Proper shape two, rate three
+examples exercise the general result beyond the exponential special case.
+
+Verification: all 4,159 default-build jobs pass without warnings. The
+audit checks 2,424 declarations and 2,084 theorems with zero non-core
+axioms. The index records 229 modules and 1,211 named theorems with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,356 previous
+indexed names and types are preserved, with 17 additions and no
+duplicates; the audit imports all 227 other `Stats/` modules.
+The tail, calculus and hazard modules have 113, 113 and 84 lines.
+Their source rate convention and the actual survival derivative were
+checked beside the local Section VI density and hazard displays.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4565,9 +4601,23 @@ error bound; that is a separate claim in EU-30.
 
 ### EU-29. Gamma and Lognormal tail/hazard comparison — not ok
 
-No hazard-rate or stochastic-order formalization is present.
+`gammaHazard` is the actual Gamma density divided by its actual
+population survival. `gammaMeasure_survival_hasDerivAt` and
+`gammaPDFReal_hasDerivAt` prove the required calculus from the actual
+density representation and its independently established L1.
+`gammaHazard_tendsto_rate` proves the corrected Gamma hazard limit
+beta for every positive shape and rate. The survival denominator is
+strictly positive at every positive threshold.
 
-**Missing:** precise definitions and valid tail limits. In the source's
+`gamma_rate_hazard_counterexample` uses a proper shape-one, rate-two
+population to refute the printed reciprocal limit; the stronger
+`gammaHazard_not_tendsto_inverse_rate` excludes it for all positive
+rates other than one. The exact unit-shape survival is exponential.
+
+**Missing:** the lognormal hazard formula and zero limit, the resulting
+Gamma/lognormal tail domination, and their maximum-domain claims. The
+Gamma finite-positive-exponential-moment classification is not yet formal.
+In the source's
 density $β^α y^{α-1}exp(-βy)/Γ(α)$, $β$ is a rate, so the Gamma
 hazard limit is $β$, not $1/β$. This Gamma law has a finite MGF for
 positive arguments below $β$ and is not heavy-tailed under the standard

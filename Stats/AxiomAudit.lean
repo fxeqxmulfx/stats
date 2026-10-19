@@ -169,6 +169,9 @@ import all Stats.EpistemicUncertainty.CompoundMoments
 import all Stats.EpistemicUncertainty.CompoundIntegrand
 import all Stats.Probability.GammaMoments
 import all Stats.EpistemicUncertainty.GammaMatch
+import all Stats.Probability.GammaTail
+import all Stats.Probability.GammaCalculus
+import all Stats.Probability.GammaHazard
 import all Stats.Probability.Exponential
 import all Stats.Probability.ExponentialIntegration
 import all Stats.Probability.HiddenMass
