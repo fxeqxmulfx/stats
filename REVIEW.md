@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, corrected actual Normal–Gamma/Student law and sharp moments, actual Student tails and epistemic-variance tail comparison | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and its Gaussian boundary limit |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, corrected actual Normal–Gamma/Student law and sharp moments, actual Student tails and epistemic-variance tail comparison, actual matched Gamma Gaussian boundary limit | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation bound |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -3046,6 +3046,42 @@ The new modules have 156 and 172 lines. Their exact matched parameters,
 positive-variance domain, actual two-sided probabilities and Gaussian
 zero-error model were reread beside local Sections V and VI.
 
+### 2026-10-19: prove the actual matched Gamma Gaussian boundary limit
+
+[GammaConcentration.lean](Stats/EpistemicUncertainty/GammaConcentration.lean)
+evaluates the actual matched Gamma precision's mean-square deviation
+from one as `(exp(v)-1)*exp(v)+(exp(v/2)-1)^2`. This moment is independently
+L1 for every positive variance v, tends to zero at the boundary, and
+bounds actual outside-ball probabilities by Markov's inequality.
+
+[Concentration.lean](Stats/Probability/Concentration.lean) proves the
+general weak Dirac limit from vanishing outside-ball probabilities,
+using closed-set Portmanteau. A measurable transform continuous at
+the concentration point preserves concentration; global continuity
+and moments of the transformed variable are unnecessary.
+
+[GammaGaussianLimit.lean](Stats/EpistemicUncertainty/GammaGaussianLimit.lean)
+bundles the actual proper precision, dispersion and output measures.
+The first two converge weakly to Dirac(1). Product continuity with
+the independent Gaussian innovation and continuous affine generation
+give the actual output-law limit Normal(mu,1). The theorem covers the
+full positive-variance domain approaching zero, and more generally
+every such positive-parameter family along a nontrivial countably
+generated filter. No value of the singular Gamma formulas at zero
+is used as a probability distribution. EU-32 is now ok; the remaining
+claims keep the manuscript and all six paper verdicts not ok.
+
+Verification: all 4,180 build jobs pass without warnings. The audit
+checks 2,677 declarations and 2,322 theorems with zero non-core axioms.
+The regenerated index has 250 modules and 1,383 named theorems, with
+zero sorry, vacuous or placeholder entries. All 27 Python tests and
+forbidden-pattern and whitespace checks pass. All 1,541 previous
+indexed names and types are preserved, with 20 additions and no
+duplicates; the audit explicitly imports every other Stats module.
+The exact source parameters, properness domain, actual integrals,
+precision-to-dispersion map and unit-variance Gaussian boundary were
+reread beside local Section VI and Eq. compoundGamma.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4483,8 +4519,11 @@ varying-error Gaussian mixture and normalized density are also proved.
 Finite conditional Markov hierarchies and their actual iterated Gaussian
 densities are proved, including construction from normalized positive-parent
 conditional density inputs and their literal repeated density products.
-Infinite constructions and higher-moment limits, the CLT
-argument and the Normal–Gamma compound law remain open. Actual
+The corrected iid log-CLT and actual Normal–Gamma/Student law, sharp
+moment domain, two-sided tail asymptotics and matched zero-uncertainty
+Gaussian limit are proved. Infinite constructions and higher-moment
+limits, the general CLT argument and the Gamma approximation bound
+remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
 are proved. The actual constant-error laws have the proved unscaled
 point-mass weak limit at their common mean.
@@ -5151,7 +5190,7 @@ one quarter and a proper centered outcome with no finite first moment.
 unrestricted claims are false. Tail asymptotics and uncertainty
 monotonicity remain separately tracked in EU-32.
 
-### EU-32. Increasing epistemic uncertainty decreases the Student tail index — not ok
+### EU-32. Increasing epistemic uncertainty decreases the Student tail index — ok
 
 The source sets $α=1/(exp(S²)-1)$ and draws a heavier-tail conclusion.
 
@@ -5175,10 +5214,20 @@ The parameter right limits at zero are infinite df and unit scale.
 `epistemicNormalLognormalLaw_zero_variance` separately proves the
 original zero-error population is Gaussian with variance one.
 
-**Missing:** weak convergence of the actual matched Gamma-compound
-laws to that Gaussian as `v` tends to zero from above. The positive-
-variance tail claim, parameter limits and exact original boundary
-model are proved; they do not by themselves establish this law limit.
+`epistemicGammaMatch_moment_sub_one_sq` evaluates the actual matched
+precision's squared distance from one. It tends to zero, and Markov
+bounds every fixed positive-distance event. The actual precision and
+dispersion probability laws converge weakly to Dirac(1). Continuity
+of the inverse-square-root map is needed only at one.
+`epistemicMatchedGammaOutcomeProba_tendsto_gaussian_right` proves
+the full positive-variance boundary limit to Normal(mu,1), using the
+actual independent Gaussian outcome model, product continuity and
+continuous pushforward. Its more general family theorem applies to
+every positive variance family tending to zero along a nontrivial
+countably generated filter.
+
+**Missing:** nothing for this item. The weak law limit is proved
+separately from the scalar parameter limits and tail asymptotics.
 
 ### EU-33. Exponential–Gamma, Gamma–Gamma and Poisson–Gamma extensions — not ok
 

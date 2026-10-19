@@ -154,6 +154,9 @@ public import Stats.EpistemicUncertainty.GammaCompoundMomentDomain
 public import Stats.EpistemicUncertainty.GammaMatch
 public import Stats.EpistemicUncertainty.GammaTailIndex
 public import Stats.EpistemicUncertainty.GammaOutcomeTail
+public import Stats.Probability.Concentration
+public import Stats.EpistemicUncertainty.GammaConcentration
+public import Stats.EpistemicUncertainty.GammaGaussianLimit
 public import Stats.Probability.GammaTail
 public import Stats.Probability.GammaCalculus
 public import Stats.Probability.GammaHazard
