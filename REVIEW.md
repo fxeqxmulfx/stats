@@ -2658,6 +2658,33 @@ new module has 200 lines. Its actual survival, nonzero-variance domain,
 erfc coefficient and parameter interpretation were checked against
 the local Section VI display and limit claim.
 
+### 2026-10-19: actual Gamma exponential moments and tail bound
+
+[GammaMGF.lean](Stats/Probability/GammaMGF.lean) proves independently
+that `exp(t*X)` is L1 under every actual Gamma population with positive
+shape a and rate r whenever `t<r`. Weighting the genuine density shifts
+its Euler kernel's rate to `r-t`; evaluating that integral gives the
+actual MGF `(r/(r-t))^a`. A Chernoff bound then controls the actual
+survival by `exp(-t*x)*(r/(r-t))^a` for `0<=t<r`.
+
+Every proper Gamma law therefore has a finite strictly positive
+exponential moment, taking `t=r/2`. This formally refutes Section VI's
+heavy-tail classification under the no-positive-exponential-moment
+criterion and supplies the corrected exponential upper bound.
+A proper `Gamma(1,rate=2)` counterexample has `E[exp(X)]=2`.
+The shape-two, rate-three examples also exercise the general formulas.
+
+Verification: all 4,161 default-build jobs pass without warnings. The
+audit checks 2,458 declarations and 2,117 theorems with zero non-core
+axioms. The index records 231 modules and 1,229 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,383 previous
+indexed names and types are preserved, with eight additions and no
+duplicates; the audit imports all 229 other `Stats/` modules.
+The new module has 156 lines. Its positive-parameter domain, rate
+convention and classification correction were checked against the
+local Section VI density and slower-than-exponential claim.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4658,16 +4685,18 @@ zero limit using the actual Gaussian Mills ratio and the vanishing
 logarithmic scaling factor, for every log location and nonzero log
 variance.
 
+`gammaMeasure_integrable_exp_mul` and `mgf_gammaMeasure` prove finite
+positive exponential moments and the actual MGF `(beta/(beta-t))^alpha`
+for every `t<beta`. `gammaMeasure_survival_le_exp` supplies an actual
+exponential tail upper bound. The universal positive exponential moment
+and a proper `Gamma(1,rate=2)` counterexample formally refute the
+source's heavy-tail classification under the standard no-positive-
+exponential-moment criterion. The density's beta is consistently a rate.
+
 **Missing:** the resulting Gamma/lognormal tail-probability domination,
 their maximum-domain claims, and the Gamma incomplete-Gamma display in
-the stated rate convention. The Gamma finite-positive-exponential-moment
-classification is not yet formal.
-In the source's
-density $β^α y^{α-1}exp(-βy)/Γ(α)$, $β$ is a rate, so the Gamma
-hazard limit is $β$, not $1/β$. This Gamma law has a finite MGF for
-positive arguments below $β$ and is not heavy-tailed under the standard
-“no positive exponential moment” definition. The source's broad
-slower-than-exponential characterization needs correction.
+the stated rate convention. Lognormal nonintegrability of every positive
+exponential moment is also not yet formal.
 
 ### EU-30. Gamma as a lower bound for Lognormal, then for the outcome mixture — not ok
 
