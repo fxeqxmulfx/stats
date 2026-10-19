@@ -2714,6 +2714,36 @@ The new module has 150 lines. Its Euler integral, threshold rescaling,
 scale prefactor and explicit rate/scale distinction were reread beside
 the local Section VI density and hazard displays.
 
+### 2026-10-19: actual Gamma/lognormal survival ratio tends to zero
+
+[GammaLognormalTail.lean](Stats/Probability/GammaLognormalTail.lean)
+proves Section VI's tail domination for every proper Gamma law and
+every nondegenerate lognormal law, without a moment or CV match.
+The actual lognormal survival derivative is obtained from the existing
+Black--Scholes pushforward with spot one, identified with the canonical
+lognormal probability measure. Both actual tails are strictly positive
+at positive thresholds.
+
+The actual survival ratio q has derivative
+`(lognormalHazard-gammaHazard)*q`. The proved hazard difference tends
+to the positive Gamma rate r, so it eventually exceeds `r/2`.
+Consequently `exp(r*x/2)*q(x)` is eventually decreasing, giving
+`0<=q(x)<=C*exp(-r*x/2)` and hence `q(x)->0`. A corollary proves
+an eventual strict inequality of the actual survival probabilities.
+Proper shape-two, rate-three and standard-lognormal examples witness
+all parameter and derivative conditions.
+
+Verification: all 4,163 default-build jobs pass without warnings. The
+audit checks 2,472 declarations and 2,131 theorems with zero non-core
+axioms. The index records 233 modules and 1,242 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,399 previous
+indexed names and types are preserved, with five additions and no
+duplicates; the audit imports all 231 other `Stats/` modules.
+The new module has 156 lines. The actual ratio, continuous-variance
+domain, derivative signs and eventual comparison were checked beside
+the local Section VI hazard-to-tail argument.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4730,9 +4760,17 @@ source's literal finite display for the actual rate `1/b`, making
 its scale b explicit. `gammaHazard_scale_tendsto_inverse` proves
 the reciprocal limit for that scale convention.
 
-**Missing:** the resulting Gamma/lognormal tail-probability domination
-and their maximum-domain claims. Lognormal nonintegrability of every
-positive exponential moment is also not yet formal.
+`gamma_lognormal_tail_ratio_tendsto_zero` proves that the ratio of
+the actual Gamma survival to actual lognormal survival tends to zero,
+for every positive Gamma shape/rate and nonzero lognormal log variance.
+The derivative of the ratio is the hazard difference times the ratio;
+an exponentially weighted ratio is eventually decreasing.
+`eventually_gamma_survival_lt_lognormal` gives an eventual strict
+tail-probability inequality. This statement concerns right tails and
+does not establish the global or outcome-mixture ordering in EU-30.
+
+**Missing:** their maximum-domain claims. Lognormal nonintegrability
+of every positive exponential moment is also not yet formal.
 
 ### EU-30. Gamma as a lower bound for Lognormal, then for the outcome mixture — not ok
 

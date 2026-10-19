@@ -146,6 +146,7 @@ public import Stats.Probability.GammaCalculus
 public import Stats.Probability.GammaHazard
 public import Stats.Probability.GammaHazardFormula
 public import Stats.Probability.LognormalHazard
+public import Stats.Probability.GammaLognormalTail
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
