@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis | Infinite-law and higher-moment questions, numerical claims, Gamma approximation |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, evaluated Normal–Gamma density | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and Student identification |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2836,6 +2836,36 @@ boundary, normalized measure equality and positive parameter domain
 were reread beside the local Eq. compoundGamma. The Euler evaluation
 and identification of the corrected Student scale remain separate.
 
+### 2026-10-19: evaluate the actual Normal--Gamma compound density
+
+[GammaCompoundIntegral.lean](Stats/EpistemicUncertainty/GammaCompoundIntegral.lean)
+proves that the product of actual Gamma precision density and actual
+conditional Gaussian density is the literal Euler kernel of
+Eq. compoundGamma, allowing an arbitrary Gaussian location mu.
+That kernel is independently L1 for every positive shape a and rate r:
+its Euler shape is `a+1/2` and rate is `r+(x-mu)^2/2`.
+
+Evaluating its real integral and justifying passage from the nonnegative
+integral gives the actual closed density
+`r^a*Gamma(a+1/2)/(Gamma(a)*sqrt(2*pi)*(r+(x-mu)^2/2)^(a+1/2))`.
+This is the first line of Eq. compoundGamma2. Equality holds for the
+whole actual compound probability measure with that evaluated density;
+the actual density is finite at every outcome. Positive shape three
+and shape one quarter examples exercise both finite-moment and smaller
+shape domains without assuming any compound moment to normalize it.
+
+Verification: all 4,167 default-build jobs pass without warnings. The
+audit checks 2,512 declarations and 2,168 theorems with zero non-core
+axioms. The index records 237 modules and 1,276 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,434 previous
+indexed names and types are preserved, with seven additions and no
+duplicates; the audit imports all 235 other `Stats/` modules.
+The new module has 170 lines. Its Gaussian precision normalization,
+Euler exponent, Gamma coefficient and positive rate were reread beside
+the local Eqs. compoundGamma and compoundGamma2. The conventional
+Student-scale identification remains unproved and explicitly tracked.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4899,8 +4929,16 @@ identifies it with the positive-precision integral in Eq. compoundGamma.
 Its integral is one, it is measurable and finite a.e., and the whole
 compound measure is absolutely continuous for every positive shape/rate.
 
-**Missing:** explicit Euler evaluation of that density integral and its
-identification with the correctly scaled Student probability measure.
+`epistemic_gamma_compound_density_product` proves the literal Euler
+kernel in Eq. compoundGamma from the actual two densities. Independent
+L1 and `epistemic_gamma_compound_kernel_integral` evaluate that kernel.
+`epistemicNormalGammaDensity_eq_closed` proves the first closed formula
+in Eq. compoundGamma2; `epistemicNormalGammaLaw_eq_closed_density`
+identifies the whole actual probability measure with the evaluated
+density. It is finite at every outcome for all positive shapes/rates.
+
+**Missing:** identification with the conventional correctly scaled
+Student probability measure and the source's second density display.
 Sharp nonintegrability outside the proved moment range also remains.
 For the printed rate parameterization, the resulting Student law has
 $2α$ degrees of freedom and scale $sqrt(β/α)$; calling $β$ its

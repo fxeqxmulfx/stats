@@ -171,6 +171,7 @@ import all Stats.Probability.GammaMoments
 import all Stats.Probability.GammaMGF
 import all Stats.EpistemicUncertainty.GammaCompoundLaw
 import all Stats.EpistemicUncertainty.GammaCompoundDensity
+import all Stats.EpistemicUncertainty.GammaCompoundIntegral
 import all Stats.EpistemicUncertainty.GammaMatch
 import all Stats.Probability.GammaTail
 import all Stats.Probability.GammaCalculus
