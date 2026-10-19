@@ -11,6 +11,7 @@ import all Stats.BinaryForecasts.ConflationCounterexample
 import all Stats.BinaryForecasts.ConflationCounterexampleExamples
 import all Stats.BinaryForecasts.Exponential
 import all Stats.BinaryForecasts.ExponentialLaw
+import all Stats.BinaryForecasts.GaussianLaw
 import all Stats.BinaryForecasts.ParetoSensitivity
 import all Stats.BinaryForecasts.PayoffGap
 import all Stats.BinaryForecasts.RegularVariation
@@ -28,6 +29,7 @@ import all Stats.BlackScholes.Greeks
 import all Stats.BlackScholes.LognormalExamples
 import all Stats.BlackScholes.LognormalLaw
 import all Stats.BlackScholes.LognormalMatch
+import all Stats.BlackScholes.MillsLimit
 import all Stats.BlackScholes.PutCall
 import all Stats.BlackScholes.ReturnsSmile
 import all Stats.BlackScholes.ReturnsSmileExamples

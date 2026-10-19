@@ -19,7 +19,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
-| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Actual general RV conditional-mean and density-ratio limits, Pareto and exponential cases, corrected payoff converse and counterexample, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Operational thin-tail class interface, Gaussian limit, CLT and Brier-score distribution |
+| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Actual general RV and standard Gaussian conditional-mean and density-ratio limits, Pareto and exponential cases, corrected payoff converse and counterexample, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Operational thin-tail class interface, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
@@ -1190,6 +1190,63 @@ All 27 Python tests, the forbidden check and whitespace check pass.
 The refreshed declaration index retains the same 930 public names and
 exact types, with no duplicate names.
 
+### Actual Gaussian conditional mean and the Mills-ratio limit
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 4 (lines 317–327), the explicit linear-payoff restriction and
+Theorem 1 (lines 351–365), and **Thin tails**, especially the centered
+normalized Gaussian example and Eq. 6 (lines 367–376). This repair is
+for the actual standard Gaussian population. It does not infer the same
+limit for every law informally labeled thin-tailed.
+
+[MillsLimit.lean](Stats/BlackScholes/MillsLimit.lean) proves the missing
+asymptotic from the actual normal CDF and PDF. With `Q=1-Phi` and
+`phi` the standard Gaussian PDF, L'Hopital's rule applies to
+`Q(K)/(phi(K)/K)`. The derivatives are `-phi(K)` and
+`-phi(K)*(1+K^(-2))`; their ratio tends to one. The proof verifies the
+eventual derivative conditions, nonzero denominator derivative and both
+vanishing functions. Taking the reciprocal gives
+
+```text
+phi(K)/(K*Q(K)) -> 1.
+```
+
+[GaussianLaw.lean](Stats/BinaryForecasts/GaussianLaw.lean) proves positive
+actual upper-tail probability, normalization of the conditional measure
+and genuine L1 of the conditional observation at every finite threshold.
+Gaussian `L1` follows from the actual law's finite first absolute moment;
+it is transferred to the density-weighted first moment before applying
+the improper-integral fundamental theorem. Consequently the actual first
+tail moment is `phi(K)` for every real `K`, extending the earlier analytic
+lemma's nonnegative-threshold domain. The normalized conditional mean is
+the actual integral `phi(K)/Q(K)`.
+
+`stdNormal_tailMean_ratio_tendsto`, `stdNormal_condMean_ratio_tendsto`
+and `stdNormal_I1_div_I2_tendsto` prove, respectively, the actual tail
+ratio limit, actual conditional-mean ratio limit and the source's written
+Gaussian density `I1/I2` limit. In the density statement both integrals
+are explicitly identified with the actual law's tail quantities.
+No finite moment or conditional expectation is supplied as a desired value.
+
+Concrete instances check positive tail probability below zero, normalized
+conditioning above one, almost-sure conditional support and L1. Additional
+certificates check the actual first moment above minus one and the actual
+conditional mean above zero, `2*phi(0)`, using the proved CDF symmetry.
+Both focused modules are publicly exposed and explicitly included in the
+private axiom audit. BF-13's actual first-moment bridge and BF-14's standard
+Gaussian limits are now established. The source's general operational
+class interface remains in BF-04/BF-10.
+
+**Verification:** all 3977 default-build jobs pass without warnings.
+The standalone audit covers 1796 declarations and 1542 theorem declarations,
+with only the three permitted core axioms. It explicitly imports all 175
+other project modules, including private declarations. The regenerated
+index has 176 modules and 845 named theorems, with zero sorry, vacuous or
+placeholder markers. All 27 Python tests, the forbidden check and whitespace
+check pass. The refreshed declaration index has 940 distinct public names:
+all 930 previous names and types are unchanged, with ten additions and no
+duplicate names. The two focused modules are 83 and 144 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -2105,7 +2162,8 @@ proved, including the exact strong-Pareto ratio and the displayed Gaussian
 sensitivity expression. Theorem 2's actual bounded-score moment statement
 is proved, without independence. Theorem 1's general regularly varying,
 linear-payoff branch is now proved for actual survival laws, including
-tail L1 and conditional normalization. Its thin-tail class interface and
+tail L1 and conditional normalization. The actual standard Gaussian
+conditional-mean and density-ratio limits are also proved. Its thin-tail class interface and
 the later distributional and CLT claims remain incomplete. Some statements in the
 source also require correction: Definition 5's unrestricted converse needs
 additional hypotheses, and Eq. 8 differentiates a different quantity from
@@ -2243,6 +2301,7 @@ incorrectly treated the theorem as an unrestricted-payoff assertion.
 
 The general RV branch is now assembled in BF-12, for the actual survival
 and conditional laws as well as the density `I1/I2` expression.
+The actual standard Gaussian limit is proved in BF-14.
 
 **Missing:** the general operational thin-tail class interface and its
 linear-payoff implication, including the density-to-law identification.
@@ -2289,19 +2348,31 @@ require further hypotheses.
 
 `gaussian_I1_id_eq` proves
 $∫_K^∞ xφ(x)dx=φ(K)$ for $K≥0$.
+`stdNormal_tail_mean` now identifies the actual Gaussian-law first
+tail moment with `phi(K)` for every finite real threshold, with its
+actual L1 condition proved.
 [SigmaClosures.lean](Stats/BinaryForecasts/SigmaClosures.lean) also proves
 `integral_x_gaussianPDF_σ` and `integral_gaussianPDF_σ` for positive $σ$:
 the tail first moment is $σφ(K/σ)$ and the tail probability is $1-Φ(K/σ)$.
 
 **Missing:** nothing for the stated integral formulas.
 
-### BF-14. Gaussian I₁/I₂ limit and characteristic scale — not ok
+### BF-14. Standard Gaussian I₁/I₂ limit and operational characteristic scale — ok
 
-The normal tail and Mills bounds are available in the Black–Scholes modules.
+`stdNormal_survival_mills_tendsto` proves `Q(K)/(phi(K)/K)->1` using
+L'Hopital's rule, and `stdNormal_characteristicScale_tendsto` proves
+`phi(K)/(K*Q(K))->1`. Here `Q` is the actual standard Gaussian survival.
 
-**Missing:** the explicit Gaussian ratio limit for $g(x)=x$ and its use in a
-formal D₁ classification. Computing numerator and denominator is not yet the
-limit theorem.
+`stdNormal_cond_probability`, `stdNormal_cond_integrable_id`,
+`stdNormal_tail_mean` and `stdNormal_cond_mean` identify the actual
+normalized conditional law, L1 observation and mean `phi(K)/Q(K)`.
+The actual tail-ratio, conditional-mean ratio and written density
+`I1/I2` limits are then proved to equal one. The source explicitly uses
+the centered normalized Gaussian in this example.
+
+**Missing:** nothing for this population's linear-payoff limit and
+operational characteristic-scale property. The general class-predicate
+interface remains separately recorded in BF-04/BF-10.
 
 ### BF-15. Definition 6: Pareto payoff-equivalent probability — ok as a formula
 
@@ -3367,7 +3438,7 @@ are distinguished where necessary.
 | Tail Option Pricing | Result 2, line 230: relative pricing under a return tail | **ok** | OP-11; exact affine-return Pareto parameterization |
 | Tail Option Pricing | Result 3, line 272: put pricing | **not ok** literally | OP-12–OP-14; correct signed powers/dimensional terms, then use the proved integral/cross-multiplied core and state nonzero denominators for quotient pricing |
 | How Much Data Do You Need? | Proposition 1, line 562: κ of an iid cubic Student sum | **not ok** | K-19–K-22; identify the supplied closed expression with the actual MAD of the iid sum |
-| Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **not ok** completely | BF-10–BF-14; general RV linear-payoff branch proved for actual laws and identified densities; operational thin-tail class interface and Gaussian limit remain |
+| Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **not ok** completely | BF-10–BF-14; general RV branch and standard Gaussian case proved for actual laws and identified densities; operational thin-tail class interface remains |
 | Binary Forecasts | Theorem 2, line 629: all finite-sample Brier-score moments | **ok** | BF-26; measurable score construction, average bound and actual moment integrability proved without independence |
 | Hidden Moments | Proposition 1, line 189: hidden-moment density | **not ok** | HM-04–HM-06; iid maximum law, asymptotic qualification and hidden-moment pushforward density |
 | Epistemic Uncertainty | No active named Theorem/Proposition/Result | — | EU-01–EU-34 cover both numbered Remarks and the mathematical claims |

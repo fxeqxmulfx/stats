@@ -18,6 +18,7 @@ module
 -/
 public import Stats.BlackScholes.Survival
 public import Stats.BlackScholes.StdNormal
+public import Stats.BlackScholes.MillsLimit
 public import Stats.BlackScholes.CallPrice
 public import Stats.BlackScholes.Erfc
 public import Stats.BlackScholes.Greeks
