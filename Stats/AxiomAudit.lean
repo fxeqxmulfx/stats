@@ -1,7 +1,5 @@
 module
-
-/- Audit all Stats declarations, including private ones, for transitive axioms.
-   Keep the `import all` list exhaustive. Run `./run.py audit`. -/
+/- Audit all Stats declarations, including private ones. Keep imports exhaustive. Run `./run.py audit`. -/
 import all Stats
 import all Stats.Arbitrage
 import all Stats.BinaryForecasts
@@ -15,6 +13,8 @@ import all Stats.BinaryForecasts.Exponential
 import all Stats.BinaryForecasts.ExponentialLaw
 import all Stats.BinaryForecasts.ParetoSensitivity
 import all Stats.BinaryForecasts.PayoffGap
+import all Stats.BinaryForecasts.RegularVariation
+import all Stats.BinaryForecasts.RegularVariationLaw
 import all Stats.BinaryForecasts.SigmaClosures
 import all Stats.BinaryForecasts.SigmaSensitivity
 import all Stats.BlackScholes

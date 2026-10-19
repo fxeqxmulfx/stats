@@ -22,6 +22,8 @@ module
 
   * `Stats.BinaryForecasts.CharacteristicScale` — Definition 4's actual
     Pareto conditional means, normalization, L1 and scale limit.
+  * `Stats.BinaryForecasts.RegularVariationLaw` — actual conditional-mean
+    and linear-payoff ratio limits for general regularly varying survival laws.
   * `Stats.BinaryForecasts.Conflation` — paper Definitions 5–6
     (`I_1`/`I_2`, Gaussian closed form, corrected probability `p*`).
   * `Stats.BinaryForecasts.ParetoSensitivity` — paper Eq. 9 and
@@ -44,6 +46,8 @@ module
     Definition 5's corrected a.e. converse, strict gap and counterexample.
 -/
 public import Stats.BinaryForecasts.CharacteristicScale
+public import Stats.BinaryForecasts.RegularVariation
+public import Stats.BinaryForecasts.RegularVariationLaw
 public import Stats.BinaryForecasts.Conflation
 public import Stats.BinaryForecasts.ParetoSensitivity
 public import Stats.BinaryForecasts.Brier

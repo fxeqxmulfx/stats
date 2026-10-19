@@ -19,7 +19,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
-| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Exact tail-integral cases, corrected payoff converse and counterexample, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | General Theorem 1, CLT and Brier-score distribution |
+| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Actual general RV conditional-mean and density-ratio limits, Pareto and exponential cases, corrected payoff converse and counterexample, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Operational thin-tail class interface, Gaussian limit, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
@@ -1092,6 +1092,83 @@ public names: all 911 previous names and types remain unchanged, with
 seven additions and no duplicates. The actual-law module is 173 lines.
 The Gaussian users now import their standard-normal dependencies directly.
 
+### General RV survival laws: actual L1, conditional means and I1/I2
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 4 (lines 317–327), Definition 5 and the explicit `g(x)=x`
+restriction (lines 341–351), Theorem 1 and its proof (lines 353–365),
+and the **Fat tails** calculation (lines 378–384). This repair establishes
+the general regularly varying branch for `alpha>1`, using the same
+threshold `K` in both tail integrals. The printed fat-tail display mixes
+`K` and `K_p`; it is not formalized with unrelated integration thresholds.
+
+[LayerCake.lean](Stats/LayerCake.lean) now transfers integrability of the
+actual survival function on an upper tail to L1 of the actual upper-tail
+observation. This uses the nonnegative Lebesgue layer-cake theorem and
+translation, rather than interpreting a total real integral as a finite
+expectation. Its second bridge proves, under the actual tail L1 condition,
+
+```text
+integral_{X>K} X dnu = K*nu.real(X>K) + integral_K^infinity nu.real(X>s) ds.
+```
+
+A separate algebraic identity identifies the normalized conditional mean
+divided by `K` with the actual first-tail-moment ratio. It is explicitly
+an identity, not an assertion of L1 by itself.
+
+[RegularVariation.lean](Stats/BinaryForecasts/RegularVariation.lean)
+applies the full measurable slowly varying Karamata theorem to an
+eventual representation of the actual survival as `L(s)*s^(-alpha)`.
+The positive limiting normalized survival integral makes that integral
+eventually nonzero, proving its L1 condition; the layer-cake converse
+then gives the actual upper-tail L1 condition. No actual mean, conditional
+mean, tail moment or integrability conclusion is supplied as a hypothesis.
+The actual linear-payoff ratio and normalized conditional-mean ratio
+both tend to `alpha/(alpha-1)`. The conditional laws are eventually
+proved probability measures with integrable observations.
+
+[RegularVariationLaw.lean](Stats/BinaryForecasts/RegularVariationLaw.lean)
+starts directly from regular variation of the actual survival function
+of a finite measure, with index `-alpha`. It derives eventual positive
+tail probability from the ratio limit at scale one, measurability from
+antitonicity of actual survival, and the slowly varying factor
+`nu.real(Ioi s)/s^(-alpha)`. Thus the representation hypotheses are
+discharged for the actual law. The results cover probability measures
+and allow an uncontrolled lower tail, since only the upper tail is used.
+
+`regularlyVarying_density_I1_div_I2_tendsto` also proves the source's
+written `I1 id f K / I2 id f K` limit when a nonnegative measurable
+real density `f` is explicitly identified with the actual finite law
+via `withDensity`. Both density integrals are identified with the actual
+tail quantities. This is not a theorem about an unrelated density kernel.
+The existing Pareto factor inequality proves the limiting factor exceeds
+one for `alpha>1`.
+
+All new hypothesis families have genuine Pareto(2,3) witnesses: actual
+survival regular variation, eventual tail L1, conditional normalization
+and L1, both actual-law limits, and the written density ratio limit
+`3/2`. The density witness is zero outside its support, measurable and
+nonnegative, and is proved to produce the already normalized Pareto law.
+The generic layer-cake converse also has a direct integrable-survival
+witness. The two focused RV modules and every mathematical dependency
+are included in the default umbrella and exhaustive private axiom audit.
+
+BF-12 is now established for the stated general RV branch. The operational
+thin-tail class interface in BF-04/BF-10 and the Gaussian limit in BF-14
+remain separate; no arbitrary-payoff extension or convergence rate is claimed.
+
+**Verification:** all 3973 default-build jobs pass without warnings.
+The standalone audit covers 1777 declarations, including 1523 theorem
+declarations, and finds only the three permitted core axioms. Its explicit
+imports cover all 173 other project modules, including private declarations.
+The regenerated index has 174 modules and 834 named theorems with zero
+sorry, vacuous or placeholder markers. All 27 Python tests, the forbidden
+check and whitespace check pass. The refreshed declaration index has
+930 distinct public names: all 918 previous names and types are unchanged,
+with twelve additions and no duplicate names. The expanded layer-cake
+module and new RV modules are 176, 149 and 189 lines respectively;
+the exhaustive audit aggregator remains 200 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -2005,8 +2082,10 @@ Main module: [BinaryForecasts.lean](Stats/BinaryForecasts.lean).
 **Paper verdict: not ok.** Several integral and derivative calculations are
 proved, including the exact strong-Pareto ratio and the displayed Gaussian
 sensitivity expression. Theorem 2's actual bounded-score moment statement
-is proved, without independence. The general Theorem 1 and the later
-distributional and CLT claims remain incomplete. Some statements in the
+is proved, without independence. Theorem 1's general regularly varying,
+linear-payoff branch is now proved for actual survival laws, including
+tail L1 and conditional normalization. Its thin-tail class interface and
+the later distributional and CLT claims remain incomplete. Some statements in the
 source also require correction: Definition 5's unrestricted converse needs
 additional hypotheses, and Eq. 8 differentiates a different quantity from
 the originally defined payoff gap. Theorem 1 is read with the source's
@@ -2045,8 +2124,12 @@ proves actual Pareto conditional means and their ratio limit;
 [ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean) proves
 the actual exponential conditional ratio and mean-excess limits.
 
-**Missing:** predicates for the distribution classes and general
-classification/limit theorems beyond these identified populations.
+The general regularly varying actual-survival limit, including its
+L1 and probability conditions, is now proved in
+[RegularVariationLaw.lean](Stats/BinaryForecasts/RegularVariationLaw.lean).
+
+**Missing:** predicates for the source's operational classes and general
+thin-tail classification/limit theorems beyond the identified populations.
 Assigning a class in a comment is not a proof that an arbitrary law
 belongs to it.
 
@@ -2137,8 +2220,11 @@ The source explicitly assumes $g(x)=x$ immediately before Theorem 1
 The previous version of this review overlooked that sentence and
 incorrectly treated the theorem as an unrestricted-payoff assertion.
 
-**Missing:** the general distribution theorem for this linear payoff,
-with an actual survival law, tail expectation and the stated limit.
+The general RV branch is now assembled in BF-12, for the actual survival
+and conditional laws as well as the density `I1/I2` expression.
+
+**Missing:** the general operational thin-tail class interface and its
+linear-payoff implication, including the density-to-law identification.
 An extension to arbitrary payoffs would need additional hypotheses:
 for an Exp(1) density and $g(x)=exp(x/2)$, at $K≥0$,
 $I₁=2exp(-K/2)$ and $I₂=exp(-K/2)$, so their ratio is two.
@@ -2157,15 +2243,26 @@ by the `paretoMeasure_cond_characteristicScale` theorems in BF-05.
 instead depends on $p$; it cannot be assigned the linear-payoff factor without
 an additional argument.
 
-### BF-12. Theorem 1 for all regularly varying tails — not ok as assembled
+### BF-12. Theorem 1's general RV, linear-payoff branch — ok
 
-The repository now has a full measurable slowly varying Karamata theorem and
-call-price asymptotics in the regular-variation modules.
+`regularlyVarying_survival_tailMean_ratio_tendsto` and
+`regularlyVarying_survival_condMean_ratio_tendsto` start from regular
+variation of the actual survival of a finite measure, with index
+`-alpha` and `alpha>1`. They prove the limit `alpha/(alpha-1)>1`.
+Eventual tail positivity, measurability, the slowly varying factor,
+actual upper-tail L1, conditional normalization and conditional L1 are
+derived. No full-law first moment is needed on the lower tail.
 
-**Missing:** their application to the binary-forecast ratio with an identified
-survival law, the appropriate first-moment tail identity, and the explicit
-limit for the admissible payoff class. The ingredients are stronger than a
-Pareto example, but the complete binary-forecast theorem is not stated.
+`regularlyVarying_density_I1_div_I2_tendsto` proves the printed density
+ratio for a nonnegative measurable density explicitly identified with
+that actual law. The generic layer-cake first-moment bridge supplies the
+missing term `K*P(X>K)` before applying Karamata. All hypotheses have
+actual Pareto(2,3) witnesses, including its supported normalized PDF.
+
+**Missing:** nothing for this branch on the specified domain and linear
+payoff. Both integration thresholds use the same `K`, correcting the
+printed `K`/`K_p` mismatch. An arbitrary payoff or rate claim would
+require further hypotheses.
 
 ### BF-13. Eq. 6: Gaussian truncated first moment — ok
 
@@ -3249,7 +3346,7 @@ are distinguished where necessary.
 | Tail Option Pricing | Result 2, line 230: relative pricing under a return tail | **ok** | OP-11; exact affine-return Pareto parameterization |
 | Tail Option Pricing | Result 3, line 272: put pricing | **not ok** literally | OP-12–OP-14; correct signed powers/dimensional terms, then use the proved integral/cross-multiplied core and state nonzero denominators for quotient pricing |
 | How Much Data Do You Need? | Proposition 1, line 562: κ of an iid cubic Student sum | **not ok** | K-19–K-22; identify the supplied closed expression with the actual MAD of the iid sum |
-| Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **not ok** | BF-10–BF-14; payoff restrictions and general distributional limit; strong-Pareto linear-payoff specialization is proved |
+| Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **not ok** completely | BF-10–BF-14; general RV linear-payoff branch proved for actual laws and identified densities; operational thin-tail class interface and Gaussian limit remain |
 | Binary Forecasts | Theorem 2, line 629: all finite-sample Brier-score moments | **ok** | BF-26; measurable score construction, average bound and actual moment integrability proved without independence |
 | Hidden Moments | Proposition 1, line 189: hidden-moment density | **not ok** | HM-04–HM-06; iid maximum law, asymptotic qualification and hidden-moment pushforward density |
 | Epistemic Uncertainty | No active named Theorem/Proposition/Result | — | EU-01–EU-34 cover both numbered Remarks and the mathematical claims |
