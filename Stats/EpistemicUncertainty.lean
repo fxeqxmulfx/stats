@@ -33,8 +33,10 @@ module
   fair sign-vector model, its actual Gaussian population and normalized density.
   GaussianKernel constructs the general positive-prior Gaussian scale mixture,
   its actual Markov kernel and normalized marginal density by Tonelli.
-  General nested kernels, a CLT and the Normal-Gamma compound-law theorem
-  remain separate.
+  HierarchyLaw and HierarchyDensity construct finite conditional Markov
+  hierarchies with positive scale support and actual iterated densities.
+  Literal conditional-density inputs, a CLT and the Normal-Gamma compound-law
+  theorem remain separate.
   Higher kurtosis alone does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/

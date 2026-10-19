@@ -120,6 +120,8 @@ public import Stats.EpistemicUncertainty.SignLaw
 public import Stats.EpistemicUncertainty.SignExpansion
 public import Stats.EpistemicUncertainty.SignDensity
 public import Stats.EpistemicUncertainty.GaussianKernel
+public import Stats.EpistemicUncertainty.HierarchyLaw
+public import Stats.EpistemicUncertainty.HierarchyDensity
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation

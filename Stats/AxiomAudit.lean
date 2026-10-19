@@ -62,6 +62,8 @@ import all Stats.EpistemicUncertainty.SignExpansion
 import all Stats.EpistemicUncertainty.SignLaw
 import all Stats.EpistemicUncertainty.FractionalMoments
 import all Stats.EpistemicUncertainty.GaussianKernel
+import all Stats.EpistemicUncertainty.HierarchyDensity
+import all Stats.EpistemicUncertainty.HierarchyLaw
 import all Stats.EpistemicUncertainty.LayerLaw
 import all Stats.EpistemicUncertainty.LayerMoments
 import all Stats.EpistemicUncertainty.ScaleConcentration

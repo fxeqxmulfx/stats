@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | General nested kernels, higher-moment and limit-law questions, numerical claims, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Literal density-input hierarchy, higher-moment and limit-law questions, numerical claims, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2189,6 +2189,54 @@ The audit explicitly imports all 204 other `Stats/` modules. The new
 kernel module is 183 lines and its conditional variance, positive prior
 support and measure/density integrals match the local Eq. 1 source.
 
+### Construct actual conditional hierarchies and their iterated marginal densities
+
+Reread arXiv:1912.00277v2, Section II's nested-mixture discussion and
+multi-layer display (`FatTailsEpistemic2019.tex`, lines 220–231). The
+Gaussian must depend on the sampled observation scale, replacing the
+fixed sigma printed in that display. Conditional scale laws must also
+record their dependence on the parent parameter.
+
+[HierarchyLaw.lean](Stats/EpistemicUncertainty/HierarchyLaw.lean)
+constructs the actual finite scale population by binding successive
+measurable conditional kernels to the previous law. A proper prior and
+Markov transitions give a probability law at every depth. Positive
+scale support is proved to propagate from the prior through each
+positive conditional transition, so it is not assumed for the final
+Gaussian mixture. An actual fair two-branch kernel depends on the incoming
+scale and supplies independent proper witnesses for these assumptions.
+
+[HierarchyDensity.lean](Stats/EpistemicUncertainty/HierarchyDensity.lean)
+proves actual nonnegative integration under this population equals the
+full repeated conditional integral. Kernel measurability propagates
+measurability of each inner integral before the bind integration theorem
+is applied. The final actual Gaussian mixture then has this iterated
+Gaussian density, with the Gaussian using the last sampled dispersion.
+Its density is measurable, normalized and finite Lebesgue-a.e.; actual
+event probabilities are its restricted integrals.
+
+An explicit two-transition example starts at scale two, uses actual
+fair one-half error kernels at each stage, and writes the complete
+prior/conditional/conditional Gaussian density integral. General-depth
+examples verify normalized genuine outcome laws and density mass one;
+separate examples verify nonnegative-moment integration and actual
+threshold-three probabilities.
+
+EU-03's normalized finite conditional Markov construction, positive-support
+propagation and corrected iterated density are proved. Constructing its
+kernels from arbitrary conditional Lebesgue-density inputs and rewriting
+the integrals to the source's literal products of `f_i` remain separate.
+
+Verification: the full build passes 4,091 jobs without warnings. The
+audit checks 2,201 declarations and 1,891 theorems with zero non-core
+axioms. The index records 208 modules and 1,068 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,178 previous public
+names and types are preserved; 17 are added without duplicates. The audit
+explicitly imports all 206 other `Stats/` modules. The hierarchy law and
+density modules are 119 and 180 lines, with the conditional source
+parameter correction recorded in their docstrings.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3623,7 +3671,9 @@ corrected exceedance formula, first four outcome moments, symmetry and
 kurtosis are proved.
 The explicit independent fair sign-vector construction, its general
 varying-error Gaussian mixture and normalized density are also proved.
-General nested kernels, infinite constructions and higher-moment limits, the CLT
+Finite conditional Markov hierarchies and their actual iterated Gaussian
+densities are proved. Literal density-input specializations, infinite
+constructions and higher-moment limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
 are proved. The actual constant-error laws have the proved unscaled
@@ -3655,7 +3705,8 @@ The general finite varying-error populations have actual dispersion moments,
 variance and fourth central moment products as well.
 
 **Missing:** nothing for this explicit finite fair-branch construction.
-General continuous or dependent uncertainty kernels remain in EU-03.
+The general finite conditional Markov hierarchy is also proved in EU-03;
+its literal density-input specialization remains separate.
 The source's displayed matrix/vector row mismatch is corrected in EU-04.
 
 ### EU-02. Remark 2: uncertainty around a zero probability implies a positive floor — not ok
@@ -3686,12 +3737,29 @@ to one and is finite Lebesgue-a.e.; pointwise finiteness at every outcome
 is not assumed. Actual event probabilities equal its density integrals.
 Proper Dirac and varying-error dispersion priors witness the hypotheses.
 
-**Missing:** the general multi-layer conditional-kernel hierarchy,
-propagation of positive scale support and the complete repeated-integral
-formula. The source's multi-layer display uses `phi(x;mu,sigma)` with a
-fixed sigma where the Gaussian must depend on the sampled first scale;
-its conditional parameter dependencies need an explicit corrected model.
-Eq. 1's general-prior construction and density interchange are proved.
+`epistemicScaleHierarchy` now constructs the actual repeated conditional
+scale law from an arbitrary proper prior and measurable Markov transitions.
+Its normalization is independently proved. Positive support propagates
+through every transition from the positive prior.
+`epistemicScaleHierarchy_lintegral` proves genuine integration under that
+hierarchy equals the complete iterated conditional integral for any
+measurable nonnegative test function.
+`epistemicHierarchyOutcomeLaw_eq_withDensity` proves the actual Gaussian
+population has the resulting iterated density; its mass is one, it is
+measurable and finite Lebesgue-a.e., and actual event probabilities equal
+its density integrals. A genuine scale-dependent fair transition supplies
+proper witnesses, including an explicit two-transition integral.
+
+The source's multi-layer display uses fixed `phi(x;mu,sigma)` where the
+Gaussian must depend on the sampled observation scale `hat sigma_1`.
+The corrected kernel model orders transitions from outer uncertainty
+toward that observation scale and records each conditional dependency.
+
+**Missing:** construct arbitrary conditional scale kernels directly from
+the source's jointly measurable normalized density inputs `f_i`, and
+specialize the kernel integrals to the literal repeated products of those
+Lebesgue densities. The actual normalized finite Markov hierarchy and its
+corrected iterated Gaussian density are proved.
 
 ### EU-04. Section II: actual 2ⁿ-component Gaussian density — corrected
 
