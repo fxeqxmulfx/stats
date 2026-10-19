@@ -102,6 +102,7 @@ public import Stats.Kappa
 public import Stats.BinaryForecasts
 public import Stats.EpistemicUncertainty
 public import Stats.EpistemicUncertainty.BranchingKurtosis
+public import Stats.EpistemicUncertainty.BranchingLimits
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation

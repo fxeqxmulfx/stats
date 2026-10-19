@@ -18,9 +18,10 @@ module
   BranchingLaw constructs the actual normalized finite recursive population.
   BranchingMoments and BranchingKurtosis prove its outcome moments,
   reflection symmetry and the actual interpretation of the scale formulas.
-  Binomial counting, density identities, divergence limits, a CLT and the
-  Normal-Gamma compound-law theorem remain separate. Higher kurtosis alone
-  does not establish a power-law tail.
+  BranchingLimits proves geometric divergence of these finite populations'
+  moments under nonzero uncertainty. Binomial counting, density identities,
+  infinite-depth laws, a CLT and the Normal-Gamma compound-law theorem
+  remain separate. Higher kurtosis alone does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real

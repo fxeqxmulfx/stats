@@ -53,6 +53,7 @@ import all Stats.EpistemicUncertainty
 import all Stats.EpistemicUncertainty.BranchingLaw
 import all Stats.EpistemicUncertainty.BranchingMoments
 import all Stats.EpistemicUncertainty.BranchingKurtosis
+import all Stats.EpistemicUncertainty.BranchingLimits
 import all Stats.Hedging
 import all Stats.HiddenMoments
 import all Stats.HiddenMoments.BetaKernel

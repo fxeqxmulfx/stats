@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual finite recursive Gaussian population, corrected outcome moments, symmetry and kurtosis; binomial scale algebra | Branch-counting and density identities, infinite limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual finite recursive Gaussian population, corrected moments, symmetry, kurtosis and moment divergence; binomial scale algebra | Branch-counting and density identities, infinite-depth laws, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -1670,6 +1670,48 @@ previous names and types are unchanged, with twenty-seven additions and no
 duplicate names. The three branching modules are 95, 146 and 111 lines;
 the extended shifted-Gaussian helper is 156 lines.
 
+### Prove geometric divergence for the actual branching populations
+
+Reread arXiv:1912.00277v2, Section III's actual moment formulas and
+the divergence assertions in `FatTailsEpistemic2019.tex`, lines
+329–346. Nonzero base scale and nonzero uncertainty are needed:
+zero error leaves a constant variance and Gaussian kurtosis.
+
+[BranchingLimits.lean](Stats/EpistemicUncertainty/BranchingLimits.lean)
+proves the actual variance and fourth central moment tend to positive
+infinity with depth when `sigma!=0` and `epsilon!=0`. These are the
+actual moment sequences of the normalized finite laws constructed
+above, with their finite-depth L1 already proved.
+
+Writing `A=1+epsilon^2` and `B=1+6*epsilon^2+epsilon^4`, actual Pearson
+kurtosis is proved to be the geometric sequence `3*(B/A^2)^n`.
+The existing strict factor inequality gives `B/A^2>1` for nonzero
+uncertainty. Actual Pearson kurtosis and the source's excess kurtosis
+therefore both tend to positive infinity. The variance and central
+fourth moment grow geometrically with bases `A` and `B` respectively.
+
+The half-error, unit-scale example verifies growth bases `5/4`,
+`41/16` and `41/25` for actual variance, fourth central moment and
+kurtosis. All four divergence claims have concrete proper-law
+certificates. At zero error, actual variance is exactly `sigma^2`
+at every finite depth, and actual Pearson kurtosis is three for a
+nonzero base scale; a depth-ten certificate checks this boundary.
+
+This closes EU-16 for these actual finite-population moment sequences
+with the necessary nonzero hypotheses. No infinite-depth population,
+weak convergence result, or regularly varying tail is asserted by
+the divergence of moments.
+
+**Verification:** all 3992 default-build jobs pass without warnings.
+The standalone audit covers 1979 declarations and 1707 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 189 other
+Stats modules, including private declarations. The regenerated index has
+191 modules and 957 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1065 distinct public names: all 1058
+previous names and types are unchanged, with seven additions and no
+duplicate names. The new limits module is 110 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3101,8 +3143,10 @@ Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 **Paper verdict: not ok.** The actual finite recursive constant-error
 Gaussian mixture, corrected first four outcome moments, symmetry and
 kurtosis are proved, along with the binomial scale algebra. Explicit
-branch counting, density identities, general nested kernels, infinite
-limits, the CLT argument and the Normal–Gamma compound law remain open.
+branch counting, density identities, general nested kernels,
+infinite-depth populations and decaying-error limits, the CLT argument
+and the Normal–Gamma compound law remain open. Actual finite-population
+variance, fourth central moment and kurtosis divergence are proved.
 This source has no active numbered Theorem or Proposition environment; both
 numbered Remarks and the mathematical claims are audited below.
 
@@ -3266,13 +3310,23 @@ The one-layer positive-scale, half-error model has actual kurtosis
 **Missing:** nothing for these actual finite-population inequalities.
 A kurtosis inequality does not establish a regularly varying tail.
 
-### EU-16. Geometric divergence of variance and kurtosis as n → ∞ — not ok
+### EU-16. Actual variance and kurtosis divergence as n → ∞ — ok with nonzero scale and uncertainty
 
-The exact scalar formulas and finite-depth inequalities are available.
+`epistemicBranchLaw_variance_tendsto_atTop` and
+`epistemicBranchLaw_centralMoment_four_tendsto_atTop` prove divergence
+of the actual finite-population variance and fourth central moment.
+`epistemicBranchLawKurtosis_geometric` identifies the actual Pearson
+ratio with `3*(B/A^2)^n`, whose base exceeds one for nonzero error.
+`epistemicBranchLawKurtosis_tendsto_atTop` and
+`epistemicBranchLaw_excessKurtosis_tendsto_atTop` prove both actual
+kurtosis divergences. All use `sigma!=0` and `epsilon!=0`.
 
-**Missing:** explicit `Tendsto` divergence statements, with $σ≠0$ and
-$ε≠0$ where required, and their outcome-law interpretation. At $ε=0$
-the asserted explosions do not occur.
+Zero-error certificates prove constant actual variance and kurtosis,
+clarifying the needed hypotheses. Concrete unit-scale, half-error
+populations witness every divergence statement.
+
+**Missing:** nothing for these limits of finite-population moments.
+An infinite-depth law or tail-class claim is separate in EU-17.
 
 ### EU-17. Finite-depth or infinite-depth power-law tail generation — not ok
 
