@@ -31,6 +31,8 @@ module
   of the actual second and fourth moments for geometric decay kappa<1.
   SignLaw, SignExpansion and SignDensity identify the explicit independent
   fair sign-vector model, its actual Gaussian population and normalized density.
+  GaussianKernel constructs the general positive-prior Gaussian scale mixture,
+  its actual Markov kernel and normalized marginal density by Tonelli.
   General nested kernels, a CLT and the Normal-Gamma compound-law theorem
   remain separate.
   Higher kurtosis alone does not establish a power-law tail.

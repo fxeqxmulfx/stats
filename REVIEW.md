@@ -2149,6 +2149,46 @@ The audit imports all 203 other `Stats/` modules. The sign-space,
 expansion and density modules have 145, 98 and 142 lines. Their source
 correspondence includes the full Section II matrix/vector illustration.
 
+### Construct the actual general-prior Gaussian kernel and marginal density
+
+Reread arXiv:1912.00277v2, Section II, Eq. 1's positive-dispersion mixture
+(`FatTailsEpistemic2019.tex`, lines 205–218). Its scale prior may be
+continuous; the finite sign tree is no longer needed for this construction.
+
+[GaussianKernel.lean](Stats/EpistemicUncertainty/GaussianKernel.lean)
+constructs the actual measurable kernel `scale -> N(mu,scale^2)` and
+proves every conditional measure is a probability law. Binding any
+probability dispersion prior gives an independently normalized marginal.
+Its whole law equals independent sampling of that prior and a standard
+Gaussian under `mu+scale*z`. For the actual finite varying-error prior,
+it exactly recovers the already proved recursive population.
+
+The Gaussian density is jointly measurable in scale and outcome. For
+every probability prior concentrated on positive scales, actual component
+event probabilities are their genuine density integrals. Tonelli then
+proves the actual marginal law is Lebesgue measure weighted by the prior
+integral of those densities. The derived density is measurable, normalized
+and finite Lebesgue-a.e. Its nonnegative scale integral allows exceptional
+infinite point values, so no unjustified pointwise L1 assumption is hidden
+in the source's displayed integral. Actual event probabilities are integrals
+of this proved marginal density.
+
+Concrete proper priors include dispersion fixed at two and the actual
+depth-two varying-error law with base scale two and errors one-half and
+one-quarter. Both satisfy the positive-support conditions independently.
+This closes Eq. 1's general-prior kernel, normalization and density
+interchange part of EU-03. The full nested conditional hierarchy remains.
+
+Verification: the full build passes 4,089 jobs without warnings. The
+audit checks 2,163 declarations and 1,866 theorems with zero non-core
+axioms. The index records 206 modules and 1,058 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. The declaration index
+preserves all 1,164 old names and types and adds 14 without duplicates.
+The audit explicitly imports all 204 other `Stats/` modules. The new
+kernel module is 183 lines and its conditional variance, positive prior
+support and measure/density integrals match the local Eq. 1 source.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3630,11 +3670,28 @@ probability.
 
 ### EU-03. Section II: repeated integration over parameter uncertainty — not ok
 
-The source defines nested mixtures over uncertain positive scale parameters.
+`epistemicGaussianScaleKernel` now constructs the genuine measurable
+Gaussian conditional law and proves it is a Markov kernel.
+`epistemicGaussianMixtureLaw` is the actual marginal for any dispersion
+prior and is normalized whenever the prior is a probability measure.
+`epistemicGaussianMixtureLaw_outcome_model` identifies the whole law with
+independent prior/standard-Gaussian sampling under `mu+scale*z`.
+It recovers the actual varying-error population for its genuine scale prior.
 
-**Missing:** measurable probability kernels, the iterated mixture measure,
-normalization, and interchange of the required integrals. The existing finite
-polynomial expressions do not implement this general construction.
+For every probability prior concentrated on positive scales,
+`epistemicGaussianMixtureLaw_eq_withDensity` proves Eq. 1's actual marginal
+density is the prior integral of the true Gaussian density. Joint
+measurability justifies Tonelli. The density is measurable, integrates
+to one and is finite Lebesgue-a.e.; pointwise finiteness at every outcome
+is not assumed. Actual event probabilities equal its density integrals.
+Proper Dirac and varying-error dispersion priors witness the hypotheses.
+
+**Missing:** the general multi-layer conditional-kernel hierarchy,
+propagation of positive scale support and the complete repeated-integral
+formula. The source's multi-layer display uses `phi(x;mu,sigma)` with a
+fixed sigma where the Gaussian must depend on the sampled first scale;
+its conditional parameter dependencies need an explicit corrected model.
+Eq. 1's general-prior construction and density interchange are proved.
 
 ### EU-04. Section II: actual 2ⁿ-component Gaussian density — corrected
 
