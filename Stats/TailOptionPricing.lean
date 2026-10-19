@@ -167,6 +167,8 @@ public import Stats.Probability.LognormalHazard
 public import Stats.Probability.GammaLognormalTail
 public import Stats.Probability.LognormalMGF
 public import Stats.HiddenMoments
+public import Stats.Probability.Frechet
+public import Stats.HiddenMoments.MaximumLimit
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
 public import Stats.Pareto.Measure

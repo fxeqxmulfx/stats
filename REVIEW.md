@@ -21,7 +21,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, corrected actual Normal–Gamma/Student law and sharp moments, actual Student tails and epistemic-variance tail comparison, actual matched Gamma Gaussian boundary limit | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation bound |
-| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
+| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum, normalized Fréchet weak limit and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
@@ -3118,6 +3118,42 @@ moment-matched source parameters, centered outcome construction and
 two-sided tail comparison were reread beside local Sections V, VI
 and the Discussion.
 
+### 2026-10-19: prove the normalized actual Pareto maximum's Frechet limit
+
+[Frechet.lean](Stats/Probability/Frechet.lean) independently constructs
+the standard Frechet probability measure by mapping an actual Exp(1)
+draw u to `u^(-1/alpha)`. It proves normalization, positive support,
+the full supported CDF, and positive actual survival at every finite
+threshold. The CDF follows from an almost-sure event transformation,
+not from specifying a desired density as a law property.
+
+[MaximumLimit.lean](Stats/HiddenMoments/MaximumLimit.lean) builds the
+actual normalized maximum of `n+1` independent strong-Pareto draws,
+dividing by `l*(n+1)^(1/alpha)`. The actual supported finite CDF
+converges at every real threshold to the independently proved Frechet
+CDF. Portmanteau via CDF convergence gives weak convergence of the
+whole probability laws for every positive scale and index. No finite
+population moment is needed.
+
+The finite Frechet identification is formally refuted at the support
+boundary. More strongly, the exact finite maximum CDF is strictly
+below the Frechet substitute at every finite threshold on support.
+Thus raising a cutoff cannot make the finite substitution exact.
+HM-05 records the corrected weak asymptotic and the finite refutation;
+the general approximate-tail population and Proposition 1's transformed
+density require separate work. All six paper verdicts remain not ok.
+
+Verification: all 4,184 build jobs pass without warnings. The audit
+checks 2,714 declarations and 2,356 theorems with zero non-core axioms.
+The index records 254 modules and 1,411 named theorems, with zero
+sorry, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,573 previous
+indexed names and types are preserved, with 21 additions and no
+duplicates; every other Stats module is explicitly imported by the
+audit. The new files have 158 and 190 lines. Their actual iid law,
+sample-size normalization, positive-index domain, supported CDFs and
+finite mismatch were reread beside the local Proposition 1 and proof.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -5314,9 +5350,12 @@ asymptotic. The zeroth hidden moment has the supported Beta(1,n) CDF and mean
 `1/(n+1)`; the printed exact exponential law is formally refuted.
 The actual finite-mean arithmetic sample mean is unbiased, and the
 source's necessary-underestimation claim is formally refuted for every
-nonempty Pareto sample. General-p Proposition 1, limit theorems and the
-Gaussian comparison remain incomplete. The source's Fréchet substitution requires a precise
-approximation or asymptotic statement.
+nonempty Pareto sample. The normalized actual maximum now converges
+weakly to an independently constructed Fréchet probability law; its
+finite-sample identification with that law is formally refuted.
+General-p Proposition 1's density and the Gaussian comparison remain
+incomplete. The general approximate-tail version requires explicit
+approximation or regular-variation assumptions.
 
 ### HM-01. Visible-plus-hidden moment decomposition — ok for the exact Pareto model
 
@@ -5363,16 +5402,36 @@ $(1-(l/k)^α)^n$ above the scale and zero below it.
 **Missing:** nothing for this exact finite-sample probability statement.
 The earlier scalar expression remains available as its supported branch.
 
-### HM-05. Replacing the finite maximum by a Fréchet law — not ok exactly
+### HM-05. Replacing the finite maximum by a Fréchet law — corrected weak limit proved; finite identity refuted
 
 For a finite strong-Pareto sample, the exact CDF is
 $(1-(l/k)^α)^n$ on $k≥l$.
 The Fréchet expression is $exp(-n(l/k)^α)$.
 
-**Missing:** a limit theorem or a quantified approximation in the intended
-range. The two expressions are unequal at finite $n$. The proposition's
-“satisfactorily approximated” assumption does not specify an error tolerance
-or an asymptotic mode strong enough to give an exact density conclusion.
+`frechetMeasure` is independently constructed as the negative-power
+pushforward of an actual Exp(1) population. Its normalization, positive
+support and full CDF `exp(-t^(-alpha))` for `t>0`, zero otherwise, are proved.
+
+`paretoNormalizedMaximumProba` uses the actual maximum of `n+1` independent
+Pareto observations, divided by `l*(n+1)^(1/alpha)`. Its supported finite
+CDF converges at every threshold to that actual Fréchet CDF.
+`paretoNormalizedMaximumProba_tendsto` proves weak convergence of the
+whole probability laws for every positive scale and index, including
+infinite-mean populations.
+
+`paretoSampleMaximum_not_exact_frechet` refutes the finite identification:
+at threshold l, the actual finite maximum CDF is zero but the source's
+Fréchet substitute is `exp(-n)>0`.
+`paretoSampleMaximum_cdf_lt_frechet` strengthens this to every finite
+threshold on the Pareto support: the actual finite CDF is strictly
+smaller, so a larger tail cutoff does not turn the substitution into
+an exact equality.
+
+**Missing:** nothing for the corrected exact-Pareto weak asymptotic or
+the finite-identity refutation. A general population whose tail is only
+“satisfactorily approximated” still needs explicit error or regular-
+variation hypotheses. The weak limit alone does not establish the
+printed transformed density; HM-06 tracks that separate calculation.
 
 ### HM-06. Proposition 1: density of the hidden p-th moment — not ok
 

@@ -93,6 +93,8 @@ import all Stats.HiddenMoments.Examples
 import all Stats.HiddenMoments.ExponentialLimit
 import all Stats.HiddenMoments.ExponentialLimitExamples
 import all Stats.HiddenMoments.Maximum
+import all Stats.Probability.Frechet
+import all Stats.HiddenMoments.MaximumLimit
 import all Stats.HiddenMoments.Mean
 import all Stats.HiddenMoments.MomentAsymptotic
 import all Stats.HiddenMoments.MomentMean
