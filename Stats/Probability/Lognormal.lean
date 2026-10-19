@@ -115,6 +115,22 @@ theorem lognormalReal_squared_cv (m : ℝ) (v : NNReal) :
   rw [he]
   exact mul_div_cancel_right₀ _ (Real.exp_ne_zero _)
 
+/-- The actual lognormal CV in arXiv:1912.00277v2, Section VI.
+Its value is independent of log location, including zero log variance. -/
+theorem lognormalReal_cv (m : ℝ) (v : NNReal) :
+    √(variance (fun x : ℝ => x) (lognormalReal m v)) /
+      (∫ x : ℝ, x ∂lognormalReal m v) = √(Real.exp (v : ℝ) - 1) := by
+  rw [lognormalReal_variance, lognormalReal_mean]
+  have hd : 0 ≤ Real.exp (v : ℝ) - 1 := by
+    linarith [Real.add_one_le_exp (v : ℝ), v.coe_nonneg]
+  rw [Real.sqrt_mul hd]
+  have he : Real.exp (2 * m + (v : ℝ)) = Real.exp (m + (v : ℝ) / 2) ^ 2 := by
+    rw [← Real.exp_nat_mul]
+    congr 1
+    push_cast
+    ring
+  rw [he, Real.sqrt_sq (Real.exp_pos _).le, mul_div_cancel_right₀ _ (Real.exp_ne_zero _)]
+
 example : IsProbabilityMeasure (lognormalReal 0 1) := inferInstance
 
 example : (lognormalReal 0 1).map Real.log = gaussianReal 0 1 := lognormalReal_map_log _ _
@@ -127,5 +143,6 @@ example : (∫ x : ℝ, x⁻¹ ∂lognormalReal 0 1) = Real.exp (1 / 2) := by
 #print axioms lognormalReal_moment_rpow
 #print axioms lognormalReal_variance
 #print axioms lognormalReal_squared_cv
+#print axioms lognormalReal_cv
 
 end TailOptionPricing.LognormalMeasure

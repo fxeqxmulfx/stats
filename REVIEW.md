@@ -2544,6 +2544,48 @@ duplicates; the audit imports all 222 other `Stats/` modules.
 The new 111-line module's square-root normalization, exponent and
 positive parameter domain were checked against the local Eq. compound.
 
+### 2026-10-19: actual Gamma moments and the lognormal precision match
+
+[GammaMoments.lean](Stats/Probability/GammaMoments.lean) evaluates
+moments of Mathlib's actual normalized Gamma distribution with shape
+`alpha>0` and rate `beta>0`. For each real p with `alpha+p>0`, its
+power is independently proved L1 using the positive Euler integral
+kernel. The actual expectation is
+`beta^(-p)*Gamma(alpha+p)/Gamma(alpha)`. A Lebesgue-a.e. density
+identity handles the single boundary point zero before transferring
+the integral to the actual Gamma measure. The negative-order example
+`alpha=2,beta=3,p=-1` satisfies the genuine integrability hypotheses.
+
+The actual Gamma mean, second moment and variance are
+`alpha/beta`, `alpha*(alpha+1)/beta^2` and `alpha/beta^2`.
+L2 is derived from the proved power L1 before using the variance
+identity. Its actual squared CV is `1/alpha`, and its CV is
+`1/sqrt(alpha)`, with positive parameters fixing the square-root sign.
+The actual lognormal CV is explicitly proved `sqrt(exp(v)-1)` for every
+log location and nonnegative log variance, including the atomic boundary.
+
+[GammaMatch.lean](Stats/EpistemicUncertainty/GammaMatch.lean)
+proves that Section VI's parameters
+`alpha=1/(exp(v)-1)` and `beta=exp(-v/2)/(exp(v)-1)` are positive
+for positive log variance v and define an actual Gamma probability
+law. Its actual mean, variance and CV equal those of the actual
+`Lognormal(0,v)` prior, using the independently proved moments of
+both populations. The source's beta is consistently a rate here.
+The checked `v=1` family witnesses all normalization and matching
+conditions. No distributional approximation error or stochastic
+ordering is inferred from these moment identities.
+
+Verification: all 4,156 default-build jobs pass without warnings. The
+audit checks 2,406 declarations and 2,067 theorems with zero non-core
+axioms. The index records 226 modules and 1,195 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,338 previous
+indexed names and types are preserved, with 18 additions and no
+duplicates. The audit explicitly imports all 224 other `Stats/` modules.
+The Gamma-moment and matching modules have 178 and 113 lines; the
+lognormal moment module has 148. Their moment-order conditions, actual
+CV signs and rate-parameter matching were checked against local Section VI.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4499,16 +4541,27 @@ the resulting actual density integral for the source's `S>0` domain.
 normalization or corrected moments. The later Gamma approximation is
 a separate distributional claim.
 
-### EU-28. Gamma/Lognormal moment and coefficient-of-variation matching — not ok
+### EU-28. Gamma/Lognormal moment and CV matching — ok as exact moment identities
 
 The source matches Gamma shape/rate to a lognormal precision law.
 
 The actual lognormal prior has the proved mean `exp(m+v/2)`, variance
 `(exp(v)-1)*exp(2*m+v)` and squared coefficient of variation `exp(v)-1`.
 
-**Missing:** the Gamma distribution's actual moments and the matching
-formulas as proved identities. Equality of the first two moments does
-not by itself provide a distributional approximation error bound.
+`gammaMeasure_integrable_rpow` and `gammaMeasure_moment_rpow` prove
+actual Gamma power L1 and moments for positive shape/rate and
+`alpha+p>0`. The actual mean, variance and CV are `alpha/beta`,
+`alpha/beta^2` and `1/sqrt(alpha)`.
+
+`epistemicGammaMatch_probability` proves the source's matched shape
+and rate give a proper population for `v>0`.
+`epistemicGammaMatch_mean`, `_variance` and `_cv` prove that its actual
+mean, variance and coefficient of variation equal those of the actual
+`Lognormal(0,v)` prior, with both input moment families proved separately.
+
+**Missing:** nothing for exact first-two-moment and CV matching.
+Equality of these moments supplies no distributional approximation
+error bound; that is a separate claim in EU-30.
 
 ### EU-29. Gamma and Lognormal tail/hazard comparison — not ok
 

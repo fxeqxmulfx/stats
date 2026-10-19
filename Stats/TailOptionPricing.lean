@@ -138,6 +138,8 @@ public import Stats.EpistemicUncertainty.CompoundLaw
 public import Stats.EpistemicUncertainty.CompoundDensity
 public import Stats.EpistemicUncertainty.CompoundMoments
 public import Stats.EpistemicUncertainty.CompoundIntegrand
+public import Stats.Probability.GammaMoments
+public import Stats.EpistemicUncertainty.GammaMatch
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
