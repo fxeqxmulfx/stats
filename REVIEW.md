@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, evaluated Normal–Gamma density | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and Student identification |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, actual Normal–Gamma/Student law with corrected scale | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and sharp Student moments |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2866,6 +2866,45 @@ Euler exponent, Gamma coefficient and positive rate were reread beside
 the local Eqs. compoundGamma and compoundGamma2. The conventional
 Student-scale identification remains unproved and explicitly tracked.
 
+### 2026-10-19: conventional Student law and corrected Gamma rate/scale identification
+
+[StudentDensity.lean](Stats/Probability/StudentDensity.lean) defines the
+conventional Student density with degrees of freedom nu and scale s:
+its centered coordinate is divided by s and its coefficient has the
+Jacobian `1/s`. Its positive-parameter density is positive, continuous
+and symmetric about the location. These are explicit conventional
+formulas; normalization is proved from the independent compound law.
+
+[GammaCompoundStudentForm.lean](Stats/EpistemicUncertainty/GammaCompoundStudentForm.lean)
+factors the positive Gamma rate out of the evaluated density, proving
+the second line of Eq. compoundGamma2 with the printed b read as r.
+The conventional Student parameters are exactly degrees of freedom
+`2*a` and scale `sqrt(r/a)`. The actual compound density equals that
+Student density, and the whole actual compound measure equals that
+conventional Student measure for every positive Gamma shape and rate.
+
+[GammaCompoundStudent.lean](Stats/EpistemicUncertainty/GammaCompoundStudent.lean)
+proves every Student law with positive df and scale is proper, using
+actual Gamma shape `nu/2` and rate `nu*s^2/2`. The real density is
+independently L1 and its integral is one; actual event probabilities
+are density integrals and the laws have no atoms. Density uniqueness
+and continuity show scale one and scale two give different whole laws.
+A proper shape-two, rate-two Gamma compound has df four and scale one;
+it differs from the proper scale-two Student law claimed by the source.
+The correction is a counterexample about actual probability measures.
+
+Verification: all 4,170 default-build jobs pass without warnings. The
+audit checks 2,549 declarations and 2,202 theorems with zero non-core
+axioms. The index records 240 modules and 1,306 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,441 previous
+indexed names and types are preserved, with 33 additions and no
+duplicates; the audit imports all 238 other `Stats/` modules.
+The new modules have 150, 150 and 160 lines. Both displayed formulas,
+the square-root sign, df/scale parameters and the concrete false-scale
+claim were checked beside the local Section VI text. Sharp moment
+failure and the unrestricted mean claim remain to be resolved.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4937,14 +4976,20 @@ in Eq. compoundGamma2; `epistemicNormalGammaLaw_eq_closed_density`
 identifies the whole actual probability measure with the evaluated
 density. It is finite at every outcome for all positive shapes/rates.
 
-**Missing:** identification with the conventional correctly scaled
-Student probability measure and the source's second density display.
-Sharp nonintegrability outside the proved moment range also remains.
-For the printed rate parameterization, the resulting Student law has
-$2α$ degrees of freedom and scale $sqrt(β/α)$; calling $β$ its
-standard Student scale requires correction or a declared alternative
-parameterization. The repository's separate Student formulas do not establish
-this compound-law theorem.
+`epistemicNormalGammaDensity_eq_rate_form` proves the second density
+display, interpreting its b as the earlier Gamma rate beta.
+`epistemicNormalGammaLaw_eq_studentMeasure` proves equality of whole
+actual probability measures with the conventional Student law of df
+`2*alpha` and scale `sqrt(beta/alpha)`. All positive-df, positive-scale
+Student laws are normalized through the independently constructed
+Gamma mixture, with independently L1 real density and integral one.
+`epistemic_gamma_student_law_counterexample` formally refutes the
+printed beta-as-scale claim: shape two, rate two gives the proper
+df-four scale-one law, which differs from the proper scale-two law.
+
+**Missing:** sharp nonintegrability outside the proved moment range
+and the source's unrestricted mean claim. The displayed compound-law
+evaluation and corrected conventional Student identification are proved.
 
 ### EU-32. Increasing epistemic uncertainty decreases the Student tail index — not ok
 
