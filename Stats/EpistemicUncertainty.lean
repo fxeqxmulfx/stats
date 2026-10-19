@@ -29,8 +29,10 @@ module
   prove their dispersion moments, variance and fourth central moment products.
   DecayingBounds and DecayingLimits prove uniform caps and finite limits
   of the actual second and fourth moments for geometric decay kappa<1.
-  General layer-dependent sign constructions and densities, nested kernels,
-  a CLT and the Normal-Gamma compound-law theorem remain separate.
+  SignLaw, SignExpansion and SignDensity identify the explicit independent
+  fair sign-vector model, its actual Gaussian population and normalized density.
+  General nested kernels, a CLT and the Normal-Gamma compound-law theorem
+  remain separate.
   Higher kurtosis alone does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/

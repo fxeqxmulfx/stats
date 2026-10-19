@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Explicit sign-vector densities, nested kernels, higher-moment and limit-law questions, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | General nested kernels, higher-moment and limit-law questions, numerical claims, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2096,6 +2096,59 @@ The audit explicitly imports all 200 other `Stats/` modules. The bounds
 and limits modules are 107 and 114 lines. Their actual-law domains and
 endpoint distinction were checked against the local Section IV source.
 
+### Identify the explicit independent sign model and general finite density
+
+Reread arXiv:1912.00277v2, Remark 1 and Section II's fair sign construction,
+Eq. gn, matrix T and vector M (`FatTailsEpistemic2019.tex`, lines 169–181
+and 234–315). This concerns the finite fair-branch model actually analyzed
+in the source; general nested uncertainty kernels remain separate.
+
+[SignLaw.lean](Stats/EpistemicUncertainty/SignLaw.lean) constructs the
+actual official uniform measure on all `Fin n -> Bool` vectors. Its
+singleton probabilities are `2^(-n)` from the true finite cardinality.
+Comparing every singleton proves this whole measure equals the product
+of the actual fair Boolean measures. Every coordinate is genuinely fair,
+and the coordinates are mutually independent. The source scale product
+is positive for every vector on its positive-scale, `[0,1)`-error domain.
+
+[SignExpansion.lean](Stats/EpistemicUncertainty/SignExpansion.lean)
+reindexes complete sign vectors by their last sign and preceding vector.
+Induction on the actual recursive laws gives the exact finite Dirac
+expansion of dispersion and Gaussian measure expansion of outcomes.
+Mapping the actual sign space gives exactly the earlier varying-error
+dispersion law. Sampling these actual signs independently of a standard
+Gaussian and applying `mu+scale*z` gives exactly the actual outcome law.
+The source's `2^n` mixture is thus a whole probability-law identity.
+
+[SignDensity.lean](Stats/EpistemicUncertainty/SignDensity.lean) transfers
+the proved component measures to Eq. gn's real Gaussian density. Its
+nonnegativity, measurability and L1 are proved independently; the existing
+actual law then supplies normalization of both density integrals and
+actual probabilities as restricted real density integrals. Depth-two,
+scale-two, mean-one populations with different errors one-half and
+one-quarter witness the actual generation and normalized density.
+
+The local source check also finds a row-order inconsistency: its displayed
+T starts with all plus signs, whereas M^3 and M_1^3 start with all minus
+signs. The declared `M_i=prod(1+epsilon_j*T_ij)` gives first multiplier
+`27/8` when every error is one-half; the illustrated M_1^3 gives `1/8`.
+A formal source counterexample records that discrepancy. The density sum
+is unaffected by a consistent permutation of rows and is proved as stated.
+
+EU-01's explicit finite fair-branch generation and EU-04's actual general
+finite density are proved, with the source's row illustration corrected.
+General continuous/dependent uncertainty kernels remain in EU-03.
+
+Verification: the full build passes 4,088 jobs without warnings. The
+audit checks 2,146 declarations and 1,852 theorems with zero non-core
+axioms. The index records 205 modules and 1,049 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. The declaration index
+preserves all 1,137 previous names and types, adding 27 without duplicates.
+The audit imports all 203 other `Stats/` modules. The sign-space,
+expansion and density modules have 145, 98 and 142 lines. Their source
+correspondence includes the full Section II matrix/vector illustration.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3528,8 +3581,9 @@ Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 Gaussian mixture, its whole-law binomial collapse, normalized density and
 corrected exceedance formula, first four outcome moments, symmetry and
 kurtosis are proved.
-Explicit layer-dependent sign constructions and densities, nested kernels,
-general infinite constructions and higher-moment limits, the CLT
+The explicit independent fair sign-vector construction, its general
+varying-error Gaussian mixture and normalized density are also proved.
+General nested kernels, infinite constructions and higher-moment limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
 are proved. The actual constant-error laws have the proved unscaled
@@ -3537,31 +3591,32 @@ point-mass weak limit at their common mean.
 This source has no active numbered Theorem or Proposition environment; both
 numbered Remarks and the mathematical claims are audited below.
 
-### EU-01. Remark 1: collapse the branching scenarios into one distribution — not ok
+### EU-01. Remark 1: collapse the branching scenarios — ok for the finite fair model
 
-`epistemicSigmaMoment` defines a binomial-weighted finite sum.
-`epistemicBranchLaw` now constructs the actual normalized recursive
-constant-error Gaussian population, with actual moments and symmetry.
-`epistemicScaleLaw` constructs its actual dispersion distribution,
-with unbiased mean, natural-order L1 moments and positive dispersion
-on the source domain. `epistemicScaleLaw_outcome_model` identifies the
-whole outcome law with an independent dispersion/Gaussian product
-model under `mu+scale*z`.
+`epistemicSignLaw` is the actual uniform measure on all `Fin n -> Bool`
+sign vectors. Every vector has probability `2^(-n)`; the whole space equals
+the product of genuine fair Boolean laws, every coordinate has the fair
+marginal, and the coordinates are mutually independent.
+`epistemicSignScale` is the source's multiplicative dispersion function.
 
-`epistemicScaleLaw_eq_binomial` and
-`epistemicBranchLaw_eq_binomial_mixture` now also prove the actual
-constant-error Binomial count representation and Gaussian mixture.
+`epistemicLayerScaleLaw_eq_sign_map` identifies the actual recursive
+varying-error dispersion with this explicit sign-vector pushforward.
+`epistemicSignLaw_outcome_model` proves that independently sampling this
+sign vector and a standard Gaussian under `mu+scale*z` generates exactly
+the actual varying-error outcome law.
+`epistemicLayerBranchLaw_eq_sign_mixture` gives its `2^n` genuine Gaussian
+components. `epistemicLayerBranchLaw_eq_signDensity` proves their actual
+normalized density. Positivity of every standard deviation follows from
+positive base scale and errors in `[0,1)`.
 
-`epistemicLayerScaleLaw` and `epistemicLayerBranchLaw` now construct
-actual varying-error populations too; both are probability measures.
-`epistemicLayerScaleLaw_outcome_model` proves the actual independent
-random-dispersion/Gaussian representation. On positive base scale and
-finite errors in `[0,1)`, the actual dispersion is positive a.e. Constant
-errors recover the previous actual populations as whole measures.
+Constant errors recover the previous actual populations as whole measures,
+including their genuine Binomial count representations and Gaussian mixtures.
+The general finite varying-error populations have actual dispersion moments,
+variance and fourth central moment products as well.
 
-**Missing:** the explicit general nonconstant-error sign-vector product
-space and its equality with the general Section II density representation.
-The actual varying-error recursive and random-scale models are proved.
+**Missing:** nothing for this explicit finite fair-branch construction.
+General continuous or dependent uncertainty kernels remain in EU-03.
+The source's displayed matrix/vector row mismatch is corrected in EU-04.
 
 ### EU-02. Remark 2: uncertainty around a zero probability implies a positive floor — not ok
 
@@ -3581,21 +3636,29 @@ The source defines nested mixtures over uncertain positive scale parameters.
 normalization, and interchange of the required integrals. The existing finite
 polynomial expressions do not implement this general construction.
 
-### EU-04. Section II: the 2ⁿ-component Gaussian density — not ok
+### EU-04. Section II: actual 2ⁿ-component Gaussian density — corrected
 
-The source's general sign-vector construction is described in comments.
-For constant errors, `epistemicBranchLaw` is an actual probability law,
-`epistemicBranchLaw_eq_binomial_mixture` identifies its Gaussian components,
-and `epistemicBranchLaw_eq_withDensity` proves its genuine Lebesgue density
-is `epistemicBinomialDensity`. Each component standard deviation is proved
-positive for `sigma>0`, `0<=epsilon<1`. The real density is nonnegative,
-measurable and L1; its real and nonnegative integrals both equal one.
-`epistemicBranchLaw_real_eq_integral_density` gives actual event probabilities
-as restricted integrals of this density.
+`epistemicLayerBranchLaw_eq_sign_mixture` derives Eq. gn's actual fair
+Gaussian mixture from the genuine varying-error recursion. Its scales are
+the source products over all sign vectors, with weight `2^(-n)`.
+`epistemicLayerBranchLaw_eq_signDensity` proves its Lebesgue density is
+`epistemicSignDensity` for positive base scale and all finite errors in
+`[0,1)`. Every component scale is independently proved positive.
+The density is nonnegative, measurable and L1; its real and nonnegative
+integrals both equal one. `epistemicLayerBranchLaw_real_eq_signDensity`
+identifies every measurable event probability with its actual density
+integral. Constant-error binomial density identities are also proved.
 
-**Missing:** the general layer-dependent sign-vector density and its equality
-with the corresponding general recursive measure. The constant-error density
-identity and normalization are proved on the source's positive-scale domain.
+The printed example matrix T starts with all plus signs, while its
+following vector M^3 and M_1^3 start with all minus signs. They reverse
+the rows despite the displayed definition `M_i=prod_j(1+epsilon_j*T_ij)`.
+`epistemic_sign_matrix_first_row_counterexample` follows that definition:
+with all three errors one-half, the first row has multiplier `27/8`,
+whereas the printed M_1^3 gives `1/8`. Reversing both row orderings
+consistently preserves the sum; Eq. gn's density itself is proved.
+
+**Missing:** nothing for the actual fair finite density on the positive-scale
+domain, with the source's row illustration corrected as above.
 
 ### EU-05. Section III: actual constant-error collapse to binomial weights — ok
 
@@ -3613,8 +3676,8 @@ Gaussian measures. Concrete depth-two positive-scale witnesses include
 an actual middle-scale probability of one-half.
 
 **Missing:** nothing for the actual constant-error measure collapse.
-Its positive-scale density identity is also proved in EU-04. The general
-layer-dependent sign construction remains separately recorded in EU-01.
+Its positive-scale density identity and the general finite fair sign-vector
+construction are also proved in EU-04 and EU-01.
 
 ### EU-06. Actual natural-order dispersion moment — ok for the finite constant-error law
 
@@ -3831,8 +3894,8 @@ convention gives 3/4. The variance product is proved as displayed; using
 the usual minus-sign Pochhammer convention repairs that notation.
 
 **Missing:** nothing for the actual recursive-law variance product with
-these source notation/index corrections. The explicit sign-vector
-product space remains in EU-01.
+these source notation/index corrections. The actual independent sign-vector
+product space and its whole-law representation are proved in EU-01.
 
 ### EU-20. Actual decaying-error variance exceeds the base and increases with depth — ok
 

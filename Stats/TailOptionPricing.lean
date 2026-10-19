@@ -116,6 +116,9 @@ public import Stats.EpistemicUncertainty.LayerLaw
 public import Stats.EpistemicUncertainty.LayerMoments
 public import Stats.EpistemicUncertainty.DecayingBounds
 public import Stats.EpistemicUncertainty.DecayingLimits
+public import Stats.EpistemicUncertainty.SignLaw
+public import Stats.EpistemicUncertainty.SignExpansion
+public import Stats.EpistemicUncertainty.SignDensity
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation

@@ -57,6 +57,9 @@ import all Stats.EpistemicUncertainty.DecayingLimits
 import all Stats.EpistemicUncertainty.BranchingKurtosis
 import all Stats.EpistemicUncertainty.BranchingLimits
 import all Stats.EpistemicUncertainty.ScaleLaw
+import all Stats.EpistemicUncertainty.SignDensity
+import all Stats.EpistemicUncertainty.SignExpansion
+import all Stats.EpistemicUncertainty.SignLaw
 import all Stats.EpistemicUncertainty.FractionalMoments
 import all Stats.EpistemicUncertainty.LayerLaw
 import all Stats.EpistemicUncertainty.LayerMoments
