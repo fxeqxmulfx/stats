@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian populations, corrected moments, symmetry, kurtosis, moment divergence and point-mass weak limit | General layer-dependent constructions and densities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | General layer-dependent constructions and densities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -1957,6 +1957,49 @@ preserves all 1,089 old names and types and adds nine without duplicates.
 The audit imports all 195 other `Stats/` modules. The density module
 is 156 lines; its positive-scale statements match the local source.
 
+### Prove the corrected actual exceedance formula and integral erfc bridge
+
+Reread arXiv:1912.00277v2, Section III's exceedance formula and its erfc
+integral definition (`FatTailsEpistemic2019.tex`, lines 366–374). For a
+population with common mean `mu`, the threshold in the printed numerator
+must be centered: `K-mu`. The source expression is valid as printed when
+`mu=0`.
+
+[Erfc.lean](Stats/BlackScholes/Erfc.lean) now proves that the project's
+CDF definitions of erf and erfc equal their usual oriented integrals.
+The proof starts with the actual Gaussian CDF derivative, proves the
+Gaussian density's square-root-two rescaling, and applies the fundamental
+theorem of calculus from zero to any real endpoint. Gaussian reflection
+supplies `Phi(0)=1/2`. Thus the erfc notation has the exact source integral
+meaning, beyond an algebraic wrapper around an unspecified special function.
+
+[BinomialSurvival.lean](Stats/EpistemicUncertainty/BinomialSurvival.lean)
+proves actual non-strict Gaussian exceedances by mapping a standard Gaussian
+through `mu+sigma*z`. Positivity gives the correct preimage, and the true
+standard Gaussian has no atoms. Applying the actual binomial Gaussian
+measure identity to the event and converting its finite weights to real
+probabilities yields the centered CDF sum. The proved erfc bridge converts
+this to the corrected source formula, including the extra factor one-half.
+
+The general-mean correction is checked by an actual N(1,1) counterexample:
+at threshold one, the actual probability is one-half, while the printed
+uncentered value is strictly smaller. Separate theorems prove the source's
+zero-mean specialization and the actual half-probability above the common
+mean at every finite depth. Positive scale-two, error-one-half, depth-two
+populations witness the CDF, erfc, zero-mean and common-mean formulas.
+
+EU-18's corrected analytic exceedance identity is proved. The numerical
+tables and their error-parameter labels still require certified checks.
+
+Verification: the full build passes 4,072 jobs without warnings. The
+audit checks 2,058 declarations and 1,778 theorems with zero non-core
+axioms. The regenerated index has 198 modules and 999 named theorems,
+with zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,098 previous public
+names and types are preserved; nine are added without duplicates. The
+audit explicitly imports all 196 other `Stats/` modules. The survival
+and error-function modules are 142 and 150 lines, respectively.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3386,8 +3429,9 @@ Source: [arXiv:1912.00277v2](https://arxiv.org/abs/1912.00277v2).
 Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 
 **Paper verdict: not ok.** The actual finite recursive constant-error
-Gaussian mixture, its whole-law binomial collapse and normalized density,
-corrected first four outcome moments, symmetry and kurtosis are proved.
+Gaussian mixture, its whole-law binomial collapse, normalized density and
+corrected exceedance formula, first four outcome moments, symmetry and
+kurtosis are proved.
 General layer-dependent sign constructions and densities, nested kernels,
 general infinite constructions and decaying-error limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
@@ -3642,12 +3686,27 @@ Growing kurtosis alone does not establish regular variation.
 
 The source gives a weighted erfc sum and ratios to a baseline Gaussian.
 
-`epistemicBranchLaw_real_eq_integral_density` now proves the actual
+`epistemicBranchLaw_real_eq_integral_density` proves the actual
 mixture survival integral on the positive-scale constant-error domain.
+`epistemicBranchLaw_real_Ici_binomial` proves the genuine exceedance is
+the binomial-weighted Gaussian-tail sum.
+`epistemicBranchLaw_real_Ici_erfc` proves the corrected actual erfc sum
+with `K-mu`, and `epistemicBranchLaw_real_Ici_erfc_zero_mean` gives the
+literally printed formula for `mu=0`. `erfc_eq_one_sub_integral` identifies
+the CDF-defined erfc with the source's actual integral definition by
+Gaussian differentiation and the fundamental theorem of calculus.
 
-**Missing:** the weighted erfc identity and certified numerical values/error
-bounds. The displayed threshold must be
-centered by $μ$, unless the calculation has explicitly set $μ=0$.
+The uncentered formula for general mean is false:
+`epistemic_uncentered_exceedance_counterexample` uses the actual N(1,1)
+law at threshold one. Its exceedance is one-half, strictly above the
+printed uncentered probability. The corrected formula preserves all
+source probabilities on its intended zero-mean domain. An actual
+finite-depth mean-one mixture also exceeds its mean with probability
+one-half.
+
+**Missing:** certified numerical table values/error bounds and verification
+of which error parameter belongs to each printed table. The corrected
+analytic exceedance formula and its integral-erfc interpretation are proved.
 
 ### EU-19. Section IV: decaying-error variance product — not ok as a variance derivation
 

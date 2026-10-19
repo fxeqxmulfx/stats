@@ -24,6 +24,7 @@ module
   BinomialCollapse identifies the actual binomial-weighted dispersion and
   Gaussian population measures. BinomialDensity proves the actual
   constant-error density and its normalization on the positive-scale domain.
+  BinomialSurvival proves actual centered Gaussian and erfc exceedance sums.
   General layer-dependent sign constructions and densities, nested kernels,
   a CLT and the Normal-Gamma compound-law theorem remain separate.
   Higher kurtosis alone does not establish a power-law tail.

@@ -7,14 +7,12 @@ module
   and the Section IV-D switching-mean κ₁ closed form (Eq. 18) consumed by
   `Stats.Kappa.GaussianSwitchingMean`.
 
-  Both `Real.erf` and `erfc` are defined here as wrappers around
-  `stdNormalCdf`, consistent with the standard integral forms
+  Both `Real.erf` and `erfc` are defined here through `stdNormalCdf`.
+  Their standard integral forms are proved below by the actual Gaussian
+  CDF derivative and the fundamental theorem of calculus:
       `erf(x)  = (2/√π) ∫_0^x exp(−t²) dt`,
-      `erfc(x) = (2/√π) ∫_x^∞ exp(−t²) dt`;
-  the integral forms are not formalised here.  Mathlib at `v4.29.0` has
-  no `Real.erf`, so this file fills that gap (compatible with a future
-  Mathlib upgrade — Mathlib's `Real.erf`, if added, would simply
-  supersede this definition).
+      `erfc(x) = 1 − (2/√π) ∫_0^x exp(−t²) dt`.
+  The latter is the definition used in arXiv:1912.00277v2, Section III.
 -/
 public import Stats.BlackScholes.CallPrice
 
@@ -30,9 +28,8 @@ namespace Real
         `Real.erf x = 2 · Φ(x · √2) − 1`,
     matching the standard integral form
         `erf(x) = (2/√π) ∫_0^x exp(−t²) dt`
-    via the change of variables `t = u/√2`.  Defined here as a wrapper
-    around `TailOptionPricing.stdNormalCdf`; the integral form is left
-    to future Mathlib infrastructure. -/
+    via the change of variables `t = u/√2`. The integral form is proved
+    by `TailOptionPricing.erf_eq_integral`. -/
 noncomputable def erf (x : ℝ) : ℝ :=
   2 * TailOptionPricing.stdNormalCdf (x * Real.sqrt 2) - 1
 
@@ -43,8 +40,8 @@ namespace TailOptionPricing
 /-- **Complementary error function** (functional definition).  `erfc(x)` is
     the standard normal tail rescaled and translated:
         `erfc(x) = 2 · (1 − Φ(x · √2))`.
-    The integral form `erfc(x) = (2/√π) ∫_x^∞ exp(−t²) dt` follows by the
-    change of variables `t = u/√2`. -/
+    The integral form `erfc(x) = 1 − (2/√π) ∫_0^x exp(−t²) dt` is proved
+    by `erfc_eq_one_sub_integral`. -/
 noncomputable def erfc (x : ℝ) : ℝ := 2 * (1 - stdNormalCdf (x * Real.sqrt 2))
 
 /-- **Complementarity identity**: `Real.erf x + erfc x = 1`. -/
@@ -60,6 +57,59 @@ theorem one_sub_stdNormalCdf_eq_half_erfc (c : ℝ) :
   have h_sqrt_ne : Real.sqrt 2 ≠ 0 := h_sqrt_pos.ne'
   rw [div_mul_cancel₀ c h_sqrt_ne]
   ring
+
+/-- The actual standard Gaussian assigns probability one-half below
+zero, by its proved reflection symmetry. -/
+theorem stdNormalCdf_zero : stdNormalCdf 0 = 1 / 2 := by
+  have h := stdNormalCdf_neg 0
+  simp only [neg_zero] at h
+  linarith
+
+private theorem gaussianPDFReal_rescale_sqrt_two (x : ℝ) :
+    ProbabilityTheory.gaussianPDFReal 0 1 (x * Real.sqrt 2) * Real.sqrt 2 =
+      (Real.sqrt Real.pi)⁻¹ * Real.exp (-(x ^ 2)) := by
+  have h₂ : Real.sqrt 2 ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr (by norm_num))
+  have hπ : Real.sqrt Real.pi ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr Real.pi_pos)
+  unfold ProbabilityTheory.gaussianPDFReal
+  simp only [NNReal.coe_one, mul_one, sub_zero, mul_pow,
+    Real.sq_sqrt (by norm_num : 0 ≤ (2 : ℝ))]
+  rw [Real.sqrt_mul (by norm_num : 0 ≤ (2 : ℝ)),
+    show -(x ^ 2 * 2) / 2 = -(x ^ 2) by ring]
+  field_simp
+
+/-- The actual Gaussian-tail definition of erfc equals the integral
+definition in arXiv:1912.00277v2, Section III, below the exceedance formula.
+The identity holds for every real endpoint, with an oriented interval. -/
+theorem erfc_eq_one_sub_integral (x : ℝ) :
+    erfc x = 1 - (2 / Real.sqrt Real.pi) *
+      ∫ t in (0 : ℝ)..x, Real.exp (-(t ^ 2)) := by
+  have hd (y : ℝ) : HasDerivAt (fun t : ℝ => stdNormalCdf (t * Real.sqrt 2))
+      ((Real.sqrt Real.pi)⁻¹ * Real.exp (-(y ^ 2))) y := by
+    have h := (stdNormalCdf_hasDerivAt (y * Real.sqrt 2)).comp y
+      (hasDerivAt_mul_const (Real.sqrt 2))
+    simpa only [Function.comp_def, gaussianPDFReal_rescale_sqrt_two] using h
+  have hc : Continuous (fun t : ℝ => (Real.sqrt Real.pi)⁻¹ * Real.exp (-(t ^ 2))) := by
+    fun_prop
+  have hi := intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (fun y _ => hd y) (hc.intervalIntegrable 0 x)
+  rw [intervalIntegral.integral_const_mul, zero_mul, stdNormalCdf_zero] at hi
+  unfold erfc
+  rw [div_eq_mul_inv]
+  linarith
+
+/-- The actual CDF definition of erf has its usual integral form,
+the complement of Section III's erfc integral definition. -/
+theorem erf_eq_integral (x : ℝ) :
+    Real.erf x = (2 / Real.sqrt Real.pi) *
+      ∫ t in (0 : ℝ)..x, Real.exp (-(t ^ 2)) := by
+  have h := erf_add_erfc x
+  rw [erfc_eq_one_sub_integral] at h
+  linarith
+
+example : erfc 0 = 1 := by simp [erfc_eq_one_sub_integral]
+
+#print axioms erfc_eq_one_sub_integral
+#print axioms erf_eq_integral
 
 open ProbabilityTheory MeasureTheory in
 /-- **Risk-neutral lognormal survival in `erfc` form.**  Specialising
