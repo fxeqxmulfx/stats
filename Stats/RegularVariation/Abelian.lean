@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's Abelian theorem and the slowly-varying generalisation of
   Result 1 / Eq. (3).
@@ -20,7 +22,9 @@
   * `Stats.RegularVariation.Abelian.FullSV` — full SV form of the
     Abelian theorem.
 -/
-import Stats.RegularVariation.Abelian.Basic
-import Stats.RegularVariation.Abelian.Bounded
-import Stats.RegularVariation.Abelian.Potter
-import Stats.RegularVariation.Abelian.FullSV
+public import Stats.RegularVariation.Abelian.Basic
+public import Stats.RegularVariation.Abelian.Bounded
+public import Stats.RegularVariation.Abelian.Potter
+public import Stats.RegularVariation.Abelian.FullSV
+
+@[expose] public section

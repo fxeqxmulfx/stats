@@ -1,3 +1,5 @@
+module
+
 /-
   Smile correction in Eq. (10).
 
@@ -11,8 +13,10 @@
   `σ`), avoiding the `ℝ≥0` parametrisation of `callPriceBS`.  The connection
   to `callPriceBS` itself is not needed for the smile result and is omitted.
 -/
-import Stats.BlackScholes.Greeks
-import Stats.BlackScholes.Erfc
+public import Stats.BlackScholes.Greeks
+public import Stats.BlackScholes.Erfc
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal

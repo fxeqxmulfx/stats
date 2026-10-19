@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -18,9 +20,11 @@
   5.  Lebesgue DCT: `∫_0^∞ (1 + u/√n)^n · e^{-u·√n} du → ∫_0^∞ e^{-u²/2} du
       = √(π/2)`.
 -/
-import Stats.Kappa.CubicStudent
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+public import Stats.Kappa.CubicStudent
+public import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
+public import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+
+@[expose] public section
 
 open Real Set Filter Topology MeasureTheory
 
@@ -58,7 +62,7 @@ private lemma log_one_add_le_sub_sq_div (x : ℝ) (hx : 0 ≤ x) :
       convert h using 1 <;> simp [Function.comp_def]
     have hd_sq : HasDerivAt (fun s : ℝ => s^2) (2 * t) t := by
       have := hd1.pow 2
-      convert this using 1 <;> simp
+      convert this using 1 ; simp
     have hd_2_1t : HasDerivAt (fun s : ℝ => 2 * (1 + s)) (2 : ℝ) t := by
       have := hd2.const_mul (2 : ℝ)
       simpa using this

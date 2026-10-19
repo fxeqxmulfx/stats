@@ -1,3 +1,5 @@
+module
+
 /-
   Brier scores on a probability space.
   Taleb, arXiv:1907.11162v3, Theorem 2.
@@ -6,11 +8,13 @@
   between zero and one. Every nonnegative real-order moment is integrable;
   no independence assumptions are needed.
 -/
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Ring
-import Mathlib.Tactic.Positivity
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.Ring
+public import Mathlib.Tactic.Positivity
+
+@[expose] public section
 
 open MeasureTheory Set
 

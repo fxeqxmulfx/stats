@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's representation theorem for slowly varying functions.
 
@@ -20,7 +22,9 @@
 
   See `Stats/RegularVariation/Representation.lean` for the umbrella.
 -/
-import Stats.RegularVariation.Representation.Converse
+public import Stats.RegularVariation.Representation.Converse
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

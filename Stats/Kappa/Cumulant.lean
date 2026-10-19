@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -30,8 +32,10 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Mathlib.Probability.Moments.MGFAnalytic
-import Mathlib.Probability.IdentDistrib
+public import Mathlib.Probability.Moments.MGFAnalytic
+public import Mathlib.Probability.IdentDistrib
+
+@[expose] public section
 
 namespace TailOptionPricing
 

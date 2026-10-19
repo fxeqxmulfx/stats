@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -28,11 +30,13 @@
   to get `liminf σ→∞ M(n)/M(1) ≥ n` for the lognormal) is the
   remaining piece, deferred to a focused asymptotic-analysis session.
 -/
-import Stats.Kappa.MaxIIdBound
-import Stats.Kappa.SumMaxBound
-import Stats.Kappa.MadLayerCake
-import Stats.Kappa.IIdTriangle
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Stats.Kappa.MaxIIdBound
+public import Stats.Kappa.SumMaxBound
+public import Stats.Kappa.MadLayerCake
+public import Stats.Kappa.IIdTriangle
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Set
 open scoped NNReal

@@ -1,16 +1,20 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
     arXiv:1802.05495v3 (Nov 2018).
 
-  ## Stats.Kappa.CubicStudentExpIntegral — Cubic-Student sum PDF via the
-     complex exponential integral (paper Appendix A, Eq. 11; todo C.2).
+  ## Stats.Kappa.CubicStudentExpIntegral — Closed form of the cubic-Student
+     Fourier integral via the complex exponential integral (Taleb,
+     arXiv:1802.05495v3, section "Cubic Student T (Gaussian Basin)",
+     equation `pdfcubicsum`).
 
   The paper's intermediate step before the closed-form MAD `M(n)` derives
   the *PDF* of the sum `S_n` of `n` iid cubic-Student variates from the
   Fourier inversion of the closed-form characteristic function
       `φ_n(ω) = (1 + √3 |ω|)^n · e^(−n √3 |ω|)`     (paper line 587).
-  Concretely (paper Eq. 11):
+  Concretely (paper equation `pdfcubicsum`):
 
       p_n(y) = e^(n − iy/√3) ·
                  (e^(2iy/√3) · E_{−n}(n + iy/√3) + E_{−n}(n − iy/√3))
@@ -20,16 +24,14 @@
   exponential integral and `E_{−n}(z) = ∫_1^∞ t^n · e^(−z·t) dt` is its
   negative-index specialisation.
 
-  Mathlib v4.29 lacks a complex-argument exponential integral, so this
-  module first introduces `expIntegralNeg` (its `n ∈ ℕ` negative-index
-  specialisation, the only case the paper uses) and then proves the
-  identity above.  The proof reduces to two integration lemmas (each
-  formalisable in Mathlib but bookkeeping-heavy) plus an algebraic
+  This module defines `expIntegralNeg` for the negative-index case
+  `n ∈ ℕ` used in the paper and proves the integral identity above.
+  The proof uses two integration identities and an algebraic
   factorisation step:
 
-    1.  `cubicStudentSumDensity_eq_half_fourier_avg` — Fourier inversion
-        with `cos = (e^{iωy} + e^{-iωy})/2` rewrites the real-valued PDF
-        as the half-sum of two complex one-sided Fourier integrals
+    1.  `cubicStudentSumDensity_eq_half_fourier_avg` — complexification
+        with `cos = (e^{iωy} + e^{-iωy})/2` rewrites the defining real integral
+        as the sum of two complex one-sided Fourier integrals
         divided by `2π`.
 
     2.  `cubicStudentSumFourierHalf_eq_expIntegralNeg` — the change of
@@ -43,24 +45,18 @@
     3.  Algebraic factorisation pulls out `e^(n − iy/√3) / (2 √3 π)`
         and matches the paper's `e^(2iy/√3)` cross-term.
 
-  Steps 1 and 2 are captured as `axiom`s in the same style as
-  `Kappa.CubicStudentAsymptotic.incompleteGamma_laplace_asymptotic`
-  (since discharged in `Kappa.CubicStudentLaplace`).  Discharging them
-  is a follow-up todo (todo3.md C.2.discharge): both reduce to
-  Bochner-integral substitution and integrand-integrability bounds
-  available in current Mathlib (`integral_comp_mul_left_Ioi`,
-  Lebesgue translation invariance, dominated convergence for complex
-  integrands with bounded modulus on the real characteristic function
-  `(1+√3 ω)^n · e^(−n √3 ω)`).
-
-  Step 3 is fully proved here via `Complex.exp_add`/`exp_neg`.
+  All three steps are proved below. The probability-law bridge from an
+  actual iid sum to the defined Fourier integral remains separate work;
+  the integral identity alone does not establish Proposition 1's MAD law.
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Stats.Kappa.CubicStudent
-import Mathlib.Analysis.Complex.Trigonometric
-import Mathlib.MeasureTheory.Integral.ExpDecay
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+public import Stats.Kappa.CubicStudent
+public import Mathlib.Analysis.Complex.Trigonometric
+public import Mathlib.MeasureTheory.Integral.ExpDecay
+public import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+
+@[expose] public section
 
 open Real Complex Set Filter Topology MeasureTheory Asymptotics
 
@@ -83,14 +79,13 @@ namespace TailOptionPricing
 noncomputable def expIntegralNeg (n : ℕ) (z : ℂ) : ℂ :=
   ∫ t in Ioi (1:ℝ), (t : ℂ) ^ n * Complex.exp (-(z * t))
 
-/-! ## Cubic-Student sum PDF (Fourier inversion of `φ_n`). -/
+/-! ## The cubic-Student Fourier integral from the paper. -/
 
-/-- **PDF of the iid sum of `n` cubic-Student variates.**  Defined via
-    the Fourier inversion of the closed-form characteristic function
-    `φ_n(ω) = (1 + √3|ω|)^n · e^(−n √3 |ω|)` (paper line 587, used to
-    derive Eq. 10 and Eq. 11).  Because `φ_n` is real and even,
+/-- **The cosine integral proposed for the iid-sum density** in Taleb,
+    arXiv:1802.05495v3, section "Cubic Student T (Gaussian Basin)",
+    immediately before equation `pdfcubicsum`:
         `p_n(y) = (1/π) · ∫_0^∞ (1+√3 ω)^n · e^(−n √3 ω) · cos(ω y) dω`
-    (paper line 590, one-sided cosine form). -/
+    The probability-law identification for an actual iid sum remains open. -/
 noncomputable def cubicStudentSumDensity (n : ℕ) (y : ℝ) : ℝ :=
   (1 / Real.pi) *
     ∫ ω in Ioi (0:ℝ),
@@ -107,15 +102,15 @@ noncomputable def cubicStudentSumFourierHalf (n : ℕ) (ψ : ℂ) : ℂ :=
       Complex.exp ((-((n : ℝ) * Real.sqrt 3 * ω) : ℝ)) *
       Complex.exp (ψ * ω)
 
-/-! ## Fourier-inversion reformulation: real PDF ↔ avg of complex half-Fourier integrals.
+/-! ## Complexification of the defining cosine integral.
 
-The real PDF
+The defined real integral
     `p_n(y) = (1/π) ∫_0^∞ (1+√3 ω)^n · e^(−n √3 ω) · cos(ω y) dω`
 rewrites — using `Complex.two_cos : 2 cos x = e^(I x) + e^(−I x)` and
 integral linearity — as
     `(p_n(y) : ℂ) = (H_n(I y) + H_n(−I y)) / (2 π)`.
 
-Discharging this axiom in Mathlib needs:
+The proof below uses:
 
 * `integral_ofReal` (LinearIsometry-based, no integrability hypothesis)
   to push `(· : ℝ → ℂ)` through the Bochner integral;
@@ -125,12 +120,11 @@ Discharging this axiom in Mathlib needs:
   integrand (modulus `(1+√3 ω)^n · e^(−n √3 ω)`, polynomial-times-exp
   decay → `integrable_of_isBigO_exp_neg`).
 
-Each step is routine in current Mathlib; the chained bookkeeping is
-sizeable but contains no genuinely new mathematics. -/
+These integral identities do not require a probability-law interpretation. -/
 
 /-- Common kernel of the half-Fourier integrand without the `e^(ψ ω)`
     factor.  Real-valued, cast to `ℂ` on demand. -/
-private noncomputable def cubicKernelReal (n : ℕ) (ω : ℝ) : ℝ :=
+noncomputable def cubicKernelReal (n : ℕ) (ω : ℝ) : ℝ :=
   (1 + Real.sqrt 3 * ω) ^ n * Real.exp (-((n : ℝ) * Real.sqrt 3 * ω))
 
 /-! ### Integrability of the cubic-Student kernel.
@@ -283,9 +277,9 @@ theorem cubicStudentSumFourierHalf_integrand_integrableOn
       _ = 1 := Real.exp_zero
   exact h_cast.mul_bdd h_meas_exp h_bdd
 
-/-- **Fourier inversion: complex form of the real PDF (paper line 590
-    rewritten with `cos = (e + e⁻)/2`).**  Proved from the integrability
-    sub-axiom `cubicStudentSumFourierHalf_integrand_integrableOn` via
+/-- **Complexification of the paper's cosine integral**, Taleb,
+    arXiv:1802.05495v3, immediately before equation `pdfcubicsum`.
+    Proved from `cubicStudentSumFourierHalf_integrand_integrableOn` via
     `integral_ofReal`, `Complex.two_cos`, and `integral_add` / `integral_smul`. -/
 theorem cubicStudentSumDensity_eq_half_fourier_avg
     {n : ℕ} (hn : 1 ≤ n) (y : ℝ) :
@@ -417,10 +411,11 @@ theorem Ioi_translate_one_C (f : ℝ → ℂ) :
 
 /-- **Substitution `u = 1 + √3 ω` rewrites `H_n(ψ)` as a multiple of
     `expIntegralNeg`.**  Proved from `integral_comp_mul_left_Ioi` +
-    `Ioi_translate_one_C` + algebra. -/
+    `Ioi_translate_one_C` + algebra. This is an identity of total Bochner
+    integrals; convergence conditions for the paper's Fourier integral are
+    separate from this change of variables. -/
 theorem cubicStudentSumFourierHalf_eq_expIntegralNeg
-    {n : ℕ} (hn : 1 ≤ n) (ψ : ℂ)
-    (hψ : ψ.re < (n : ℝ) * Real.sqrt 3) :
+    {n : ℕ} (ψ : ℂ) :
     cubicStudentSumFourierHalf n ψ =
       (Complex.exp n / ((Real.sqrt 3 : ℝ) : ℂ)) *
         Complex.exp (-(ψ / ((Real.sqrt 3 : ℝ) : ℂ))) *
@@ -543,13 +538,15 @@ theorem cubicStudentSumFourierHalf_eq_expIntegralNeg
   rw [hcoerce]
   field_simp
 
-/-! ## Main theorem (paper Eq. 11). -/
+/-! ## Main theorem (paper equation `pdfcubicsum`). -/
 
-/-- **PDF of the cubic-Student sum via the complex exponential integral
-    (paper Eq. 11, Appendix A; todo3 C.2).**  For `n : ℕ` with `n ≥ 1`,
+/-- **Closed form of the defined cubic-Student Fourier integral**, matching
+    Taleb, arXiv:1802.05495v3, equation `pdfcubicsum` in section
+    "Cubic Student T (Gaussian Basin)". For `n : ℕ` with `n ≥ 1`,
         `p_n(y) = e^(n − i y/√3) · (e^(2 i y/√3) · E_{−n}(n + i y/√3)
                                     + E_{−n}(n − i y/√3)) / (2 √3 π)`,
-    where `E_{−n}(z) := ∫_1^∞ t^n · e^(−z·t) dt`. -/
+    where `E_{−n}(z) := ∫_1^∞ t^n · e^(−z·t) dt`. Identification with
+    the density of an actual iid sum is a separate probability theorem. -/
 theorem cubicStudentSumDensity_via_exponentialIntegral
     {n : ℕ} (hn : 1 ≤ n) (y : ℝ) :
     ((cubicStudentSumDensity n y : ℝ) : ℂ) =
@@ -568,21 +565,10 @@ theorem cubicStudentSumDensity_via_exponentialIntegral
     exact_mod_cast Real.pi_ne_zero
   have h2_ne_zero : (2 : ℂ) ≠ 0 := two_ne_zero
   -- Two applications of the substitution lemma, `ψ = ±I·y`.
-  -- `Re(±I·y) = 0 < n·√3` since `n ≥ 1` and `√3 > 0`.
-  have hpsi_pos_re : (Complex.I * (y : ℂ)).re < (n : ℝ) * Real.sqrt 3 := by
-    have hre : (Complex.I * (y : ℂ)).re = 0 := by simp
-    rw [hre]
-    have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-    nlinarith
-  have hpsi_neg_re : (-(Complex.I * (y : ℂ))).re < (n : ℝ) * Real.sqrt 3 := by
-    have hre : (-(Complex.I * (y : ℂ))).re = 0 := by simp
-    rw [hre]
-    have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-    nlinarith
   have hH_pos :=
-    cubicStudentSumFourierHalf_eq_expIntegralNeg hn (Complex.I * y) hpsi_pos_re
+    cubicStudentSumFourierHalf_eq_expIntegralNeg (n := n) (Complex.I * y)
   have hH_neg :=
-    cubicStudentSumFourierHalf_eq_expIntegralNeg hn (-(Complex.I * y)) hpsi_neg_re
+    cubicStudentSumFourierHalf_eq_expIntegralNeg (n := n) (-(Complex.I * y))
   -- Fourier-inversion reformulation.
   have h_avg := cubicStudentSumDensity_eq_half_fourier_avg hn y
   -- Substitute both half-Fourier integrals.

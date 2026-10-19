@@ -1,3 +1,5 @@
+module
+
 /-
   Black–Scholes Greeks under risk-neutral parametrisation.
 
@@ -11,7 +13,9 @@
   • Algebraic put-form `callPriceBS − S₀ + K = K·Φ(−d₂) − S₀·Φ(−d₁)`
     (the BS put formula stated without defining the put price).
 -/
-import Stats.BlackScholes.CallPrice
+public import Stats.BlackScholes.CallPrice
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal

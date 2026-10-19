@@ -1,3 +1,5 @@
+module
+
 /-
   Bivariate copula scaffolding.
 
@@ -14,12 +16,14 @@
   Used as the foundation for the upper-tail-dependence coefficient
   `λ_U` (C2) and the Gaussian copula impossibility theorem (C4).
 -/
-import Mathlib.Topology.ContinuousOn
-import Mathlib.Order.MinMax
-import Mathlib.Topology.Order.OrderClosed
-import Mathlib.Topology.Order.DenselyOrdered
-import Mathlib.Tactic
-import Stats.BlackScholes.StdNormal
+public import Mathlib.Topology.ContinuousOn
+public import Mathlib.Order.MinMax
+public import Mathlib.Topology.Order.OrderClosed
+public import Mathlib.Topology.Order.DenselyOrdered
+public import Mathlib.Tactic
+public import Stats.BlackScholes.StdNormal
+
+@[expose] public section
 
 open Set
 open scoped Topology
@@ -206,17 +210,17 @@ noncomputable def gaussianCopula (ρ u v : ℝ) : ℝ :=
       stdNormalCdf ((stdNormalQuantile v - ρ * x) / Real.sqrt (1 - ρ^2))
         * ProbabilityTheory.gaussianPDFReal 0 1 x ∂MeasureTheory.volume
 
-theorem gaussianCopula_zero_left (ρ v : ℝ) (hv : v ∈ Set.Icc (0:ℝ) 1) :
+theorem gaussianCopula_zero_left (ρ v : ℝ) :
     gaussianCopula ρ 0 v = 0 := by
   unfold gaussianCopula
   have h1 : ((0:ℝ) ≤ 0 ∨ v ≤ 0) := Or.inl (le_refl 0)
-  rw [if_pos h1]
+  rw [ite_eq_left h1]
 
-theorem gaussianCopula_zero_right (ρ u : ℝ) (hu : u ∈ Set.Icc (0:ℝ) 1) :
+theorem gaussianCopula_zero_right (ρ u : ℝ) :
     gaussianCopula ρ u 0 = 0 := by
   unfold gaussianCopula
   have h1 : (u ≤ 0 ∨ (0:ℝ) ≤ 0) := Or.inr (le_refl 0)
-  rw [if_pos h1]
+  rw [ite_eq_left h1]
 
 theorem gaussianCopula_one_left (ρ v : ℝ) (hv : v ∈ Set.Icc (0:ℝ) 1) :
     gaussianCopula ρ 1 v = v := by
@@ -226,7 +230,7 @@ theorem gaussianCopula_one_left (ρ v : ℝ) (hv : v ∈ Set.Icc (0:ℝ) 1) :
     have hv_eq : v = 0 := hv_zero.symm
     subst hv_eq
     have h1 : ((1:ℝ) ≤ 0 ∨ (0:ℝ) ≤ 0) := Or.inr (le_refl 0)
-    rw [if_pos h1]
+    rw [ite_eq_left h1]
   · -- v > 0
     rcases eq_or_lt_of_le hv.2 with hv_one | hv_lt
     · -- v = 1
@@ -235,7 +239,7 @@ theorem gaussianCopula_one_left (ρ v : ℝ) (hv : v ∈ Set.Icc (0:ℝ) 1) :
       have h1 : ¬ ((1:ℝ) ≤ 0 ∨ (1:ℝ) ≤ 0) := by
         intro h; rcases h with h | h <;> linarith
       have h2 : ((1:ℝ) ≤ 1 ∧ (1:ℝ) ≤ 1) := ⟨le_refl 1, le_refl 1⟩
-      rw [if_neg h1, if_pos h2]
+      rw [ite_eq_right h1, ite_eq_left h2]
     · -- 0 < v < 1
       have h1 : ¬ ((1:ℝ) ≤ 0 ∨ v ≤ 0) := by
         intro h; rcases h with h | h
@@ -244,7 +248,7 @@ theorem gaussianCopula_one_left (ρ v : ℝ) (hv : v ∈ Set.Icc (0:ℝ) 1) :
       have h2 : ¬ ((1:ℝ) ≤ 1 ∧ (1:ℝ) ≤ v) := by
         intro h; linarith [h.2]
       have h3 : (1:ℝ) ≤ 1 := le_refl 1
-      rw [if_neg h1, if_neg h2, if_pos h3]
+      rw [ite_eq_right h1, ite_eq_right h2, ite_eq_left h3]
 
 theorem gaussianCopula_one_right (ρ u : ℝ) (hu : u ∈ Set.Icc (0:ℝ) 1) :
     gaussianCopula ρ u 1 = u := by
@@ -254,7 +258,7 @@ theorem gaussianCopula_one_right (ρ u : ℝ) (hu : u ∈ Set.Icc (0:ℝ) 1) :
     have hu_eq : u = 0 := hu_zero.symm
     subst hu_eq
     have h1 : ((0:ℝ) ≤ 0 ∨ (1:ℝ) ≤ 0) := Or.inl (le_refl 0)
-    rw [if_pos h1]
+    rw [ite_eq_left h1]
   · -- u > 0
     rcases eq_or_lt_of_le hu.2 with hu_one | hu_lt
     · -- u = 1
@@ -263,7 +267,7 @@ theorem gaussianCopula_one_right (ρ u : ℝ) (hu : u ∈ Set.Icc (0:ℝ) 1) :
       have h1 : ¬ ((1:ℝ) ≤ 0 ∨ (1:ℝ) ≤ 0) := by
         intro h; rcases h with h | h <;> linarith
       have h2 : ((1:ℝ) ≤ 1 ∧ (1:ℝ) ≤ 1) := ⟨le_refl 1, le_refl 1⟩
-      rw [if_neg h1, if_pos h2]
+      rw [ite_eq_right h1, ite_eq_left h2]
     · -- 0 < u < 1
       have h1 : ¬ (u ≤ 0 ∨ (1:ℝ) ≤ 0) := by
         intro h; rcases h with h | h
@@ -273,7 +277,7 @@ theorem gaussianCopula_one_right (ρ u : ℝ) (hu : u ∈ Set.Icc (0:ℝ) 1) :
         intro h; linarith [h.1]
       have h3 : ¬ ((1:ℝ) ≤ u) := not_le.mpr hu_lt
       have h4 : (1:ℝ) ≤ 1 := le_refl 1
-      rw [if_neg h1, if_neg h2, if_neg h3, if_pos h4]
+      rw [ite_eq_right h1, ite_eq_right h2, ite_eq_right h3, ite_eq_left h4]
 
 /-- **Conditional upper-tail integrand for the Gaussian copula.**
 The integrand of the Gaussian-copula bivariate tail:
@@ -315,11 +319,11 @@ theorem gaussianCopula_eq_u_sub_lowerTailMass
   have hu_lt : u < 1 := hu.2
   have h_branch1 : ¬ (u ≤ 0 ∨ u ≤ 0) := by
     intro h; rcases h with h | h <;> linarith
-  rw [if_neg h_branch1]
+  rw [ite_eq_right h_branch1]
   have h_branch2 : ¬ (1 ≤ u ∧ 1 ≤ u) := by intro h; linarith [h.1]
-  rw [if_neg h_branch2]
+  rw [ite_eq_right h_branch2]
   have h_branch3 : ¬ (1 ≤ u) := not_le.mpr hu_lt
-  rw [if_neg h_branch3, if_neg h_branch3]
+  rw [ite_eq_right h_branch3, ite_eq_right h_branch3]
   set q : ℝ := stdNormalQuantile u with hq_def
   unfold gaussianCopulaLowerTailMass gaussianCopulaTailIntegrand
   -- Pointwise: Φ(·) * ϕ(x) = ϕ(x) - (1 - Φ(·)) * ϕ(x)

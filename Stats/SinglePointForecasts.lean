@@ -1,3 +1,5 @@
+module
+
 /-
   On Single Point Forecasts for Fat-Tailed Variables.
     Taleb, Bar-Yam, Cirillo, arXiv:2007.16096v1 (Jul 2020).
@@ -21,8 +23,10 @@
   These results do not establish a general impossibility of forecasting,
   an LLN theorem or the policy conclusions. See REVIEW.md, SP-01–SP-21.
 -/
-import Stats.Pareto
-import Stats.RiskMeasures
+public import Stats.Pareto
+public import Stats.RiskMeasures
+
+@[expose] public section
 
 open Real Set Filter Topology MeasureTheory
 

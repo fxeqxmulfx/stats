@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: mispricing signal and variance-swap breakdown from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -12,7 +14,9 @@
 
   See `Stats/Pareto.lean` for the umbrella module.
 -/
-import Stats.Pareto.AbstractCall
+public import Stats.Pareto.AbstractCall
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

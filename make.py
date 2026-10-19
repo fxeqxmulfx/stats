@@ -9,9 +9,9 @@ Lean
     index                         regenerate INDEX.md from Stats/ and the build
     forbidden                     search Stats/ for native_decide, axioms and disabled linters
 
-Python (the uv project in python/; an experiment is a folder under experiments/)
+Python (the locked environment in python/)
     setup                         install the locked environment
-    test [pattern ...]            run the test suite, optionally only tests matching patterns
+    test [pattern ...]            run kappa.py's tests, optionally matching patterns
     blocks                        list the experiment language
     check <experiment>            load an experiment and list its runs
     show <experiment> <label>     print one run's description
@@ -83,7 +83,8 @@ def setup(_):
 
 def test(arguments):
     patterns = [flag for pattern in arguments.patterns for flag in ("-k", pattern)]
-    execute(["uv", "run", "--locked", "python", "-m", "unittest", "discover", "-s", "tests", *patterns],
+    execute(["uv", "run", "--locked", "python", "-m", "unittest", "discover",
+             "-s", str(ROOT), "-p", "kappa.py", *patterns],
             cwd=PYTHON)
 
 

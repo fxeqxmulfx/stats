@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: definitions and Results 1, 2, 3 from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -26,11 +28,13 @@
   * `Stats.Pareto.Calibration` — multi-anchor parameter inversion and
     term structure under `α`-stable scaling.
 -/
-import Stats.Pareto.Basic
-import Stats.Pareto.Returns
-import Stats.Pareto.Put
-import Stats.Pareto.PutCallParity
-import Stats.Pareto.TailRisk
-import Stats.Pareto.AbstractCall
-import Stats.Pareto.Mispricing
-import Stats.Pareto.Calibration
+public import Stats.Pareto.Basic
+public import Stats.Pareto.Returns
+public import Stats.Pareto.Put
+public import Stats.Pareto.PutCallParity
+public import Stats.Pareto.TailRisk
+public import Stats.Pareto.AbstractCall
+public import Stats.Pareto.Mispricing
+public import Stats.Pareto.Calibration
+
+@[expose] public section

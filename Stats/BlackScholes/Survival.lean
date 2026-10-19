@@ -1,3 +1,5 @@
+module
+
 /-
   Lognormal survival function `survivalLN` and its basic properties:
   continuity, monotonicity, the quadratic Markov / Chernoff tail bound, and
@@ -7,9 +9,11 @@
   is the risk-neutral lognormal tail probability of `S_T = S₀ · exp X`
   where `X ∼ 𝒩(μ, v)`.
 -/
-import Stats.Arbitrage
-import Mathlib.Probability.Distributions.Gaussian.Real
-import Mathlib.Probability.Moments.Basic
+public import Stats.Arbitrage
+public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Mathlib.Probability.Moments.Basic
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal

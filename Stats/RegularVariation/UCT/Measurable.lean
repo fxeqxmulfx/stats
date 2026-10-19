@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — Uniform Convergence Theorem.
 
@@ -9,8 +11,10 @@
 
   See `Stats/RegularVariation/UCT.lean` for the umbrella.
 -/
-import Stats.RegularVariation.UCT.Monotone
-import Mathlib.MeasureTheory.Integral.Indicator
+public import Stats.RegularVariation.UCT.Monotone
+public import Mathlib.MeasureTheory.Integral.Indicator
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 
@@ -238,7 +242,7 @@ private lemma additive_uct_aux
   have h_vol_ϕT_ne_top : volume ϕT ≠ ⊤ := by rw [h_vol_ϕT]; exact h_vol_T_y_full_ne_top
   have h_vol_uIT_ne_top : volume uIT ≠ ⊤ := by rw [h_vol_uIT]; exact h_volIT_ne_top
   have h_vol_ϕT_diff_J_ne_top : volume (ϕT \ J) ≠ ⊤ :=
-    ne_of_lt (lt_of_le_of_lt (measure_mono Set.diff_subset)
+    ne_of_lt (lt_of_le_of_lt (measure_mono Set.sdiff_subset)
       (lt_of_le_of_ne le_top h_vol_ϕT_ne_top))
   -- Move to ℝ via .toReal.
   have h_volJ_re : (volume J).toReal = mJ := h_volJ_toReal
@@ -252,17 +256,17 @@ private lemma additive_uct_aux
   -- (volume Tu).toReal + (volume (ϕT \ J)).toReal = (volume T_y_full).toReal.
   have h_split_E : volume Tu + volume (ϕT \ J) = volume T_y_full := by
     have h1 : volume (ϕT ∩ J) + volume (ϕT \ J) = volume ϕT :=
-      MeasureTheory.measure_inter_add_diff (μ := volume) ϕT h_mble_J
+      MeasureTheory.measure_inter_add_sdiff (μ := volume) ϕT h_mble_J
     rw [h_Tu_eq, Set.inter_comm J ϕT, h1, h_vol_ϕT]
   have h_split : (volume Tu).toReal + (volume (ϕT \ J)).toReal
                   = (volume T_y_full).toReal := by
     rw [← ENNReal.toReal_add h_vol_Tu_ne_top h_vol_ϕT_diff_J_ne_top, h_split_E]
   -- (volume (uIT \ J)).toReal = β - α.
   have h_vol_uIT_diff_J_ne_top : volume (uIT \ J) ≠ ⊤ :=
-    ne_of_lt (lt_of_le_of_lt (measure_mono Set.diff_subset)
+    ne_of_lt (lt_of_le_of_lt (measure_mono Set.sdiff_subset)
       (lt_of_le_of_ne le_top h_vol_uIT_ne_top))
   have h_vol_uIT_diff_J_E : volume (uIT \ J) = volume uIT - volume J :=
-    MeasureTheory.measure_diff h_J_sub_uIT_set h_mble_J.nullMeasurableSet
+    MeasureTheory.measure_sdiff h_J_sub_uIT_set h_mble_J.nullMeasurableSet
       h_volJ_ne_top
   have h_vol_uIT_diff_J_re : (volume (uIT \ J)).toReal = β - α := by
     rw [h_vol_uIT_diff_J_E,
@@ -272,7 +276,7 @@ private lemma additive_uct_aux
   have h_vol_ϕT_diff_J_re_le : (volume (ϕT \ J)).toReal ≤ β - α := by
     rw [← h_vol_uIT_diff_J_re]
     exact ENNReal.toReal_mono h_vol_uIT_diff_J_ne_top
-      (measure_mono (Set.diff_subset_diff_left h_ϕT_sub_uIT))
+      (measure_mono (Set.sdiff_subset_sdiff_left h_ϕT_sub_uIT))
   -- Therefore (volume Tu).toReal > mJ - τR.
   have h_volTu_re_lb : mJ - τR < (volume Tu).toReal := by
     have h_eq : (volume Tu).toReal

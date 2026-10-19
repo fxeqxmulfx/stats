@@ -1,3 +1,5 @@
+module
+
 /-
   Sanity check for `Stats.RegularVariation`: axioms for every proved
   theorem in the module.  Each line below should display only the three
@@ -9,7 +11,9 @@
   non-measurable SV functions exist for which `L(t+1)/L(t)` does not tend
   to 1).
 -/
-import Stats.RegularVariation
+public import Stats.RegularVariation
+
+@[expose] public section
 
 -- Definitions and the trivial RV_0 equivalence.
 #print axioms TailOptionPricing.IsSlowlyVarying

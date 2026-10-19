@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -20,9 +22,11 @@
 
   used in the Loulakis subexponential argument.
 -/
-import Mathlib.MeasureTheory.Measure.Restrict
-import Mathlib.MeasureTheory.Measure.Real
-import Mathlib.MeasureTheory.MeasurableSpace.Basic
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.MeasureTheory.Measure.Real
+public import Mathlib.MeasureTheory.MeasurableSpace.Basic
+
+@[expose] public section
 
 open MeasureTheory Set
 open scoped NNReal

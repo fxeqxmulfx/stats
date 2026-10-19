@@ -1,3 +1,5 @@
+module
+
 /-
   Calculus of the strong-Pareto call price.
 
@@ -11,7 +13,10 @@
 
   See `Stats/Calculus.lean` for the umbrella.
 -/
-import Stats.Pareto
+public import Stats.Pareto
+public import Mathlib.Analysis.Convex.Deriv
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

@@ -1,3 +1,5 @@
+module
+
 /-
   Risk measures & portfolio theory under Pareto.
 
@@ -29,10 +31,12 @@
   (`rpow_mul_survival_integrableOn_iff`), and Mathlib's interval
   integration.
 -/
-import Stats.RiskMeasures.CVaR
-import Stats.RiskMeasures.Spectral
-import Stats.RiskMeasures.Moments
-import Stats.RiskMeasures.MarkowitzFailure
-import Stats.RiskMeasures.Drawdown
-import Stats.RiskMeasures.Kelly
-import Stats.RiskMeasures.MLE
+public import Stats.RiskMeasures.CVaR
+public import Stats.RiskMeasures.Spectral
+public import Stats.RiskMeasures.Moments
+public import Stats.RiskMeasures.MarkowitzFailure
+public import Stats.RiskMeasures.Drawdown
+public import Stats.RiskMeasures.Kelly
+public import Stats.RiskMeasures.MLE
+
+@[expose] public section

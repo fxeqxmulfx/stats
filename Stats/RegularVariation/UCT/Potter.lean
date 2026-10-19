@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — Potter bounds.
 
@@ -8,7 +10,9 @@
 
   See `Stats/RegularVariation/UCT.lean` for the umbrella.
 -/
-import Stats.RegularVariation.UCT.Measurable
+public import Stats.RegularVariation.UCT.Measurable
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

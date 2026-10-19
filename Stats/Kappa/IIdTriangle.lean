@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -20,7 +22,7 @@
   1.  `|S_n − n·𝔼[X 0]| = |Σ_{i<n} (X i − 𝔼[X 0])| ≤ Σ_{i<n} |X i − 𝔼[X 0]|`
       pointwise (`Finset.abs_sum_le_sum_abs`).
   2.  Integrate; LHS = `M(n)`, RHS = `Σ_{i<n} ∫ |X i − 𝔼[X 0]| dμ`
-      (`integral_finset_sum`).
+      (`integral_finsetSum`).
   3.  For each `i`, `IdentDistrib.integral_eq` (composed with
       `fun x => |x − 𝔼[X 0]|`) gives
           `∫ |X i − 𝔼[X 0]| dμ = ∫ |X 0 − 𝔼[X 0]| dμ = M(1)`.
@@ -31,8 +33,10 @@
   of the two structural shells in `Stats.Kappa.Lognormal`
   (todo5.md Phase A).
 -/
-import Stats.Kappa.Lognormal
-import Mathlib.Probability.IdentDistrib
+public import Stats.Kappa.Lognormal
+public import Mathlib.Probability.IdentDistrib
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Real
 
@@ -146,7 +150,7 @@ theorem madSum_le_n_madSum_one
   -- Step 4: integrability of `Σ |X i − c|`.
   have h_int_sum : Integrable
       (fun ω => ∑ i ∈ Finset.range n, |X i ω - c|) μ :=
-    integrable_finset_sum _ (fun i _ => h_int_abs i)
+    integrable_finsetSum _ (fun i _ => h_int_abs i)
   -- Step 5: integrate the pointwise inequality.
   have h_int_le : ∫ ω, |∑ i ∈ Finset.range n, (X i ω - c)| ∂μ
       ≤ ∫ ω, ∑ i ∈ Finset.range n, |X i ω - c| ∂μ := by
@@ -155,17 +159,17 @@ theorem madSum_le_n_madSum_one
       -- integrable function is integrable.
       have h_int_centred : Integrable
           (fun ω => ∑ i ∈ Finset.range n, (X i ω - c)) μ := by
-        apply integrable_finset_sum
+        apply integrable_finsetSum
         intros i _
         have hXi : Integrable (X i) μ := (h_id i).integrable_iff.mpr hX0
         exact hXi.sub (integrable_const _)
       exact h_int_centred.abs
     · exact h_int_sum
     · exact .of_forall h_pointwise
-  -- Step 6: split the sum-integral via `integral_finset_sum`.
+  -- Step 6: split the sum-integral via `integral_finsetSum`.
   have h_split : ∫ ω, ∑ i ∈ Finset.range n, |X i ω - c| ∂μ
       = ∑ i ∈ Finset.range n, ∫ ω, |X i ω - c| ∂μ :=
-    integral_finset_sum _ (fun i _ => h_int_abs i)
+    integral_finsetSum _ (fun i _ => h_int_abs i)
   -- Step 7: each integral equals `madSum μ X 1`.
   have h_each : ∀ i ∈ Finset.range n,
       ∫ ω, |X i ω - c| ∂μ = madSum μ X 1 := by

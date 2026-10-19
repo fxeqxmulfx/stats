@@ -1,3 +1,5 @@
+module
+
 /-
   Umbrella module for the formalization of
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -77,20 +79,22 @@
       the consistent `C′(K₁) ≥ BSC′(K₁)`, which gives the lower-bound form
       of Eq. (10).
 -/
-import Stats.Pareto
-import Stats.Theorem1
-import Stats.Calculus
-import Stats.Arbitrage
-import Stats.LayerCake
-import Stats.BlackScholes
-import Stats.CarrMadan
-import Stats.RiskMeasures
-import Stats.Hedging
-import Stats.Kappa
-import Stats.BinaryForecasts
-import Stats.EpistemicUncertainty
-import Stats.HiddenMoments
-import Stats.SinglePointForecasts
-import Stats.RegularVariation
-import Stats.Pareto.Measure
-import Stats.Copula.Basic
+public import Stats.Pareto
+public import Stats.Theorem1
+public import Stats.Calculus
+public import Stats.Arbitrage
+public import Stats.LayerCake
+public import Stats.BlackScholes
+public import Stats.CarrMadan
+public import Stats.RiskMeasures
+public import Stats.Hedging
+public import Stats.Kappa
+public import Stats.BinaryForecasts
+public import Stats.EpistemicUncertainty
+public import Stats.HiddenMoments
+public import Stats.SinglePointForecasts
+public import Stats.RegularVariation
+public import Stats.Pareto.Measure
+public import Stats.Copula.Basic
+
+@[expose] public section

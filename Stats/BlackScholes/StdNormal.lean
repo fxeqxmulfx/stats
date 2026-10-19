@@ -1,3 +1,5 @@
+module
+
 /-
   Standard normal CDF `Φ` and its analytic relationships to the lognormal
   survival function:
@@ -12,7 +14,9 @@
     asymptotics.
   • The CDF derivative `stdNormalCdf_hasDerivAt`: `∂Φ/∂x = φ`.
 -/
-import Stats.BlackScholes.Survival
+public import Stats.BlackScholes.Survival
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal
@@ -497,7 +501,7 @@ theorem stdNormalCdf_stdNormalQuantile {u : ℝ}
     (hu : u ∈ Set.range stdNormalCdf) :
     stdNormalCdf (stdNormalQuantile u) = u := by
   unfold stdNormalQuantile
-  rw [dif_pos hu]
+  rw [dite_eq_left hu]
   exact hu.choose_spec
 
 /-- The quantile is a left inverse of `stdNormalCdf`: for any `x : ℝ`,

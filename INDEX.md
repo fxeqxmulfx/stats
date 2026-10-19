@@ -29,1260 +29,1260 @@ count or in `#print axioms`; see [Gaps](#gaps).
 
 ### `Stats`
 
-**[Stats](Stats.lean)** — 1 lines, no indexed declarations
+**[Stats](Stats.lean)** — 5 lines, no indexed declarations
 
-**[Stats.Arbitrage](Stats/Arbitrage.lean)** — 295 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`deriv_le_of_matched_butterfly`](Stats/Arbitrage.lean#L20) | theorem | proved |
-| [`callPrice_dominates_BSC_deriv`](Stats/Arbitrage.lean#L60) | theorem | proved |
-| [`alpha_lower_bound`](Stats/Arbitrage.lean#L74) | theorem | proved |
-| [`tangent_le_of_convexOn_hasDerivAt`](Stats/Arbitrage.lean#L105) | lemma | proved |
-| [`matched_butterfly_of_convex`](Stats/Arbitrage.lean#L135) | theorem | proved |
-| [`callPrice_matched_butterfly_of_BSC_convex`](Stats/Arbitrage.lean#L156) | theorem | proved |
-| [`BSC_tail_dominates_at_match`](Stats/Arbitrage.lean#L173) | theorem | proved |
-| [`callPrice_strictAntitoneOn_Ici`](Stats/Arbitrage.lean#L199) | theorem | proved |
-| [`callPrice_slope_bounds`](Stats/Arbitrage.lean#L226) | theorem | proved |
-| [`callPrice_butterfly_asymmetric`](Stats/Arbitrage.lean#L256) | theorem | proved |
-
-**[Stats.AxiomAudit](Stats/AxiomAudit.lean)** — 37 lines, no indexed declarations
-
-**[Stats.BinaryForecasts](Stats/BinaryForecasts.lean)** — 42 lines, no indexed declarations
-
-**[Stats.BlackScholes](Stats/BlackScholes.lean)** — 23 lines, no indexed declarations
-
-**[Stats.Calculus](Stats/Calculus.lean)** — 20 lines, no indexed declarations
-
-**[Stats.CarrMadan](Stats/CarrMadan.lean)** — 275 lines
+**[Stats.Arbitrage](Stats/Arbitrage.lean)** — 299 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`integral_taylor_remainder_two`](Stats/CarrMadan.lean#L38) | theorem | proved |
-| [`carrMadan_signed`](Stats/CarrMadan.lean#L96) | theorem | proved |
-| [`integral_max_call_eq`](Stats/CarrMadan.lean#L111) | theorem | proved |
-| [`integral_max_put_eq`](Stats/CarrMadan.lean#L148) | theorem | proved |
-| [`integral_max_call_zero`](Stats/CarrMadan.lean#L182) | theorem | proved |
-| [`integral_max_put_zero`](Stats/CarrMadan.lean#L195) | theorem | proved |
-| [`carrMadan`](Stats/CarrMadan.lean#L215) | theorem | proved |
+| [`deriv_le_of_matched_butterfly`](Stats/Arbitrage.lean#L24) | theorem | proved |
+| [`callPrice_dominates_BSC_deriv`](Stats/Arbitrage.lean#L64) | theorem | proved |
+| [`alpha_lower_bound`](Stats/Arbitrage.lean#L78) | theorem | proved |
+| [`tangent_le_of_convexOn_hasDerivAt`](Stats/Arbitrage.lean#L109) | lemma | proved |
+| [`matched_butterfly_of_convex`](Stats/Arbitrage.lean#L139) | theorem | proved |
+| [`callPrice_matched_butterfly_of_BSC_convex`](Stats/Arbitrage.lean#L160) | theorem | proved |
+| [`BSC_tail_dominates_at_match`](Stats/Arbitrage.lean#L177) | theorem | proved |
+| [`callPrice_strictAntitoneOn_Ici`](Stats/Arbitrage.lean#L203) | theorem | proved |
+| [`callPrice_slope_bounds`](Stats/Arbitrage.lean#L230) | theorem | proved |
+| [`callPrice_butterfly_asymmetric`](Stats/Arbitrage.lean#L260) | theorem | proved |
 
-**[Stats.EpistemicUncertainty](Stats/EpistemicUncertainty.lean)** — 341 lines
+**[Stats.AxiomAudit](Stats/AxiomAudit.lean)** — 139 lines, no indexed declarations
 
-| declaration | kind | status |
-| --- | --- | --- |
-| [`epistemicMomentFactor`](Stats/EpistemicUncertainty.lean#L44) | def |  |
-| [`epistemicMomentFactor_two`](Stats/EpistemicUncertainty.lean#L48) | theorem | proved |
-| [`epistemicMomentFactor_four`](Stats/EpistemicUncertainty.lean#L53) | theorem | proved |
-| [`epistemicSigmaMoment`](Stats/EpistemicUncertainty.lean#L60) | def |  |
-| [`epistemicSigmaMoment_eq`](Stats/EpistemicUncertainty.lean#L69) | theorem | proved |
-| [`epistemicVariance_eq`](Stats/EpistemicUncertainty.lean#L103) | theorem | proved |
-| [`epistemicSigmaFourthMoment_eq`](Stats/EpistemicUncertainty.lean#L109) | theorem | proved |
-| [`epistemicKurtosis`](Stats/EpistemicUncertainty.lean#L118) | def |  |
-| [`epistemicKurtosis_eq`](Stats/EpistemicUncertainty.lean#L125) | theorem | proved |
-| [`epistemicMomentFactor_four_ge_two_sq`](Stats/EpistemicUncertainty.lean#L146) | theorem | proved |
-| [`epistemicMomentFactor_four_strict`](Stats/EpistemicUncertainty.lean#L151) | theorem | proved |
-| [`epistemicKurtosis_ge_three`](Stats/EpistemicUncertainty.lean#L162) | theorem | proved |
-| [`epistemicExcessKurtosis`](Stats/EpistemicUncertainty.lean#L183) | def |  |
-| [`epistemicExcessKurtosis_eq`](Stats/EpistemicUncertainty.lean#L189) | theorem | proved |
-| [`epistemicExcessKurtosis_nonneg`](Stats/EpistemicUncertainty.lean#L198) | theorem | proved |
-| [`epistemicKurtosis_gt_three`](Stats/EpistemicUncertainty.lean#L206) | theorem | proved |
-| [`decayingErrorVariance`](Stats/EpistemicUncertainty.lean#L232) | def |  |
-| [`decayingErrorVariance_ge_base`](Stats/EpistemicUncertainty.lean#L237) | theorem | proved |
-| [`decayingErrorVariance_mono`](Stats/EpistemicUncertainty.lean#L260) | theorem | proved |
-| [`log_multiplicative_error`](Stats/EpistemicUncertainty.lean#L317) | theorem | proved |
-| [`log_one_add_le_self`](Stats/EpistemicUncertainty.lean#L331) | theorem | proved |
+**[Stats.BinaryForecasts](Stats/BinaryForecasts.lean)** — 46 lines, no indexed declarations
 
-**[Stats.Hedging](Stats/Hedging.lean)** — 410 lines
+**[Stats.BlackScholes](Stats/BlackScholes.lean)** — 27 lines, no indexed declarations
+
+**[Stats.Calculus](Stats/Calculus.lean)** — 24 lines, no indexed declarations
+
+**[Stats.CarrMadan](Stats/CarrMadan.lean)** — 279 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`squaredReturn_survival_eq`](Stats/Hedging.lean#L64) | theorem | proved |
-| [`squaredReturn_survival_eq_survival`](Stats/Hedging.lean#L89) | theorem | proved |
-| [`gammaPnLIntegrand`](Stats/Hedging.lean#L98) | def |  |
-| [`gammaPnL_constant_eq`](Stats/Hedging.lean#L104) | theorem | proved |
-| [`squaredReturn_density_eq_layerCake`](Stats/Hedging.lean#L121) | theorem | proved |
-| [`gammaPnL_constant_integrableOn_iff`](Stats/Hedging.lean#L135) | theorem | proved |
-| [`gammaPnL_constant_not_integrable`](Stats/Hedging.lean#L166) | theorem | proved |
-| [`squaredReturn_variance_integrableOn_iff`](Stats/Hedging.lean#L181) | theorem | proved |
-| [`paretoCallStripCost_eq`](Stats/Hedging.lean#L203) | theorem | proved |
-| [`paretoPutStripCost_eq`](Stats/Hedging.lean#L220) | theorem | proved |
-| [`paretoCarrMadan`](Stats/Hedging.lean#L245) | theorem | proved |
-| [`paretoVega_relative_eq`](Stats/Hedging.lean#L276) | theorem | proved |
-| [`paretoVega_relative_tendsto_atBot`](Stats/Hedging.lean#L306) | theorem | proved |
-| [`bsVega_tendsto_zero_atTop`](Stats/Hedging.lean#L343) | theorem | proved |
+| [`integral_taylor_remainder_two`](Stats/CarrMadan.lean#L42) | theorem | proved |
+| [`carrMadan_signed`](Stats/CarrMadan.lean#L100) | theorem | proved |
+| [`integral_max_call_eq`](Stats/CarrMadan.lean#L115) | theorem | proved |
+| [`integral_max_put_eq`](Stats/CarrMadan.lean#L152) | theorem | proved |
+| [`integral_max_call_zero`](Stats/CarrMadan.lean#L186) | theorem | proved |
+| [`integral_max_put_zero`](Stats/CarrMadan.lean#L199) | theorem | proved |
+| [`carrMadan`](Stats/CarrMadan.lean#L219) | theorem | proved |
 
-**[Stats.HiddenMoments](Stats/HiddenMoments.lean)** — 272 lines
+**[Stats.EpistemicUncertainty](Stats/EpistemicUncertainty.lean)** — 345 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`paretoTailMoment`](Stats/HiddenMoments.lean#L39) | def |  |
-| [`paretoTailMoment_eq`](Stats/HiddenMoments.lean#L46) | theorem | proved |
-| [`paretoTailMoment_at_zero`](Stats/HiddenMoments.lean#L77) | theorem | proved |
-| [`paretoTailMoment_at_one`](Stats/HiddenMoments.lean#L92) | theorem | proved |
-| [`paretoSampleSurvivalRatioCDF`](Stats/HiddenMoments.lean#L115) | def |  |
-| [`paretoSampleSurvivalRatioPDF`](Stats/HiddenMoments.lean#L119) | def |  |
-| [`paretoSampleSurvivalRatioCDF_eq_one_sub_maxCDF`](Stats/HiddenMoments.lean#L129) | theorem | proved |
-| [`paretoSampleSurvivalRatioPDF_eq_deriv`](Stats/HiddenMoments.lean#L153) | theorem | proved |
-| [`paretoSampleSurvivalRatio_mean`](Stats/HiddenMoments.lean#L177) | theorem | proved |
-| [`paretoSampleSurvivalRatio_mean_asymptotic_gap`](Stats/HiddenMoments.lean#L262) | theorem | proved |
+| [`epistemicMomentFactor`](Stats/EpistemicUncertainty.lean#L48) | def |  |
+| [`epistemicMomentFactor_two`](Stats/EpistemicUncertainty.lean#L52) | theorem | proved |
+| [`epistemicMomentFactor_four`](Stats/EpistemicUncertainty.lean#L57) | theorem | proved |
+| [`epistemicSigmaMoment`](Stats/EpistemicUncertainty.lean#L64) | def |  |
+| [`epistemicSigmaMoment_eq`](Stats/EpistemicUncertainty.lean#L73) | theorem | proved |
+| [`epistemicVariance_eq`](Stats/EpistemicUncertainty.lean#L107) | theorem | proved |
+| [`epistemicSigmaFourthMoment_eq`](Stats/EpistemicUncertainty.lean#L113) | theorem | proved |
+| [`epistemicKurtosis`](Stats/EpistemicUncertainty.lean#L122) | def |  |
+| [`epistemicKurtosis_eq`](Stats/EpistemicUncertainty.lean#L129) | theorem | proved |
+| [`epistemicMomentFactor_four_ge_two_sq`](Stats/EpistemicUncertainty.lean#L150) | theorem | proved |
+| [`epistemicMomentFactor_four_strict`](Stats/EpistemicUncertainty.lean#L155) | theorem | proved |
+| [`epistemicKurtosis_ge_three`](Stats/EpistemicUncertainty.lean#L166) | theorem | proved |
+| [`epistemicExcessKurtosis`](Stats/EpistemicUncertainty.lean#L187) | def |  |
+| [`epistemicExcessKurtosis_eq`](Stats/EpistemicUncertainty.lean#L193) | theorem | proved |
+| [`epistemicExcessKurtosis_nonneg`](Stats/EpistemicUncertainty.lean#L202) | theorem | proved |
+| [`epistemicKurtosis_gt_three`](Stats/EpistemicUncertainty.lean#L210) | theorem | proved |
+| [`decayingErrorVariance`](Stats/EpistemicUncertainty.lean#L236) | def |  |
+| [`decayingErrorVariance_ge_base`](Stats/EpistemicUncertainty.lean#L241) | theorem | proved |
+| [`decayingErrorVariance_mono`](Stats/EpistemicUncertainty.lean#L264) | theorem | proved |
+| [`log_multiplicative_error`](Stats/EpistemicUncertainty.lean#L321) | theorem | proved |
+| [`log_one_add_le_self`](Stats/EpistemicUncertainty.lean#L335) | theorem | proved |
 
-**[Stats.Kappa](Stats/Kappa.lean)** — 145 lines, no indexed declarations
-
-**[Stats.LayerCake](Stats/LayerCake.lean)** — 64 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`expectation_max_eq_integral_survival`](Stats/LayerCake.lean#L18) | theorem | proved |
-| [`callPrice_eq_expectation`](Stats/LayerCake.lean#L54) | theorem | proved |
-
-**[Stats.Pareto](Stats/Pareto.lean)** — 36 lines, no indexed declarations
-
-**[Stats.RegularVariation](Stats/RegularVariation.lean)** — 75 lines, no indexed declarations
-
-**[Stats.ReviewChecks](Stats/ReviewChecks.lean)** — 122 lines
+**[Stats.Hedging](Stats/Hedging.lean)** — 414 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`incompleteBeta_pareto_eq_zero`](Stats/ReviewChecks.lean#L15) | theorem | proved |
-| [`paretoIntegrand_eq_zero`](Stats/ReviewChecks.lean#L37) | theorem | proved |
-| [`paretoRatio_eq_zero`](Stats/ReviewChecks.lean#L49) | theorem | proved |
-| [`paretoKappa_eq_two`](Stats/ReviewChecks.lean#L64) | theorem | proved |
-| [`legacyNMin`](Stats/ReviewChecks.lean#L69) | def |  |
-| [`legacy_n_min_eq_zero_of_nonneg`](Stats/ReviewChecks.lean#L74) | theorem | proved |
-| [`n_min_zero_mad_eq_one`](Stats/ReviewChecks.lean#L83) | theorem | proved |
-| [`n_min_unit_mad_eq_three`](Stats/ReviewChecks.lean#L96) | theorem | proved |
+| [`squaredReturn_survival_eq`](Stats/Hedging.lean#L68) | theorem | proved |
+| [`squaredReturn_survival_eq_survival`](Stats/Hedging.lean#L93) | theorem | proved |
+| [`gammaPnLIntegrand`](Stats/Hedging.lean#L102) | def |  |
+| [`gammaPnL_constant_eq`](Stats/Hedging.lean#L108) | theorem | proved |
+| [`squaredReturn_density_eq_layerCake`](Stats/Hedging.lean#L125) | theorem | proved |
+| [`gammaPnL_constant_integrableOn_iff`](Stats/Hedging.lean#L139) | theorem | proved |
+| [`gammaPnL_constant_not_integrable`](Stats/Hedging.lean#L170) | theorem | proved |
+| [`squaredReturn_variance_integrableOn_iff`](Stats/Hedging.lean#L185) | theorem | proved |
+| [`paretoCallStripCost_eq`](Stats/Hedging.lean#L207) | theorem | proved |
+| [`paretoPutStripCost_eq`](Stats/Hedging.lean#L224) | theorem | proved |
+| [`paretoCarrMadan`](Stats/Hedging.lean#L249) | theorem | proved |
+| [`paretoVega_relative_eq`](Stats/Hedging.lean#L280) | theorem | proved |
+| [`paretoVega_relative_tendsto_atBot`](Stats/Hedging.lean#L310) | theorem | proved |
+| [`bsVega_tendsto_zero_atTop`](Stats/Hedging.lean#L347) | theorem | proved |
 
-**[Stats.RiskMeasures](Stats/RiskMeasures.lean)** — 38 lines, no indexed declarations
-
-**[Stats.SinglePointForecasts](Stats/SinglePointForecasts.lean)** — 152 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`exp_growth_density_eq_pareto`](Stats/SinglePointForecasts.lean#L44) | theorem | proved |
-| [`exp_growth_tail_index_variance_relation`](Stats/SinglePointForecasts.lean#L67) | theorem | proved |
-| [`bernoulli_variance_bound`](Stats/SinglePointForecasts.lean#L82) | theorem | proved |
-| [`empirical_survival_variance_bound`](Stats/SinglePointForecasts.lean#L92) | theorem | proved |
-| [`empirical_survival_std_bound`](Stats/SinglePointForecasts.lean#L105) | theorem | proved |
-| [`paretoMean_not_integrable_when_alpha_le_one`](Stats/SinglePointForecasts.lean#L138) | theorem | proved |
-| [`paretoMean_not_integrable_at_alpha_one`](Stats/SinglePointForecasts.lean#L148) | theorem | proved |
-
-**[Stats.TailOptionPricing](Stats/TailOptionPricing.lean)** — 96 lines, no indexed declarations
-
-**[Stats.Theorem1](Stats/Theorem1.lean)** — 359 lines
+**[Stats.HiddenMoments](Stats/HiddenMoments.lean)** — 276 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsRegularlyVarying`](Stats/Theorem1.lean#L20) | def |  |
-| [`survival_isRegularlyVarying`](Stats/Theorem1.lean#L26) | theorem | proved |
-| [`survivalLogReturn`](Stats/Theorem1.lean#L42) | def |  |
-| [`survivalLogReturn_eq`](Stats/Theorem1.lean#L46) | lemma | proved |
-| [`survivalLogReturn_not_regularlyVarying`](Stats/Theorem1.lean#L60) | theorem | proved |
-| [`survivalLogReturn_not_regularlyVarying_general`](Stats/Theorem1.lean#L90) | theorem | proved |
-| [`survivalLogReturn_not_regularlyVarying_bdd`](Stats/Theorem1.lean#L150) | theorem | proved |
-| [`survivalLogReturn_not_regularlyVarying_slow`](Stats/Theorem1.lean#L247) | theorem | proved |
+| [`paretoTailMoment`](Stats/HiddenMoments.lean#L43) | def |  |
+| [`paretoTailMoment_eq`](Stats/HiddenMoments.lean#L50) | theorem | proved |
+| [`paretoTailMoment_at_zero`](Stats/HiddenMoments.lean#L81) | theorem | proved |
+| [`paretoTailMoment_at_one`](Stats/HiddenMoments.lean#L96) | theorem | proved |
+| [`paretoSampleSurvivalRatioCDF`](Stats/HiddenMoments.lean#L119) | def |  |
+| [`paretoSampleSurvivalRatioPDF`](Stats/HiddenMoments.lean#L123) | def |  |
+| [`paretoSampleSurvivalRatioCDF_eq_one_sub_maxCDF`](Stats/HiddenMoments.lean#L133) | theorem | proved |
+| [`paretoSampleSurvivalRatioPDF_eq_deriv`](Stats/HiddenMoments.lean#L157) | theorem | proved |
+| [`paretoSampleSurvivalRatio_mean`](Stats/HiddenMoments.lean#L181) | theorem | proved |
+| [`paretoSampleSurvivalRatio_mean_asymptotic_gap`](Stats/HiddenMoments.lean#L266) | theorem | proved |
 
-**[Stats.Verify](Stats/Verify.lean)** — 2443 lines, no indexed declarations
+**[Stats.Kappa](Stats/Kappa.lean)** — 149 lines, no indexed declarations
+
+**[Stats.LayerCake](Stats/LayerCake.lean)** — 68 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`expectation_max_eq_integral_survival`](Stats/LayerCake.lean#L22) | theorem | proved |
+| [`callPrice_eq_expectation`](Stats/LayerCake.lean#L58) | theorem | proved |
+
+**[Stats.Pareto](Stats/Pareto.lean)** — 40 lines, no indexed declarations
+
+**[Stats.RegularVariation](Stats/RegularVariation.lean)** — 79 lines, no indexed declarations
+
+**[Stats.ReviewChecks](Stats/ReviewChecks.lean)** — 126 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`incompleteBeta_pareto_eq_zero`](Stats/ReviewChecks.lean#L19) | theorem | proved |
+| [`paretoIntegrand_eq_zero`](Stats/ReviewChecks.lean#L41) | theorem | proved |
+| [`paretoRatio_eq_zero`](Stats/ReviewChecks.lean#L53) | theorem | proved |
+| [`paretoKappa_eq_two`](Stats/ReviewChecks.lean#L68) | theorem | proved |
+| [`legacyNMin`](Stats/ReviewChecks.lean#L73) | def |  |
+| [`legacy_n_min_eq_zero_of_nonneg`](Stats/ReviewChecks.lean#L78) | theorem | proved |
+| [`n_min_zero_mad_eq_one`](Stats/ReviewChecks.lean#L87) | theorem | proved |
+| [`n_min_unit_mad_eq_three`](Stats/ReviewChecks.lean#L100) | theorem | proved |
+
+**[Stats.RiskMeasures](Stats/RiskMeasures.lean)** — 42 lines, no indexed declarations
+
+**[Stats.SinglePointForecasts](Stats/SinglePointForecasts.lean)** — 156 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`exp_growth_density_eq_pareto`](Stats/SinglePointForecasts.lean#L48) | theorem | proved |
+| [`exp_growth_tail_index_variance_relation`](Stats/SinglePointForecasts.lean#L71) | theorem | proved |
+| [`bernoulli_variance_bound`](Stats/SinglePointForecasts.lean#L86) | theorem | proved |
+| [`empirical_survival_variance_bound`](Stats/SinglePointForecasts.lean#L96) | theorem | proved |
+| [`empirical_survival_std_bound`](Stats/SinglePointForecasts.lean#L109) | theorem | proved |
+| [`paretoMean_not_integrable_when_alpha_le_one`](Stats/SinglePointForecasts.lean#L142) | theorem | proved |
+| [`paretoMean_not_integrable_at_alpha_one`](Stats/SinglePointForecasts.lean#L152) | theorem | proved |
+
+**[Stats.TailOptionPricing](Stats/TailOptionPricing.lean)** — 100 lines, no indexed declarations
+
+**[Stats.Theorem1](Stats/Theorem1.lean)** — 363 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`IsRegularlyVarying`](Stats/Theorem1.lean#L24) | def |  |
+| [`survival_isRegularlyVarying`](Stats/Theorem1.lean#L30) | theorem | proved |
+| [`survivalLogReturn`](Stats/Theorem1.lean#L46) | def |  |
+| [`survivalLogReturn_eq`](Stats/Theorem1.lean#L50) | lemma | proved |
+| [`survivalLogReturn_not_regularlyVarying`](Stats/Theorem1.lean#L64) | theorem | proved |
+| [`survivalLogReturn_not_regularlyVarying_general`](Stats/Theorem1.lean#L94) | theorem | proved |
+| [`survivalLogReturn_not_regularlyVarying_bdd`](Stats/Theorem1.lean#L154) | theorem | proved |
+| [`survivalLogReturn_not_regularlyVarying_slow`](Stats/Theorem1.lean#L251) | theorem | proved |
+
+**[Stats.Verify](Stats/Verify.lean)** — 2446 lines, no indexed declarations
 
 ### `Stats.BinaryForecasts`
 
-**[Stats.BinaryForecasts.Bernoulli](Stats/BinaryForecasts/Bernoulli.lean)** — 265 lines
+**[Stats.BinaryForecasts.Bernoulli](Stats/BinaryForecasts/Bernoulli.lean)** — 269 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`bernoulliCGF`](Stats/BinaryForecasts/Bernoulli.lean#L37) | def |  |
-| [`bernoulliCGF_inner_pos`](Stats/BinaryForecasts/Bernoulli.lean#L43) | theorem | proved |
-| [`bernoulliCGF_hasDerivAt_zero`](Stats/BinaryForecasts/Bernoulli.lean#L56) | theorem | proved |
-| [`bernoulliCGF_zero`](Stats/BinaryForecasts/Bernoulli.lean#L79) | theorem | proved |
-| [`bernoulli_kappa1`](Stats/BinaryForecasts/Bernoulli.lean#L86) | theorem | proved |
-| [`bernoulliCGF_hasDerivAt`](Stats/BinaryForecasts/Bernoulli.lean#L94) | theorem | proved |
-| [`bernoulli_kappa2`](Stats/BinaryForecasts/Bernoulli.lean#L123) | theorem | proved |
-| [`bernoulliCGF_secondDeriv`](Stats/BinaryForecasts/Bernoulli.lean#L157) | def |  |
-| [`bernoulli_kappa3`](Stats/BinaryForecasts/Bernoulli.lean#L170) | theorem | proved |
-| [`bernoulliCGF_thirdDeriv`](Stats/BinaryForecasts/Bernoulli.lean#L204) | def |  |
-| [`bernoulli_kappa4`](Stats/BinaryForecasts/Bernoulli.lean#L223) | theorem | proved |
+| [`bernoulliCGF`](Stats/BinaryForecasts/Bernoulli.lean#L41) | def |  |
+| [`bernoulliCGF_inner_pos`](Stats/BinaryForecasts/Bernoulli.lean#L47) | theorem | proved |
+| [`bernoulliCGF_hasDerivAt_zero`](Stats/BinaryForecasts/Bernoulli.lean#L60) | theorem | proved |
+| [`bernoulliCGF_zero`](Stats/BinaryForecasts/Bernoulli.lean#L83) | theorem | proved |
+| [`bernoulli_kappa1`](Stats/BinaryForecasts/Bernoulli.lean#L90) | theorem | proved |
+| [`bernoulliCGF_hasDerivAt`](Stats/BinaryForecasts/Bernoulli.lean#L98) | theorem | proved |
+| [`bernoulli_kappa2`](Stats/BinaryForecasts/Bernoulli.lean#L127) | theorem | proved |
+| [`bernoulliCGF_secondDeriv`](Stats/BinaryForecasts/Bernoulli.lean#L161) | def |  |
+| [`bernoulli_kappa3`](Stats/BinaryForecasts/Bernoulli.lean#L174) | theorem | proved |
+| [`bernoulliCGF_thirdDeriv`](Stats/BinaryForecasts/Bernoulli.lean#L208) | def |  |
+| [`bernoulli_kappa4`](Stats/BinaryForecasts/Bernoulli.lean#L227) | theorem | proved |
 
-**[Stats.BinaryForecasts.Brier](Stats/BinaryForecasts/Brier.lean)** — 161 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`brierTerm_bounded`](Stats/BinaryForecasts/Brier.lean#L29) | theorem | proved |
-| [`brierScore_moment_bounded`](Stats/BinaryForecasts/Brier.lean#L46) | theorem | proved |
-| [`brierScore_moment_in_unit_interval`](Stats/BinaryForecasts/Brier.lean#L58) | theorem | proved |
-| [`brierOutcome`](Stats/BinaryForecasts/Brier.lean#L67) | def |  |
-| [`brierAverage`](Stats/BinaryForecasts/Brier.lean#L71) | def |  |
-| [`brierOutcome_mem_unit_interval`](Stats/BinaryForecasts/Brier.lean#L75) | theorem | proved |
-| [`measurable_brierOutcome`](Stats/BinaryForecasts/Brier.lean#L80) | theorem | proved |
-| [`measurable_brierAverage`](Stats/BinaryForecasts/Brier.lean#L84) | theorem | proved |
-| [`brierAverage_mem_unit_interval`](Stats/BinaryForecasts/Brier.lean#L93) | theorem | proved |
-| [`brierAverage_tail_eq_zero`](Stats/BinaryForecasts/Brier.lean#L113) | theorem | proved |
-| [`integrable_brierAverage_rpow`](Stats/BinaryForecasts/Brier.lean#L126) | theorem | proved |
-| [`brierAverage_moment_mem_unit_interval`](Stats/BinaryForecasts/Brier.lean#L141) | theorem | proved |
-
-**[Stats.BinaryForecasts.CharacteristicScale](Stats/BinaryForecasts/CharacteristicScale.lean)** — 68 lines
+**[Stats.BinaryForecasts.Brier](Stats/BinaryForecasts/Brier.lean)** — 165 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`characteristicScale_pareto`](Stats/BinaryForecasts/CharacteristicScale.lean#L41) | theorem | proved |
-| [`characteristicScale_pareto_gt_one`](Stats/BinaryForecasts/CharacteristicScale.lean#L61) | theorem | proved |
+| [`brierTerm_bounded`](Stats/BinaryForecasts/Brier.lean#L33) | theorem | proved |
+| [`brierScore_moment_bounded`](Stats/BinaryForecasts/Brier.lean#L50) | theorem | proved |
+| [`brierScore_moment_in_unit_interval`](Stats/BinaryForecasts/Brier.lean#L62) | theorem | proved |
+| [`brierOutcome`](Stats/BinaryForecasts/Brier.lean#L71) | def |  |
+| [`brierAverage`](Stats/BinaryForecasts/Brier.lean#L75) | def |  |
+| [`brierOutcome_mem_unit_interval`](Stats/BinaryForecasts/Brier.lean#L79) | theorem | proved |
+| [`measurable_brierOutcome`](Stats/BinaryForecasts/Brier.lean#L84) | theorem | proved |
+| [`measurable_brierAverage`](Stats/BinaryForecasts/Brier.lean#L88) | theorem | proved |
+| [`brierAverage_mem_unit_interval`](Stats/BinaryForecasts/Brier.lean#L97) | theorem | proved |
+| [`brierAverage_tail_eq_zero`](Stats/BinaryForecasts/Brier.lean#L117) | theorem | proved |
+| [`integrable_brierAverage_rpow`](Stats/BinaryForecasts/Brier.lean#L130) | theorem | proved |
+| [`brierAverage_moment_mem_unit_interval`](Stats/BinaryForecasts/Brier.lean#L145) | theorem | proved |
 
-**[Stats.BinaryForecasts.Conflation](Stats/BinaryForecasts/Conflation.lean)** — 219 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`I1`](Stats/BinaryForecasts/Conflation.lean#L32) | def |  |
-| [`I2`](Stats/BinaryForecasts/Conflation.lean#L36) | def |  |
-| [`I1_eq_I2_of_constantOn`](Stats/BinaryForecasts/Conflation.lean#L43) | theorem | proved |
-| [`heaviside`](Stats/BinaryForecasts/Conflation.lean#L56) | def |  |
-| [`I1_eq_I2_heaviside`](Stats/BinaryForecasts/Conflation.lean#L63) | theorem | proved |
-| [`I1_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L77) | theorem | proved |
-| [`I2_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L85) | theorem | proved |
-| [`pareto_I1_div_I2_eq`](Stats/BinaryForecasts/Conflation.lean#L127) | theorem | proved |
-| [`pareto_I1_div_I2_tendsto`](Stats/BinaryForecasts/Conflation.lean#L139) | theorem | proved |
-| [`gaussian_I1_id_eq`](Stats/BinaryForecasts/Conflation.lean#L166) | theorem | proved |
-| [`correctedProbability_pareto`](Stats/BinaryForecasts/Conflation.lean#L203) | theorem | proved |
-
-**[Stats.BinaryForecasts.Exponential](Stats/BinaryForecasts/Exponential.lean)** — 194 lines
+**[Stats.BinaryForecasts.CharacteristicScale](Stats/BinaryForecasts/CharacteristicScale.lean)** — 72 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`expDensity`](Stats/BinaryForecasts/Exponential.lean#L35) | def |  |
-| [`exp_survival_eq`](Stats/BinaryForecasts/Exponential.lean#L38) | theorem | proved |
-| [`exp_tail_expectation_eq`](Stats/BinaryForecasts/Exponential.lean#L84) | theorem | proved |
-| [`exp_conditional_excess`](Stats/BinaryForecasts/Exponential.lean#L183) | theorem | proved |
+| [`characteristicScale_pareto`](Stats/BinaryForecasts/CharacteristicScale.lean#L45) | theorem | proved |
+| [`characteristicScale_pareto_gt_one`](Stats/BinaryForecasts/CharacteristicScale.lean#L65) | theorem | proved |
 
-**[Stats.BinaryForecasts.ParetoSensitivity](Stats/BinaryForecasts/ParetoSensitivity.lean)** — 161 lines
+**[Stats.BinaryForecasts.Conflation](Stats/BinaryForecasts/Conflation.lean)** — 223 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`paretoTailMean_hasDerivAt_alpha`](Stats/BinaryForecasts/ParetoSensitivity.lean#L37) | theorem | proved |
-| [`paretoTailMean_hasDerivAt_alpha_second`](Stats/BinaryForecasts/ParetoSensitivity.lean#L56) | theorem | proved |
-| [`paretoTailMean_secondDeriv_alpha_pos`](Stats/BinaryForecasts/ParetoSensitivity.lean#L84) | theorem | proved |
-| [`paretoTailMean_iteratedDeriv_two`](Stats/BinaryForecasts/ParetoSensitivity.lean#L98) | theorem | proved |
-| [`inseparability_const`](Stats/BinaryForecasts/ParetoSensitivity.lean#L123) | theorem | proved |
-| [`inseparability_affine_linearity`](Stats/BinaryForecasts/ParetoSensitivity.lean#L133) | theorem | proved |
-| [`inseparability_jensen_strict`](Stats/BinaryForecasts/ParetoSensitivity.lean#L152) | theorem | proved |
+| [`I1`](Stats/BinaryForecasts/Conflation.lean#L36) | def |  |
+| [`I2`](Stats/BinaryForecasts/Conflation.lean#L40) | def |  |
+| [`I1_eq_I2_of_constantOn`](Stats/BinaryForecasts/Conflation.lean#L47) | theorem | proved |
+| [`heaviside`](Stats/BinaryForecasts/Conflation.lean#L60) | def |  |
+| [`I1_eq_I2_heaviside`](Stats/BinaryForecasts/Conflation.lean#L67) | theorem | proved |
+| [`I1_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L81) | theorem | proved |
+| [`I2_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L89) | theorem | proved |
+| [`pareto_I1_div_I2_eq`](Stats/BinaryForecasts/Conflation.lean#L131) | theorem | proved |
+| [`pareto_I1_div_I2_tendsto`](Stats/BinaryForecasts/Conflation.lean#L143) | theorem | proved |
+| [`gaussian_I1_id_eq`](Stats/BinaryForecasts/Conflation.lean#L170) | theorem | proved |
+| [`correctedProbability_pareto`](Stats/BinaryForecasts/Conflation.lean#L207) | theorem | proved |
 
-**[Stats.BinaryForecasts.SigmaClosures](Stats/BinaryForecasts/SigmaClosures.lean)** — 170 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`gaussianPDF_σ`](Stats/BinaryForecasts/SigmaClosures.lean#L39) | def |  |
-| [`hasDerivAt_neg_σ_phi_div`](Stats/BinaryForecasts/SigmaClosures.lean#L45) | theorem | proved |
-| [`hasDerivAt_stdNormalCdf_div`](Stats/BinaryForecasts/SigmaClosures.lean#L62) | theorem | proved |
-| [`tendsto_neg_σ_phi_div_atTop`](Stats/BinaryForecasts/SigmaClosures.lean#L76) | theorem | proved |
-| [`tendsto_stdNormalCdf_div_atTop`](Stats/BinaryForecasts/SigmaClosures.lean#L89) | theorem | proved |
-| [`integral_x_gaussianPDF_σ`](Stats/BinaryForecasts/SigmaClosures.lean#L113) | theorem | proved |
-| [`integral_gaussianPDF_σ`](Stats/BinaryForecasts/SigmaClosures.lean#L146) | theorem | proved |
-
-**[Stats.BinaryForecasts.SigmaSensitivity](Stats/BinaryForecasts/SigmaSensitivity.lean)** — 261 lines
+**[Stats.BinaryForecasts.Exponential](Stats/BinaryForecasts/Exponential.lean)** — 198 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`gaussian_eq8_polynomial_pos`](Stats/BinaryForecasts/SigmaSensitivity.lean#L42) | theorem | proved |
-| [`gaussianPDFReal_std_hasDerivAt`](Stats/BinaryForecasts/SigmaSensitivity.lean#L77) | theorem | proved |
-| [`hasDerivAt_K_div_sigma`](Stats/BinaryForecasts/SigmaSensitivity.lean#L89) | theorem | proved |
-| [`gaussianPDF_K_div_sigma_hasDerivAt`](Stats/BinaryForecasts/SigmaSensitivity.lean#L107) | theorem | proved |
-| [`gaussianTailMean_σ_secondDeriv`](Stats/BinaryForecasts/SigmaSensitivity.lean#L130) | theorem | proved |
-| [`gaussianTailProb_σ_secondDeriv`](Stats/BinaryForecasts/SigmaSensitivity.lean#L171) | theorem | proved |
-| [`gaussianEq8_sigmaSensitivity_eq_phi`](Stats/BinaryForecasts/SigmaSensitivity.lean#L212) | theorem | proved |
-| [`gaussianEq8_sigmaSensitivity_eq`](Stats/BinaryForecasts/SigmaSensitivity.lean#L236) | theorem | proved |
+| [`expDensity`](Stats/BinaryForecasts/Exponential.lean#L39) | def |  |
+| [`exp_survival_eq`](Stats/BinaryForecasts/Exponential.lean#L42) | theorem | proved |
+| [`exp_tail_expectation_eq`](Stats/BinaryForecasts/Exponential.lean#L88) | theorem | proved |
+| [`exp_conditional_excess`](Stats/BinaryForecasts/Exponential.lean#L187) | theorem | proved |
+
+**[Stats.BinaryForecasts.ParetoSensitivity](Stats/BinaryForecasts/ParetoSensitivity.lean)** — 165 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`paretoTailMean_hasDerivAt_alpha`](Stats/BinaryForecasts/ParetoSensitivity.lean#L41) | theorem | proved |
+| [`paretoTailMean_hasDerivAt_alpha_second`](Stats/BinaryForecasts/ParetoSensitivity.lean#L60) | theorem | proved |
+| [`paretoTailMean_secondDeriv_alpha_pos`](Stats/BinaryForecasts/ParetoSensitivity.lean#L88) | theorem | proved |
+| [`paretoTailMean_iteratedDeriv_two`](Stats/BinaryForecasts/ParetoSensitivity.lean#L102) | theorem | proved |
+| [`inseparability_const`](Stats/BinaryForecasts/ParetoSensitivity.lean#L127) | theorem | proved |
+| [`inseparability_affine_linearity`](Stats/BinaryForecasts/ParetoSensitivity.lean#L137) | theorem | proved |
+| [`inseparability_jensen_strict`](Stats/BinaryForecasts/ParetoSensitivity.lean#L156) | theorem | proved |
+
+**[Stats.BinaryForecasts.SigmaClosures](Stats/BinaryForecasts/SigmaClosures.lean)** — 174 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`gaussianPDF_σ`](Stats/BinaryForecasts/SigmaClosures.lean#L43) | def |  |
+| [`hasDerivAt_neg_σ_phi_div`](Stats/BinaryForecasts/SigmaClosures.lean#L49) | theorem | proved |
+| [`hasDerivAt_stdNormalCdf_div`](Stats/BinaryForecasts/SigmaClosures.lean#L66) | theorem | proved |
+| [`tendsto_neg_σ_phi_div_atTop`](Stats/BinaryForecasts/SigmaClosures.lean#L80) | theorem | proved |
+| [`tendsto_stdNormalCdf_div_atTop`](Stats/BinaryForecasts/SigmaClosures.lean#L93) | theorem | proved |
+| [`integral_x_gaussianPDF_σ`](Stats/BinaryForecasts/SigmaClosures.lean#L117) | theorem | proved |
+| [`integral_gaussianPDF_σ`](Stats/BinaryForecasts/SigmaClosures.lean#L150) | theorem | proved |
+
+**[Stats.BinaryForecasts.SigmaSensitivity](Stats/BinaryForecasts/SigmaSensitivity.lean)** — 265 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`gaussian_eq8_polynomial_pos`](Stats/BinaryForecasts/SigmaSensitivity.lean#L46) | theorem | proved |
+| [`gaussianPDFReal_std_hasDerivAt`](Stats/BinaryForecasts/SigmaSensitivity.lean#L81) | theorem | proved |
+| [`hasDerivAt_K_div_sigma`](Stats/BinaryForecasts/SigmaSensitivity.lean#L93) | theorem | proved |
+| [`gaussianPDF_K_div_sigma_hasDerivAt`](Stats/BinaryForecasts/SigmaSensitivity.lean#L111) | theorem | proved |
+| [`gaussianTailMean_σ_secondDeriv`](Stats/BinaryForecasts/SigmaSensitivity.lean#L134) | theorem | proved |
+| [`gaussianTailProb_σ_secondDeriv`](Stats/BinaryForecasts/SigmaSensitivity.lean#L175) | theorem | proved |
+| [`gaussianEq8_sigmaSensitivity_eq_phi`](Stats/BinaryForecasts/SigmaSensitivity.lean#L216) | theorem | proved |
+| [`gaussianEq8_sigmaSensitivity_eq`](Stats/BinaryForecasts/SigmaSensitivity.lean#L240) | theorem | proved |
 
 ### `Stats.BlackScholes`
 
-**[Stats.BlackScholes.CallPrice](Stats/BlackScholes/CallPrice.lean)** — 368 lines
+**[Stats.BlackScholes.CallPrice](Stats/BlackScholes/CallPrice.lean)** — 372 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`callPriceBS`](Stats/BlackScholes/CallPrice.lean#L25) | def |  |
-| [`callPriceBS_hasDerivAt`](Stats/BlackScholes/CallPrice.lean#L32) | theorem | proved |
-| [`callPriceBS_continuousOn`](Stats/BlackScholes/CallPrice.lean#L43) | theorem | proved |
-| [`survivalLN_hasDerivAt`](Stats/BlackScholes/CallPrice.lean#L51) | theorem | proved |
-| [`survivalLN_strictAntitoneOn`](Stats/BlackScholes/CallPrice.lean#L87) | theorem | proved |
-| [`callPriceBS_strictConvexOn`](Stats/BlackScholes/CallPrice.lean#L108) | theorem | proved |
-| [`callPriceBS_eq_expectation`](Stats/BlackScholes/CallPrice.lean#L143) | theorem | proved |
-| [`BSC_lognormal_tail_dominates_at_match`](Stats/BlackScholes/CallPrice.lean#L180) | theorem | proved |
-| [`setIntegral_gaussianReal_eq_setIntegral_pdf_mul`](Stats/BlackScholes/CallPrice.lean#L199) | theorem | proved |
-| [`setIntegral_Ioi_exp_gaussianReal`](Stats/BlackScholes/CallPrice.lean#L216) | theorem | proved |
-| [`callPriceBS_decompose`](Stats/BlackScholes/CallPrice.lean#L246) | theorem | proved |
-| [`callPriceBS_closed_form_general`](Stats/BlackScholes/CallPrice.lean#L298) | theorem | proved |
-| [`callPriceBS_closed_form_riskNeutral`](Stats/BlackScholes/CallPrice.lean#L325) | theorem | proved |
-| [`survivalLN_riskNeutral_eq_stdNormalCdf`](Stats/BlackScholes/CallPrice.lean#L355) | theorem | proved |
+| [`callPriceBS`](Stats/BlackScholes/CallPrice.lean#L29) | def |  |
+| [`callPriceBS_hasDerivAt`](Stats/BlackScholes/CallPrice.lean#L36) | theorem | proved |
+| [`callPriceBS_continuousOn`](Stats/BlackScholes/CallPrice.lean#L47) | theorem | proved |
+| [`survivalLN_hasDerivAt`](Stats/BlackScholes/CallPrice.lean#L55) | theorem | proved |
+| [`survivalLN_strictAntitoneOn`](Stats/BlackScholes/CallPrice.lean#L91) | theorem | proved |
+| [`callPriceBS_strictConvexOn`](Stats/BlackScholes/CallPrice.lean#L112) | theorem | proved |
+| [`callPriceBS_eq_expectation`](Stats/BlackScholes/CallPrice.lean#L147) | theorem | proved |
+| [`BSC_lognormal_tail_dominates_at_match`](Stats/BlackScholes/CallPrice.lean#L184) | theorem | proved |
+| [`setIntegral_gaussianReal_eq_setIntegral_pdf_mul`](Stats/BlackScholes/CallPrice.lean#L203) | theorem | proved |
+| [`setIntegral_Ioi_exp_gaussianReal`](Stats/BlackScholes/CallPrice.lean#L220) | theorem | proved |
+| [`callPriceBS_decompose`](Stats/BlackScholes/CallPrice.lean#L250) | theorem | proved |
+| [`callPriceBS_closed_form_general`](Stats/BlackScholes/CallPrice.lean#L302) | theorem | proved |
+| [`callPriceBS_closed_form_riskNeutral`](Stats/BlackScholes/CallPrice.lean#L329) | theorem | proved |
+| [`survivalLN_riskNeutral_eq_stdNormalCdf`](Stats/BlackScholes/CallPrice.lean#L359) | theorem | proved |
 
-**[Stats.BlackScholes.Erfc](Stats/BlackScholes/Erfc.lean)** — 95 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`erf`](Stats/BlackScholes/Erfc.lean#L32) | def |  |
-| [`erfc`](Stats/BlackScholes/Erfc.lean#L44) | def |  |
-| [`erf_add_erfc`](Stats/BlackScholes/Erfc.lean#L47) | theorem | proved |
-| [`one_sub_stdNormalCdf_eq_half_erfc`](Stats/BlackScholes/Erfc.lean#L52) | theorem | proved |
-| [`survivalLN_eq_half_erfc`](Stats/BlackScholes/Erfc.lean#L65) | theorem | proved |
-| [`alpha_lower_bound_erfc`](Stats/BlackScholes/Erfc.lean#L77) | theorem | proved |
-
-**[Stats.BlackScholes.Greeks](Stats/BlackScholes/Greeks.lean)** — 259 lines
+**[Stats.BlackScholes.Erfc](Stats/BlackScholes/Erfc.lean)** — 99 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`callPriceBS_riskNeutral_hasDerivAt_stdNormalCdf`](Stats/BlackScholes/Greeks.lean#L26) | theorem | proved |
-| [`integral_exp_gaussianReal_riskNeutral`](Stats/BlackScholes/Greeks.lean#L41) | theorem | proved |
-| [`callPriceBS_riskNeutral_putForm`](Stats/BlackScholes/Greeks.lean#L57) | theorem | proved |
-| [`bs_pdf_identity`](Stats/BlackScholes/Greeks.lean#L73) | theorem | proved |
-| [`callPriceBS_riskNeutral_hasDerivAt_S₀`](Stats/BlackScholes/Greeks.lean#L118) | theorem | proved |
-| [`callPriceBS_riskNeutral_gamma`](Stats/BlackScholes/Greeks.lean#L204) | theorem | proved |
-| [`BSC_riskNeutral_tail_dominates_at_match`](Stats/BlackScholes/Greeks.lean#L241) | theorem | proved |
+| [`erf`](Stats/BlackScholes/Erfc.lean#L36) | def |  |
+| [`erfc`](Stats/BlackScholes/Erfc.lean#L48) | def |  |
+| [`erf_add_erfc`](Stats/BlackScholes/Erfc.lean#L51) | theorem | proved |
+| [`one_sub_stdNormalCdf_eq_half_erfc`](Stats/BlackScholes/Erfc.lean#L56) | theorem | proved |
+| [`survivalLN_eq_half_erfc`](Stats/BlackScholes/Erfc.lean#L69) | theorem | proved |
+| [`alpha_lower_bound_erfc`](Stats/BlackScholes/Erfc.lean#L81) | theorem | proved |
 
-**[Stats.BlackScholes.PutCall](Stats/BlackScholes/PutCall.lean)** — 178 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`integral_exp_gaussianReal`](Stats/BlackScholes/PutCall.lean#L19) | theorem | proved |
-| [`putPriceBS`](Stats/BlackScholes/PutCall.lean#L35) | def |  |
-| [`putCallParity_BS`](Stats/BlackScholes/PutCall.lean#L43) | theorem | proved |
-| [`putPriceBS_closed_form_general`](Stats/BlackScholes/PutCall.lean#L102) | theorem | proved |
-| [`putPriceBS_closed_form_riskNeutral`](Stats/BlackScholes/PutCall.lean#L128) | theorem | proved |
-| [`putPriceBS_strictConvexOn`](Stats/BlackScholes/PutCall.lean#L151) | theorem | proved |
-
-**[Stats.BlackScholes.Smile](Stats/BlackScholes/Smile.lean)** — 314 lines
+**[Stats.BlackScholes.Greeks](Stats/BlackScholes/Greeks.lean)** — 263 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`callPriceBS_σ`](Stats/BlackScholes/Smile.lean#L25) | def |  |
-| [`bs_pdf_identity_σ`](Stats/BlackScholes/Smile.lean#L33) | theorem | proved |
-| [`callPriceBS_σ_smile_hasDerivAt`](Stats/BlackScholes/Smile.lean#L70) | theorem | proved |
-| [`callPriceBS_σ_vega_hasDerivAt`](Stats/BlackScholes/Smile.lean#L197) | theorem | proved |
-| [`callPriceBS_σ_eq_callPriceBS_riskNeutral`](Stats/BlackScholes/Smile.lean#L278) | theorem | proved |
-| [`alpha_lower_bound_smile_erfc`](Stats/BlackScholes/Smile.lean#L298) | theorem | proved |
+| [`callPriceBS_riskNeutral_hasDerivAt_stdNormalCdf`](Stats/BlackScholes/Greeks.lean#L30) | theorem | proved |
+| [`integral_exp_gaussianReal_riskNeutral`](Stats/BlackScholes/Greeks.lean#L45) | theorem | proved |
+| [`callPriceBS_riskNeutral_putForm`](Stats/BlackScholes/Greeks.lean#L61) | theorem | proved |
+| [`bs_pdf_identity`](Stats/BlackScholes/Greeks.lean#L77) | theorem | proved |
+| [`callPriceBS_riskNeutral_hasDerivAt_S₀`](Stats/BlackScholes/Greeks.lean#L122) | theorem | proved |
+| [`callPriceBS_riskNeutral_gamma`](Stats/BlackScholes/Greeks.lean#L208) | theorem | proved |
+| [`BSC_riskNeutral_tail_dominates_at_match`](Stats/BlackScholes/Greeks.lean#L245) | theorem | proved |
 
-**[Stats.BlackScholes.StdNormal](Stats/BlackScholes/StdNormal.lean)** — 521 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L25) | def |  |
-| [`stdNormalCdf_nonneg`](Stats/BlackScholes/StdNormal.lean#L29) | theorem | proved |
-| [`stdNormalCdf_le_one`](Stats/BlackScholes/StdNormal.lean#L32) | theorem | proved |
-| [`stdNormalCdf_monotone`](Stats/BlackScholes/StdNormal.lean#L35) | theorem | proved |
-| [`stdNormalCdf_eq_setIntegral_Iic`](Stats/BlackScholes/StdNormal.lean#L40) | theorem | proved |
-| [`one_sub_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L52) | theorem | proved |
-| [`stdNormalCdf_neg`](Stats/BlackScholes/StdNormal.lean#L65) | theorem | proved |
-| [`gaussianPDFReal_exp_tilt`](Stats/BlackScholes/StdNormal.lean#L112) | theorem | proved |
-| [`gaussianReal_map_locScale`](Stats/BlackScholes/StdNormal.lean#L140) | theorem | proved |
-| [`gaussianReal_real_Ioi_eq`](Stats/BlackScholes/StdNormal.lean#L164) | theorem | proved |
-| [`survivalLN_eq_one_sub_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L186) | theorem | proved |
-| [`survivalLN_eq_gaussianReal_real_Ioi`](Stats/BlackScholes/StdNormal.lean#L204) | theorem | proved |
-| [`hasDerivAt_neg_gaussianPDFReal_std`](Stats/BlackScholes/StdNormal.lean#L225) | theorem | proved |
-| [`tendsto_gaussianPDFReal_std_atTop`](Stats/BlackScholes/StdNormal.lean#L258) | theorem | proved |
-| [`stdNormal_mills_ratio`](Stats/BlackScholes/StdNormal.lean#L285) | theorem | proved |
-| [`stdNormalCdf_hasDerivAt`](Stats/BlackScholes/StdNormal.lean#L348) | theorem | proved |
-| [`gaussianPDFReal_std_pos`](Stats/BlackScholes/StdNormal.lean#L383) | theorem | proved |
-| [`stdNormalCdf_strictMono`](Stats/BlackScholes/StdNormal.lean#L387) | theorem | proved |
-| [`tendsto_stdNormalCdf_atTop_one`](Stats/BlackScholes/StdNormal.lean#L392) | theorem | proved |
-| [`tendsto_stdNormalCdf_atBot_zero`](Stats/BlackScholes/StdNormal.lean#L411) | theorem | proved |
-| [`range_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L433) | theorem | proved |
-| [`stdNormalCdf_pos`](Stats/BlackScholes/StdNormal.lean#L472) | theorem | proved |
-| [`stdNormalCdf_lt_one`](Stats/BlackScholes/StdNormal.lean#L478) | theorem | proved |
-| [`stdNormalQuantile`](Stats/BlackScholes/StdNormal.lean#L490) | def |  |
-| [`stdNormalCdf_stdNormalQuantile`](Stats/BlackScholes/StdNormal.lean#L496) | theorem | proved |
-| [`stdNormalQuantile_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L506) | theorem | proved |
-| [`stdNormalCdf_stdNormalQuantile_of_mem_Ioo`](Stats/BlackScholes/StdNormal.lean#L514) | theorem | proved |
-
-**[Stats.BlackScholes.Survival](Stats/BlackScholes/Survival.lean)** — 152 lines
+**[Stats.BlackScholes.PutCall](Stats/BlackScholes/PutCall.lean)** — 182 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`survivalLN`](Stats/BlackScholes/Survival.lean#L22) | def |  |
-| [`survivalLN_continuousOn`](Stats/BlackScholes/Survival.lean#L27) | theorem | proved |
-| [`survivalLN_nonneg`](Stats/BlackScholes/Survival.lean#L48) | theorem | proved |
-| [`survivalLN_le_one`](Stats/BlackScholes/Survival.lean#L55) | theorem | proved |
-| [`survivalLN_antitoneOn`](Stats/BlackScholes/Survival.lean#L66) | theorem | proved |
-| [`survivalLN_le_quadratic`](Stats/BlackScholes/Survival.lean#L82) | theorem | proved |
-| [`integrableOn_survivalLN`](Stats/BlackScholes/Survival.lean#L130) | theorem | proved |
+| [`integral_exp_gaussianReal`](Stats/BlackScholes/PutCall.lean#L23) | theorem | proved |
+| [`putPriceBS`](Stats/BlackScholes/PutCall.lean#L39) | def |  |
+| [`putCallParity_BS`](Stats/BlackScholes/PutCall.lean#L47) | theorem | proved |
+| [`putPriceBS_closed_form_general`](Stats/BlackScholes/PutCall.lean#L106) | theorem | proved |
+| [`putPriceBS_closed_form_riskNeutral`](Stats/BlackScholes/PutCall.lean#L132) | theorem | proved |
+| [`putPriceBS_strictConvexOn`](Stats/BlackScholes/PutCall.lean#L155) | theorem | proved |
+
+**[Stats.BlackScholes.Smile](Stats/BlackScholes/Smile.lean)** — 318 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`callPriceBS_σ`](Stats/BlackScholes/Smile.lean#L29) | def |  |
+| [`bs_pdf_identity_σ`](Stats/BlackScholes/Smile.lean#L37) | theorem | proved |
+| [`callPriceBS_σ_smile_hasDerivAt`](Stats/BlackScholes/Smile.lean#L74) | theorem | proved |
+| [`callPriceBS_σ_vega_hasDerivAt`](Stats/BlackScholes/Smile.lean#L201) | theorem | proved |
+| [`callPriceBS_σ_eq_callPriceBS_riskNeutral`](Stats/BlackScholes/Smile.lean#L282) | theorem | proved |
+| [`alpha_lower_bound_smile_erfc`](Stats/BlackScholes/Smile.lean#L302) | theorem | proved |
+
+**[Stats.BlackScholes.StdNormal](Stats/BlackScholes/StdNormal.lean)** — 525 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L29) | def |  |
+| [`stdNormalCdf_nonneg`](Stats/BlackScholes/StdNormal.lean#L33) | theorem | proved |
+| [`stdNormalCdf_le_one`](Stats/BlackScholes/StdNormal.lean#L36) | theorem | proved |
+| [`stdNormalCdf_monotone`](Stats/BlackScholes/StdNormal.lean#L39) | theorem | proved |
+| [`stdNormalCdf_eq_setIntegral_Iic`](Stats/BlackScholes/StdNormal.lean#L44) | theorem | proved |
+| [`one_sub_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L56) | theorem | proved |
+| [`stdNormalCdf_neg`](Stats/BlackScholes/StdNormal.lean#L69) | theorem | proved |
+| [`gaussianPDFReal_exp_tilt`](Stats/BlackScholes/StdNormal.lean#L116) | theorem | proved |
+| [`gaussianReal_map_locScale`](Stats/BlackScholes/StdNormal.lean#L144) | theorem | proved |
+| [`gaussianReal_real_Ioi_eq`](Stats/BlackScholes/StdNormal.lean#L168) | theorem | proved |
+| [`survivalLN_eq_one_sub_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L190) | theorem | proved |
+| [`survivalLN_eq_gaussianReal_real_Ioi`](Stats/BlackScholes/StdNormal.lean#L208) | theorem | proved |
+| [`hasDerivAt_neg_gaussianPDFReal_std`](Stats/BlackScholes/StdNormal.lean#L229) | theorem | proved |
+| [`tendsto_gaussianPDFReal_std_atTop`](Stats/BlackScholes/StdNormal.lean#L262) | theorem | proved |
+| [`stdNormal_mills_ratio`](Stats/BlackScholes/StdNormal.lean#L289) | theorem | proved |
+| [`stdNormalCdf_hasDerivAt`](Stats/BlackScholes/StdNormal.lean#L352) | theorem | proved |
+| [`gaussianPDFReal_std_pos`](Stats/BlackScholes/StdNormal.lean#L387) | theorem | proved |
+| [`stdNormalCdf_strictMono`](Stats/BlackScholes/StdNormal.lean#L391) | theorem | proved |
+| [`tendsto_stdNormalCdf_atTop_one`](Stats/BlackScholes/StdNormal.lean#L396) | theorem | proved |
+| [`tendsto_stdNormalCdf_atBot_zero`](Stats/BlackScholes/StdNormal.lean#L415) | theorem | proved |
+| [`range_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L437) | theorem | proved |
+| [`stdNormalCdf_pos`](Stats/BlackScholes/StdNormal.lean#L476) | theorem | proved |
+| [`stdNormalCdf_lt_one`](Stats/BlackScholes/StdNormal.lean#L482) | theorem | proved |
+| [`stdNormalQuantile`](Stats/BlackScholes/StdNormal.lean#L494) | def |  |
+| [`stdNormalCdf_stdNormalQuantile`](Stats/BlackScholes/StdNormal.lean#L500) | theorem | proved |
+| [`stdNormalQuantile_stdNormalCdf`](Stats/BlackScholes/StdNormal.lean#L510) | theorem | proved |
+| [`stdNormalCdf_stdNormalQuantile_of_mem_Ioo`](Stats/BlackScholes/StdNormal.lean#L518) | theorem | proved |
+
+**[Stats.BlackScholes.Survival](Stats/BlackScholes/Survival.lean)** — 156 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`survivalLN`](Stats/BlackScholes/Survival.lean#L26) | def |  |
+| [`survivalLN_continuousOn`](Stats/BlackScholes/Survival.lean#L31) | theorem | proved |
+| [`survivalLN_nonneg`](Stats/BlackScholes/Survival.lean#L52) | theorem | proved |
+| [`survivalLN_le_one`](Stats/BlackScholes/Survival.lean#L59) | theorem | proved |
+| [`survivalLN_antitoneOn`](Stats/BlackScholes/Survival.lean#L70) | theorem | proved |
+| [`survivalLN_le_quadratic`](Stats/BlackScholes/Survival.lean#L86) | theorem | proved |
+| [`integrableOn_survivalLN`](Stats/BlackScholes/Survival.lean#L134) | theorem | proved |
 
 ### `Stats.Calculus`
 
-**[Stats.Calculus.CallPrice](Stats/Calculus/CallPrice.lean)** — 255 lines
+**[Stats.Calculus.CallPrice](Stats/Calculus/CallPrice.lean)** — 260 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`hasDerivAt_integral_Ioi`](Stats/Calculus/CallPrice.lean#L30) | theorem | proved |
-| [`continuousOn_integral_Ioi`](Stats/Calculus/CallPrice.lean#L65) | theorem | proved |
-| [`callPrice_hasDerivAt`](Stats/Calculus/CallPrice.lean#L76) | theorem | proved |
-| [`callPrice_deriv_eq_neg_survival`](Stats/Calculus/CallPrice.lean#L97) | theorem | proved |
-| [`callPrice_hasDerivAt_secondOrder`](Stats/Calculus/CallPrice.lean#L104) | theorem | proved |
-| [`putShadow_hasDerivAt`](Stats/Calculus/CallPrice.lean#L133) | theorem | proved |
-| [`putShadow_deriv_eq_one_sub_survival`](Stats/Calculus/CallPrice.lean#L151) | theorem | proved |
-| [`putShadow_hasDerivAt_secondOrder`](Stats/Calculus/CallPrice.lean#L159) | theorem | proved |
-| [`callPrice_strictConvexOn`](Stats/Calculus/CallPrice.lean#L175) | theorem | proved |
-| [`callPrice_continuousOn_Ici`](Stats/Calculus/CallPrice.lean#L200) | theorem | proved |
-| [`callPrice_strictConvexOn_Ici`](Stats/Calculus/CallPrice.lean#L216) | theorem | proved |
-| [`callPrice_butterfly`](Stats/Calculus/CallPrice.lean#L239) | theorem | proved |
+| [`hasDerivAt_integral_Ioi`](Stats/Calculus/CallPrice.lean#L35) | theorem | proved |
+| [`continuousOn_integral_Ioi`](Stats/Calculus/CallPrice.lean#L70) | theorem | proved |
+| [`callPrice_hasDerivAt`](Stats/Calculus/CallPrice.lean#L81) | theorem | proved |
+| [`callPrice_deriv_eq_neg_survival`](Stats/Calculus/CallPrice.lean#L102) | theorem | proved |
+| [`callPrice_hasDerivAt_secondOrder`](Stats/Calculus/CallPrice.lean#L109) | theorem | proved |
+| [`putShadow_hasDerivAt`](Stats/Calculus/CallPrice.lean#L138) | theorem | proved |
+| [`putShadow_deriv_eq_one_sub_survival`](Stats/Calculus/CallPrice.lean#L156) | theorem | proved |
+| [`putShadow_hasDerivAt_secondOrder`](Stats/Calculus/CallPrice.lean#L164) | theorem | proved |
+| [`callPrice_strictConvexOn`](Stats/Calculus/CallPrice.lean#L180) | theorem | proved |
+| [`callPrice_continuousOn_Ici`](Stats/Calculus/CallPrice.lean#L205) | theorem | proved |
+| [`callPrice_strictConvexOn_Ici`](Stats/Calculus/CallPrice.lean#L221) | theorem | proved |
+| [`callPrice_butterfly`](Stats/Calculus/CallPrice.lean#L244) | theorem | proved |
 
-**[Stats.Calculus.Greeks](Stats/Calculus/Greeks.lean)** — 130 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`callPrice_hasDerivAt_l`](Stats/Calculus/Greeks.lean#L23) | theorem | proved |
-| [`putShadow_hasDerivAt_l`](Stats/Calculus/Greeks.lean#L42) | theorem | proved |
-| [`callPrice_hasDerivAt_alpha`](Stats/Calculus/Greeks.lean#L67) | theorem | proved |
-| [`putShadow_hasDerivAt_alpha`](Stats/Calculus/Greeks.lean#L102) | theorem | proved |
-
-**[Stats.Calculus.PutShadow](Stats/Calculus/PutShadow.lean)** — 173 lines
+**[Stats.Calculus.Greeks](Stats/Calculus/Greeks.lean)** — 134 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`putShadowReturns_hasDerivAt`](Stats/Calculus/PutShadow.lean#L23) | theorem | proved |
-| [`putShadowReturns_hasDerivAt_secondOrder`](Stats/Calculus/PutShadow.lean#L64) | theorem | proved |
-| [`putShadow_strictConvexOn`](Stats/Calculus/PutShadow.lean#L104) | theorem | proved |
-| [`putShadowReturns_strictConvexOn`](Stats/Calculus/PutShadow.lean#L126) | theorem | proved |
-| [`putShadow_continuousOn_Ici`](Stats/Calculus/PutShadow.lean#L156) | theorem | proved |
+| [`callPrice_hasDerivAt_l`](Stats/Calculus/Greeks.lean#L27) | theorem | proved |
+| [`putShadow_hasDerivAt_l`](Stats/Calculus/Greeks.lean#L46) | theorem | proved |
+| [`callPrice_hasDerivAt_alpha`](Stats/Calculus/Greeks.lean#L71) | theorem | proved |
+| [`putShadow_hasDerivAt_alpha`](Stats/Calculus/Greeks.lean#L106) | theorem | proved |
+
+**[Stats.Calculus.PutShadow](Stats/Calculus/PutShadow.lean)** — 177 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`putShadowReturns_hasDerivAt`](Stats/Calculus/PutShadow.lean#L27) | theorem | proved |
+| [`putShadowReturns_hasDerivAt_secondOrder`](Stats/Calculus/PutShadow.lean#L68) | theorem | proved |
+| [`putShadow_strictConvexOn`](Stats/Calculus/PutShadow.lean#L108) | theorem | proved |
+| [`putShadowReturns_strictConvexOn`](Stats/Calculus/PutShadow.lean#L130) | theorem | proved |
+| [`putShadow_continuousOn_Ici`](Stats/Calculus/PutShadow.lean#L160) | theorem | proved |
 
 ### `Stats.Copula`
 
-**[Stats.Copula.Basic](Stats/Copula/Basic.lean)** — 399 lines
+**[Stats.Copula.Basic](Stats/Copula/Basic.lean)** — 403 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsCopula`](Stats/Copula/Basic.lean#L40) | structure |  |
-| [`le_min`](Stats/Copula/Basic.lean#L58) | theorem | proved |
-| [`max_le`](Stats/Copula/Basic.lean#L91) | theorem | proved |
-| [`le_one`](Stats/Copula/Basic.lean#L114) | theorem | proved |
-| [`nonneg`](Stats/Copula/Basic.lean#L120) | theorem | proved |
-| [`upperTailDependence`](Stats/Copula/Basic.lean#L137) | def |  |
-| [`upperTailDependence_mem_Icc`](Stats/Copula/Basic.lean#L148) | theorem | proved |
-| [`gaussianCopula`](Stats/Copula/Basic.lean#L199) | def |  |
-| [`gaussianCopula_zero_left`](Stats/Copula/Basic.lean#L209) | theorem | proved |
-| [`gaussianCopula_zero_right`](Stats/Copula/Basic.lean#L215) | theorem | proved |
-| [`gaussianCopula_one_left`](Stats/Copula/Basic.lean#L221) | theorem | proved |
-| [`gaussianCopula_one_right`](Stats/Copula/Basic.lean#L249) | theorem | proved |
-| [`gaussianCopulaTailIntegrand`](Stats/Copula/Basic.lean#L282) | def |  |
-| [`gaussianCopulaLowerTailMass`](Stats/Copula/Basic.lean#L292) | def |  |
-| [`gaussianCopula_eq_u_sub_lowerTailMass`](Stats/Copula/Basic.lean#L304) | theorem | proved |
-| [`gaussianCopula_upperTailDependence_ratio_eq`](Stats/Copula/Basic.lean#L388) | theorem | proved |
+| [`IsCopula`](Stats/Copula/Basic.lean#L44) | structure |  |
+| [`le_min`](Stats/Copula/Basic.lean#L62) | theorem | proved |
+| [`max_le`](Stats/Copula/Basic.lean#L95) | theorem | proved |
+| [`le_one`](Stats/Copula/Basic.lean#L118) | theorem | proved |
+| [`nonneg`](Stats/Copula/Basic.lean#L124) | theorem | proved |
+| [`upperTailDependence`](Stats/Copula/Basic.lean#L141) | def |  |
+| [`upperTailDependence_mem_Icc`](Stats/Copula/Basic.lean#L152) | theorem | proved |
+| [`gaussianCopula`](Stats/Copula/Basic.lean#L203) | def |  |
+| [`gaussianCopula_zero_left`](Stats/Copula/Basic.lean#L213) | theorem | proved |
+| [`gaussianCopula_zero_right`](Stats/Copula/Basic.lean#L219) | theorem | proved |
+| [`gaussianCopula_one_left`](Stats/Copula/Basic.lean#L225) | theorem | proved |
+| [`gaussianCopula_one_right`](Stats/Copula/Basic.lean#L253) | theorem | proved |
+| [`gaussianCopulaTailIntegrand`](Stats/Copula/Basic.lean#L286) | def |  |
+| [`gaussianCopulaLowerTailMass`](Stats/Copula/Basic.lean#L296) | def |  |
+| [`gaussianCopula_eq_u_sub_lowerTailMass`](Stats/Copula/Basic.lean#L308) | theorem | proved |
+| [`gaussianCopula_upperTailDependence_ratio_eq`](Stats/Copula/Basic.lean#L392) | theorem | proved |
 
 ### `Stats.Kappa`
 
-**[Stats.Kappa.Basic](Stats/Kappa/Basic.lean)** — 456 lines
+**[Stats.Kappa.Basic](Stats/Kappa/Basic.lean)** — 460 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`kappa`](Stats/Kappa/Basic.lean#L37) | def |  |
-| [`kappa_eq_ratio`](Stats/Kappa/Basic.lean#L43) | theorem | proved |
-| [`kappa_stable_invariance`](Stats/Kappa/Basic.lean#L61) | theorem | proved |
-| [`stableAlphaBar`](Stats/Kappa/Basic.lean#L109) | def |  |
-| [`stableAlphaBar_of_lt`](Stats/Kappa/Basic.lean#L113) | theorem | proved |
-| [`stableAlphaBar_of_ge`](Stats/Kappa/Basic.lean#L117) | theorem | proved |
-| [`stableAlphaBar_le_two`](Stats/Kappa/Basic.lean#L121) | theorem | proved |
-| [`stableAlphaBar_pos`](Stats/Kappa/Basic.lean#L128) | theorem | proved |
-| [`kappa_stable_invariance_alphaBar`](Stats/Kappa/Basic.lean#L139) | theorem | proved |
-| [`kappa_gaussian`](Stats/Kappa/Basic.lean#L149) | theorem | proved |
-| [`kappa_cauchy`](Stats/Kappa/Basic.lean#L164) | theorem | proved |
-| [`n_nu`](Stats/Kappa/Basic.lean#L192) | def |  |
-| [`n_nu_gaussian`](Stats/Kappa/Basic.lean#L198) | theorem | proved |
-| [`n_nu_gt_n_g`](Stats/Kappa/Basic.lean#L206) | theorem | proved |
-| [`n_g_of_n_nu`](Stats/Kappa/Basic.lean#L237) | def |  |
-| [`n_g_of_n_nu_n_nu`](Stats/Kappa/Basic.lean#L242) | theorem | proved |
-| [`n_nu_n_g_of_n_nu`](Stats/Kappa/Basic.lean#L254) | theorem | proved |
-| [`n_nu_bidirectional`](Stats/Kappa/Basic.lean#L270) | theorem | proved |
-| [`sampleMeanMAD`](Stats/Kappa/Basic.lean#L301) | def |  |
-| [`n_min`](Stats/Kappa/Basic.lean#L312) | def |  |
-| [`n_min_le_of_witness`](Stats/Kappa/Basic.lean#L320) | theorem | proved |
-| [`n_min_mem`](Stats/Kappa/Basic.lean#L332) | theorem | proved |
-| [`n_min_pos`](Stats/Kappa/Basic.lean#L340) | theorem | proved |
-| [`n_min_eq_zero_iff`](Stats/Kappa/Basic.lean#L345) | theorem | proved |
-| [`log_MAD_telescope`](Stats/Kappa/Basic.lean#L375) | theorem | proved |
-| [`kappa_decomposition`](Stats/Kappa/Basic.lean#L398) | theorem | proved |
-| [`kappa_decomposition_local`](Stats/Kappa/Basic.lean#L417) | theorem | proved |
+| [`kappa`](Stats/Kappa/Basic.lean#L41) | def |  |
+| [`kappa_eq_ratio`](Stats/Kappa/Basic.lean#L47) | theorem | proved |
+| [`kappa_stable_invariance`](Stats/Kappa/Basic.lean#L65) | theorem | proved |
+| [`stableAlphaBar`](Stats/Kappa/Basic.lean#L113) | def |  |
+| [`stableAlphaBar_of_lt`](Stats/Kappa/Basic.lean#L117) | theorem | proved |
+| [`stableAlphaBar_of_ge`](Stats/Kappa/Basic.lean#L121) | theorem | proved |
+| [`stableAlphaBar_le_two`](Stats/Kappa/Basic.lean#L125) | theorem | proved |
+| [`stableAlphaBar_pos`](Stats/Kappa/Basic.lean#L132) | theorem | proved |
+| [`kappa_stable_invariance_alphaBar`](Stats/Kappa/Basic.lean#L143) | theorem | proved |
+| [`kappa_gaussian`](Stats/Kappa/Basic.lean#L153) | theorem | proved |
+| [`kappa_cauchy`](Stats/Kappa/Basic.lean#L168) | theorem | proved |
+| [`n_nu`](Stats/Kappa/Basic.lean#L196) | def |  |
+| [`n_nu_gaussian`](Stats/Kappa/Basic.lean#L202) | theorem | proved |
+| [`n_nu_gt_n_g`](Stats/Kappa/Basic.lean#L210) | theorem | proved |
+| [`n_g_of_n_nu`](Stats/Kappa/Basic.lean#L241) | def |  |
+| [`n_g_of_n_nu_n_nu`](Stats/Kappa/Basic.lean#L246) | theorem | proved |
+| [`n_nu_n_g_of_n_nu`](Stats/Kappa/Basic.lean#L258) | theorem | proved |
+| [`n_nu_bidirectional`](Stats/Kappa/Basic.lean#L274) | theorem | proved |
+| [`sampleMeanMAD`](Stats/Kappa/Basic.lean#L305) | def |  |
+| [`n_min`](Stats/Kappa/Basic.lean#L316) | def |  |
+| [`n_min_le_of_witness`](Stats/Kappa/Basic.lean#L324) | theorem | proved |
+| [`n_min_mem`](Stats/Kappa/Basic.lean#L336) | theorem | proved |
+| [`n_min_pos`](Stats/Kappa/Basic.lean#L344) | theorem | proved |
+| [`n_min_eq_zero_iff`](Stats/Kappa/Basic.lean#L349) | theorem | proved |
+| [`log_MAD_telescope`](Stats/Kappa/Basic.lean#L379) | theorem | proved |
+| [`kappa_decomposition`](Stats/Kappa/Basic.lean#L402) | theorem | proved |
+| [`kappa_decomposition_local`](Stats/Kappa/Basic.lean#L421) | theorem | proved |
 
-**[Stats.Kappa.CubicStudent](Stats/Kappa/CubicStudent.lean)** — 370 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`cubicStudentDensity`](Stats/Kappa/CubicStudent.lean#L49) | def |  |
-| [`cubicStudentDensity_pos`](Stats/Kappa/CubicStudent.lean#L53) | theorem | proved |
-| [`cubicStudentDensity_neg`](Stats/Kappa/CubicStudent.lean#L61) | theorem | proved |
-| [`incompleteGamma`](Stats/Kappa/CubicStudent.lean#L70) | def |  |
-| [`cubicStudentSumMAD`](Stats/Kappa/CubicStudent.lean#L80) | def |  |
-| [`cubicStudentSumMAD_one`](Stats/Kappa/CubicStudent.lean#L88) | theorem | proved |
-| [`cubicStudentSumMAD_succ`](Stats/Kappa/CubicStudent.lean#L92) | theorem | proved |
-| [`loulakisPoly`](Stats/Kappa/CubicStudent.lean#L111) | def |  |
-| [`loulakisAntideriv`](Stats/Kappa/CubicStudent.lean#L116) | def |  |
-| [`loulakisPoly_zero_eq`](Stats/Kappa/CubicStudent.lean#L119) | lemma | proved |
-| [`loulakisPoly_succ`](Stats/Kappa/CubicStudent.lean#L122) | lemma | proved |
-| [`loulakisAntideriv_zero_eq`](Stats/Kappa/CubicStudent.lean#L144) | lemma | proved |
-| [`loulakisAntideriv_succ`](Stats/Kappa/CubicStudent.lean#L149) | lemma | proved |
-| [`hasDerivAt_exp_neg'`](Stats/Kappa/CubicStudent.lean#L156) | lemma | proved |
-| [`loulakisAntideriv_hasDerivAt`](Stats/Kappa/CubicStudent.lean#L163) | lemma | proved |
-| [`loulakisAntideriv_tendsto_zero`](Stats/Kappa/CubicStudent.lean#L200) | lemma | proved |
-| [`integrableOn_pow_mul_exp_neg_Ioi`](Stats/Kappa/CubicStudent.lean#L227) | lemma | proved |
-| [`integral_Ioi_pow_mul_exp_neg`](Stats/Kappa/CubicStudent.lean#L238) | lemma | proved |
-| [`incompleteGamma_loulakis`](Stats/Kappa/CubicStudent.lean#L260) | theorem | proved |
-| [`cubicStudentSumMAD_loulakis_form`](Stats/Kappa/CubicStudent.lean#L297) | theorem | proved |
-| [`kappa_cubicStudent`](Stats/Kappa/CubicStudent.lean#L345) | theorem | proved |
-
-**[Stats.Kappa.CubicStudentAsymptotic](Stats/Kappa/CubicStudentAsymptotic.lean)** — 314 lines
+**[Stats.Kappa.CubicStudent](Stats/Kappa/CubicStudent.lean)** — 374 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`incompleteGamma_laplace_asymptotic`](Stats/Kappa/CubicStudentAsymptotic.lean#L79) | theorem | proved |
-| [`tendsto_log_incompleteGamma_minus_half_log`](Stats/Kappa/CubicStudentAsymptotic.lean#L88) | theorem | proved |
-| [`tendsto_log_incompleteGamma_sub_one_minus_half_log`](Stats/Kappa/CubicStudentAsymptotic.lean#L126) | theorem | proved |
-| [`kappa_cubicStudent_asymptotic`](Stats/Kappa/CubicStudentAsymptotic.lean#L220) | theorem | proved |
+| [`cubicStudentDensity`](Stats/Kappa/CubicStudent.lean#L53) | def |  |
+| [`cubicStudentDensity_pos`](Stats/Kappa/CubicStudent.lean#L57) | theorem | proved |
+| [`cubicStudentDensity_neg`](Stats/Kappa/CubicStudent.lean#L65) | theorem | proved |
+| [`incompleteGamma`](Stats/Kappa/CubicStudent.lean#L74) | def |  |
+| [`cubicStudentSumMAD`](Stats/Kappa/CubicStudent.lean#L84) | def |  |
+| [`cubicStudentSumMAD_one`](Stats/Kappa/CubicStudent.lean#L92) | theorem | proved |
+| [`cubicStudentSumMAD_succ`](Stats/Kappa/CubicStudent.lean#L96) | theorem | proved |
+| [`loulakisPoly`](Stats/Kappa/CubicStudent.lean#L115) | def |  |
+| [`loulakisAntideriv`](Stats/Kappa/CubicStudent.lean#L120) | def |  |
+| [`loulakisPoly_zero_eq`](Stats/Kappa/CubicStudent.lean#L123) | lemma | proved |
+| [`loulakisPoly_succ`](Stats/Kappa/CubicStudent.lean#L126) | lemma | proved |
+| [`loulakisAntideriv_zero_eq`](Stats/Kappa/CubicStudent.lean#L148) | lemma | proved |
+| [`loulakisAntideriv_succ`](Stats/Kappa/CubicStudent.lean#L153) | lemma | proved |
+| [`hasDerivAt_exp_neg'`](Stats/Kappa/CubicStudent.lean#L160) | lemma | proved |
+| [`loulakisAntideriv_hasDerivAt`](Stats/Kappa/CubicStudent.lean#L167) | lemma | proved |
+| [`loulakisAntideriv_tendsto_zero`](Stats/Kappa/CubicStudent.lean#L204) | lemma | proved |
+| [`integrableOn_pow_mul_exp_neg_Ioi`](Stats/Kappa/CubicStudent.lean#L231) | lemma | proved |
+| [`integral_Ioi_pow_mul_exp_neg`](Stats/Kappa/CubicStudent.lean#L242) | lemma | proved |
+| [`incompleteGamma_loulakis`](Stats/Kappa/CubicStudent.lean#L264) | theorem | proved |
+| [`cubicStudentSumMAD_loulakis_form`](Stats/Kappa/CubicStudent.lean#L301) | theorem | proved |
+| [`kappa_cubicStudent`](Stats/Kappa/CubicStudent.lean#L349) | theorem | proved |
 
-**[Stats.Kappa.CubicStudentExpIntegral](Stats/Kappa/CubicStudentExpIntegral.lean)** — 624 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`expIntegralNeg`](Stats/Kappa/CubicStudentExpIntegral.lean#L83) | def |  |
-| [`cubicStudentSumDensity`](Stats/Kappa/CubicStudentExpIntegral.lean#L94) | def |  |
-| [`cubicStudentSumFourierHalf`](Stats/Kappa/CubicStudentExpIntegral.lean#L104) | def |  |
-| [`cubicKernelReal`](Stats/Kappa/CubicStudentExpIntegral.lean#L133) | def |  |
-| [`pow_mul_exp_neg_const_tendsto_zero`](Stats/Kappa/CubicStudentExpIntegral.lean#L152) | lemma | proved |
-| [`cubicKernelReal_decay_tendsto_zero`](Stats/Kappa/CubicStudentExpIntegral.lean#L171) | lemma | proved |
-| [`cubicKernelReal_isBigO`](Stats/Kappa/CubicStudentExpIntegral.lean#L216) | lemma | proved |
-| [`cubicKernelReal_integrableOn`](Stats/Kappa/CubicStudentExpIntegral.lean#L241) | lemma | proved |
-| [`cubicStudentSumFourierHalf_integrand_integrableOn`](Stats/Kappa/CubicStudentExpIntegral.lean#L258) | theorem | proved |
-| [`cubicStudentSumDensity_eq_half_fourier_avg`](Stats/Kappa/CubicStudentExpIntegral.lean#L290) | theorem | proved |
-| [`Ioi_translate_one_C`](Stats/Kappa/CubicStudentExpIntegral.lean#L401) | theorem | proved |
-| [`cubicStudentSumFourierHalf_eq_expIntegralNeg`](Stats/Kappa/CubicStudentExpIntegral.lean#L421) | theorem | proved |
-| [`cubicStudentSumDensity_via_exponentialIntegral`](Stats/Kappa/CubicStudentExpIntegral.lean#L553) | theorem | proved |
-
-**[Stats.Kappa.CubicStudentLaplace](Stats/Kappa/CubicStudentLaplace.lean)** — 609 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`G`](Stats/Kappa/CubicStudentLaplace.lean#L32) | def |  |
-| [`log_one_add_le_sub_sq_div`](Stats/Kappa/CubicStudentLaplace.lean#L42) | lemma | proved |
-| [`G_tendsto_pointwise`](Stats/Kappa/CubicStudentLaplace.lean#L131) | lemma | proved |
-| [`G_le_bound`](Stats/Kappa/CubicStudentLaplace.lean#L286) | lemma | proved |
-| [`bound_integrable`](Stats/Kappa/CubicStudentLaplace.lean#L377) | lemma | proved |
-| [`G_nonneg`](Stats/Kappa/CubicStudentLaplace.lean#L388) | lemma | proved |
-| [`G_integrable`](Stats/Kappa/CubicStudentLaplace.lean#L398) | lemma | proved |
-| [`incompleteGamma_change_of_variable`](Stats/Kappa/CubicStudentLaplace.lean#L424) | lemma | proved |
-| [`integral_exp_neg_half_sq_Ioi`](Stats/Kappa/CubicStudentLaplace.lean#L528) | theorem | proved |
-| [`G_integral_tendsto`](Stats/Kappa/CubicStudentLaplace.lean#L548) | lemma | proved |
-| [`incompleteGamma_laplace_asymptotic_thm`](Stats/Kappa/CubicStudentLaplace.lean#L586) | theorem | proved |
-
-**[Stats.Kappa.Cumulant](Stats/Kappa/Cumulant.lean)** — 699 lines
+**[Stats.Kappa.CubicStudentAsymptotic](Stats/Kappa/CubicStudentAsymptotic.lean)** — 318 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`cumulant`](Stats/Kappa/Cumulant.lean#L49) | def |  |
-| [`cumulant_zero_index`](Stats/Kappa/Cumulant.lean#L52) | lemma | proved |
-| [`cumulant_zero`](Stats/Kappa/Cumulant.lean#L57) | theorem | proved |
-| [`cumulant_one_eq_mean`](Stats/Kappa/Cumulant.lean#L61) | theorem | proved |
-| [`cumulant_two_eq_variance`](Stats/Kappa/Cumulant.lean#L68) | theorem | proved |
-| [`cumulantSkewness`](Stats/Kappa/Cumulant.lean#L104) | def |  |
-| [`cumulantKurtosis`](Stats/Kappa/Cumulant.lean#L108) | def |  |
-| [`cgf_iid_sum_eq_const_mul_eventuallyEq`](Stats/Kappa/Cumulant.lean#L131) | lemma | proved |
-| [`cumulant_iid_sum`](Stats/Kappa/Cumulant.lean#L161) | theorem | proved |
-| [`integrable_pow_of_mem_interior_integrableExpSet`](Stats/Kappa/Cumulant.lean#L194) | lemma | proved |
-| [`centralMoment_three_expand`](Stats/Kappa/Cumulant.lean#L208) | lemma | proved |
-| [`cumulant_three_expand`](Stats/Kappa/Cumulant.lean#L262) | lemma | proved |
-| [`cumulant_three_eq_centralMoment_three`](Stats/Kappa/Cumulant.lean#L345) | theorem | proved |
-| [`centralMoment_four_expand`](Stats/Kappa/Cumulant.lean#L352) | lemma | proved |
-| [`iteratedDeriv_three_cgf`](Stats/Kappa/Cumulant.lean#L406) | lemma | proved |
-| [`cumulant_four_expand`](Stats/Kappa/Cumulant.lean#L470) | lemma | proved |
-| [`centralMoment_four_eq_cumulant_four_plus`](Stats/Kappa/Cumulant.lean#L657) | theorem | proved |
-| [`cumulantSkewness_eq_centralMoment_ratio`](Stats/Kappa/Cumulant.lean#L684) | theorem | proved |
-| [`cumulantKurtosis_eq_centralMoment_ratio`](Stats/Kappa/Cumulant.lean#L692) | theorem | proved |
+| [`incompleteGamma_laplace_asymptotic`](Stats/Kappa/CubicStudentAsymptotic.lean#L83) | theorem | proved |
+| [`tendsto_log_incompleteGamma_minus_half_log`](Stats/Kappa/CubicStudentAsymptotic.lean#L92) | theorem | proved |
+| [`tendsto_log_incompleteGamma_sub_one_minus_half_log`](Stats/Kappa/CubicStudentAsymptotic.lean#L130) | theorem | proved |
+| [`kappa_cubicStudent_asymptotic`](Stats/Kappa/CubicStudentAsymptotic.lean#L224) | theorem | proved |
 
-**[Stats.Kappa.Exponential](Stats/Kappa/Exponential.lean)** — 366 lines
+**[Stats.Kappa.CubicStudentExpIntegral](Stats/Kappa/CubicStudentExpIntegral.lean)** — 610 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`gammaSumDensity`](Stats/Kappa/Exponential.lean#L42) | def |  |
-| [`gammaSumDensity_eq_gammaPDFReal`](Stats/Kappa/Exponential.lean#L53) | theorem | proved |
-| [`expSumMAD`](Stats/Kappa/Exponential.lean#L83) | def |  |
-| [`kappa_exponential`](Stats/Kappa/Exponential.lean#L92) | theorem | proved |
-| [`tendsto_log_factorial_stirling`](Stats/Kappa/Exponential.lean#L160) | theorem | proved |
-| [`tendsto_log_Gamma_stirling`](Stats/Kappa/Exponential.lean#L205) | theorem | proved |
-| [`tendsto_kappa_exp_denom_minus_half_log`](Stats/Kappa/Exponential.lean#L267) | theorem | proved |
-| [`kappa_exponential_asymptotic`](Stats/Kappa/Exponential.lean#L290) | theorem | proved |
+| [`expIntegralNeg`](Stats/Kappa/CubicStudentExpIntegral.lean#L79) | def |  |
+| [`cubicStudentSumDensity`](Stats/Kappa/CubicStudentExpIntegral.lean#L89) | def |  |
+| [`cubicStudentSumFourierHalf`](Stats/Kappa/CubicStudentExpIntegral.lean#L99) | def |  |
+| [`cubicKernelReal`](Stats/Kappa/CubicStudentExpIntegral.lean#L127) | def |  |
+| [`pow_mul_exp_neg_const_tendsto_zero`](Stats/Kappa/CubicStudentExpIntegral.lean#L146) | lemma | proved |
+| [`cubicKernelReal_decay_tendsto_zero`](Stats/Kappa/CubicStudentExpIntegral.lean#L165) | lemma | proved |
+| [`cubicKernelReal_isBigO`](Stats/Kappa/CubicStudentExpIntegral.lean#L210) | lemma | proved |
+| [`cubicKernelReal_integrableOn`](Stats/Kappa/CubicStudentExpIntegral.lean#L235) | lemma | proved |
+| [`cubicStudentSumFourierHalf_integrand_integrableOn`](Stats/Kappa/CubicStudentExpIntegral.lean#L252) | theorem | proved |
+| [`cubicStudentSumDensity_eq_half_fourier_avg`](Stats/Kappa/CubicStudentExpIntegral.lean#L284) | theorem | proved |
+| [`Ioi_translate_one_C`](Stats/Kappa/CubicStudentExpIntegral.lean#L395) | theorem | proved |
+| [`cubicStudentSumFourierHalf_eq_expIntegralNeg`](Stats/Kappa/CubicStudentExpIntegral.lean#L417) | theorem | proved |
+| [`cubicStudentSumDensity_via_exponentialIntegral`](Stats/Kappa/CubicStudentExpIntegral.lean#L550) | theorem | proved |
 
-**[Stats.Kappa.GaussianMixture](Stats/Kappa/GaussianMixture.lean)** — 165 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`gaussianMixtureKurtosis`](Stats/Kappa/GaussianMixture.lean#L37) | def |  |
-| [`gaussianMixtureKurtosis_ge_three_iff_poly`](Stats/Kappa/GaussianMixture.lean#L45) | theorem | proved |
-| [`gaussianMixtureKurtosis_ge_three_iff`](Stats/Kappa/GaussianMixture.lean#L71) | theorem | proved |
-| [`paretoSurvival_isRegularlyVarying`](Stats/Kappa/GaussianMixture.lean#L161) | theorem | proved |
-
-**[Stats.Kappa.GaussianSwitchingMean](Stats/Kappa/GaussianSwitchingMean.lean)** — 265 lines
+**[Stats.Kappa.CubicStudentLaplace](Stats/Kappa/CubicStudentLaplace.lean)** — 613 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`gaussianSwitchingMeanNum`](Stats/Kappa/GaussianSwitchingMean.lean#L54) | def |  |
-| [`gaussianSwitchingMeanDen`](Stats/Kappa/GaussianSwitchingMean.lean#L64) | def |  |
-| [`gaussianSwitchingMeanMAD`](Stats/Kappa/GaussianSwitchingMean.lean#L77) | def |  |
-| [`gaussianSwitchingMeanKappa1`](Stats/Kappa/GaussianSwitchingMean.lean#L85) | def |  |
-| [`gaussianSwitchingMean_kappa1`](Stats/Kappa/GaussianSwitchingMean.lean#L104) | theorem | proved |
-| [`gaussianSwitchingMean_kappa_neg_iff`](Stats/Kappa/GaussianSwitchingMean.lean#L173) | theorem | proved |
+| [`G`](Stats/Kappa/CubicStudentLaplace.lean#L36) | def |  |
+| [`log_one_add_le_sub_sq_div`](Stats/Kappa/CubicStudentLaplace.lean#L46) | lemma | proved |
+| [`G_tendsto_pointwise`](Stats/Kappa/CubicStudentLaplace.lean#L135) | lemma | proved |
+| [`G_le_bound`](Stats/Kappa/CubicStudentLaplace.lean#L290) | lemma | proved |
+| [`bound_integrable`](Stats/Kappa/CubicStudentLaplace.lean#L381) | lemma | proved |
+| [`G_nonneg`](Stats/Kappa/CubicStudentLaplace.lean#L392) | lemma | proved |
+| [`G_integrable`](Stats/Kappa/CubicStudentLaplace.lean#L402) | lemma | proved |
+| [`incompleteGamma_change_of_variable`](Stats/Kappa/CubicStudentLaplace.lean#L428) | lemma | proved |
+| [`integral_exp_neg_half_sq_Ioi`](Stats/Kappa/CubicStudentLaplace.lean#L532) | theorem | proved |
+| [`G_integral_tendsto`](Stats/Kappa/CubicStudentLaplace.lean#L552) | lemma | proved |
+| [`incompleteGamma_laplace_asymptotic_thm`](Stats/Kappa/CubicStudentLaplace.lean#L590) | theorem | proved |
 
-**[Stats.Kappa.IIdTriangle](Stats/Kappa/IIdTriangle.lean)** — 232 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`madSum`](Stats/Kappa/IIdTriangle.lean#L53) | def |  |
-| [`madSum_one`](Stats/Kappa/IIdTriangle.lean#L57) | theorem | proved |
-| [`integrable_abs_centred`](Stats/Kappa/IIdTriangle.lean#L67) | lemma | proved |
-| [`sum_centred_eq`](Stats/Kappa/IIdTriangle.lean#L82) | lemma | proved |
-| [`abs_sum_centred_le`](Stats/Kappa/IIdTriangle.lean#L89) | lemma | proved |
-| [`integral_abs_centred_eq`](Stats/Kappa/IIdTriangle.lean#L100) | lemma | proved |
-| [`madSum_le_n_madSum_one`](Stats/Kappa/IIdTriangle.lean#L122) | theorem | proved |
-| [`kappa_upper_bound_iid`](Stats/Kappa/IIdTriangle.lean#L202) | theorem | proved |
-| [`not_iid_of_kappa_gt_one`](Stats/Kappa/IIdTriangle.lean#L219) | theorem | proved |
-
-**[Stats.Kappa.Lognormal](Stats/Kappa/Lognormal.lean)** — 268 lines
+**[Stats.Kappa.Cumulant](Stats/Kappa/Cumulant.lean)** — 703 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`kappa_upper_bound_subadditive`](Stats/Kappa/Lognormal.lean#L60) | theorem | proved |
-| [`kappa_loulakis_lower_bound`](Stats/Kappa/Lognormal.lean#L95) | theorem | proved |
-| [`kappa_loulakis_eq_one`](Stats/Kappa/Lognormal.lean#L124) | theorem | proved |
-| [`lognormal_M_ratio_le_n`](Stats/Kappa/Lognormal.lean#L164) | theorem | proved |
-| [`lognormal_M_ratio_ge_n_subexp`](Stats/Kappa/Lognormal.lean#L183) | theorem | proved |
-| [`kappa_lognormal_tendsto_one`](Stats/Kappa/Lognormal.lean#L214) | theorem | proved |
+| [`cumulant`](Stats/Kappa/Cumulant.lean#L53) | def |  |
+| [`cumulant_zero_index`](Stats/Kappa/Cumulant.lean#L56) | lemma | proved |
+| [`cumulant_zero`](Stats/Kappa/Cumulant.lean#L61) | theorem | proved |
+| [`cumulant_one_eq_mean`](Stats/Kappa/Cumulant.lean#L65) | theorem | proved |
+| [`cumulant_two_eq_variance`](Stats/Kappa/Cumulant.lean#L72) | theorem | proved |
+| [`cumulantSkewness`](Stats/Kappa/Cumulant.lean#L108) | def |  |
+| [`cumulantKurtosis`](Stats/Kappa/Cumulant.lean#L112) | def |  |
+| [`cgf_iid_sum_eq_const_mul_eventuallyEq`](Stats/Kappa/Cumulant.lean#L135) | lemma | proved |
+| [`cumulant_iid_sum`](Stats/Kappa/Cumulant.lean#L165) | theorem | proved |
+| [`integrable_pow_of_mem_interior_integrableExpSet`](Stats/Kappa/Cumulant.lean#L198) | lemma | proved |
+| [`centralMoment_three_expand`](Stats/Kappa/Cumulant.lean#L212) | lemma | proved |
+| [`cumulant_three_expand`](Stats/Kappa/Cumulant.lean#L266) | lemma | proved |
+| [`cumulant_three_eq_centralMoment_three`](Stats/Kappa/Cumulant.lean#L349) | theorem | proved |
+| [`centralMoment_four_expand`](Stats/Kappa/Cumulant.lean#L356) | lemma | proved |
+| [`iteratedDeriv_three_cgf`](Stats/Kappa/Cumulant.lean#L410) | lemma | proved |
+| [`cumulant_four_expand`](Stats/Kappa/Cumulant.lean#L474) | lemma | proved |
+| [`centralMoment_four_eq_cumulant_four_plus`](Stats/Kappa/Cumulant.lean#L661) | theorem | proved |
+| [`cumulantSkewness_eq_centralMoment_ratio`](Stats/Kappa/Cumulant.lean#L688) | theorem | proved |
+| [`cumulantKurtosis_eq_centralMoment_ratio`](Stats/Kappa/Cumulant.lean#L696) | theorem | proved |
 
-**[Stats.Kappa.LognormalAsymptotic](Stats/Kappa/LognormalAsymptotic.lean)** — 253 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`Y`](Stats/Kappa/LognormalAsymptotic.lean#L55) | def |  |
-| [`Y_pos`](Stats/Kappa/LognormalAsymptotic.lean#L57) | theorem | proved |
-| [`Y_nonneg`](Stats/Kappa/LognormalAsymptotic.lean#L59) | theorem | proved |
-| [`tendsto_exponent_atBot`](Stats/Kappa/LognormalAsymptotic.lean#L64) | theorem | proved |
-| [`tendsto_Y_atTop_zero`](Stats/Kappa/LognormalAsymptotic.lean#L83) | theorem | proved |
-| [`integral_Y_eq_one`](Stats/Kappa/LognormalAsymptotic.lean#L94) | theorem | proved |
-| [`integral_min_Y_one_tendsto_zero`](Stats/Kappa/LognormalAsymptotic.lean#L131) | theorem | proved |
-| [`pos_part_sub_one_eq`](Stats/Kappa/LognormalAsymptotic.lean#L168) | lemma | proved |
-| [`abs_sub_one_eq_two_pos_part_plus`](Stats/Kappa/LognormalAsymptotic.lean#L181) | lemma | proved |
-| [`M_one_tendsto_two`](Stats/Kappa/LognormalAsymptotic.lean#L194) | theorem | proved |
-
-**[Stats.Kappa.LognormalCumulants](Stats/Kappa/LognormalCumulants.lean)** — 443 lines
+**[Stats.Kappa.Exponential](Stats/Kappa/Exponential.lean)** — 370 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`exp_pow_two`](Stats/Kappa/LognormalCumulants.lean#L43) | lemma | proved |
-| [`exp_pow_three`](Stats/Kappa/LognormalCumulants.lean#L46) | lemma | proved |
-| [`exp_pow_four`](Stats/Kappa/LognormalCumulants.lean#L49) | lemma | proved |
-| [`lognormalMoment`](Stats/Kappa/LognormalCumulants.lean#L56) | def |  |
-| [`lognormalMoment_one`](Stats/Kappa/LognormalCumulants.lean#L59) | lemma | proved |
-| [`lognormalMoment_two`](Stats/Kappa/LognormalCumulants.lean#L63) | lemma | proved |
-| [`lognormalMoment_three`](Stats/Kappa/LognormalCumulants.lean#L67) | lemma | proved |
-| [`lognormalMoment_four`](Stats/Kappa/LognormalCumulants.lean#L71) | lemma | proved |
-| [`lognormalCumulantOne_single`](Stats/Kappa/LognormalCumulants.lean#L78) | def |  |
-| [`lognormalCumulantTwo_single`](Stats/Kappa/LognormalCumulants.lean#L82) | def |  |
-| [`lognormalCumulantThree_single`](Stats/Kappa/LognormalCumulants.lean#L86) | def |  |
-| [`lognormalCumulantFour_single`](Stats/Kappa/LognormalCumulants.lean#L92) | def |  |
-| [`lognormalCumulantSum_one`](Stats/Kappa/LognormalCumulants.lean#L102) | def |  |
-| [`lognormalCumulantSum_two`](Stats/Kappa/LognormalCumulants.lean#L106) | def |  |
-| [`lognormalCumulantSum_three`](Stats/Kappa/LognormalCumulants.lean#L110) | def |  |
-| [`lognormalCumulantSum_four`](Stats/Kappa/LognormalCumulants.lean#L114) | def |  |
-| [`lognormalCumulant_one`](Stats/Kappa/LognormalCumulants.lean#L120) | theorem | proved |
-| [`lognormalCumulant_two`](Stats/Kappa/LognormalCumulants.lean#L126) | theorem | proved |
-| [`lognormalCumulant_three`](Stats/Kappa/LognormalCumulants.lean#L141) | theorem | proved |
-| [`lognormalCumulant_four`](Stats/Kappa/LognormalCumulants.lean#L169) | theorem | proved |
-| [`lognormalSkewnessSum`](Stats/Kappa/LognormalCumulants.lean#L213) | def |  |
-| [`lognormalKurtosisSum`](Stats/Kappa/LognormalCumulants.lean#L217) | def |  |
-| [`lognormalSkewness`](Stats/Kappa/LognormalCumulants.lean#L225) | theorem | proved |
-| [`lognormalKurtosis`](Stats/Kappa/LognormalCumulants.lean#L282) | theorem | proved |
-| [`lognormalKappaProxy`](Stats/Kappa/LognormalCumulants.lean#L320) | def |  |
-| [`lognormalKappaProxy_closed_form`](Stats/Kappa/LognormalCumulants.lean#L328) | lemma | proved |
-| [`lognormal_kappa_tendsto_zero_as_sigma_to_zero`](Stats/Kappa/LognormalCumulants.lean#L386) | theorem | proved |
-| [`lognormal_kappa_tendsto_zero_as_n_to_infty`](Stats/Kappa/LognormalCumulants.lean#L423) | theorem | proved |
+| [`gammaSumDensity`](Stats/Kappa/Exponential.lean#L46) | def |  |
+| [`gammaSumDensity_eq_gammaPDFReal`](Stats/Kappa/Exponential.lean#L57) | theorem | proved |
+| [`expSumMAD`](Stats/Kappa/Exponential.lean#L87) | def |  |
+| [`kappa_exponential`](Stats/Kappa/Exponential.lean#L96) | theorem | proved |
+| [`tendsto_log_factorial_stirling`](Stats/Kappa/Exponential.lean#L164) | theorem | proved |
+| [`tendsto_log_Gamma_stirling`](Stats/Kappa/Exponential.lean#L209) | theorem | proved |
+| [`tendsto_kappa_exp_denom_minus_half_log`](Stats/Kappa/Exponential.lean#L271) | theorem | proved |
+| [`kappa_exponential_asymptotic`](Stats/Kappa/Exponential.lean#L294) | theorem | proved |
 
-**[Stats.Kappa.LognormalIIdSetup](Stats/Kappa/LognormalIIdSetup.lean)** — 122 lines
+**[Stats.Kappa.GaussianMixture](Stats/Kappa/GaussianMixture.lean)** — 169 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`Ωspace`](Stats/Kappa/LognormalIIdSetup.lean#L38) | abbrev |  |
-| [`μn`](Stats/Kappa/LognormalIIdSetup.lean#L41) | def |  |
-| [`Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L50) | def |  |
-| [`Xσ_pos`](Stats/Kappa/LognormalIIdSetup.lean#L53) | theorem | proved |
-| [`Xσ_nonneg`](Stats/Kappa/LognormalIIdSetup.lean#L56) | theorem | proved |
-| [`measurable_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L59) | theorem | proved |
-| [`iIndepFun_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L67) | theorem | proved |
-| [`identDistrib_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L77) | theorem | proved |
-| [`integrable_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L94) | theorem | proved |
-| [`integrable_sum_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L106) | theorem | proved |
-| [`integral_Xσ_eq_one`](Stats/Kappa/LognormalIIdSetup.lean#L112) | theorem | proved |
-| [`integral_sum_Xσ_eq`](Stats/Kappa/LognormalIIdSetup.lean#L117) | theorem | proved |
+| [`gaussianMixtureKurtosis`](Stats/Kappa/GaussianMixture.lean#L41) | def |  |
+| [`gaussianMixtureKurtosis_ge_three_iff_poly`](Stats/Kappa/GaussianMixture.lean#L49) | theorem | proved |
+| [`gaussianMixtureKurtosis_ge_three_iff`](Stats/Kappa/GaussianMixture.lean#L75) | theorem | proved |
+| [`paretoSurvival_isRegularlyVarying`](Stats/Kappa/GaussianMixture.lean#L165) | theorem | proved |
 
-**[Stats.Kappa.LognormalMarkov](Stats/Kappa/LognormalMarkov.lean)** — 121 lines
+**[Stats.Kappa.GaussianSwitchingMean](Stats/Kappa/GaussianSwitchingMean.lean)** — 269 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`gaussianReal_real_Ici_le`](Stats/Kappa/LognormalMarkov.lean#L42) | theorem | proved |
-| [`lognormalReal_real_Ioi_le`](Stats/Kappa/LognormalMarkov.lean#L76) | theorem | proved |
+| [`gaussianSwitchingMeanNum`](Stats/Kappa/GaussianSwitchingMean.lean#L58) | def |  |
+| [`gaussianSwitchingMeanDen`](Stats/Kappa/GaussianSwitchingMean.lean#L68) | def |  |
+| [`gaussianSwitchingMeanMAD`](Stats/Kappa/GaussianSwitchingMean.lean#L81) | def |  |
+| [`gaussianSwitchingMeanKappa1`](Stats/Kappa/GaussianSwitchingMean.lean#L89) | def |  |
+| [`gaussianSwitchingMean_kappa1`](Stats/Kappa/GaussianSwitchingMean.lean#L108) | theorem | proved |
+| [`gaussianSwitchingMean_kappa_neg_iff`](Stats/Kappa/GaussianSwitchingMean.lean#L177) | theorem | proved |
 
-**[Stats.Kappa.LognormalMeasure](Stats/Kappa/LognormalMeasure.lean)** — 95 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`lognormalReal`](Stats/Kappa/LognormalMeasure.lean#L37) | def |  |
-| [`measurable_exp`](Stats/Kappa/LognormalMeasure.lean#L42) | lemma | proved |
-| [`instIsProbabilityMeasureLognormalReal`](Stats/Kappa/LognormalMeasure.lean#L47) | instance |  |
-| [`lognormalReal_Ioi_zero_eq_one`](Stats/Kappa/LognormalMeasure.lean#L54) | theorem | proved |
-| [`lognormalReal_real_Ioi`](Stats/Kappa/LognormalMeasure.lean#L69) | theorem | proved |
-
-**[Stats.Kappa.LognormalTailIntegrals](Stats/Kappa/LognormalTailIntegrals.lean)** — 447 lines
+**[Stats.Kappa.IIdTriangle](Stats/Kappa/IIdTriangle.lean)** — 236 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`integral_min_Y_const_tendsto_zero`](Stats/Kappa/LognormalTailIntegrals.lean#L39) | theorem | proved |
-| [`pos_part_sub_const_eq`](Stats/Kappa/LognormalTailIntegrals.lean#L69) | lemma | proved |
-| [`integral_pos_part_Y_sub_n_tendsto_one`](Stats/Kappa/LognormalTailIntegrals.lean#L79) | theorem | proved |
-| [`integral_pos_part_eq_An`](Stats/Kappa/LognormalTailIntegrals.lean#L124) | theorem | proved |
-| [`An_tendsto_one`](Stats/Kappa/LognormalTailIntegrals.lean#L140) | theorem | proved |
-| [`Y_tail_holder`](Stats/Kappa/LognormalTailIntegrals.lean#L160) | theorem | proved |
-| [`prob_Y_gt_tendsto_zero`](Stats/Kappa/LognormalTailIntegrals.lean#L233) | theorem | proved |
-| [`Y_integrable`](Stats/Kappa/LognormalTailIntegrals.lean#L315) | lemma | proved |
-| [`integrableOn_prob_Y_gt_Ioi`](Stats/Kappa/LognormalTailIntegrals.lean#L327) | theorem | proved |
-| [`integrableOn_prob_Y_gt_sq_Ioi`](Stats/Kappa/LognormalTailIntegrals.lean#L369) | theorem | proved |
-| [`prob_Y_gt_mono`](Stats/Kappa/LognormalTailIntegrals.lean#L391) | lemma | proved |
-| [`Bn_le_prob_mul_An`](Stats/Kappa/LognormalTailIntegrals.lean#L400) | theorem | proved |
-| [`Bn_tendsto_zero`](Stats/Kappa/LognormalTailIntegrals.lean#L429) | theorem | proved |
+| [`madSum`](Stats/Kappa/IIdTriangle.lean#L57) | def |  |
+| [`madSum_one`](Stats/Kappa/IIdTriangle.lean#L61) | theorem | proved |
+| [`integrable_abs_centred`](Stats/Kappa/IIdTriangle.lean#L71) | lemma | proved |
+| [`sum_centred_eq`](Stats/Kappa/IIdTriangle.lean#L86) | lemma | proved |
+| [`abs_sum_centred_le`](Stats/Kappa/IIdTriangle.lean#L93) | lemma | proved |
+| [`integral_abs_centred_eq`](Stats/Kappa/IIdTriangle.lean#L104) | lemma | proved |
+| [`madSum_le_n_madSum_one`](Stats/Kappa/IIdTriangle.lean#L126) | theorem | proved |
+| [`kappa_upper_bound_iid`](Stats/Kappa/IIdTriangle.lean#L206) | theorem | proved |
+| [`not_iid_of_kappa_gt_one`](Stats/Kappa/IIdTriangle.lean#L223) | theorem | proved |
 
-**[Stats.Kappa.LoulakisAlgebraic](Stats/Kappa/LoulakisAlgebraic.lean)** — 153 lines
+**[Stats.Kappa.Lognormal](Stats/Kappa/Lognormal.lean)** — 272 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`M_n_lower_bound`](Stats/Kappa/LoulakisAlgebraic.lean#L76) | theorem | proved |
+| [`kappa_upper_bound_subadditive`](Stats/Kappa/Lognormal.lean#L64) | theorem | proved |
+| [`kappa_loulakis_lower_bound`](Stats/Kappa/Lognormal.lean#L99) | theorem | proved |
+| [`kappa_loulakis_eq_one`](Stats/Kappa/Lognormal.lean#L128) | theorem | proved |
+| [`lognormal_M_ratio_le_n`](Stats/Kappa/Lognormal.lean#L168) | theorem | proved |
+| [`lognormal_M_ratio_ge_n_subexp`](Stats/Kappa/Lognormal.lean#L187) | theorem | proved |
+| [`kappa_lognormal_tendsto_one`](Stats/Kappa/Lognormal.lean#L218) | theorem | proved |
 
-**[Stats.Kappa.LoulakisLiminf](Stats/Kappa/LoulakisLiminf.lean)** — 121 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`liminf_M_ratio_ge_n`](Stats/Kappa/LoulakisLiminf.lean#L55) | theorem | proved |
-
-**[Stats.Kappa.LoulakisLognormal](Stats/Kappa/LoulakisLognormal.lean)** — 415 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`Mn`](Stats/Kappa/LoulakisLognormal.lean#L63) | def |  |
-| [`M1`](Stats/Kappa/LoulakisLognormal.lean#L67) | def |  |
-| [`An`](Stats/Kappa/LoulakisLognormal.lean#L71) | def |  |
-| [`Bn`](Stats/Kappa/LoulakisLognormal.lean#L75) | def |  |
-| [`Mn_nonneg`](Stats/Kappa/LoulakisLognormal.lean#L80) | theorem | proved |
-| [`Mn_le_n_M1`](Stats/Kappa/LoulakisLognormal.lean#L87) | theorem | proved |
-| [`Y_integrable_local`](Stats/Kappa/LoulakisLognormal.lean#L142) | lemma | proved |
-| [`integrableOn_prob_sum_Xσ_gt_Ioi`](Stats/Kappa/LoulakisLognormal.lean#L154) | theorem | proved |
-| [`M_n_lower_lognormal`](Stats/Kappa/LoulakisLognormal.lean#L192) | theorem | proved |
-| [`Bn_tendsto_zero`](Stats/Kappa/LoulakisLognormal.lean#L239) | theorem | proved |
-| [`liminf_M_ratio_lognormal_ge_n`](Stats/Kappa/LoulakisLognormal.lean#L252) | theorem | proved |
-| [`tendsto_M_ratio_lognormal_eq_n`](Stats/Kappa/LoulakisLognormal.lean#L282) | theorem | proved |
-| [`Mn_tendsto_two_mul_n`](Stats/Kappa/LoulakisLognormal.lean#L327) | theorem | proved |
-| [`kappa_lognormal_tendsto_one`](Stats/Kappa/LoulakisLognormal.lean#L347) | theorem | proved |
-| [`Mn_one_eq_M1`](Stats/Kappa/LoulakisLognormal.lean#L391) | theorem | proved |
-| [`kappa_lognormal_tendsto_one_canonical`](Stats/Kappa/LoulakisLognormal.lean#L405) | theorem | proved |
-
-**[Stats.Kappa.MadLayerCake](Stats/Kappa/MadLayerCake.lean)** — 212 lines
+**[Stats.Kappa.LognormalAsymptotic](Stats/Kappa/LognormalAsymptotic.lean)** — 257 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`abs_sub_eq_max_add_max`](Stats/Kappa/MadLayerCake.lean#L39) | lemma | proved |
-| [`sub_eq_max_sub_max`](Stats/Kappa/MadLayerCake.lean#L53) | lemma | proved |
-| [`integral_pos_part_eq_neg_part`](Stats/Kappa/MadLayerCake.lean#L67) | lemma | proved |
-| [`integral_pos_part_eq_tail_integral`](Stats/Kappa/MadLayerCake.lean#L93) | theorem | proved |
-| [`measurable_tail_real`](Stats/Kappa/MadLayerCake.lean#L126) | lemma | proved |
-| [`integrableOn_measureReal_lt_Ioi`](Stats/Kappa/MadLayerCake.lean#L138) | theorem | proved |
-| [`integrableOn_measureReal_lt_sq_Ioi`](Stats/Kappa/MadLayerCake.lean#L163) | theorem | proved |
-| [`mad_eq_two_tail_integral`](Stats/Kappa/MadLayerCake.lean#L188) | theorem | proved |
+| [`Y`](Stats/Kappa/LognormalAsymptotic.lean#L59) | def |  |
+| [`Y_pos`](Stats/Kappa/LognormalAsymptotic.lean#L61) | theorem | proved |
+| [`Y_nonneg`](Stats/Kappa/LognormalAsymptotic.lean#L63) | theorem | proved |
+| [`tendsto_exponent_atBot`](Stats/Kappa/LognormalAsymptotic.lean#L68) | theorem | proved |
+| [`tendsto_Y_atTop_zero`](Stats/Kappa/LognormalAsymptotic.lean#L87) | theorem | proved |
+| [`integral_Y_eq_one`](Stats/Kappa/LognormalAsymptotic.lean#L98) | theorem | proved |
+| [`integral_min_Y_one_tendsto_zero`](Stats/Kappa/LognormalAsymptotic.lean#L135) | theorem | proved |
+| [`pos_part_sub_one_eq`](Stats/Kappa/LognormalAsymptotic.lean#L172) | lemma | proved |
+| [`abs_sub_one_eq_two_pos_part_plus`](Stats/Kappa/LognormalAsymptotic.lean#L185) | lemma | proved |
+| [`M_one_tendsto_two`](Stats/Kappa/LognormalAsymptotic.lean#L198) | theorem | proved |
 
-**[Stats.Kappa.MaxIIdBound](Stats/Kappa/MaxIIdBound.lean)** — 205 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`one_sub_one_sub_pow_ge`](Stats/Kappa/MaxIIdBound.lean#L48) | theorem | proved |
-| [`prob_all_le_iid`](Stats/Kappa/MaxIIdBound.lean#L100) | theorem | proved |
-| [`prob_max_iid_gt`](Stats/Kappa/MaxIIdBound.lean#L143) | theorem | proved |
-| [`prob_max_iid_ge`](Stats/Kappa/MaxIIdBound.lean#L175) | theorem | proved |
-
-**[Stats.Kappa.PearsonIV](Stats/Kappa/PearsonIV.lean)** — 337 lines
+**[Stats.Kappa.LognormalCumulants](Stats/Kappa/LognormalCumulants.lean)** — 447 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`pearsonIVQuad`](Stats/Kappa/PearsonIV.lean#L41) | def |  |
-| [`pearsonIVLin`](Stats/Kappa/PearsonIV.lean#L45) | def |  |
-| [`IsPearsonIV`](Stats/Kappa/PearsonIV.lean#L57) | structure |  |
-| [`pearsonIV_aux_deriv`](Stats/Kappa/PearsonIV.lean#L69) | theorem | proved |
-| [`pearsonIVMADClosed`](Stats/Kappa/PearsonIV.lean#L123) | def |  |
-| [`pearsonIV_mad_eq`](Stats/Kappa/PearsonIV.lean#L154) | theorem | proved |
-| [`pearsonIV_mad_eq_paper`](Stats/Kappa/PearsonIV.lean#L173) | theorem | proved |
-| [`pearsonIVLognormalDen`](Stats/Kappa/PearsonIV.lean#L203) | def |  |
-| [`pearsonIV_b2_lognormal`](Stats/Kappa/PearsonIV.lean#L210) | def |  |
-| [`pearsonIV_b1_lognormal`](Stats/Kappa/PearsonIV.lean#L222) | def |  |
-| [`pearsonIV_b0_lognormal`](Stats/Kappa/PearsonIV.lean#L239) | def |  |
-| [`pearsonIV_a0_lognormal`](Stats/Kappa/PearsonIV.lean#L257) | def |  |
-| [`pearsonIV_a1_lognormal`](Stats/Kappa/PearsonIV.lean#L272) | def |  |
-| [`pearsonIVLognormalMatch`](Stats/Kappa/PearsonIV.lean#L278) | def |  |
-| [`pearsonIV_lognormal_match_a1`](Stats/Kappa/PearsonIV.lean#L287) | theorem | proved |
-| [`pearsonIVLognormalDen_pos`](Stats/Kappa/PearsonIV.lean#L295) | theorem | proved |
-| [`pearsonIV_lognormal_match_b2_nonneg`](Stats/Kappa/PearsonIV.lean#L321) | theorem | proved |
+| [`exp_pow_two`](Stats/Kappa/LognormalCumulants.lean#L47) | lemma | proved |
+| [`exp_pow_three`](Stats/Kappa/LognormalCumulants.lean#L50) | lemma | proved |
+| [`exp_pow_four`](Stats/Kappa/LognormalCumulants.lean#L53) | lemma | proved |
+| [`lognormalMoment`](Stats/Kappa/LognormalCumulants.lean#L60) | def |  |
+| [`lognormalMoment_one`](Stats/Kappa/LognormalCumulants.lean#L63) | lemma | proved |
+| [`lognormalMoment_two`](Stats/Kappa/LognormalCumulants.lean#L67) | lemma | proved |
+| [`lognormalMoment_three`](Stats/Kappa/LognormalCumulants.lean#L71) | lemma | proved |
+| [`lognormalMoment_four`](Stats/Kappa/LognormalCumulants.lean#L75) | lemma | proved |
+| [`lognormalCumulantOne_single`](Stats/Kappa/LognormalCumulants.lean#L82) | def |  |
+| [`lognormalCumulantTwo_single`](Stats/Kappa/LognormalCumulants.lean#L86) | def |  |
+| [`lognormalCumulantThree_single`](Stats/Kappa/LognormalCumulants.lean#L90) | def |  |
+| [`lognormalCumulantFour_single`](Stats/Kappa/LognormalCumulants.lean#L96) | def |  |
+| [`lognormalCumulantSum_one`](Stats/Kappa/LognormalCumulants.lean#L106) | def |  |
+| [`lognormalCumulantSum_two`](Stats/Kappa/LognormalCumulants.lean#L110) | def |  |
+| [`lognormalCumulantSum_three`](Stats/Kappa/LognormalCumulants.lean#L114) | def |  |
+| [`lognormalCumulantSum_four`](Stats/Kappa/LognormalCumulants.lean#L118) | def |  |
+| [`lognormalCumulant_one`](Stats/Kappa/LognormalCumulants.lean#L124) | theorem | proved |
+| [`lognormalCumulant_two`](Stats/Kappa/LognormalCumulants.lean#L130) | theorem | proved |
+| [`lognormalCumulant_three`](Stats/Kappa/LognormalCumulants.lean#L145) | theorem | proved |
+| [`lognormalCumulant_four`](Stats/Kappa/LognormalCumulants.lean#L173) | theorem | proved |
+| [`lognormalSkewnessSum`](Stats/Kappa/LognormalCumulants.lean#L217) | def |  |
+| [`lognormalKurtosisSum`](Stats/Kappa/LognormalCumulants.lean#L221) | def |  |
+| [`lognormalSkewness`](Stats/Kappa/LognormalCumulants.lean#L229) | theorem | proved |
+| [`lognormalKurtosis`](Stats/Kappa/LognormalCumulants.lean#L286) | theorem | proved |
+| [`lognormalKappaProxy`](Stats/Kappa/LognormalCumulants.lean#L324) | def |  |
+| [`lognormalKappaProxy_closed_form`](Stats/Kappa/LognormalCumulants.lean#L332) | lemma | proved |
+| [`lognormal_kappa_tendsto_zero_as_sigma_to_zero`](Stats/Kappa/LognormalCumulants.lean#L390) | theorem | proved |
+| [`lognormal_kappa_tendsto_zero_as_n_to_infty`](Stats/Kappa/LognormalCumulants.lean#L427) | theorem | proved |
 
-**[Stats.Kappa.PoissonCDF](Stats/Kappa/PoissonCDF.lean)** — 298 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`pow_n_div_exp_one`](Stats/Kappa/PoissonCDF.lean#L66) | lemma | proved |
-| [`sqrt_two_mul_n`](Stats/Kappa/PoissonCDF.lean#L77) | lemma | proved |
-| [`tendsto_stirling_rearranged`](Stats/Kappa/PoissonCDF.lean#L83) | theorem | proved |
-| [`sqrt_pi_half_div_sqrt_two_pi`](Stats/Kappa/PoissonCDF.lean#L144) | lemma | proved |
-| [`tendsto_incompleteGamma_div_factorial`](Stats/Kappa/PoissonCDF.lean#L167) | theorem | proved |
-| [`tendsto_inv_sqrt_nat`](Stats/Kappa/PoissonCDF.lean#L219) | lemma | proved |
-| [`tendsto_pow_exp_div_factorial`](Stats/Kappa/PoissonCDF.lean#L226) | theorem | proved |
-| [`poisson_cdf_at_mean_tendsto_half`](Stats/Kappa/PoissonCDF.lean#L263) | theorem | proved |
-
-**[Stats.Kappa.Stable](Stats/Kappa/Stable.lean)** — 226 lines
+**[Stats.Kappa.LognormalIIdSetup](Stats/Kappa/LognormalIIdSetup.lean)** — 126 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`stableCharacteristicFunction`](Stats/Kappa/Stable.lean#L73) | def |  |
-| [`StableClass`](Stats/Kappa/Stable.lean#L96) | structure |  |
-| [`stable_charfun_pow_alpha_ne_one`](Stats/Kappa/Stable.lean#L116) | theorem | proved |
-| [`stable_charfun_pow_alpha_eq_one`](Stats/Kappa/Stable.lean#L157) | theorem | proved |
-| [`stable_sum_stable`](Stats/Kappa/Stable.lean#L187) | theorem | proved |
-| [`stable_class_kappa_invariance`](Stats/Kappa/Stable.lean#L219) | theorem | proved |
+| [`Ωspace`](Stats/Kappa/LognormalIIdSetup.lean#L42) | abbrev |  |
+| [`μn`](Stats/Kappa/LognormalIIdSetup.lean#L45) | def |  |
+| [`Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L54) | def |  |
+| [`Xσ_pos`](Stats/Kappa/LognormalIIdSetup.lean#L57) | theorem | proved |
+| [`Xσ_nonneg`](Stats/Kappa/LognormalIIdSetup.lean#L60) | theorem | proved |
+| [`measurable_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L63) | theorem | proved |
+| [`iIndepFun_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L71) | theorem | proved |
+| [`identDistrib_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L81) | theorem | proved |
+| [`integrable_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L98) | theorem | proved |
+| [`integrable_sum_Xσ`](Stats/Kappa/LognormalIIdSetup.lean#L110) | theorem | proved |
+| [`integral_Xσ_eq_one`](Stats/Kappa/LognormalIIdSetup.lean#L116) | theorem | proved |
+| [`integral_sum_Xσ_eq`](Stats/Kappa/LognormalIIdSetup.lean#L121) | theorem | proved |
 
-**[Stats.Kappa.SumMaxBound](Stats/Kappa/SumMaxBound.lean)** — 72 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`sum_gt_of_exists_gt`](Stats/Kappa/SumMaxBound.lean#L38) | lemma | proved |
-| [`setOf_exists_gt_subset_setOf_sum_gt`](Stats/Kappa/SumMaxBound.lean#L54) | theorem | proved |
-| [`prob_sum_ge_prob_max`](Stats/Kappa/SumMaxBound.lean#L66) | theorem | proved |
-
-**[Stats.Kappa.TableI](Stats/Kappa/TableI.lean)** — 349 lines
+**[Stats.Kappa.LognormalMarkov](Stats/Kappa/LognormalMarkov.lean)** — 125 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`tableIMAD`](Stats/Kappa/TableI.lean#L58) | def |  |
-| [`kappa_tableIMAD_bare`](Stats/Kappa/TableI.lean#L68) | lemma | proved |
-| [`studentTInner`](Stats/Kappa/TableI.lean#L82) | def |  |
-| [`studentTRatio`](Stats/Kappa/TableI.lean#L88) | def |  |
-| [`studentTKappa`](Stats/Kappa/TableI.lean#L93) | def |  |
-| [`kappa_studentT_general`](Stats/Kappa/TableI.lean#L109) | theorem | proved |
-| [`incompleteBeta`](Stats/Kappa/TableI.lean#L148) | def |  |
-| [`paretoIntegrand`](Stats/Kappa/TableI.lean#L162) | def |  |
-| [`paretoRatio`](Stats/Kappa/TableI.lean#L176) | def |  |
-| [`paretoKappa`](Stats/Kappa/TableI.lean#L182) | def |  |
-| [`kappa_pareto_general`](Stats/Kappa/TableI.lean#L187) | theorem | proved |
-| [`normalSwitchingVarianceRatio`](Stats/Kappa/TableI.lean#L226) | def |  |
-| [`normalSwitchingVarianceKappa`](Stats/Kappa/TableI.lean#L236) | def |  |
-| [`kappa_normal_switching_variance`](Stats/Kappa/TableI.lean#L241) | theorem | proved |
-| [`lognormalExplicitRatio`](Stats/Kappa/TableI.lean#L271) | def |  |
-| [`lognormalExplicitKappa`](Stats/Kappa/TableI.lean#L280) | def |  |
-| [`kappa_lognormal_explicit`](Stats/Kappa/TableI.lean#L285) | theorem | proved |
-| [`lognormalKappaStar`](Stats/Kappa/TableI.lean#L310) | def |  |
-| [`lognormal_kappa_star`](Stats/Kappa/TableI.lean#L318) | theorem | proved |
-| [`lognormalStarMAD`](Stats/Kappa/TableI.lean#L332) | def |  |
-| [`kappa_lognormal_star`](Stats/Kappa/TableI.lean#L341) | theorem | proved |
+| [`gaussianReal_real_Ici_le`](Stats/Kappa/LognormalMarkov.lean#L46) | theorem | proved |
+| [`lognormalReal_real_Ioi_le`](Stats/Kappa/LognormalMarkov.lean#L80) | theorem | proved |
+
+**[Stats.Kappa.LognormalMeasure](Stats/Kappa/LognormalMeasure.lean)** — 99 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`lognormalReal`](Stats/Kappa/LognormalMeasure.lean#L41) | def |  |
+| [`measurable_exp`](Stats/Kappa/LognormalMeasure.lean#L46) | lemma | proved |
+| [`instIsProbabilityMeasureLognormalReal`](Stats/Kappa/LognormalMeasure.lean#L51) | instance |  |
+| [`lognormalReal_Ioi_zero_eq_one`](Stats/Kappa/LognormalMeasure.lean#L58) | theorem | proved |
+| [`lognormalReal_real_Ioi`](Stats/Kappa/LognormalMeasure.lean#L73) | theorem | proved |
+
+**[Stats.Kappa.LognormalTailIntegrals](Stats/Kappa/LognormalTailIntegrals.lean)** — 451 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`integral_min_Y_const_tendsto_zero`](Stats/Kappa/LognormalTailIntegrals.lean#L43) | theorem | proved |
+| [`pos_part_sub_const_eq`](Stats/Kappa/LognormalTailIntegrals.lean#L73) | lemma | proved |
+| [`integral_pos_part_Y_sub_n_tendsto_one`](Stats/Kappa/LognormalTailIntegrals.lean#L83) | theorem | proved |
+| [`integral_pos_part_eq_An`](Stats/Kappa/LognormalTailIntegrals.lean#L128) | theorem | proved |
+| [`An_tendsto_one`](Stats/Kappa/LognormalTailIntegrals.lean#L144) | theorem | proved |
+| [`Y_tail_holder`](Stats/Kappa/LognormalTailIntegrals.lean#L164) | theorem | proved |
+| [`prob_Y_gt_tendsto_zero`](Stats/Kappa/LognormalTailIntegrals.lean#L237) | theorem | proved |
+| [`Y_integrable`](Stats/Kappa/LognormalTailIntegrals.lean#L319) | lemma | proved |
+| [`integrableOn_prob_Y_gt_Ioi`](Stats/Kappa/LognormalTailIntegrals.lean#L331) | theorem | proved |
+| [`integrableOn_prob_Y_gt_sq_Ioi`](Stats/Kappa/LognormalTailIntegrals.lean#L373) | theorem | proved |
+| [`prob_Y_gt_mono`](Stats/Kappa/LognormalTailIntegrals.lean#L395) | lemma | proved |
+| [`Bn_le_prob_mul_An`](Stats/Kappa/LognormalTailIntegrals.lean#L404) | theorem | proved |
+| [`Bn_tendsto_zero`](Stats/Kappa/LognormalTailIntegrals.lean#L433) | theorem | proved |
+
+**[Stats.Kappa.LoulakisAlgebraic](Stats/Kappa/LoulakisAlgebraic.lean)** — 157 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`M_n_lower_bound`](Stats/Kappa/LoulakisAlgebraic.lean#L80) | theorem | proved |
+
+**[Stats.Kappa.LoulakisLiminf](Stats/Kappa/LoulakisLiminf.lean)** — 125 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`liminf_M_ratio_ge_n`](Stats/Kappa/LoulakisLiminf.lean#L59) | theorem | proved |
+
+**[Stats.Kappa.LoulakisLognormal](Stats/Kappa/LoulakisLognormal.lean)** — 419 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`Mn`](Stats/Kappa/LoulakisLognormal.lean#L67) | def |  |
+| [`M1`](Stats/Kappa/LoulakisLognormal.lean#L71) | def |  |
+| [`An`](Stats/Kappa/LoulakisLognormal.lean#L75) | def |  |
+| [`Bn`](Stats/Kappa/LoulakisLognormal.lean#L79) | def |  |
+| [`Mn_nonneg`](Stats/Kappa/LoulakisLognormal.lean#L84) | theorem | proved |
+| [`Mn_le_n_M1`](Stats/Kappa/LoulakisLognormal.lean#L91) | theorem | proved |
+| [`Y_integrable_local`](Stats/Kappa/LoulakisLognormal.lean#L146) | lemma | proved |
+| [`integrableOn_prob_sum_Xσ_gt_Ioi`](Stats/Kappa/LoulakisLognormal.lean#L158) | theorem | proved |
+| [`M_n_lower_lognormal`](Stats/Kappa/LoulakisLognormal.lean#L196) | theorem | proved |
+| [`Bn_tendsto_zero`](Stats/Kappa/LoulakisLognormal.lean#L243) | theorem | proved |
+| [`liminf_M_ratio_lognormal_ge_n`](Stats/Kappa/LoulakisLognormal.lean#L256) | theorem | proved |
+| [`tendsto_M_ratio_lognormal_eq_n`](Stats/Kappa/LoulakisLognormal.lean#L286) | theorem | proved |
+| [`Mn_tendsto_two_mul_n`](Stats/Kappa/LoulakisLognormal.lean#L331) | theorem | proved |
+| [`kappa_lognormal_tendsto_one`](Stats/Kappa/LoulakisLognormal.lean#L351) | theorem | proved |
+| [`Mn_one_eq_M1`](Stats/Kappa/LoulakisLognormal.lean#L395) | theorem | proved |
+| [`kappa_lognormal_tendsto_one_canonical`](Stats/Kappa/LoulakisLognormal.lean#L409) | theorem | proved |
+
+**[Stats.Kappa.MadLayerCake](Stats/Kappa/MadLayerCake.lean)** — 216 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`abs_sub_eq_max_add_max`](Stats/Kappa/MadLayerCake.lean#L43) | lemma | proved |
+| [`sub_eq_max_sub_max`](Stats/Kappa/MadLayerCake.lean#L57) | lemma | proved |
+| [`integral_pos_part_eq_neg_part`](Stats/Kappa/MadLayerCake.lean#L71) | lemma | proved |
+| [`integral_pos_part_eq_tail_integral`](Stats/Kappa/MadLayerCake.lean#L97) | theorem | proved |
+| [`measurable_tail_real`](Stats/Kappa/MadLayerCake.lean#L130) | lemma | proved |
+| [`integrableOn_measureReal_lt_Ioi`](Stats/Kappa/MadLayerCake.lean#L142) | theorem | proved |
+| [`integrableOn_measureReal_lt_sq_Ioi`](Stats/Kappa/MadLayerCake.lean#L167) | theorem | proved |
+| [`mad_eq_two_tail_integral`](Stats/Kappa/MadLayerCake.lean#L192) | theorem | proved |
+
+**[Stats.Kappa.MaxIIdBound](Stats/Kappa/MaxIIdBound.lean)** — 209 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`one_sub_one_sub_pow_ge`](Stats/Kappa/MaxIIdBound.lean#L52) | theorem | proved |
+| [`prob_all_le_iid`](Stats/Kappa/MaxIIdBound.lean#L104) | theorem | proved |
+| [`prob_max_iid_gt`](Stats/Kappa/MaxIIdBound.lean#L147) | theorem | proved |
+| [`prob_max_iid_ge`](Stats/Kappa/MaxIIdBound.lean#L179) | theorem | proved |
+
+**[Stats.Kappa.PearsonIV](Stats/Kappa/PearsonIV.lean)** — 341 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`pearsonIVQuad`](Stats/Kappa/PearsonIV.lean#L45) | def |  |
+| [`pearsonIVLin`](Stats/Kappa/PearsonIV.lean#L49) | def |  |
+| [`IsPearsonIV`](Stats/Kappa/PearsonIV.lean#L61) | structure |  |
+| [`pearsonIV_aux_deriv`](Stats/Kappa/PearsonIV.lean#L73) | theorem | proved |
+| [`pearsonIVMADClosed`](Stats/Kappa/PearsonIV.lean#L127) | def |  |
+| [`pearsonIV_mad_eq`](Stats/Kappa/PearsonIV.lean#L158) | theorem | proved |
+| [`pearsonIV_mad_eq_paper`](Stats/Kappa/PearsonIV.lean#L177) | theorem | proved |
+| [`pearsonIVLognormalDen`](Stats/Kappa/PearsonIV.lean#L207) | def |  |
+| [`pearsonIV_b2_lognormal`](Stats/Kappa/PearsonIV.lean#L214) | def |  |
+| [`pearsonIV_b1_lognormal`](Stats/Kappa/PearsonIV.lean#L226) | def |  |
+| [`pearsonIV_b0_lognormal`](Stats/Kappa/PearsonIV.lean#L243) | def |  |
+| [`pearsonIV_a0_lognormal`](Stats/Kappa/PearsonIV.lean#L261) | def |  |
+| [`pearsonIV_a1_lognormal`](Stats/Kappa/PearsonIV.lean#L276) | def |  |
+| [`pearsonIVLognormalMatch`](Stats/Kappa/PearsonIV.lean#L282) | def |  |
+| [`pearsonIV_lognormal_match_a1`](Stats/Kappa/PearsonIV.lean#L291) | theorem | proved |
+| [`pearsonIVLognormalDen_pos`](Stats/Kappa/PearsonIV.lean#L299) | theorem | proved |
+| [`pearsonIV_lognormal_match_b2_nonneg`](Stats/Kappa/PearsonIV.lean#L325) | theorem | proved |
+
+**[Stats.Kappa.PoissonCDF](Stats/Kappa/PoissonCDF.lean)** — 302 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`pow_n_div_exp_one`](Stats/Kappa/PoissonCDF.lean#L70) | lemma | proved |
+| [`sqrt_two_mul_n`](Stats/Kappa/PoissonCDF.lean#L81) | lemma | proved |
+| [`tendsto_stirling_rearranged`](Stats/Kappa/PoissonCDF.lean#L87) | theorem | proved |
+| [`sqrt_pi_half_div_sqrt_two_pi`](Stats/Kappa/PoissonCDF.lean#L148) | lemma | proved |
+| [`tendsto_incompleteGamma_div_factorial`](Stats/Kappa/PoissonCDF.lean#L171) | theorem | proved |
+| [`tendsto_inv_sqrt_nat`](Stats/Kappa/PoissonCDF.lean#L223) | lemma | proved |
+| [`tendsto_pow_exp_div_factorial`](Stats/Kappa/PoissonCDF.lean#L230) | theorem | proved |
+| [`poisson_cdf_at_mean_tendsto_half`](Stats/Kappa/PoissonCDF.lean#L267) | theorem | proved |
+
+**[Stats.Kappa.Stable](Stats/Kappa/Stable.lean)** — 230 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`stableCharacteristicFunction`](Stats/Kappa/Stable.lean#L77) | def |  |
+| [`StableClass`](Stats/Kappa/Stable.lean#L100) | structure |  |
+| [`stable_charfun_pow_alpha_ne_one`](Stats/Kappa/Stable.lean#L120) | theorem | proved |
+| [`stable_charfun_pow_alpha_eq_one`](Stats/Kappa/Stable.lean#L161) | theorem | proved |
+| [`stable_sum_stable`](Stats/Kappa/Stable.lean#L191) | theorem | proved |
+| [`stable_class_kappa_invariance`](Stats/Kappa/Stable.lean#L223) | theorem | proved |
+
+**[Stats.Kappa.SumMaxBound](Stats/Kappa/SumMaxBound.lean)** — 76 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`sum_gt_of_exists_gt`](Stats/Kappa/SumMaxBound.lean#L42) | lemma | proved |
+| [`setOf_exists_gt_subset_setOf_sum_gt`](Stats/Kappa/SumMaxBound.lean#L58) | theorem | proved |
+| [`prob_sum_ge_prob_max`](Stats/Kappa/SumMaxBound.lean#L70) | theorem | proved |
+
+**[Stats.Kappa.TableI](Stats/Kappa/TableI.lean)** — 353 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`tableIMAD`](Stats/Kappa/TableI.lean#L62) | def |  |
+| [`kappa_tableIMAD_bare`](Stats/Kappa/TableI.lean#L72) | lemma | proved |
+| [`studentTInner`](Stats/Kappa/TableI.lean#L86) | def |  |
+| [`studentTRatio`](Stats/Kappa/TableI.lean#L92) | def |  |
+| [`studentTKappa`](Stats/Kappa/TableI.lean#L97) | def |  |
+| [`kappa_studentT_general`](Stats/Kappa/TableI.lean#L113) | theorem | proved |
+| [`incompleteBeta`](Stats/Kappa/TableI.lean#L152) | def |  |
+| [`paretoIntegrand`](Stats/Kappa/TableI.lean#L166) | def |  |
+| [`paretoRatio`](Stats/Kappa/TableI.lean#L180) | def |  |
+| [`paretoKappa`](Stats/Kappa/TableI.lean#L186) | def |  |
+| [`kappa_pareto_general`](Stats/Kappa/TableI.lean#L191) | theorem | proved |
+| [`normalSwitchingVarianceRatio`](Stats/Kappa/TableI.lean#L230) | def |  |
+| [`normalSwitchingVarianceKappa`](Stats/Kappa/TableI.lean#L240) | def |  |
+| [`kappa_normal_switching_variance`](Stats/Kappa/TableI.lean#L245) | theorem | proved |
+| [`lognormalExplicitRatio`](Stats/Kappa/TableI.lean#L275) | def |  |
+| [`lognormalExplicitKappa`](Stats/Kappa/TableI.lean#L284) | def |  |
+| [`kappa_lognormal_explicit`](Stats/Kappa/TableI.lean#L289) | theorem | proved |
+| [`lognormalKappaStar`](Stats/Kappa/TableI.lean#L314) | def |  |
+| [`lognormal_kappa_star`](Stats/Kappa/TableI.lean#L322) | theorem | proved |
+| [`lognormalStarMAD`](Stats/Kappa/TableI.lean#L336) | def |  |
+| [`kappa_lognormal_star`](Stats/Kappa/TableI.lean#L345) | theorem | proved |
 
 ### `Stats.Pareto`
 
-**[Stats.Pareto.AbstractCall](Stats/Pareto/AbstractCall.lean)** — 100 lines
+**[Stats.Pareto.AbstractCall](Stats/Pareto/AbstractCall.lean)** — 104 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`callPrice_F`](Stats/Pareto/AbstractCall.lean#L37) | def |  |
-| [`callPrice_F_survival`](Stats/Pareto/AbstractCall.lean#L41) | theorem | proved |
-| [`callPrice_F_mono`](Stats/Pareto/AbstractCall.lean#L46) | theorem | proved |
-| [`survival_integrableOn_Ioi`](Stats/Pareto/AbstractCall.lean#L55) | theorem | proved |
-| [`callPrice_envelope_upper`](Stats/Pareto/AbstractCall.lean#L75) | theorem | proved |
-| [`callPrice_envelope_lower`](Stats/Pareto/AbstractCall.lean#L91) | theorem | proved |
+| [`callPrice_F`](Stats/Pareto/AbstractCall.lean#L41) | def |  |
+| [`callPrice_F_survival`](Stats/Pareto/AbstractCall.lean#L45) | theorem | proved |
+| [`callPrice_F_mono`](Stats/Pareto/AbstractCall.lean#L50) | theorem | proved |
+| [`survival_integrableOn_Ioi`](Stats/Pareto/AbstractCall.lean#L59) | theorem | proved |
+| [`callPrice_envelope_upper`](Stats/Pareto/AbstractCall.lean#L79) | theorem | proved |
+| [`callPrice_envelope_lower`](Stats/Pareto/AbstractCall.lean#L95) | theorem | proved |
 
-**[Stats.Pareto.Basic](Stats/Pareto/Basic.lean)** — 146 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`integrableOn_Ioi_sub_rpow_of_lt`](Stats/Pareto/Basic.lean#L26) | lemma | proved |
-| [`integral_Ioi_sub_rpow_of_lt`](Stats/Pareto/Basic.lean#L31) | lemma | proved |
-| [`survival`](Stats/Pareto/Basic.lean#L59) | def |  |
-| [`callPrice`](Stats/Pareto/Basic.lean#L63) | def |  |
-| [`callPrice_eq`](Stats/Pareto/Basic.lean#L68) | theorem | proved |
-| [`callPrice_ratio`](Stats/Pareto/Basic.lean#L87) | theorem | proved |
-| [`callPrice_invert`](Stats/Pareto/Basic.lean#L103) | theorem | proved |
-| [`integrableOn_rpow_mul_survival`](Stats/Pareto/Basic.lean#L127) | theorem | proved |
-
-**[Stats.Pareto.Calibration](Stats/Pareto/Calibration.lean)** — 279 lines
+**[Stats.Pareto.Basic](Stats/Pareto/Basic.lean)** — 150 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`alphaFromTwoAnchors`](Stats/Pareto/Calibration.lean#L43) | def |  |
-| [`alphaFromTwoAnchors_eq`](Stats/Pareto/Calibration.lean#L49) | theorem | proved |
-| [`lFromTwoAnchors`](Stats/Pareto/Calibration.lean#L85) | def |  |
-| [`lFromTwoAnchors_eq`](Stats/Pareto/Calibration.lean#L91) | theorem | proved |
-| [`callPrice_param_inj`](Stats/Pareto/Calibration.lean#L103) | theorem | proved |
-| [`alphaFromTwoAnchors_continuousOn`](Stats/Pareto/Calibration.lean#L134) | theorem | proved |
-| [`stable_scaling_identity`](Stats/Pareto/Calibration.lean#L176) | theorem | proved |
-| [`callPriceReturns_T`](Stats/Pareto/Calibration.lean#L188) | def |  |
-| [`callPriceReturns_T_eq`](Stats/Pareto/Calibration.lean#L195) | theorem | proved |
-| [`callPriceReturns_T_hasDerivAt`](Stats/Pareto/Calibration.lean#L217) | theorem | proved |
-| [`callPriceReturns_T_calendarSpread`](Stats/Pareto/Calibration.lean#L258) | theorem | proved |
-| [`paretoVaR_T_scaling`](Stats/Pareto/Calibration.lean#L274) | theorem | proved |
+| [`integrableOn_Ioi_sub_rpow_of_lt`](Stats/Pareto/Basic.lean#L30) | lemma | proved |
+| [`integral_Ioi_sub_rpow_of_lt`](Stats/Pareto/Basic.lean#L35) | lemma | proved |
+| [`survival`](Stats/Pareto/Basic.lean#L63) | def |  |
+| [`callPrice`](Stats/Pareto/Basic.lean#L67) | def |  |
+| [`callPrice_eq`](Stats/Pareto/Basic.lean#L72) | theorem | proved |
+| [`callPrice_ratio`](Stats/Pareto/Basic.lean#L91) | theorem | proved |
+| [`callPrice_invert`](Stats/Pareto/Basic.lean#L107) | theorem | proved |
+| [`integrableOn_rpow_mul_survival`](Stats/Pareto/Basic.lean#L131) | theorem | proved |
 
-**[Stats.Pareto.Measure](Stats/Pareto/Measure.lean)** — 374 lines
+**[Stats.Pareto.Calibration](Stats/Pareto/Calibration.lean)** — 283 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`paretoMeasure`](Stats/Pareto/Measure.lean#L27) | def |  |
-| [`paretoDensity_measurable`](Stats/Pareto/Measure.lean#L35) | theorem | proved |
-| [`paretoMeasure_integrand_eq_indicator`](Stats/Pareto/Measure.lean#L43) | lemma | proved |
-| [`paretoDensity_nonneg_on_Ioi`](Stats/Pareto/Measure.lean#L52) | lemma | proved |
-| [`paretoMomentIntegrand_zero_eq_density`](Stats/Pareto/Measure.lean#L64) | lemma | proved |
-| [`instIsProbabilityMeasureParetoMeasure`](Stats/Pareto/Measure.lean#L75) | theorem | proved |
-| [`paretoMeasure_real_Ioi_eq_survival`](Stats/Pareto/Measure.lean#L120) | theorem | proved |
-| [`leCam_pareto_scale`](Stats/Pareto/Measure.lean#L195) | theorem | proved |
-| [`productPareto`](Stats/Pareto/Measure.lean#L292) | def |  |
-| [`paretoScaleStripTest`](Stats/Pareto/Measure.lean#L298) | def |  |
-| [`paretoProduct_strip_test_error_eq`](Stats/Pareto/Measure.lean#L308) | theorem | proved |
+| [`alphaFromTwoAnchors`](Stats/Pareto/Calibration.lean#L47) | def |  |
+| [`alphaFromTwoAnchors_eq`](Stats/Pareto/Calibration.lean#L53) | theorem | proved |
+| [`lFromTwoAnchors`](Stats/Pareto/Calibration.lean#L89) | def |  |
+| [`lFromTwoAnchors_eq`](Stats/Pareto/Calibration.lean#L95) | theorem | proved |
+| [`callPrice_param_inj`](Stats/Pareto/Calibration.lean#L107) | theorem | proved |
+| [`alphaFromTwoAnchors_continuousOn`](Stats/Pareto/Calibration.lean#L138) | theorem | proved |
+| [`stable_scaling_identity`](Stats/Pareto/Calibration.lean#L180) | theorem | proved |
+| [`callPriceReturns_T`](Stats/Pareto/Calibration.lean#L192) | def |  |
+| [`callPriceReturns_T_eq`](Stats/Pareto/Calibration.lean#L199) | theorem | proved |
+| [`callPriceReturns_T_hasDerivAt`](Stats/Pareto/Calibration.lean#L221) | theorem | proved |
+| [`callPriceReturns_T_calendarSpread`](Stats/Pareto/Calibration.lean#L262) | theorem | proved |
+| [`paretoVaR_T_scaling`](Stats/Pareto/Calibration.lean#L278) | theorem | proved |
 
-**[Stats.Pareto.Mispricing](Stats/Pareto/Mispricing.lean)** — 218 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`callPrice_tendsto_zero_atTop`](Stats/Pareto/Mispricing.lean#L34) | theorem | proved |
-| [`callPrice_pos_atTop`](Stats/Pareto/Mispricing.lean#L54) | theorem | proved |
-| [`callPrice_gap_ratio_tendsto_neg_one`](Stats/Pareto/Mispricing.lean#L71) | theorem | proved |
-| [`callPrice_gap_tendsto_zero`](Stats/Pareto/Mispricing.lean#L88) | theorem | proved |
-| [`callPrice_gap_eventually_neg`](Stats/Pareto/Mispricing.lean#L98) | theorem | proved |
-| [`rpow_mul_survival_integrableOn_iff`](Stats/Pareto/Mispricing.lean#L126) | theorem | proved |
-| [`paretoDensity`](Stats/Pareto/Mispricing.lean#L153) | def |  |
-| [`variance_layerCake_not_integrable`](Stats/Pareto/Mispricing.lean#L159) | theorem | proved |
-| [`variance_density_not_integrable`](Stats/Pareto/Mispricing.lean#L175) | theorem | proved |
-| [`variance_layerCake_integrable`](Stats/Pareto/Mispricing.lean#L207) | theorem | proved |
-
-**[Stats.Pareto.Put](Stats/Pareto/Put.lean)** — 231 lines
+**[Stats.Pareto.Measure](Stats/Pareto/Measure.lean)** — 378 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`putIntegrand`](Stats/Pareto/Put.lean#L35) | def |  |
-| [`putRaw`](Stats/Pareto/Put.lean#L39) | def |  |
-| [`putAntideriv`](Stats/Pareto/Put.lean#L43) | def |  |
-| [`hasDerivAt_putAntideriv`](Stats/Pareto/Put.lean#L47) | lemma | proved |
-| [`continuousOn_putIntegrand`](Stats/Pareto/Put.lean#L82) | lemma | proved |
-| [`putRaw_eq`](Stats/Pareto/Put.lean#L96) | theorem | proved |
-| [`putRaw_ratio`](Stats/Pareto/Put.lean#L137) | theorem | proved |
-| [`densityMass`](Stats/Pareto/Put.lean#L155) | def |  |
-| [`densityMass_eq`](Stats/Pareto/Put.lean#L159) | theorem | proved |
-| [`putNormConst`](Stats/Pareto/Put.lean#L208) | def |  |
-| [`putPrice`](Stats/Pareto/Put.lean#L211) | def |  |
-| [`putPrice_eq`](Stats/Pareto/Put.lean#L215) | theorem | proved |
+| [`paretoMeasure`](Stats/Pareto/Measure.lean#L31) | def |  |
+| [`paretoDensity_measurable`](Stats/Pareto/Measure.lean#L39) | theorem | proved |
+| [`paretoMeasure_integrand_eq_indicator`](Stats/Pareto/Measure.lean#L47) | lemma | proved |
+| [`paretoDensity_nonneg_on_Ioi`](Stats/Pareto/Measure.lean#L56) | lemma | proved |
+| [`paretoMomentIntegrand_zero_eq_density`](Stats/Pareto/Measure.lean#L68) | lemma | proved |
+| [`instIsProbabilityMeasureParetoMeasure`](Stats/Pareto/Measure.lean#L79) | theorem | proved |
+| [`paretoMeasure_real_Ioi_eq_survival`](Stats/Pareto/Measure.lean#L124) | theorem | proved |
+| [`leCam_pareto_scale`](Stats/Pareto/Measure.lean#L199) | theorem | proved |
+| [`productPareto`](Stats/Pareto/Measure.lean#L296) | def |  |
+| [`paretoScaleStripTest`](Stats/Pareto/Measure.lean#L302) | def |  |
+| [`paretoProduct_strip_test_error_eq`](Stats/Pareto/Measure.lean#L312) | theorem | proved |
 
-**[Stats.Pareto.PutCallParity](Stats/Pareto/PutCallParity.lean)** — 317 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`putShadow`](Stats/Pareto/PutCallParity.lean#L44) | def |  |
-| [`putShadowAntideriv`](Stats/Pareto/PutCallParity.lean#L48) | def |  |
-| [`hasDerivAt_putShadowAntideriv`](Stats/Pareto/PutCallParity.lean#L51) | lemma | proved |
-| [`putShadow_eq`](Stats/Pareto/PutCallParity.lean#L90) | theorem | proved |
-| [`putCallParity_Pareto`](Stats/Pareto/PutCallParity.lean#L149) | theorem | proved |
-| [`putCallParity_Pareto_riskNeutral`](Stats/Pareto/PutCallParity.lean#L162) | theorem | proved |
-| [`putShadowReturns`](Stats/Pareto/PutCallParity.lean#L188) | def |  |
-| [`putShadowReturnsAntideriv`](Stats/Pareto/PutCallParity.lean#L192) | def |  |
-| [`hasDerivAt_putShadowReturnsAntideriv`](Stats/Pareto/PutCallParity.lean#L196) | lemma | proved |
-| [`putShadowReturns_eq`](Stats/Pareto/PutCallParity.lean#L238) | theorem | proved |
-| [`putCallParity_Pareto_returns`](Stats/Pareto/PutCallParity.lean#L308) | theorem | proved |
-
-**[Stats.Pareto.Returns](Stats/Pareto/Returns.lean)** — 117 lines
+**[Stats.Pareto.Mispricing](Stats/Pareto/Mispricing.lean)** — 222 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`survivalReturns`](Stats/Pareto/Returns.lean#L23) | def |  |
-| [`callPriceReturns`](Stats/Pareto/Returns.lean#L27) | def |  |
-| [`callPriceReturns_eq`](Stats/Pareto/Returns.lean#L31) | theorem | proved |
-| [`callPriceReturns_pow_eq`](Stats/Pareto/Returns.lean#L61) | theorem | proved |
-| [`callPriceReturns_invert`](Stats/Pareto/Returns.lean#L80) | theorem | proved |
-| [`callPriceReturns_ratio`](Stats/Pareto/Returns.lean#L104) | theorem | proved |
+| [`callPrice_tendsto_zero_atTop`](Stats/Pareto/Mispricing.lean#L38) | theorem | proved |
+| [`callPrice_pos_atTop`](Stats/Pareto/Mispricing.lean#L58) | theorem | proved |
+| [`callPrice_gap_ratio_tendsto_neg_one`](Stats/Pareto/Mispricing.lean#L75) | theorem | proved |
+| [`callPrice_gap_tendsto_zero`](Stats/Pareto/Mispricing.lean#L92) | theorem | proved |
+| [`callPrice_gap_eventually_neg`](Stats/Pareto/Mispricing.lean#L102) | theorem | proved |
+| [`rpow_mul_survival_integrableOn_iff`](Stats/Pareto/Mispricing.lean#L130) | theorem | proved |
+| [`paretoDensity`](Stats/Pareto/Mispricing.lean#L157) | def |  |
+| [`variance_layerCake_not_integrable`](Stats/Pareto/Mispricing.lean#L163) | theorem | proved |
+| [`variance_density_not_integrable`](Stats/Pareto/Mispricing.lean#L179) | theorem | proved |
+| [`variance_layerCake_integrable`](Stats/Pareto/Mispricing.lean#L211) | theorem | proved |
 
-**[Stats.Pareto.TailRisk](Stats/Pareto/TailRisk.lean)** — 153 lines
+**[Stats.Pareto.Put](Stats/Pareto/Put.lean)** — 235 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`paretoTailExpectation`](Stats/Pareto/TailRisk.lean#L30) | def |  |
-| [`paretoTailExpectation_eq`](Stats/Pareto/TailRisk.lean#L35) | theorem | proved |
-| [`paretoTailExpectation_eq_alpha_callPrice`](Stats/Pareto/TailRisk.lean#L63) | theorem | proved |
-| [`paretoTailExpectation_div_survival`](Stats/Pareto/TailRisk.lean#L71) | theorem | proved |
-| [`paretoVaR`](Stats/Pareto/TailRisk.lean#L94) | def |  |
-| [`survival_paretoVaR`](Stats/Pareto/TailRisk.lean#L97) | theorem | proved |
-| [`paretoVaR_ge_l`](Stats/Pareto/TailRisk.lean#L115) | theorem | proved |
-| [`paretoCVaR`](Stats/Pareto/TailRisk.lean#L133) | def |  |
-| [`paretoCVaR_eq_conditional`](Stats/Pareto/TailRisk.lean#L138) | theorem | proved |
+| [`putIntegrand`](Stats/Pareto/Put.lean#L39) | def |  |
+| [`putRaw`](Stats/Pareto/Put.lean#L43) | def |  |
+| [`putAntideriv`](Stats/Pareto/Put.lean#L47) | def |  |
+| [`hasDerivAt_putAntideriv`](Stats/Pareto/Put.lean#L51) | lemma | proved |
+| [`continuousOn_putIntegrand`](Stats/Pareto/Put.lean#L86) | lemma | proved |
+| [`putRaw_eq`](Stats/Pareto/Put.lean#L100) | theorem | proved |
+| [`putRaw_ratio`](Stats/Pareto/Put.lean#L141) | theorem | proved |
+| [`densityMass`](Stats/Pareto/Put.lean#L159) | def |  |
+| [`densityMass_eq`](Stats/Pareto/Put.lean#L163) | theorem | proved |
+| [`putNormConst`](Stats/Pareto/Put.lean#L212) | def |  |
+| [`putPrice`](Stats/Pareto/Put.lean#L215) | def |  |
+| [`putPrice_eq`](Stats/Pareto/Put.lean#L219) | theorem | proved |
+
+**[Stats.Pareto.PutCallParity](Stats/Pareto/PutCallParity.lean)** — 321 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`putShadow`](Stats/Pareto/PutCallParity.lean#L48) | def |  |
+| [`putShadowAntideriv`](Stats/Pareto/PutCallParity.lean#L52) | def |  |
+| [`hasDerivAt_putShadowAntideriv`](Stats/Pareto/PutCallParity.lean#L55) | lemma | proved |
+| [`putShadow_eq`](Stats/Pareto/PutCallParity.lean#L94) | theorem | proved |
+| [`putCallParity_Pareto`](Stats/Pareto/PutCallParity.lean#L153) | theorem | proved |
+| [`putCallParity_Pareto_riskNeutral`](Stats/Pareto/PutCallParity.lean#L166) | theorem | proved |
+| [`putShadowReturns`](Stats/Pareto/PutCallParity.lean#L192) | def |  |
+| [`putShadowReturnsAntideriv`](Stats/Pareto/PutCallParity.lean#L196) | def |  |
+| [`hasDerivAt_putShadowReturnsAntideriv`](Stats/Pareto/PutCallParity.lean#L200) | lemma | proved |
+| [`putShadowReturns_eq`](Stats/Pareto/PutCallParity.lean#L242) | theorem | proved |
+| [`putCallParity_Pareto_returns`](Stats/Pareto/PutCallParity.lean#L312) | theorem | proved |
+
+**[Stats.Pareto.Returns](Stats/Pareto/Returns.lean)** — 121 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`survivalReturns`](Stats/Pareto/Returns.lean#L27) | def |  |
+| [`callPriceReturns`](Stats/Pareto/Returns.lean#L31) | def |  |
+| [`callPriceReturns_eq`](Stats/Pareto/Returns.lean#L35) | theorem | proved |
+| [`callPriceReturns_pow_eq`](Stats/Pareto/Returns.lean#L65) | theorem | proved |
+| [`callPriceReturns_invert`](Stats/Pareto/Returns.lean#L84) | theorem | proved |
+| [`callPriceReturns_ratio`](Stats/Pareto/Returns.lean#L108) | theorem | proved |
+
+**[Stats.Pareto.TailRisk](Stats/Pareto/TailRisk.lean)** — 157 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`paretoTailExpectation`](Stats/Pareto/TailRisk.lean#L34) | def |  |
+| [`paretoTailExpectation_eq`](Stats/Pareto/TailRisk.lean#L39) | theorem | proved |
+| [`paretoTailExpectation_eq_alpha_callPrice`](Stats/Pareto/TailRisk.lean#L67) | theorem | proved |
+| [`paretoTailExpectation_div_survival`](Stats/Pareto/TailRisk.lean#L75) | theorem | proved |
+| [`paretoVaR`](Stats/Pareto/TailRisk.lean#L98) | def |  |
+| [`survival_paretoVaR`](Stats/Pareto/TailRisk.lean#L101) | theorem | proved |
+| [`paretoVaR_ge_l`](Stats/Pareto/TailRisk.lean#L119) | theorem | proved |
+| [`paretoCVaR`](Stats/Pareto/TailRisk.lean#L137) | def |  |
+| [`paretoCVaR_eq_conditional`](Stats/Pareto/TailRisk.lean#L142) | theorem | proved |
 
 ### `Stats.RegularVariation`
 
-**[Stats.RegularVariation.Abelian](Stats/RegularVariation/Abelian.lean)** — 26 lines, no indexed declarations
+**[Stats.RegularVariation.Abelian](Stats/RegularVariation/Abelian.lean)** — 30 lines, no indexed declarations
 
-**[Stats.RegularVariation.Application](Stats/RegularVariation/Application.lean)** — 51 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`survivalLogReturn_not_regularlyVarying_full_of_monotone`](Stats/RegularVariation/Application.lean#L22) | theorem | proved |
-| [`survivalLogReturn_not_regularlyVarying_full`](Stats/RegularVariation/Application.lean#L40) | theorem | proved |
-
-**[Stats.RegularVariation.Closure](Stats/RegularVariation/Closure.lean)** — 337 lines
+**[Stats.RegularVariation.Application](Stats/RegularVariation/Application.lean)** — 55 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsSlowlyVarying.congr_eventuallyEq`](Stats/RegularVariation/Closure.lean#L16) | theorem | proved |
-| [`IsSlowlyVarying.mul`](Stats/RegularVariation/Closure.lean#L31) | theorem | proved |
-| [`IsSlowlyVarying.inv`](Stats/RegularVariation/Closure.lean#L50) | theorem | proved |
-| [`IsSlowlyVarying.div`](Stats/RegularVariation/Closure.lean#L67) | theorem | proved |
-| [`IsSlowlyVarying.comp_translation_of_monotone`](Stats/RegularVariation/Closure.lean#L100) | theorem | proved |
-| [`IsSlowlyVarying.rpow`](Stats/RegularVariation/Closure.lean#L175) | theorem | proved |
-| [`isRegularlyVarying_rpow_mul`](Stats/RegularVariation/Closure.lean#L204) | theorem | proved |
-| [`IsRegularlyVarying.div_rpow_isSlowlyVarying`](Stats/RegularVariation/Closure.lean#L232) | theorem | proved |
-| [`isRegularlyVarying_rpow`](Stats/RegularVariation/Closure.lean#L259) | theorem | proved |
-| [`IsRegularlyVarying.mul`](Stats/RegularVariation/Closure.lean#L273) | theorem | proved |
-| [`IsRegularlyVarying.div`](Stats/RegularVariation/Closure.lean#L295) | theorem | proved |
-| [`IsRegularlyVarying.rpow`](Stats/RegularVariation/Closure.lean#L318) | theorem | proved |
+| [`survivalLogReturn_not_regularlyVarying_full_of_monotone`](Stats/RegularVariation/Application.lean#L26) | theorem | proved |
+| [`survivalLogReturn_not_regularlyVarying_full`](Stats/RegularVariation/Application.lean#L44) | theorem | proved |
 
-**[Stats.RegularVariation.Defs](Stats/RegularVariation/Defs.lean)** — 23 lines
+**[Stats.RegularVariation.Closure](Stats/RegularVariation/Closure.lean)** — 341 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsSlowlyVarying`](Stats/RegularVariation/Defs.lean#L14) | def |  |
-| [`isSlowlyVarying_iff_isRegularlyVarying_zero`](Stats/RegularVariation/Defs.lean#L18) | theorem | proved |
+| [`IsSlowlyVarying.congr_eventuallyEq`](Stats/RegularVariation/Closure.lean#L20) | theorem | proved |
+| [`IsSlowlyVarying.mul`](Stats/RegularVariation/Closure.lean#L35) | theorem | proved |
+| [`IsSlowlyVarying.inv`](Stats/RegularVariation/Closure.lean#L54) | theorem | proved |
+| [`IsSlowlyVarying.div`](Stats/RegularVariation/Closure.lean#L71) | theorem | proved |
+| [`IsSlowlyVarying.comp_translation_of_monotone`](Stats/RegularVariation/Closure.lean#L104) | theorem | proved |
+| [`IsSlowlyVarying.rpow`](Stats/RegularVariation/Closure.lean#L179) | theorem | proved |
+| [`isRegularlyVarying_rpow_mul`](Stats/RegularVariation/Closure.lean#L208) | theorem | proved |
+| [`IsRegularlyVarying.div_rpow_isSlowlyVarying`](Stats/RegularVariation/Closure.lean#L236) | theorem | proved |
+| [`isRegularlyVarying_rpow`](Stats/RegularVariation/Closure.lean#L263) | theorem | proved |
+| [`IsRegularlyVarying.mul`](Stats/RegularVariation/Closure.lean#L277) | theorem | proved |
+| [`IsRegularlyVarying.div`](Stats/RegularVariation/Closure.lean#L299) | theorem | proved |
+| [`IsRegularlyVarying.rpow`](Stats/RegularVariation/Closure.lean#L322) | theorem | proved |
 
-**[Stats.RegularVariation.Examples](Stats/RegularVariation/Examples.lean)** — 48 lines
+**[Stats.RegularVariation.Defs](Stats/RegularVariation/Defs.lean)** — 27 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`isSlowlyVarying_const`](Stats/RegularVariation/Examples.lean#L14) | theorem | proved |
-| [`isSlowlyVarying_log`](Stats/RegularVariation/Examples.lean#L21) | theorem | proved |
-| [`isSlowlyVarying_log_rpow`](Stats/RegularVariation/Examples.lean#L42) | theorem | proved |
+| [`IsSlowlyVarying`](Stats/RegularVariation/Defs.lean#L18) | def |  |
+| [`isSlowlyVarying_iff_isRegularlyVarying_zero`](Stats/RegularVariation/Defs.lean#L22) | theorem | proved |
 
-**[Stats.RegularVariation.Karamata](Stats/RegularVariation/Karamata.lean)** — 28 lines, no indexed declarations
-
-**[Stats.RegularVariation.Multivariate](Stats/RegularVariation/Multivariate.lean)** — 89 lines
+**[Stats.RegularVariation.Examples](Stats/RegularVariation/Examples.lean)** — 52 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`euclidInner`](Stats/RegularVariation/Multivariate.lean#L30) | def |  |
-| [`euclidNorm`](Stats/RegularVariation/Multivariate.lean#L35) | def |  |
-| [`euclidInner_symm`](Stats/RegularVariation/Multivariate.lean#L38) | lemma | proved |
-| [`euclidInner_self_nonneg`](Stats/RegularVariation/Multivariate.lean#L44) | lemma | proved |
-| [`euclidNorm_nonneg`](Stats/RegularVariation/Multivariate.lean#L49) | lemma | proved |
-| [`euclidNorm_zero`](Stats/RegularVariation/Multivariate.lean#L53) | lemma | proved |
-| [`euclidInner_add_right`](Stats/RegularVariation/Multivariate.lean#L58) | lemma | proved |
-| [`euclidInner_smul_right`](Stats/RegularVariation/Multivariate.lean#L65) | lemma | proved |
-| [`IsMultivariateRegularlyVarying`](Stats/RegularVariation/Multivariate.lean#L80) | def |  |
+| [`isSlowlyVarying_const`](Stats/RegularVariation/Examples.lean#L18) | theorem | proved |
+| [`isSlowlyVarying_log`](Stats/RegularVariation/Examples.lean#L25) | theorem | proved |
+| [`isSlowlyVarying_log_rpow`](Stats/RegularVariation/Examples.lean#L46) | theorem | proved |
 
-**[Stats.RegularVariation.Representation](Stats/RegularVariation/Representation.lean)** — 20 lines, no indexed declarations
+**[Stats.RegularVariation.Karamata](Stats/RegularVariation/Karamata.lean)** — 32 lines, no indexed declarations
 
-**[Stats.RegularVariation.UCT](Stats/RegularVariation/UCT.lean)** — 20 lines, no indexed declarations
+**[Stats.RegularVariation.Multivariate](Stats/RegularVariation/Multivariate.lean)** — 93 lines
 
-**[Stats.RegularVariation.Verify](Stats/RegularVariation/Verify.lean)** — 76 lines, no indexed declarations
+| declaration | kind | status |
+| --- | --- | --- |
+| [`euclidInner`](Stats/RegularVariation/Multivariate.lean#L34) | def |  |
+| [`euclidNorm`](Stats/RegularVariation/Multivariate.lean#L39) | def |  |
+| [`euclidInner_symm`](Stats/RegularVariation/Multivariate.lean#L42) | lemma | proved |
+| [`euclidInner_self_nonneg`](Stats/RegularVariation/Multivariate.lean#L48) | lemma | proved |
+| [`euclidNorm_nonneg`](Stats/RegularVariation/Multivariate.lean#L53) | lemma | proved |
+| [`euclidNorm_zero`](Stats/RegularVariation/Multivariate.lean#L57) | lemma | proved |
+| [`euclidInner_add_right`](Stats/RegularVariation/Multivariate.lean#L62) | lemma | proved |
+| [`euclidInner_smul_right`](Stats/RegularVariation/Multivariate.lean#L69) | lemma | proved |
+| [`IsMultivariateRegularlyVarying`](Stats/RegularVariation/Multivariate.lean#L84) | def |  |
+
+**[Stats.RegularVariation.Representation](Stats/RegularVariation/Representation.lean)** — 24 lines, no indexed declarations
+
+**[Stats.RegularVariation.UCT](Stats/RegularVariation/UCT.lean)** — 24 lines, no indexed declarations
+
+**[Stats.RegularVariation.Verify](Stats/RegularVariation/Verify.lean)** — 80 lines, no indexed declarations
 
 ### `Stats.RegularVariation.Abelian`
 
-**[Stats.RegularVariation.Abelian.Basic](Stats/RegularVariation/Abelian/Basic.lean)** — 95 lines
+**[Stats.RegularVariation.Abelian.Basic](Stats/RegularVariation/Abelian/Basic.lean)** — 99 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`survivalSV`](Stats/RegularVariation/Abelian/Basic.lean#L29) | def |  |
-| [`callPriceSV`](Stats/RegularVariation/Abelian/Basic.lean#L33) | def |  |
-| [`callPrice_eq_callPriceSV_const`](Stats/RegularVariation/Abelian/Basic.lean#L39) | theorem | proved |
-| [`callPriceSV_substitution`](Stats/RegularVariation/Abelian/Basic.lean#L55) | lemma | proved |
+| [`survivalSV`](Stats/RegularVariation/Abelian/Basic.lean#L33) | def |  |
+| [`callPriceSV`](Stats/RegularVariation/Abelian/Basic.lean#L37) | def |  |
+| [`callPrice_eq_callPriceSV_const`](Stats/RegularVariation/Abelian/Basic.lean#L43) | theorem | proved |
+| [`callPriceSV_substitution`](Stats/RegularVariation/Abelian/Basic.lean#L59) | lemma | proved |
 
-**[Stats.RegularVariation.Abelian.Bounded](Stats/RegularVariation/Abelian/Bounded.lean)** — 281 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`callPriceSV_asymptotic_of_bounded`](Stats/RegularVariation/Abelian/Bounded.lean#L39) | theorem | proved |
-| [`callPriceSV_ratio_asymptotic_of_bounded`](Stats/RegularVariation/Abelian/Bounded.lean#L185) | theorem | proved |
-
-**[Stats.RegularVariation.Abelian.FullSV](Stats/RegularVariation/Abelian/FullSV.lean)** — 246 lines
+**[Stats.RegularVariation.Abelian.Bounded](Stats/RegularVariation/Abelian/Bounded.lean)** — 285 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`callPriceSV_asymptotic`](Stats/RegularVariation/Abelian/FullSV.lean#L34) | theorem | proved |
-| [`callPriceSV_ratio_asymptotic`](Stats/RegularVariation/Abelian/FullSV.lean#L169) | theorem | proved |
+| [`callPriceSV_asymptotic_of_bounded`](Stats/RegularVariation/Abelian/Bounded.lean#L43) | theorem | proved |
+| [`callPriceSV_ratio_asymptotic_of_bounded`](Stats/RegularVariation/Abelian/Bounded.lean#L189) | theorem | proved |
 
-**[Stats.RegularVariation.Abelian.Potter](Stats/RegularVariation/Abelian/Potter.lean)** — 197 lines
+**[Stats.RegularVariation.Abelian.FullSV](Stats/RegularVariation/Abelian/FullSV.lean)** — 250 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsSlowlyVarying.global_potter_upper`](Stats/RegularVariation/Abelian/Potter.lean#L41) | theorem | proved |
+| [`callPriceSV_asymptotic`](Stats/RegularVariation/Abelian/FullSV.lean#L38) | theorem | proved |
+| [`callPriceSV_ratio_asymptotic`](Stats/RegularVariation/Abelian/FullSV.lean#L173) | theorem | proved |
+
+**[Stats.RegularVariation.Abelian.Potter](Stats/RegularVariation/Abelian/Potter.lean)** — 201 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`IsSlowlyVarying.global_potter_upper`](Stats/RegularVariation/Abelian/Potter.lean#L45) | theorem | proved |
 
 ### `Stats.RegularVariation.Karamata`
 
-**[Stats.RegularVariation.Karamata.Grid](Stats/RegularVariation/Karamata/Grid.lean)** — 145 lines
+**[Stats.RegularVariation.Karamata.Grid](Stats/RegularVariation/Karamata/Grid.lean)** — 149 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`subexp_along_exp_grid_of_log_o_log`](Stats/RegularVariation/Karamata/Grid.lean#L34) | lemma | proved |
-| [`IsSlowlyVarying.subexp_along_exp_grid_of_monotone`](Stats/RegularVariation/Karamata/Grid.lean#L120) | theorem | proved |
-| [`IsSlowlyVarying.subexp_along_exp_grid`](Stats/RegularVariation/Karamata/Grid.lean#L133) | theorem | proved |
+| [`subexp_along_exp_grid_of_log_o_log`](Stats/RegularVariation/Karamata/Grid.lean#L38) | lemma | proved |
+| [`IsSlowlyVarying.subexp_along_exp_grid_of_monotone`](Stats/RegularVariation/Karamata/Grid.lean#L124) | theorem | proved |
+| [`IsSlowlyVarying.subexp_along_exp_grid`](Stats/RegularVariation/Karamata/Grid.lean#L137) | theorem | proved |
 
-**[Stats.RegularVariation.Karamata.Helpers](Stats/RegularVariation/Karamata/Helpers.lean)** — 109 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`IsSlowlyVarying.log_step_bound_eventually`](Stats/RegularVariation/Karamata/Helpers.lean#L27) | lemma | proved |
-| [`log_L_telescope`](Stats/RegularVariation/Karamata/Helpers.lean#L55) | lemma | proved |
-| [`log_one_add_ge_half`](Stats/RegularVariation/Karamata/Helpers.lean#L94) | lemma | proved |
-
-**[Stats.RegularVariation.Karamata.Measurable](Stats/RegularVariation/Karamata/Measurable.lean)** — 296 lines
+**[Stats.RegularVariation.Karamata.Helpers](Stats/RegularVariation/Karamata/Helpers.lean)** — 113 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsSlowlyVarying.log_isLittleO_log`](Stats/RegularVariation/Karamata/Measurable.lean#L39) | theorem | proved |
+| [`IsSlowlyVarying.log_step_bound_eventually`](Stats/RegularVariation/Karamata/Helpers.lean#L31) | lemma | proved |
+| [`log_L_telescope`](Stats/RegularVariation/Karamata/Helpers.lean#L59) | lemma | proved |
+| [`log_one_add_ge_half`](Stats/RegularVariation/Karamata/Helpers.lean#L98) | lemma | proved |
 
-**[Stats.RegularVariation.Karamata.Monotone](Stats/RegularVariation/Karamata/Monotone.lean)** — 288 lines
+**[Stats.RegularVariation.Karamata.Measurable](Stats/RegularVariation/Karamata/Measurable.lean)** — 300 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsSlowlyVarying.log_isLittleO_log_of_monotone`](Stats/RegularVariation/Karamata/Monotone.lean#L39) | theorem | proved |
+| [`IsSlowlyVarying.log_isLittleO_log`](Stats/RegularVariation/Karamata/Measurable.lean#L43) | theorem | proved |
+
+**[Stats.RegularVariation.Karamata.Monotone](Stats/RegularVariation/Karamata/Monotone.lean)** — 292 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`IsSlowlyVarying.log_isLittleO_log_of_monotone`](Stats/RegularVariation/Karamata/Monotone.lean#L43) | theorem | proved |
 
 ### `Stats.RegularVariation.Representation`
 
-**[Stats.RegularVariation.Representation.Converse](Stats/RegularVariation/Representation/Converse.lean)** — 210 lines
+**[Stats.RegularVariation.Representation.Converse](Stats/RegularVariation/Representation/Converse.lean)** — 214 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsKaramataRepresentation`](Stats/RegularVariation/Representation/Converse.lean#L31) | structure |  |
-| [`karamata_inner_integral_tendsto_zero`](Stats/RegularVariation/Representation/Converse.lean#L51) | lemma | proved |
-| [`IsKaramataRepresentation.isSlowlyVarying`](Stats/RegularVariation/Representation/Converse.lean#L135) | theorem | proved |
+| [`IsKaramataRepresentation`](Stats/RegularVariation/Representation/Converse.lean#L35) | structure |  |
+| [`karamata_inner_integral_tendsto_zero`](Stats/RegularVariation/Representation/Converse.lean#L55) | lemma | proved |
+| [`IsKaramataRepresentation.isSlowlyVarying`](Stats/RegularVariation/Representation/Converse.lean#L139) | theorem | proved |
 
-**[Stats.RegularVariation.Representation.Forward](Stats/RegularVariation/Representation/Forward.lean)** — 644 lines
+**[Stats.RegularVariation.Representation.Forward](Stats/RegularVariation/Representation/Forward.lean)** — 648 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`η`](Stats/RegularVariation/Representation/Forward.lean#L60) | def |  |
-| [`η_measurable`](Stats/RegularVariation/Representation/Forward.lean#L63) | lemma | proved |
-| [`η_eventually_pos`](Stats/RegularVariation/Representation/Forward.lean#L67) | lemma | proved |
-| [`η_uct_uniform_on_unit`](Stats/RegularVariation/Representation/Forward.lean#L73) | lemma | proved |
-| [`η_telescope_bound`](Stats/RegularVariation/Representation/Forward.lean#L165) | lemma | proved |
-| [`η_integrableOn_Icc`](Stats/RegularVariation/Representation/Forward.lean#L217) | lemma | proved |
-| [`η_intervalIntegrable`](Stats/RegularVariation/Representation/Forward.lean#L259) | lemma | proved |
-| [`ξ`](Stats/RegularVariation/Representation/Forward.lean#L274) | def |  |
-| [`ξ_translation_identity`](Stats/RegularVariation/Representation/Forward.lean#L279) | lemma | proved |
-| [`η_minus_ξ_tendsto_zero`](Stats/RegularVariation/Representation/Forward.lean#L332) | lemma | proved |
-| [`integral_div_eq_integral_comp_exp`](Stats/RegularVariation/Representation/Forward.lean#L398) | lemma | proved |
-| [`IsSlowlyVarying.karamata_representation`](Stats/RegularVariation/Representation/Forward.lean#L452) | theorem | proved |
+| [`η`](Stats/RegularVariation/Representation/Forward.lean#L64) | def |  |
+| [`η_measurable`](Stats/RegularVariation/Representation/Forward.lean#L67) | lemma | proved |
+| [`η_eventually_pos`](Stats/RegularVariation/Representation/Forward.lean#L71) | lemma | proved |
+| [`η_uct_uniform_on_unit`](Stats/RegularVariation/Representation/Forward.lean#L77) | lemma | proved |
+| [`η_telescope_bound`](Stats/RegularVariation/Representation/Forward.lean#L169) | lemma | proved |
+| [`η_integrableOn_Icc`](Stats/RegularVariation/Representation/Forward.lean#L221) | lemma | proved |
+| [`η_intervalIntegrable`](Stats/RegularVariation/Representation/Forward.lean#L263) | lemma | proved |
+| [`ξ`](Stats/RegularVariation/Representation/Forward.lean#L278) | def |  |
+| [`ξ_translation_identity`](Stats/RegularVariation/Representation/Forward.lean#L283) | lemma | proved |
+| [`η_minus_ξ_tendsto_zero`](Stats/RegularVariation/Representation/Forward.lean#L336) | lemma | proved |
+| [`integral_div_eq_integral_comp_exp`](Stats/RegularVariation/Representation/Forward.lean#L402) | lemma | proved |
+| [`IsSlowlyVarying.karamata_representation`](Stats/RegularVariation/Representation/Forward.lean#L456) | theorem | proved |
 
 ### `Stats.RegularVariation.UCT`
 
-**[Stats.RegularVariation.UCT.Measurable](Stats/RegularVariation/UCT/Measurable.lean)** — 470 lines
+**[Stats.RegularVariation.UCT.Measurable](Stats/RegularVariation/UCT/Measurable.lean)** — 474 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`additive_uct_dct_step`](Stats/RegularVariation/UCT/Measurable.lean#L36) | lemma | proved |
-| [`additive_uct_aux`](Stats/RegularVariation/UCT/Measurable.lean#L91) | lemma | proved |
-| [`IsSlowlyVarying.uniform_convergence`](Stats/RegularVariation/UCT/Measurable.lean#L344) | theorem | proved |
+| [`additive_uct_dct_step`](Stats/RegularVariation/UCT/Measurable.lean#L40) | lemma | proved |
+| [`additive_uct_aux`](Stats/RegularVariation/UCT/Measurable.lean#L95) | lemma | proved |
+| [`IsSlowlyVarying.uniform_convergence`](Stats/RegularVariation/UCT/Measurable.lean#L348) | theorem | proved |
 
-**[Stats.RegularVariation.UCT.Monotone](Stats/RegularVariation/UCT/Monotone.lean)** — 85 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`IsSlowlyVarying.uniform_convergence_of_monotone`](Stats/RegularVariation/UCT/Monotone.lean#L28) | theorem | proved |
-
-**[Stats.RegularVariation.UCT.Potter](Stats/RegularVariation/UCT/Potter.lean)** — 82 lines
+**[Stats.RegularVariation.UCT.Monotone](Stats/RegularVariation/UCT/Monotone.lean)** — 89 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`IsSlowlyVarying.potter_bounds`](Stats/RegularVariation/UCT/Potter.lean#L21) | theorem | proved |
-| [`IsSlowlyVarying.potter_bounds_of_monotone`](Stats/RegularVariation/UCT/Potter.lean#L52) | theorem | proved |
+| [`IsSlowlyVarying.uniform_convergence_of_monotone`](Stats/RegularVariation/UCT/Monotone.lean#L32) | theorem | proved |
+
+**[Stats.RegularVariation.UCT.Potter](Stats/RegularVariation/UCT/Potter.lean)** — 86 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`IsSlowlyVarying.potter_bounds`](Stats/RegularVariation/UCT/Potter.lean#L25) | theorem | proved |
+| [`IsSlowlyVarying.potter_bounds_of_monotone`](Stats/RegularVariation/UCT/Potter.lean#L56) | theorem | proved |
 
 ### `Stats.RiskMeasures`
 
-**[Stats.RiskMeasures.CVaR](Stats/RiskMeasures/CVaR.lean)** — 107 lines
+**[Stats.RiskMeasures.CVaR](Stats/RiskMeasures/CVaR.lean)** — 111 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`paretoVaR_mono_p`](Stats/RiskMeasures/CVaR.lean#L26) | theorem | proved |
-| [`paretoVaR_mono_l`](Stats/RiskMeasures/CVaR.lean#L46) | theorem | proved |
-| [`paretoVaR_scale`](Stats/RiskMeasures/CVaR.lean#L56) | theorem | proved |
-| [`paretoCVaR_mono_p`](Stats/RiskMeasures/CVaR.lean#L62) | theorem | proved |
-| [`paretoCVaR_mono_l`](Stats/RiskMeasures/CVaR.lean#L73) | theorem | proved |
-| [`paretoCVaR_scale`](Stats/RiskMeasures/CVaR.lean#L85) | theorem | proved |
-| [`paretoCVaR_ge_paretoVaR`](Stats/RiskMeasures/CVaR.lean#L92) | theorem | proved |
+| [`paretoVaR_mono_p`](Stats/RiskMeasures/CVaR.lean#L30) | theorem | proved |
+| [`paretoVaR_mono_l`](Stats/RiskMeasures/CVaR.lean#L50) | theorem | proved |
+| [`paretoVaR_scale`](Stats/RiskMeasures/CVaR.lean#L60) | theorem | proved |
+| [`paretoCVaR_mono_p`](Stats/RiskMeasures/CVaR.lean#L66) | theorem | proved |
+| [`paretoCVaR_mono_l`](Stats/RiskMeasures/CVaR.lean#L77) | theorem | proved |
+| [`paretoCVaR_scale`](Stats/RiskMeasures/CVaR.lean#L89) | theorem | proved |
+| [`paretoCVaR_ge_paretoVaR`](Stats/RiskMeasures/CVaR.lean#L96) | theorem | proved |
 
-**[Stats.RiskMeasures.Drawdown](Stats/RiskMeasures/Drawdown.lean)** — 195 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`paretoSampleMaxCDF`](Stats/RiskMeasures/Drawdown.lean#L39) | def |  |
-| [`paretoSampleMaxSurvival`](Stats/RiskMeasures/Drawdown.lean#L43) | def |  |
-| [`paretoSampleMaxSurvival_eq_one_sub_pow`](Stats/RiskMeasures/Drawdown.lean#L48) | theorem | proved |
-| [`paretoSampleMaxSurvival_at_l`](Stats/RiskMeasures/Drawdown.lean#L56) | theorem | proved |
-| [`paretoSampleMaxSurvival_union_bound`](Stats/RiskMeasures/Drawdown.lean#L75) | theorem | proved |
-| [`paretoSampleMaxSurvival_le_n_survival`](Stats/RiskMeasures/Drawdown.lean#L105) | theorem | proved |
-| [`paretoMaxDrawdownVaR`](Stats/RiskMeasures/Drawdown.lean#L117) | def |  |
-| [`paretoMaxDrawdownVaR_eq`](Stats/RiskMeasures/Drawdown.lean#L122) | theorem | proved |
-| [`paretoSampleMax_threshold_for_FDR`](Stats/RiskMeasures/Drawdown.lean#L133) | theorem | proved |
-| [`multivariate_sample_max_fdr_bound`](Stats/RiskMeasures/Drawdown.lean#L185) | theorem | proved |
-
-**[Stats.RiskMeasures.Kelly](Stats/RiskMeasures/Kelly.lean)** — 110 lines
+**[Stats.RiskMeasures.Drawdown](Stats/RiskMeasures/Drawdown.lean)** — 199 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`kellyIntegrand`](Stats/RiskMeasures/Kelly.lean#L45) | def |  |
-| [`kellyObjective`](Stats/RiskMeasures/Kelly.lean#L50) | def |  |
-| [`kellyMarginalIntegrand`](Stats/RiskMeasures/Kelly.lean#L56) | def |  |
-| [`kelly_log_hasDerivAt`](Stats/RiskMeasures/Kelly.lean#L61) | theorem | proved |
-| [`kelly_log_hasDerivAt_second`](Stats/RiskMeasures/Kelly.lean#L77) | theorem | proved |
-| [`kelly_log_second_deriv_nonpos`](Stats/RiskMeasures/Kelly.lean#L93) | theorem | proved |
-| [`kelly_marginal_at_zero`](Stats/RiskMeasures/Kelly.lean#L105) | theorem | proved |
+| [`paretoSampleMaxCDF`](Stats/RiskMeasures/Drawdown.lean#L43) | def |  |
+| [`paretoSampleMaxSurvival`](Stats/RiskMeasures/Drawdown.lean#L47) | def |  |
+| [`paretoSampleMaxSurvival_eq_one_sub_pow`](Stats/RiskMeasures/Drawdown.lean#L52) | theorem | proved |
+| [`paretoSampleMaxSurvival_at_l`](Stats/RiskMeasures/Drawdown.lean#L60) | theorem | proved |
+| [`paretoSampleMaxSurvival_union_bound`](Stats/RiskMeasures/Drawdown.lean#L79) | theorem | proved |
+| [`paretoSampleMaxSurvival_le_n_survival`](Stats/RiskMeasures/Drawdown.lean#L109) | theorem | proved |
+| [`paretoMaxDrawdownVaR`](Stats/RiskMeasures/Drawdown.lean#L121) | def |  |
+| [`paretoMaxDrawdownVaR_eq`](Stats/RiskMeasures/Drawdown.lean#L126) | theorem | proved |
+| [`paretoSampleMax_threshold_for_FDR`](Stats/RiskMeasures/Drawdown.lean#L137) | theorem | proved |
+| [`multivariate_sample_max_fdr_bound`](Stats/RiskMeasures/Drawdown.lean#L189) | theorem | proved |
 
-**[Stats.RiskMeasures.MLE](Stats/RiskMeasures/MLE.lean)** — 312 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`paretoMLE_inv`](Stats/RiskMeasures/MLE.lean#L45) | def |  |
-| [`paretoMLE`](Stats/RiskMeasures/MLE.lean#L48) | def |  |
-| [`paretoMLE_mul_inv`](Stats/RiskMeasures/MLE.lean#L53) | theorem | proved |
-| [`survival_eq_exp_neg_α_log_ratio`](Stats/RiskMeasures/MLE.lean#L66) | theorem | proved |
-| [`paretoMLE_at_expected`](Stats/RiskMeasures/MLE.lean#L82) | theorem | proved |
-| [`paretoMLE_asymptoticVariance`](Stats/RiskMeasures/MLE.lean#L96) | def |  |
-| [`paretoMLE_asymptoticVariance_pos`](Stats/RiskMeasures/MLE.lean#L100) | theorem | proved |
-| [`paretoMLE_asymptoticVariance_scaling`](Stats/RiskMeasures/MLE.lean#L110) | theorem | proved |
-| [`paretoCIBound`](Stats/RiskMeasures/MLE.lean#L122) | def |  |
-| [`paretoCIBound_nonneg`](Stats/RiskMeasures/MLE.lean#L127) | theorem | proved |
-| [`paretoCIBound_sq`](Stats/RiskMeasures/MLE.lean#L138) | theorem | proved |
-| [`paretoCIBound_scaling`](Stats/RiskMeasures/MLE.lean#L151) | theorem | proved |
-| [`paretoMLE_hasDerivAt`](Stats/RiskMeasures/MLE.lean#L164) | theorem | proved |
-| [`paretoLogSumStat`](Stats/RiskMeasures/MLE.lean#L178) | def |  |
-| [`paretoMLE_data_hasDerivAt`](Stats/RiskMeasures/MLE.lean#L191) | theorem | proved |
-| [`paretoMLE_joint_hasFDerivAt`](Stats/RiskMeasures/MLE.lean#L296) | theorem | proved |
-
-**[Stats.RiskMeasures.MarkowitzFailure](Stats/RiskMeasures/MarkowitzFailure.lean)** — 133 lines
+**[Stats.RiskMeasures.Kelly](Stats/RiskMeasures/Kelly.lean)** — 114 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`markowitz_objective_ill_defined`](Stats/RiskMeasures/MarkowitzFailure.lean#L51) | theorem | proved |
-| [`paretoPortfolioMean`](Stats/RiskMeasures/MarkowitzFailure.lean#L60) | def |  |
-| [`paretoPortfolioCVaR`](Stats/RiskMeasures/MarkowitzFailure.lean#L68) | def |  |
-| [`paretoPortfolioCVaR_eq_rescaled`](Stats/RiskMeasures/MarkowitzFailure.lean#L75) | theorem | proved |
-| [`paretoPortfolio_meanCVaR_ratio`](Stats/RiskMeasures/MarkowitzFailure.lean#L89) | theorem | proved |
-| [`paretoPortfolioMean_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L99) | theorem | proved |
-| [`paretoPortfolioCVaR_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L107) | theorem | proved |
-| [`paretoPortfolio_frontier_degenerate`](Stats/RiskMeasures/MarkowitzFailure.lean#L121) | theorem | proved |
+| [`kellyIntegrand`](Stats/RiskMeasures/Kelly.lean#L49) | def |  |
+| [`kellyObjective`](Stats/RiskMeasures/Kelly.lean#L54) | def |  |
+| [`kellyMarginalIntegrand`](Stats/RiskMeasures/Kelly.lean#L60) | def |  |
+| [`kelly_log_hasDerivAt`](Stats/RiskMeasures/Kelly.lean#L65) | theorem | proved |
+| [`kelly_log_hasDerivAt_second`](Stats/RiskMeasures/Kelly.lean#L81) | theorem | proved |
+| [`kelly_log_second_deriv_nonpos`](Stats/RiskMeasures/Kelly.lean#L97) | theorem | proved |
+| [`kelly_marginal_at_zero`](Stats/RiskMeasures/Kelly.lean#L109) | theorem | proved |
 
-**[Stats.RiskMeasures.Moments](Stats/RiskMeasures/Moments.lean)** — 171 lines
-
-| declaration | kind | status |
-| --- | --- | --- |
-| [`paretoMomentIntegrand`](Stats/RiskMeasures/Moments.lean#L36) | def |  |
-| [`paretoMomentIntegrand_eq_layerCake`](Stats/RiskMeasures/Moments.lean#L42) | theorem | proved |
-| [`paretoMomentIntegrand_integrableOn_iff`](Stats/RiskMeasures/Moments.lean#L72) | theorem | proved |
-| [`paretoMoment`](Stats/RiskMeasures/Moments.lean#L95) | def |  |
-| [`paretoMoment_eq`](Stats/RiskMeasures/Moments.lean#L101) | theorem | proved |
-| [`paretoSecondMoment_integrableOn_iff`](Stats/RiskMeasures/Moments.lean#L146) | theorem | proved |
-| [`paretoSecondMoment_eq`](Stats/RiskMeasures/Moments.lean#L154) | theorem | proved |
-| [`mad_integrable_mse_not`](Stats/RiskMeasures/Moments.lean#L161) | theorem | proved |
-
-**[Stats.RiskMeasures.Spectral](Stats/RiskMeasures/Spectral.lean)** — 152 lines
+**[Stats.RiskMeasures.MLE](Stats/RiskMeasures/MLE.lean)** — 316 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`spectralRiskMeasure`](Stats/RiskMeasures/Spectral.lean#L41) | def |  |
-| [`integral_paretoVaR_eq`](Stats/RiskMeasures/Spectral.lean#L48) | theorem | proved |
-| [`spectralRiskMeasure_const_one`](Stats/RiskMeasures/Spectral.lean#L76) | theorem | proved |
-| [`spectralRiskMeasure_cvar_recovery`](Stats/RiskMeasures/Spectral.lean#L102) | theorem | proved |
-| [`spectralRiskMeasure_scale`](Stats/RiskMeasures/Spectral.lean#L142) | theorem | proved |
+| [`paretoMLE_inv`](Stats/RiskMeasures/MLE.lean#L49) | def |  |
+| [`paretoMLE`](Stats/RiskMeasures/MLE.lean#L52) | def |  |
+| [`paretoMLE_mul_inv`](Stats/RiskMeasures/MLE.lean#L57) | theorem | proved |
+| [`survival_eq_exp_neg_α_log_ratio`](Stats/RiskMeasures/MLE.lean#L70) | theorem | proved |
+| [`paretoMLE_at_expected`](Stats/RiskMeasures/MLE.lean#L86) | theorem | proved |
+| [`paretoMLE_asymptoticVariance`](Stats/RiskMeasures/MLE.lean#L100) | def |  |
+| [`paretoMLE_asymptoticVariance_pos`](Stats/RiskMeasures/MLE.lean#L104) | theorem | proved |
+| [`paretoMLE_asymptoticVariance_scaling`](Stats/RiskMeasures/MLE.lean#L114) | theorem | proved |
+| [`paretoCIBound`](Stats/RiskMeasures/MLE.lean#L126) | def |  |
+| [`paretoCIBound_nonneg`](Stats/RiskMeasures/MLE.lean#L131) | theorem | proved |
+| [`paretoCIBound_sq`](Stats/RiskMeasures/MLE.lean#L142) | theorem | proved |
+| [`paretoCIBound_scaling`](Stats/RiskMeasures/MLE.lean#L155) | theorem | proved |
+| [`paretoMLE_hasDerivAt`](Stats/RiskMeasures/MLE.lean#L168) | theorem | proved |
+| [`paretoLogSumStat`](Stats/RiskMeasures/MLE.lean#L182) | def |  |
+| [`paretoMLE_data_hasDerivAt`](Stats/RiskMeasures/MLE.lean#L195) | theorem | proved |
+| [`paretoMLE_joint_hasFDerivAt`](Stats/RiskMeasures/MLE.lean#L300) | theorem | proved |
+
+**[Stats.RiskMeasures.MarkowitzFailure](Stats/RiskMeasures/MarkowitzFailure.lean)** — 137 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`markowitz_objective_ill_defined`](Stats/RiskMeasures/MarkowitzFailure.lean#L55) | theorem | proved |
+| [`paretoPortfolioMean`](Stats/RiskMeasures/MarkowitzFailure.lean#L64) | def |  |
+| [`paretoPortfolioCVaR`](Stats/RiskMeasures/MarkowitzFailure.lean#L72) | def |  |
+| [`paretoPortfolioCVaR_eq_rescaled`](Stats/RiskMeasures/MarkowitzFailure.lean#L79) | theorem | proved |
+| [`paretoPortfolio_meanCVaR_ratio`](Stats/RiskMeasures/MarkowitzFailure.lean#L93) | theorem | proved |
+| [`paretoPortfolioMean_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L103) | theorem | proved |
+| [`paretoPortfolioCVaR_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L111) | theorem | proved |
+| [`paretoPortfolio_frontier_degenerate`](Stats/RiskMeasures/MarkowitzFailure.lean#L125) | theorem | proved |
+
+**[Stats.RiskMeasures.Moments](Stats/RiskMeasures/Moments.lean)** — 175 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`paretoMomentIntegrand`](Stats/RiskMeasures/Moments.lean#L40) | def |  |
+| [`paretoMomentIntegrand_eq_layerCake`](Stats/RiskMeasures/Moments.lean#L46) | theorem | proved |
+| [`paretoMomentIntegrand_integrableOn_iff`](Stats/RiskMeasures/Moments.lean#L76) | theorem | proved |
+| [`paretoMoment`](Stats/RiskMeasures/Moments.lean#L99) | def |  |
+| [`paretoMoment_eq`](Stats/RiskMeasures/Moments.lean#L105) | theorem | proved |
+| [`paretoSecondMoment_integrableOn_iff`](Stats/RiskMeasures/Moments.lean#L150) | theorem | proved |
+| [`paretoSecondMoment_eq`](Stats/RiskMeasures/Moments.lean#L158) | theorem | proved |
+| [`mad_integrable_mse_not`](Stats/RiskMeasures/Moments.lean#L165) | theorem | proved |
+
+**[Stats.RiskMeasures.Spectral](Stats/RiskMeasures/Spectral.lean)** — 156 lines
+
+| declaration | kind | status |
+| --- | --- | --- |
+| [`spectralRiskMeasure`](Stats/RiskMeasures/Spectral.lean#L45) | def |  |
+| [`integral_paretoVaR_eq`](Stats/RiskMeasures/Spectral.lean#L52) | theorem | proved |
+| [`spectralRiskMeasure_const_one`](Stats/RiskMeasures/Spectral.lean#L80) | theorem | proved |
+| [`spectralRiskMeasure_cvar_recovery`](Stats/RiskMeasures/Spectral.lean#L106) | theorem | proved |
+| [`spectralRiskMeasure_scale`](Stats/RiskMeasures/Spectral.lean#L146) | theorem | proved |
 
 ## Gaps
 

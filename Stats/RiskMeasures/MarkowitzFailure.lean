@@ -1,3 +1,5 @@
+module
+
 /-
   Risk measures & portfolio theory under Pareto.
 
@@ -11,8 +13,10 @@
 
   See `Stats/RiskMeasures.lean` for the umbrella module.
 -/
-import Stats.RiskMeasures.CVaR
-import Stats.RiskMeasures.Moments
+public import Stats.RiskMeasures.CVaR
+public import Stats.RiskMeasures.Moments
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

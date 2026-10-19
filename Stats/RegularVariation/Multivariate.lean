@@ -1,3 +1,5 @@
+module
+
 /-
   Multivariate regular variation (MRV) via projections.
 
@@ -16,8 +18,10 @@
   Uses `Fin d → ℝ` with an explicit inner product (no
   `EuclideanSpace`/`InnerProductSpace` dependency).
 -/
-import Stats.Theorem1
-import Mathlib.Analysis.InnerProductSpace.Basic
+public import Stats.Theorem1
+public import Mathlib.Analysis.InnerProductSpace.Basic
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 

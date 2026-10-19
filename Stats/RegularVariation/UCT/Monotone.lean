@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — Uniform Convergence Theorem.
 
@@ -9,7 +11,9 @@
 
   See `Stats/RegularVariation/UCT.lean` for the umbrella.
 -/
-import Stats.RegularVariation.Defs
+public import Stats.RegularVariation.Defs
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

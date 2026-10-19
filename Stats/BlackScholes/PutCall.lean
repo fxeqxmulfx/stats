@@ -1,3 +1,5 @@
+module
+
 /-
   Black–Scholes put price + put–call parity.
 
@@ -6,7 +8,9 @@
   • Put–call parity (general): `BSC − P = S₀·exp(μ + v/2) − K`.
   • BS put closed forms (general + risk-neutral).
 -/
-import Stats.BlackScholes.CallPrice
+public import Stats.BlackScholes.CallPrice
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal
@@ -92,7 +96,7 @@ theorem putCallParity_BS
   rw [MeasureTheory.integral_sub h_int_S₀exp h_int_const,
       MeasureTheory.integral_const_mul S₀ Real.exp,
       integral_exp_gaussianReal]
-  haveI : IsProbabilityMeasure (gaussianReal μ v) := by infer_instance
+  have : IsProbabilityMeasure (gaussianReal μ v) := by infer_instance
   rw [MeasureTheory.integral_const, probReal_univ, smul_eq_mul, one_mul]
 
 open ProbabilityTheory MeasureTheory in

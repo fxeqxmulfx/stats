@@ -1,3 +1,5 @@
+module
+
 /-
   Statistical differences between binary forecasts and real-world payoffs.
     Taleb, arXiv:1907.11162v3 (Dec 2019).
@@ -9,7 +11,9 @@
 
   See `Stats/BinaryForecasts.lean` for the umbrella module.
 -/
-import Stats.BinaryForecasts.SigmaSensitivity
+public import Stats.BinaryForecasts.SigmaSensitivity
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal
@@ -103,7 +107,7 @@ private theorem tendsto_stdNormalCdf_div_atTop {σ : ℝ} (hσ : 0 < σ) :
     have h_comp := h_toReal_at_one.comp h_ennreal
     -- h_comp : Tendsto (fun y => ((gaussianReal 0 1)(Iic y)).toReal) atTop (𝓝 1)
     simp only [ENNReal.toReal_one] at h_comp
-    convert h_comp using 1 <;> rfl
+    convert h_comp using 1 ; rfl
   exact h_atTop.comp h_div
 
 open ProbabilityTheory MeasureTheory in

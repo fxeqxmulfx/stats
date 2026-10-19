@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — **umbrella module**.
 
@@ -64,12 +66,14 @@
   Theorem 1, full slowly-varying version                [direct corollary]
   ```
 -/
-import Stats.RegularVariation.Defs
-import Stats.RegularVariation.Examples
-import Stats.RegularVariation.Closure
-import Stats.RegularVariation.UCT
-import Stats.RegularVariation.Karamata
-import Stats.RegularVariation.Representation
-import Stats.RegularVariation.Application
-import Stats.RegularVariation.Abelian
-import Stats.RegularVariation.Multivariate
+public import Stats.RegularVariation.Defs
+public import Stats.RegularVariation.Examples
+public import Stats.RegularVariation.Closure
+public import Stats.RegularVariation.UCT
+public import Stats.RegularVariation.Karamata
+public import Stats.RegularVariation.Representation
+public import Stats.RegularVariation.Application
+public import Stats.RegularVariation.Abelian
+public import Stats.RegularVariation.Multivariate
+
+@[expose] public section

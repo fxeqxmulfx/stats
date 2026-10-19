@@ -1,3 +1,5 @@
+module
+
 /-
   Calculus of the strong-Pareto call price:
     • generic FTC for `K ↦ ∫_K^∞ F(s) ds` (`hasDerivAt_integral_Ioi`),
@@ -15,6 +17,8 @@
   * `Stats.Calculus.Greeks` — Pareto Greeks `∂C/∂α`, `∂C/∂l`,
     `∂P̂/∂α`, `∂P̂/∂l`.
 -/
-import Stats.Calculus.CallPrice
-import Stats.Calculus.PutShadow
-import Stats.Calculus.Greeks
+public import Stats.Calculus.CallPrice
+public import Stats.Calculus.PutShadow
+public import Stats.Calculus.Greeks
+
+@[expose] public section

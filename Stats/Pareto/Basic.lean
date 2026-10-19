@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: definitions and Result 1 from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -14,8 +16,10 @@
 
   See `Stats/Pareto.lean` for the umbrella module.
 -/
-import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

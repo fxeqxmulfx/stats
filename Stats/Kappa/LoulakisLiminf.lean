@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -29,11 +31,13 @@
   [LognormalAsymptotic.lean](Stats/Kappa/LognormalAsymptotic.lean)
   + [LognormalMarkov.lean](Stats/Kappa/LognormalMarkov.lean).
 -/
-import Mathlib.Order.Filter.AtTopBot.Defs
-import Mathlib.Order.LiminfLimsup
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Topology.Order.MonotoneConvergence
-import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.Order.Filter.AtTopBot.Defs
+public import Mathlib.Order.LiminfLimsup
+public import Mathlib.Topology.Algebra.Order.LiminfLimsup
+public import Mathlib.Topology.Order.MonotoneConvergence
+public import Mathlib.Analysis.SpecificLimits.Basic
+
+@[expose] public section
 
 open Filter Topology
 

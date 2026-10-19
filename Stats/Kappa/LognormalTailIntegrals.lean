@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -20,9 +22,11 @@
     `γ ∈ (1/2, 1)`.  Integrate `t^(−2γ)` (convergent for `γ > 1/2`);
     the exp factor → 0 as σ → ∞ (since `γ(γ − 1) < 0`).
 -/
-import Stats.Kappa.LognormalAsymptotic
-import Stats.Kappa.LognormalMarkov
-import Stats.Kappa.MadLayerCake
+public import Stats.Kappa.LognormalAsymptotic
+public import Stats.Kappa.LognormalMarkov
+public import Stats.Kappa.MadLayerCake
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Real Filter Topology
 open scoped NNReal
@@ -71,7 +75,7 @@ private lemma pos_part_sub_const_eq (σ n ω : ℝ) (_hn : 0 ≤ n) :
   by_cases h : Y σ ω ≤ n
   · have h1 : Y σ ω - n ≤ 0 := by linarith
     rw [max_eq_right h1, min_eq_left h]; ring
-  · push_neg at h
+  · push Not at h
     have h1 : 0 < Y σ ω - n := by linarith
     rw [max_eq_left h1.le, min_eq_right h.le]
 
@@ -164,7 +168,7 @@ theorem Y_tail_holder {σ : ℝ} (hσ : 0 < σ) {t : ℝ} (ht : 0 < t)
   -- {Y σ > t} ⊆ Ici (log t / σ + σ/2).
   have h_set_sub : {ω | Y σ ω > t} ⊆ Set.Ici ((Real.log t) / σ + σ / 2) := by
     intro ω hω
-    simp only [Set.mem_setOf_eq] at hω
+    simp only [Set.mem_ofPred_eq] at hω
     have h_Y_pos : 0 < Y σ ω := Y_pos σ ω
     -- Y σ ω > t > 0; take log on both sides.
     have h_log_lt : Real.log t < Real.log (Y σ ω) := Real.log_lt_log ht hω
@@ -260,7 +264,7 @@ theorem prob_Y_gt_tendsto_zero {c : ℝ} (hc : 0 < c) :
       intro ω
       by_cases hω : ω ∈ {ω | Y σ ω > c}
       · rw [Set.indicator_of_mem hω, mul_one]
-        simp only [Set.mem_setOf_eq] at hω
+        simp only [Set.mem_ofPred_eq] at hω
         rw [min_eq_right hω.le]
       · rw [Set.indicator_of_notMem hω, mul_zero]
         exact le_min (Y_nonneg σ ω) hc.le
@@ -357,7 +361,7 @@ theorem integrableOn_prob_Y_gt_Ioi (σ : ℝ) (n : ℝ) :
       constructor
       · intro h; linarith
       · intro h; linarith
-    · push_neg at h'
+    · push Not at h'
       rw [max_eq_right h'.le]
       constructor
       · intro h; linarith
@@ -393,7 +397,7 @@ private lemma prob_Y_gt_mono (σ : ℝ) (n : ℝ) {t : ℝ} (ht : 0 < t) :
       ≤ (gaussianReal 0 1).real {ω | Y σ ω > n} := by
   apply measureReal_mono ?_ (measure_ne_top _ _)
   intro ω h
-  simp only [Set.mem_setOf_eq] at h ⊢
+  simp only [Set.mem_ofPred_eq] at h ⊢
   linarith
 
 /-- **Bn σ ≤ ℙ_σ(Y > n) · An σ**, the squeeze bound. -/

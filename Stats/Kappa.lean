@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -116,30 +118,32 @@
     parameterised over the Bn → 0 hypothesis pending the integration
     follow-up.
 -/
-import Stats.Kappa.Basic
-import Stats.Kappa.Exponential
-import Stats.Kappa.CubicStudent
-import Stats.Kappa.CubicStudentAsymptotic
-import Stats.Kappa.CubicStudentLaplace
-import Stats.Kappa.CubicStudentExpIntegral
-import Stats.Kappa.Cumulant
-import Stats.Kappa.Lognormal
-import Stats.Kappa.LognormalCumulants
-import Stats.Kappa.GaussianMixture
-import Stats.Kappa.GaussianSwitchingMean
-import Stats.Kappa.TableI
-import Stats.Kappa.PearsonIV
-import Stats.Kappa.Stable
-import Stats.Kappa.PoissonCDF
-import Stats.Kappa.IIdTriangle
-import Stats.Kappa.LognormalMeasure
-import Stats.Kappa.MaxIIdBound
-import Stats.Kappa.SumMaxBound
-import Stats.Kappa.MadLayerCake
-import Stats.Kappa.LognormalMarkov
-import Stats.Kappa.LoulakisAlgebraic
-import Stats.Kappa.LognormalAsymptotic
-import Stats.Kappa.LoulakisLiminf
-import Stats.Kappa.LognormalIIdSetup
-import Stats.Kappa.LognormalTailIntegrals
-import Stats.Kappa.LoulakisLognormal
+public import Stats.Kappa.Basic
+public import Stats.Kappa.Exponential
+public import Stats.Kappa.CubicStudent
+public import Stats.Kappa.CubicStudentAsymptotic
+public import Stats.Kappa.CubicStudentLaplace
+public import Stats.Kappa.CubicStudentExpIntegral
+public import Stats.Kappa.Cumulant
+public import Stats.Kappa.Lognormal
+public import Stats.Kappa.LognormalCumulants
+public import Stats.Kappa.GaussianMixture
+public import Stats.Kappa.GaussianSwitchingMean
+public import Stats.Kappa.TableI
+public import Stats.Kappa.PearsonIV
+public import Stats.Kappa.Stable
+public import Stats.Kappa.PoissonCDF
+public import Stats.Kappa.IIdTriangle
+public import Stats.Kappa.LognormalMeasure
+public import Stats.Kappa.MaxIIdBound
+public import Stats.Kappa.SumMaxBound
+public import Stats.Kappa.MadLayerCake
+public import Stats.Kappa.LognormalMarkov
+public import Stats.Kappa.LoulakisAlgebraic
+public import Stats.Kappa.LognormalAsymptotic
+public import Stats.Kappa.LoulakisLiminf
+public import Stats.Kappa.LognormalIIdSetup
+public import Stats.Kappa.LognormalTailIntegrals
+public import Stats.Kappa.LoulakisLognormal
+
+@[expose] public section

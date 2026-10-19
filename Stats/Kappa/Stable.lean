@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -35,9 +37,11 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Stats.Kappa.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Data.Real.Sign
+public import Stats.Kappa.Basic
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+public import Mathlib.Basic.Real.Sign
+
+@[expose] public section
 
 open Real Complex Set Filter Topology
 
@@ -120,7 +124,7 @@ theorem stable_charfun_pow_alpha_ne_one
       = stableCharacteristicFunction α β ((n : ℝ) * μ)
           ((n : ℝ) ^ (1 / α) * σ) t := by
   unfold stableCharacteristicFunction
-  rw [if_neg hα_ne_one, if_neg hα_ne_one]
+  rw [ite_eq_right hα_ne_one, ite_eq_right hα_ne_one]
   -- Rewrite LHS = exp(n · z₁); reduce to exp(n · z₁) = exp(z₂).
   rw [← Complex.exp_nat_mul]
   congr 1
@@ -164,7 +168,7 @@ theorem stable_charfun_pow_alpha_eq_one
                 (1 + (((2 / Real.pi) * β * Real.sign t * Real.log |t * σ| : ℝ) : ℂ)
                     * Complex.I))) := by
   unfold stableCharacteristicFunction
-  rw [if_pos rfl]
+  rw [ite_eq_left rfl]
   rw [← Complex.exp_nat_mul]
   push_cast
   ring_nf

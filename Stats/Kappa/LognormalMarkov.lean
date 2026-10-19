@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -24,8 +26,10 @@
   `measure_ge_le_exp_mul_mgf` with Mathlib's
   `integrable_exp_mul_gaussianReal` + `mgf_id_gaussianReal`.
 -/
-import Stats.Kappa.LognormalMeasure
-import Mathlib.Probability.Moments.Basic
+public import Stats.Kappa.LognormalMeasure
+public import Mathlib.Probability.Moments.Basic
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Real
 open scoped NNReal
@@ -96,7 +100,7 @@ theorem lognormalReal_real_Ioi_le {μ : ℝ} {v : ℝ≥0}
       ≤ (gaussianReal μ v) {x : ℝ | Real.log t ≤ x} := by
     apply measure_mono
     intro x hx
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     exact le_of_lt hx
   -- Apply Chernoff at ε = log t.
   have h_chern := gaussianReal_real_Ici_le μ v (Real.log t) hγ

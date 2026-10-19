@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -14,9 +16,11 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Mathlib.Analysis.SpecialFunctions.Stirling
-import Mathlib.Probability.Distributions.Gamma
-import Stats.Kappa.Basic
+public import Mathlib.Analysis.SpecialFunctions.Stirling
+public import Mathlib.Probability.Distributions.Gamma
+public import Stats.Kappa.Basic
+
+@[expose] public section
 
 open Real Set Filter Topology
 
@@ -54,7 +58,7 @@ theorem gammaSumDensity_eq_gammaPDFReal {lam : ℝ} {n : ℕ}
     (hn : 1 ≤ n) {z : ℝ} (hz : 0 ≤ z) :
     gammaSumDensity lam n z = ProbabilityTheory.gammaPDFReal (n:ℝ) lam z := by
   unfold gammaSumDensity ProbabilityTheory.gammaPDFReal
-  rw [if_pos hz, if_pos hz]
+  rw [ite_eq_left hz, ite_eq_left hz]
   -- Step 1: rewrite `Γ(n) = (n-1)!` using `Real.Gamma_nat_eq_factorial`.
   have h_cast : ((n - 1 : ℕ) : ℝ) + 1 = (n : ℝ) := by
     have : (n - 1 : ℕ) + 1 = n := by omega

@@ -1,3 +1,5 @@
+module
+
 /-
 # Sorry positions
 
@@ -15,7 +17,11 @@ declaration (`foo.proof_1`, `foo._unary`) has no position of its own and is
 reported at the nearest declaration it belongs to; line `0` means none was
 found.  `scripts/index.py` reads the output.
 -/
-import Stats.AxiomAudit
+import all Stats.AxiomAudit
+meta import Lean.DeclarationRange
+meta import Lean.Elab.Command
+
+meta section
 
 open Lean Elab Command
 
@@ -28,11 +34,12 @@ private partial def nameLine (n : Name) : CommandElabM (Option Nat) := do
 
 run_cmd do
   let env ← getEnv
-  for (mod, data) in env.header.moduleNames.zip env.header.moduleData do
+  for (name, ci) in env.constants.toList do
+    let some idx := env.getModuleIdxFor? name | continue
+    let mod := env.header.moduleNames[idx.toNat]!
     unless (`Stats).isPrefixOf mod do continue
     let path := "/".intercalate (mod.components.map (·.toString (escape := false)))
       ++ ".lean"
-    for ci in data.constants do
-      let valueHasSorry := ((ci.value? (allowOpaque := true)).map Expr.hasSorry).getD false
-      unless ci.type.hasSorry || valueHasSorry do continue
-      IO.println s!"{path}\t{(← nameLine ci.name).getD 0}\t{ci.name}"
+    let valueHasSorry := ((ci.value? (allowOpaque := true)).map Expr.hasSorry).getD false
+    unless ci.type.hasSorry || valueHasSorry do continue
+    IO.println s!"{path}\t{(← nameLine ci.name).getD 0}\t{ci.name}"

@@ -1,3 +1,5 @@
+module
+
 /-
   Carr–Madan static replication.
 
@@ -18,8 +20,10 @@
   Improper-integral versions (integration over `(0, ∞)`) require additional
   decay hypotheses on `g''` and are not pursued here.
 -/
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

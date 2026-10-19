@@ -1,3 +1,5 @@
+module
+
 /-
   What You See and What You Don't See: The Hidden Moments of a
   Probability Distribution.  Taleb, arXiv:2004.05894v1 (Apr 2020).
@@ -25,8 +27,10 @@
     * General-`p` hidden moment mean `L^p·n^{p/α−1}·Γ(1−p/α)`
       (Fréchet asymptotic) — requires Γ-function manipulation.
 -/
-import Stats.Pareto
-import Stats.RiskMeasures
+public import Stats.Pareto
+public import Stats.RiskMeasures
+
+@[expose] public section
 
 open Real Set Filter Topology MeasureTheory Finset
 

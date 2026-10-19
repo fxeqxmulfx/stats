@@ -1,3 +1,5 @@
+module
+
 /-
   Branching epistemic uncertainty and thickness of tails.
     Taleb & Cirillo, arXiv:1912.00277v2 (Dec 2019).
@@ -18,9 +20,11 @@
   here. Higher kurtosis alone does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Stats.Pareto
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Stats.Pareto
+
+@[expose] public section
 
 open Real Set Filter Topology Finset
 

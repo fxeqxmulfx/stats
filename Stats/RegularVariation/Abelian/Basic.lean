@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's Abelian theorem.
 
@@ -9,13 +11,15 @@
 
   See `Stats/RegularVariation/Abelian.lean` for the umbrella.
 -/
-import Stats.RegularVariation.Defs
-import Stats.RegularVariation.Representation
-import Stats.Pareto
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+public import Stats.RegularVariation.Defs
+public import Stats.RegularVariation.Representation
+public import Stats.Pareto
+public import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

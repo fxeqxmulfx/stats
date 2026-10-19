@@ -1,3 +1,5 @@
+module
+
 /-
   Arbitrage boundaries: Eqs. (8)–(10) from Taleb et al.
 
@@ -7,7 +9,9 @@
   hence (Breeden–Litzenberger) the BS tail probability dominates the
   power-law tail at the matching anchor, yielding a lower bound on `α`.
 -/
-import Stats.Calculus
+public import Stats.Calculus
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 

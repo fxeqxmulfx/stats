@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -28,7 +30,9 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Stats.Kappa.Basic
+public import Stats.Kappa.Basic
+
+@[expose] public section
 
 open Real Set Filter Topology
 

@@ -1,3 +1,5 @@
+module
+
 /-
   Statistical differences between binary forecasts and real-world payoffs.
     Taleb, arXiv:1907.11162v3 (Dec 2019).
@@ -10,8 +12,10 @@
 
   See `Stats/BinaryForecasts.lean` for the umbrella module.
 -/
-import Stats.BinaryForecasts.Conflation
-import Stats.BinaryForecasts.Brier
+public import Stats.BinaryForecasts.Conflation
+public import Stats.BinaryForecasts.Brier
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal

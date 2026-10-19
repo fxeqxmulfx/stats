@@ -1,3 +1,5 @@
+module
+
 /-
   Calculus of the strong-Pareto family — Pareto Greeks.
 
@@ -8,7 +10,9 @@
 
   See `Stats/Calculus.lean` for the umbrella.
 -/
-import Stats.Calculus.PutShadow
+public import Stats.Calculus.PutShadow
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

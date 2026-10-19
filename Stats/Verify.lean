@@ -1,9 +1,13 @@
+module
+
 /-
   Sanity check: print axioms used by every formalized theorem. Each line below
   must show only `[propext, Classical.choice, Quot.sound]` (Lean's three core
   axioms).  No `sorryAx` means the proof is closed.
 -/
-import Stats.TailOptionPricing
+public import Stats.TailOptionPricing
+
+@[expose] public section
 
 -- Result 1, Eq. (2)–(3)
 /-
@@ -2232,8 +2236,7 @@ theorem cubicStudentSumDensity_eq_half_fourier_avg {n : ℕ} (hn : 1 ≤ n) (y :
 -/
 #print axioms TailOptionPricing.cubicStudentSumDensity_eq_half_fourier_avg
 /-
-theorem cubicStudentSumFourierHalf_eq_expIntegralNeg {n : ℕ} (hn : 1 ≤ n)
-    (ψ : ℂ) (hψ : ψ.re < (n : ℝ) * Real.sqrt 3) :
+theorem cubicStudentSumFourierHalf_eq_expIntegralNeg {n : ℕ} (ψ : ℂ) :
     cubicStudentSumFourierHalf n ψ = … * expIntegralNeg n ((n : ℂ) - ψ / √3)
 -/
 #print axioms TailOptionPricing.cubicStudentSumFourierHalf_eq_expIntegralNeg

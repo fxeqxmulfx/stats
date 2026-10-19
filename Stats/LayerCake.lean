@@ -1,12 +1,16 @@
+module
+
 /-
   Layer-cake bridge: connects our `callPrice` (defined as `∫_K^∞ ℙ(S > s) ds`)
   to the expected payoff `E[(S − K)⁺]`.  Closes the gap between the
   layer-cake form (used in the rest of the development) and the standard
   expectation-form definition of European calls.
 -/
-import Stats.Pareto
-import Mathlib.MeasureTheory.Integral.Layercake
-import Mathlib.MeasureTheory.Group.MeasurableEquiv
+public import Stats.Pareto
+public import Mathlib.MeasureTheory.Integral.Layercake
+public import Mathlib.MeasureTheory.Group.MeasurableEquiv
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 
@@ -29,7 +33,7 @@ theorem expectation_max_eq_integral_survival
     intro t ht
     congr 1
     ext ω
-    simp only [Set.mem_setOf_eq, hf, lt_max_iff]
+    simp only [Set.mem_ofPred_eq, hf, lt_max_iff]
     constructor
     · rintro (h | h)
       · linarith

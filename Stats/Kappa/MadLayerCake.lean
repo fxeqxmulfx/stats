@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -25,8 +27,10 @@
           `∫ (X − m)⁺ dμ = ∫_{t > 0} μ.real {ω | t < (X ω − m)⁺} dt`.
       Then `{ω | t < (X ω − m)⁺} = {ω | X ω > m + t}` for `t > 0`.
 -/
-import Mathlib.MeasureTheory.Integral.Layercake
-import Stats.Kappa.IIdTriangle
+public import Mathlib.MeasureTheory.Integral.Layercake
+public import Stats.Kappa.IIdTriangle
+
+@[expose] public section
 
 open MeasureTheory Set Real
 
@@ -42,7 +46,7 @@ private lemma abs_sub_eq_max_add_max (x m : ℝ) :
   · have h1 : 0 ≤ x - m := by linarith
     have h2 : m - x ≤ 0 := by linarith
     rw [abs_of_nonneg h1, max_eq_left h1, max_eq_right h2, add_zero]
-  · push_neg at h
+  · push Not at h
     have h1 : x - m < 0 := by linarith
     have h2 : 0 < m - x := by linarith
     rw [abs_of_neg h1, max_eq_right h1.le, max_eq_left h2.le, zero_add, neg_sub]
@@ -56,7 +60,7 @@ private lemma sub_eq_max_sub_max (x m : ℝ) :
   · have h1 : 0 ≤ x - m := by linarith
     have h2 : m - x ≤ 0 := by linarith
     rw [max_eq_left h1, max_eq_right h2, sub_zero]
-  · push_neg at h
+  · push Not at h
     have h1 : x - m < 0 := by linarith
     have h2 : 0 < m - x := by linarith
     rw [max_eq_right h1.le, max_eq_left h2.le, zero_sub]; linarith
@@ -107,12 +111,12 @@ theorem integral_pos_part_eq_tail_integral
   have ht_pos : 0 < t := ht
   congr 1
   ext ω
-  simp only [Set.mem_setOf_eq, hf_def]
+  simp only [Set.mem_ofPred_eq, hf_def]
   constructor
   · intro h
     by_cases h' : 0 ≤ X ω - m
     · rw [max_eq_left h'] at h; linarith
-    · push_neg at h'
+    · push Not at h'
       rw [max_eq_right h'.le] at h; linarith
   · intro h
     have : 0 < X ω - m := by linarith

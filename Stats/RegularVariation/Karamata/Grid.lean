@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation.
 
@@ -9,8 +11,10 @@
 
   See `Stats/RegularVariation/Karamata.lean` for the umbrella.
 -/
-import Stats.RegularVariation.Karamata.Monotone
-import Stats.RegularVariation.Karamata.Measurable
+public import Stats.RegularVariation.Karamata.Monotone
+public import Stats.RegularVariation.Karamata.Measurable
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

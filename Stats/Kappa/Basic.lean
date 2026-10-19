@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -17,10 +19,12 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Stats.Pareto
-import Stats.Theorem1
+public import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
+public import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+public import Stats.Pareto
+public import Stats.Theorem1
+
+@[expose] public section
 
 open Real Set Filter Topology
 
@@ -111,11 +115,11 @@ noncomputable def stableAlphaBar (α : ℝ) : ℝ :=
 
 /-- `stableAlphaBar α = α` in the proper stable regime `α < 2`. -/
 theorem stableAlphaBar_of_lt {α : ℝ} (h : α < 2) : stableAlphaBar α = α := by
-  unfold stableAlphaBar; rw [if_pos h]
+  unfold stableAlphaBar; rw [ite_eq_left h]
 
 /-- `stableAlphaBar α = 2` in the Gaussian basin `α ≥ 2`. -/
 theorem stableAlphaBar_of_ge {α : ℝ} (h : 2 ≤ α) : stableAlphaBar α = 2 := by
-  unfold stableAlphaBar; rw [if_neg (not_lt.mpr h)]
+  unfold stableAlphaBar; rw [ite_eq_right (not_lt.mpr h)]
 
 /-- `stableAlphaBar` is bounded above by `2`. -/
 theorem stableAlphaBar_le_two (α : ℝ) : stableAlphaBar α ≤ 2 := by
@@ -353,7 +357,7 @@ theorem n_min_eq_zero_iff {M_ν M_g : ℕ → ℝ} {n_g : ℕ} :
     unfold n_min
     have hempty : {k : ℕ | 0 < k ∧ sampleMeanMAD M_ν k ≤ sampleMeanMAD M_g n_g} = ∅ := by
       ext k
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       exact fun hk => hnone ⟨k, hk⟩
     rw [hempty]
     exact Nat.sInf_empty

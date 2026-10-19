@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -24,8 +26,10 @@
 
   Prerequisite for `Stats.Kappa.Lognormal.Loulakis` (todo5.md Phase C).
 -/
-import Mathlib.Probability.Distributions.Gaussian.Real
-import Stats.BlackScholes.StdNormal
+public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Stats.BlackScholes.StdNormal
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Real Set
 open scoped NNReal

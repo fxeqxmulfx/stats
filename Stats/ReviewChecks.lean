@@ -1,10 +1,14 @@
+module
+
 /-
   Reproducible certificates for the semantic issues described in REVIEW.md.
   These theorems describe the current definitions; they do not validate the
   corresponding probabilistic claims in the papers.
 -/
-import Stats.Kappa.TableI
-import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
+public import Stats.Kappa.TableI
+public import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
+
+@[expose] public section
 
 open Real Set MeasureTheory
 

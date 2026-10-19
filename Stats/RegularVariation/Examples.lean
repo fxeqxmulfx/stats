@@ -1,10 +1,14 @@
+module
+
 /-
   Karamata's theory of regular variation — basic examples.
 
   Constant functions, `Real.log`, iterated logarithms.
 -/
-import Stats.RegularVariation.Defs
-import Stats.RegularVariation.Closure
+public import Stats.RegularVariation.Defs
+public import Stats.RegularVariation.Closure
+
+@[expose] public section
 
 open Real Set Filter Topology Asymptotics
 

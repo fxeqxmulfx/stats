@@ -1,3 +1,5 @@
+module
+
 /-
   Statistical differences between binary forecasts and real-world payoffs.
     Taleb, arXiv:1907.11162v3 (Dec 2019).
@@ -9,7 +11,9 @@
 
   See `Stats/BinaryForecasts.lean` for the umbrella module.
 -/
-import Stats.BinaryForecasts.CharacteristicScale
+public import Stats.BinaryForecasts.CharacteristicScale
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal

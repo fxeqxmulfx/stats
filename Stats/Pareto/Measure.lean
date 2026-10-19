@@ -1,3 +1,5 @@
+module
+
 /-
   Pareto probability measure on ℝ.
 
@@ -13,9 +15,11 @@
   Used as the base for Le Cam impossibility and for Pareto product
   detection-power bounds (todo7.md, tasks A4b and D4).
 -/
-import Stats.Pareto.Mispricing
-import Stats.RiskMeasures.Moments
-import Stats.HiddenMoments
+public import Stats.Pareto.Mispricing
+public import Stats.RiskMeasures.Moments
+public import Stats.HiddenMoments
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 
@@ -45,8 +49,8 @@ private lemma paretoMeasure_integrand_eq_indicator (l α : ℝ) :
       = (Set.Ioi l).indicator (fun s => ENNReal.ofReal (paretoDensity l α s)) := by
   funext s
   by_cases h : l < s
-  · rw [if_pos h, Set.indicator_of_mem (Set.mem_Ioi.mpr h)]
-  · rw [if_neg h, Set.indicator_of_notMem (fun hm => h (Set.mem_Ioi.mp hm))]
+  · rw [ite_eq_left h, Set.indicator_of_mem (Set.mem_Ioi.mpr h)]
+  · rw [ite_eq_right h, Set.indicator_of_notMem (fun hm => h (Set.mem_Ioi.mp hm))]
 
 /-- **Pareto density is nonneg on `Ioi l`** for `0 < l, 0 < α`. -/
 private lemma paretoDensity_nonneg_on_Ioi {l α : ℝ}
@@ -202,8 +206,8 @@ theorem leCam_pareto_scale {l₀ l₁ α : ℝ}
   set P₁ : Measure ℝ := paretoMeasure l₁ α with hP₁_def
   have hl₁ : 0 < l₁ := hl₀.trans hl_lt
   -- Probability-measure instances (give finiteness for measureReal manipulations).
-  haveI : IsProbabilityMeasure P₀ := instIsProbabilityMeasureParetoMeasure l₀ α hl₀ hα
-  haveI : IsProbabilityMeasure P₁ := instIsProbabilityMeasureParetoMeasure l₁ α hl₁ hα
+  have : IsProbabilityMeasure P₀ := instIsProbabilityMeasureParetoMeasure l₀ α hl₀ hα
+  have : IsProbabilityMeasure P₁ := instIsProbabilityMeasureParetoMeasure l₁ α hl₁ hα
   -- (1) Rewrite (l₀/l₁)^α as P₀.real (Ioi l₁).
   have h_target : (l₀ / l₁) ^ α = P₀.real (Set.Ioi l₁) :=
     (paretoMeasure_real_Ioi_eq_survival hl₀ hα hl_lt.le).symm
@@ -316,13 +320,13 @@ theorem paretoProduct_strip_test_error_eq
   set T : Set (Fin d → ℝ) := paretoScaleStripTest l₁ with hT_def
   have hl₁ : 0 < l₁ := hl₀.trans hl_lt
   -- Probability-measure instances for the marginals and the product.
-  haveI : IsProbabilityMeasure (paretoMeasure l₀ α) :=
+  have : IsProbabilityMeasure (paretoMeasure l₀ α) :=
     instIsProbabilityMeasureParetoMeasure l₀ α hl₀ hα
-  haveI : IsProbabilityMeasure (paretoMeasure l₁ α) :=
+  have : IsProbabilityMeasure (paretoMeasure l₁ α) :=
     instIsProbabilityMeasureParetoMeasure l₁ α hl₁ hα
-  haveI : IsProbabilityMeasure μ₀ := by
+  have : IsProbabilityMeasure μ₀ := by
     rw [hμ₀_def]; unfold productPareto; infer_instance
-  haveI : IsProbabilityMeasure μ₁ := by
+  have : IsProbabilityMeasure μ₁ := by
     rw [hμ₁_def]; unfold productPareto; infer_instance
   -- Auxiliary 1: T is measurable.
   have hT_meas : MeasurableSet T := by

@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — Uniform Convergence Theorem
   and Potter's bounds.
@@ -15,6 +17,8 @@
   * `Stats.RegularVariation.UCT.Measurable` — measurable UCT.
   * `Stats.RegularVariation.UCT.Potter` — Potter bounds in both variants.
 -/
-import Stats.RegularVariation.UCT.Monotone
-import Stats.RegularVariation.UCT.Measurable
-import Stats.RegularVariation.UCT.Potter
+public import Stats.RegularVariation.UCT.Monotone
+public import Stats.RegularVariation.UCT.Measurable
+public import Stats.RegularVariation.UCT.Potter
+
+@[expose] public section

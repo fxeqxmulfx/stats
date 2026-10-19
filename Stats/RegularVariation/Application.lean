@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — application to Theorem 1.
 
@@ -6,7 +8,9 @@
   given measurability or monotonicity), turning Theorem 1 into a direct
   corollary.
 -/
-import Stats.RegularVariation.Karamata
+public import Stats.RegularVariation.Karamata
+
+@[expose] public section
 
 open Real Set Filter Topology Asymptotics
 

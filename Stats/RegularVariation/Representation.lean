@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's representation theorem for slowly varying functions.
 
@@ -16,5 +18,7 @@
     (SV ⇒ representation) via the BGT recipe (additive η + moving
     average ξ + UCT bound + back-substitution).
 -/
-import Stats.RegularVariation.Representation.Converse
-import Stats.RegularVariation.Representation.Forward
+public import Stats.RegularVariation.Representation.Converse
+public import Stats.RegularVariation.Representation.Forward
+
+@[expose] public section

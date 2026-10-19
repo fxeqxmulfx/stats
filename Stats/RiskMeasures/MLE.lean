@@ -1,3 +1,5 @@
+module
+
 /-
   Risk measures & portfolio theory under Pareto.
 
@@ -8,7 +10,9 @@
 
   See `Stats/RiskMeasures.lean` for the umbrella module.
 -/
-import Stats.Pareto
+public import Stats.Pareto
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 
@@ -218,7 +222,7 @@ theorem paretoMLE_data_hasDerivAt
               = (fun t : ℝ => Real.log (t / l)) := by
           funext t
           simp [Function.update_self]
-        rw [h_eq, if_pos rfl]
+        rw [h_eq, ite_eq_left rfl]
         -- Derivative of t ↦ log (t / l) at xs i is 1 / xs i.
         have h_div : HasDerivAt (fun t : ℝ => t / l) (1 / l) (xs i) := by
           simpa [one_div] using (hasDerivAt_id (xs i)).div_const l
@@ -240,7 +244,7 @@ theorem paretoMLE_data_hasDerivAt
               = (fun _ : ℝ => Real.log (xs i / l)) := by
           funext t
           rw [Function.update_of_ne hij]
-        rw [h_eq, if_neg hij]
+        rw [h_eq, ite_eq_right hij]
         exact hasDerivAt_const _ _
     -- Sum the derivatives.
     have h_sum := HasDerivAt.fun_sum h_each

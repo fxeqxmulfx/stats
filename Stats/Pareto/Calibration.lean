@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: multi-anchor calibration and term structure from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -15,9 +17,11 @@
 
   See `Stats/Pareto.lean` for the umbrella module.
 -/
-import Stats.Pareto.Basic
-import Stats.Pareto.Returns
-import Stats.Pareto.TailRisk
+public import Stats.Pareto.Basic
+public import Stats.Pareto.Returns
+public import Stats.Pareto.TailRisk
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

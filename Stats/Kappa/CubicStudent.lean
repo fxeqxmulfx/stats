@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -20,10 +22,12 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Stats.Kappa.Basic
+public import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+public import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Stats.Kappa.Basic
+
+@[expose] public section
 
 open Real Set Filter Topology MeasureTheory
 
@@ -166,7 +170,7 @@ private lemma loulakisAntideriv_hasDerivAt (n : ℕ) (t : ℝ) :
   | zero =>
     have h_neg_exp : HasDerivAt (fun s : ℝ => -Real.exp (-s)) (Real.exp (-t)) t := by
       have := (hasDerivAt_exp_neg' t).neg
-      convert this using 1 <;> simp
+      convert this using 1 ; simp
     have heq : loulakisAntideriv 0 = fun s : ℝ => -Real.exp (-s) := by
       funext s; exact loulakisAntideriv_zero_eq s
     rw [heq]
@@ -213,7 +217,7 @@ private lemma loulakisAntideriv_tendsto_zero (n : ℕ) :
       (fun t : ℝ => ∑ k ∈ Finset.range (n + 1),
         ((n.factorial : ℝ) / k.factorial) * (t ^ k * Real.exp (-t)))
       atTop (𝓝 (∑ _k ∈ Finset.range (n + 1), (0 : ℝ))) := by
-    apply tendsto_finset_sum
+    apply tendsto_finsetSum
     intros k _
     have h := (tendsto_pow_mul_exp_neg_atTop_nhds_zero k).const_mul
       ((n.factorial : ℝ) / k.factorial)

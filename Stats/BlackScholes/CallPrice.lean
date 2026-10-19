@@ -1,3 +1,5 @@
+module
+
 /-
   Black–Scholes call price `callPriceBS` and its closed forms.
 
@@ -11,8 +13,10 @@
   • `callPriceBS_decompose` and the closed forms (general + risk-neutral).
   • Risk-neutral survival in `Φ(d₂)` form.
 -/
-import Stats.BlackScholes.StdNormal
-import Stats.LayerCake
+public import Stats.BlackScholes.StdNormal
+public import Stats.LayerCake
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal
@@ -167,7 +171,7 @@ theorem callPriceBS_eq_expectation {S₀ μ K : ℝ} {v : ℝ≥0}
   have h_set_eq : {x : ℝ | s < S₀ * Real.exp x} =
       Set.Ioi (Real.log (s / S₀)) := by
     ext x
-    simp only [Set.mem_setOf_eq, Set.mem_Ioi]
+    simp only [Set.mem_ofPred_eq, Set.mem_Ioi]
     rw [Real.log_lt_iff_lt_exp (div_pos hs_pos hS₀), div_lt_iff₀ hS₀]
     constructor <;> intro h <;>
       linarith [mul_comm (Real.exp x) S₀, mul_comm S₀ (Real.exp x)]

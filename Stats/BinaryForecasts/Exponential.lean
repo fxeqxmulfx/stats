@@ -1,3 +1,5 @@
+module
+
 /-
   Statistical differences between binary forecasts and real-world payoffs.
     Taleb, arXiv:1907.11162v3 (Dec 2019).
@@ -10,7 +12,9 @@
 
   See `Stats/BinaryForecasts.lean` for the umbrella module.
 -/
-import Stats.BinaryForecasts.CharacteristicScale
+public import Stats.BinaryForecasts.CharacteristicScale
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology
 open scoped NNReal
@@ -135,7 +139,7 @@ theorem exp_tail_expectation_eq {lam K : ℝ} (hlam : 0 < lam) (hK : 0 ≤ K) :
         rwa [h_eq2] at h_pol_exp
       have h_t1_inner : Tendsto (fun x : ℝ => lam * x * Real.exp (-(lam * x))) atTop (𝓝 0) := by
         have := h_t1_exp.comp h_t1
-        convert this using 1 <;> rfl
+        convert this using 1 ; rfl
       have h_t1_div : Tendsto (fun x : ℝ => lam * x * Real.exp (-(lam * x)) / lam)
           atTop (𝓝 (0 / lam)) :=
         h_t1_inner.div_const lam

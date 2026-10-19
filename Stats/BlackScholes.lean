@@ -1,3 +1,5 @@
+module
+
 /-
   Umbrella module for the concrete lognormal Black–Scholes development.
 
@@ -14,10 +16,12 @@
                                          risk-neutral BSC dominance, martingale.
     Stats/BlackScholes/PutCall.lean    — `putPriceBS`, parity, put closed forms.
 -/
-import Stats.BlackScholes.Survival
-import Stats.BlackScholes.StdNormal
-import Stats.BlackScholes.CallPrice
-import Stats.BlackScholes.Erfc
-import Stats.BlackScholes.Greeks
-import Stats.BlackScholes.PutCall
-import Stats.BlackScholes.Smile
+public import Stats.BlackScholes.Survival
+public import Stats.BlackScholes.StdNormal
+public import Stats.BlackScholes.CallPrice
+public import Stats.BlackScholes.Erfc
+public import Stats.BlackScholes.Greeks
+public import Stats.BlackScholes.PutCall
+public import Stats.BlackScholes.Smile
+
+@[expose] public section

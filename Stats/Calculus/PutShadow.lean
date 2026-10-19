@@ -1,3 +1,5 @@
+module
+
 /-
   Calculus of the strong-Pareto put shadow.
 
@@ -9,7 +11,9 @@
 
   See `Stats/Calculus.lean` for the umbrella.
 -/
-import Stats.Calculus.CallPrice
+public import Stats.Calculus.CallPrice
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

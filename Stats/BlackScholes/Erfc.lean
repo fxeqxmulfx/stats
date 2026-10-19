@@ -1,3 +1,5 @@
+module
+
 /-
   Error function `Real.erf` and complementary error function `erfc`, and
   their connections to `stdNormalCdf`.  Used to state the paper's Eq. (10)
@@ -14,7 +16,9 @@
   Mathlib upgrade — Mathlib's `Real.erf`, if added, would simply
   supersede this definition).
 -/
-import Stats.BlackScholes.CallPrice
+public import Stats.BlackScholes.CallPrice
+
+@[expose] public section
 
 open Set MeasureTheory Filter Topology
 open scoped NNReal

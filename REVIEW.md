@@ -1,6 +1,7 @@
 # Review of the Taleb paper formalizations
 
-Review date: 2026-10-01. Project: Stats, Lean 4 and mathlib.
+Initial review: 2026-10-01. Review renewed: 2026-10-19.
+Project: Stats, Lean 4 and mathlib.
 The review uses the specific paper versions stored in `papers/`.
 
 ## Which papers are fully formalized?
@@ -54,6 +55,73 @@ falsehood.
 
 ## Lean upgrade and reproducible verification
 
+### 2026-10-19: dependencies and module compatibility
+
+Lean and Mathlib now use the stable `v4.35.0` releases. `lake update` refreshed
+all nine packages in `lake-manifest.json`; the Mathlib revision is
+`56a005855ea17e0b0958f73ec801ae140b0a1679`.
+The Python checks and notebook now have a reproducible environment in
+`python/pyproject.toml` and `python/uv.lock`, including NumPy 2.5.4,
+SciPy 1.18.1 and Matplotlib 3.11.2. `./make.py setup` installs that lockfile,
+and `./make.py test` runs the repository's existing `kappa.py` tests.
+All 27 tests passed; all 11 notebook code cells also executed successfully.
+
+The 105 Lean modules now use the module system, with public imports and
+exposed public declarations preserving the previous unfolding behavior.
+The global axiom audit explicitly imports every Stats module with
+`import all`, so private declarations remain in scope. The compiled-sorry
+scanner uses that same scope. Deprecated lemma names, moved imports and
+proof-style warnings were repaired in this upgrade.
+
+Three lemmas have deliberately stronger statements after unused hypotheses
+were deleted:
+
+- `gaussianCopula_zero_left` and `gaussianCopula_zero_right` hold for every
+  real value of the other coordinate, directly from the boundary branch of
+  `gaussianCopula`; the former unit-interval hypotheses did no work.
+- `cubicStudentSumFourierHalf_eq_expIntegralNeg` is a substitution identity
+  for total Bochner integrals, valid for all `n : ℕ` and `ψ : ℂ`. Its former
+  assumptions `1 ≤ n` and `ψ.re < n * sqrt 3` were unused. Convergence of
+  the paper's Fourier integral is still established separately where needed.
+
+The unchanged definition `cubicKernelReal` is now public because it already
+occurs in the public integrability theorem's statement. These are interface
+changes, not new distributional claims.
+
+Comparing the elaborated `dt` dumps before and after the module migration
+retains all 669 previously indexed public declarations. Of their printed
+types, 665 are identical; the three stronger lemmas above account for three
+changes, and the integrability theorem now names the public kernel rather
+than its private counterpart. The only added indexed declaration is
+`cubicKernelReal` (670 project declarations in total). This comparison covers
+the configured `TailOptionPricing` namespace; the independent axiom audit
+and source index also cover the review and verification modules.
+
+For the Fourier comments, reread `papers/arXiv-1802.05495v3/kappa-n-final.tex`,
+section **Cubic Student T (Gaussian Basin)**, Proposition 1 and equations
+`MDcubic` and `pdfcubicsum` (lines 553–599 in this version). The closed-form
+identity matches the paper's cosine integral, including `n ≥ 1`, the factor
+`1 / pi`, both complex arguments and the denominator `2 * sqrt 3 * pi`.
+The old comments incorrectly called proved steps axioms and identified the
+defined integral with an actual iid-sum density without a probability-law
+bridge. The comments now distinguish these claims. The iid-sum density
+identification and its genuine MAD remain open; K19–K22 retain their coverage
+limitations. No paper is promoted to complete by this upgrade.
+
+| Check on Lean/Mathlib 4.35.0 | Result |
+| --- | --- |
+| Default `lake build` | **ok**, 3892 jobs; no warnings or errors |
+| `./make.py audit` | **ok**, 1279 declarations, 1096 theorem declarations, zero non-core axioms |
+| Compiled-sorry scanner scope | 1279 declarations, including 534 private declarations |
+| Audit imports versus the source tree | All 104 other modules explicitly imported |
+| `./make.py index` | **ok**, 105 modules, 593 named theorems, zero sorry/vacuous/placeholder markers |
+| `./make.py forbidden` | **ok** |
+| `./make.py test` | **ok**, 27 tests, no skips |
+| Notebook execution | **ok**, all 11 code cells |
+| `dt refresh project` and `dt status` | **ok**, project/Mathlib/core current; 433152 indexed declarations |
+
+### 2026-10-01: previous upgrade
+
 At the start, `lean-toolchain` and `lakefile.toml` already requested 4.34.1,
 while the lockfile and old compiled dependencies corresponded to 4.29.1.
 The dependencies have now been synchronized with `lake update`, and the project
@@ -71,8 +139,8 @@ proofs have been adapted to Lean/mathlib 4.34.1.
 
 These counts include private and generated declarations; they are not counts of
 paper theorems. The semantic diagnostic and regression theorems are included.
-Warnings about deprecated APIs and proof style remain; they do not prevent the
-build or introduce proof gaps.
+Warnings about deprecated APIs and proof style remained at that stage; the
+2026-10-19 upgrade above removes them.
 
 The compatibility changes concern derivatives, function equalities, updated
 lemma names, the `NNReal` constructor and `NullSingletonClass`.

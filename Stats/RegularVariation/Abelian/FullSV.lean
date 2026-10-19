@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's Abelian theorem.
 
@@ -8,7 +10,9 @@
 
   See `Stats/RegularVariation/Abelian.lean` for the umbrella.
 -/
-import Stats.RegularVariation.Abelian.Potter
+public import Stats.RegularVariation.Abelian.Potter
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

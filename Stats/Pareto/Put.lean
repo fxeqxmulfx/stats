@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: Result 3 (put pricing) and density normalisation from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -11,7 +13,9 @@
 
   See `Stats/Pareto.lean` for the umbrella module.
 -/
-import Stats.Pareto.Basic
+public import Stats.Pareto.Basic
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

@@ -1,3 +1,5 @@
+module
+
 /-
   Statistical differences between binary forecasts and real-world payoffs.
     Taleb, arXiv:1907.11162v3 (Dec 2019).
@@ -32,11 +34,13 @@
   * `Stats.BinaryForecasts.SigmaClosures` — Eq. 8 integral closures
     via `stdNormalCdf` and Gaussian PDF.
 -/
-import Stats.BinaryForecasts.CharacteristicScale
-import Stats.BinaryForecasts.Conflation
-import Stats.BinaryForecasts.ParetoSensitivity
-import Stats.BinaryForecasts.Brier
-import Stats.BinaryForecasts.Bernoulli
-import Stats.BinaryForecasts.Exponential
-import Stats.BinaryForecasts.SigmaSensitivity
-import Stats.BinaryForecasts.SigmaClosures
+public import Stats.BinaryForecasts.CharacteristicScale
+public import Stats.BinaryForecasts.Conflation
+public import Stats.BinaryForecasts.ParetoSensitivity
+public import Stats.BinaryForecasts.Brier
+public import Stats.BinaryForecasts.Bernoulli
+public import Stats.BinaryForecasts.Exponential
+public import Stats.BinaryForecasts.SigmaSensitivity
+public import Stats.BinaryForecasts.SigmaClosures
+
+@[expose] public section

@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: abstract call-price functional from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -11,7 +13,9 @@
 
   See `Stats/Pareto.lean` for the umbrella module.
 -/
-import Stats.Pareto.Basic
+public import Stats.Pareto.Basic
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

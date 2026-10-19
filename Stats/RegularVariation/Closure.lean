@@ -1,11 +1,15 @@
+module
+
 /-
   Karamata's theory of regular variation — closure properties.
 
   Slow variation is preserved under eventual equality, pointwise products
   and quotients of positive SV functions, and translations.
 -/
-import Stats.RegularVariation.Defs
-import Stats.RegularVariation.UCT
+public import Stats.RegularVariation.Defs
+public import Stats.RegularVariation.UCT
+
+@[expose] public section
 
 open Real Set Filter Topology Asymptotics
 
@@ -81,7 +85,7 @@ theorem IsSlowlyVarying.div {L M : ℝ → ℝ}
   have h_quot : Tendsto (fun t : ℝ => (L (t * x) / L t) / (M (t * x) / M t))
       atTop (𝓝 1) := by
     have := (hL x hx).div (hM x hx) one_ne_zero
-    convert this using 1 <;> simp
+    convert this using 1 ; simp
   exact h_quot.congr' h_ratio_eq.symm
 
 /-- **Translation invariance under monotonicity.**  For slowly varying

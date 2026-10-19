@@ -1,3 +1,5 @@
+module
+
 /-
   Hedging under fat tails.
 
@@ -32,9 +34,11 @@
        that a BS-fitted vol surface cannot reproduce Pareto tail
        sensitivities.
 -/
-import Stats.RiskMeasures
-import Stats.CarrMadan
-import Stats.BlackScholes
+public import Stats.RiskMeasures
+public import Stats.CarrMadan
+public import Stats.BlackScholes
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

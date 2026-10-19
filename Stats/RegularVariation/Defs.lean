@@ -1,9 +1,13 @@
+module
+
 /-
   Karamata's theory of regular variation — definitions.
 
   Defines `IsSlowlyVarying` and connects it to `IsRegularlyVarying _ 0`.
 -/
-import Stats.Theorem1
+public import Stats.Theorem1
+
+@[expose] public section
 
 open Real Set Filter Topology Asymptotics
 

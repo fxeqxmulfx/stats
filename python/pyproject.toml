@@ -1,0 +1,13 @@
+[project]
+name = "stats-research"
+version = "0.1.0"
+description = "Numerical checks and notebooks for the Stats formalizations"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib",
+    "numpy>=2.0",
+    "scipy",
+]
+
+[tool.uv]
+package = false

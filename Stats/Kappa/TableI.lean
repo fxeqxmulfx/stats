@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -40,10 +42,12 @@
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
-import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Stats.BlackScholes.Erfc
-import Stats.Kappa.Basic
+public import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+public import Stats.BlackScholes.Erfc
+public import Stats.Kappa.Basic
+
+@[expose] public section
 
 open Real Set Filter Topology MeasureTheory
 
@@ -342,7 +346,7 @@ theorem kappa_lognormal_star (σ : ℝ) {n : ℕ} (hn : 1 < n) :
     kappa (lognormalStarMAD σ n) 1 n = lognormalKappaStar σ n := by
   unfold kappa lognormalStarMAD lognormalKappaStar
   have hn_ne_one : n ≠ 1 := by omega
-  simp only [if_true, if_neg hn_ne_one]
+  simp only [ite_true, ite_eq_right hn_ne_one]
   push_cast
   rw [Real.log_one, sub_zero, sub_zero]
 

@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -29,9 +31,11 @@
 
   Used by `Stats.Kappa.Lognormal.Loulakis` (todo5.md Phase C).
 -/
-import Mathlib.Probability.IdentDistrib
-import Mathlib.Probability.Independence.Basic
-import Mathlib.Algebra.Order.Ring.Pow
+public import Mathlib.Probability.IdentDistrib
+public import Mathlib.Probability.Independence.Basic
+public import Mathlib.Algebra.Order.Ring.Pow
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Real
 open scoped NNReal
@@ -152,7 +156,7 @@ theorem prob_max_iid_gt {Ω' : Type*} {m' : MeasurableSpace Ω'} {ν : Measure �
   -- {∃ i, X i ω > t} and {∀ i, X i ω ≤ t} are complements (in Ω).
   have h_compl : {ω | ∃ i, X i ω > t} = {ω | ∀ i, X i ω ≤ t}ᶜ := by
     ext ω
-    simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_forall, not_le]
+    simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_forall, not_le]
   rw [h_compl]
   have h_meas_set : MeasurableSet {ω | ∀ i, X i ω ≤ t} := by
     have : {ω | ∀ i, X i ω ≤ t} = ⋂ i, (X i) ⁻¹' Set.Iic t := by
@@ -190,7 +194,7 @@ theorem prob_max_iid_ge {Ω' : Type*} {m' : MeasurableSpace Ω'} {ν : Measure �
   -- ℙ(Y ≤ t) = 1 − p.
   have h_compl : ν.real {ω' | Y ω' ≤ t} = 1 - p := by
     have h_eq : {ω' | Y ω' ≤ t} = {ω' | Y ω' > t}ᶜ := by
-      ext ω'; simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt]
+      ext ω'; simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_lt]
     rw [h_eq, hp_def]
     rw [show {ω' | Y ω' > t} = Y ⁻¹' Set.Ioi t from by
       ext ω'; simp [Set.mem_preimage, Set.mem_Ioi]]

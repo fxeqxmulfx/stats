@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's representation theorem for slowly varying functions.
 
@@ -9,10 +11,12 @@
 
   See `Stats/RegularVariation/Representation.lean` for the umbrella.
 -/
-import Stats.RegularVariation.UCT
-import Stats.RegularVariation.Karamata
-import Mathlib.MeasureTheory.Function.JacobianOneDim
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+public import Stats.RegularVariation.UCT
+public import Stats.RegularVariation.Karamata
+public import Mathlib.MeasureTheory.Function.JacobianOneDim
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+
+@[expose] public section
 
 set_option maxHeartbeats 800000
 

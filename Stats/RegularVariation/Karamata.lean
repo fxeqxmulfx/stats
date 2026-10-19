@@ -1,3 +1,5 @@
+module
+
 /-
   Karamata's theory of regular variation — the `o`-bound `log L = o(log s)`.
 
@@ -22,7 +24,9 @@
   * `Stats.RegularVariation.Karamata.Grid` — multiplicative-grid form
     (`subexp_along_exp_grid{,_of_monotone}`).
 -/
-import Stats.RegularVariation.Karamata.Helpers
-import Stats.RegularVariation.Karamata.Monotone
-import Stats.RegularVariation.Karamata.Measurable
-import Stats.RegularVariation.Karamata.Grid
+public import Stats.RegularVariation.Karamata.Helpers
+public import Stats.RegularVariation.Karamata.Monotone
+public import Stats.RegularVariation.Karamata.Measurable
+public import Stats.RegularVariation.Karamata.Grid
+
+@[expose] public section

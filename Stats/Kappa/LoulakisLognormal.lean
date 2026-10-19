@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -42,12 +44,14 @@
   `Y_tail_holder` is retained for reference (analytic estimate of the
   same tail) but is no longer on the critical path.
 -/
-import Stats.Kappa.LognormalIIdSetup
-import Stats.Kappa.LognormalTailIntegrals
-import Stats.Kappa.LoulakisAlgebraic
-import Stats.Kappa.LoulakisLiminf
-import Stats.Kappa.IIdTriangle
-import Stats.Kappa.MadLayerCake
+public import Stats.Kappa.LognormalIIdSetup
+public import Stats.Kappa.LognormalTailIntegrals
+public import Stats.Kappa.LoulakisAlgebraic
+public import Stats.Kappa.LoulakisLiminf
+public import Stats.Kappa.IIdTriangle
+public import Stats.Kappa.MadLayerCake
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal
@@ -112,7 +116,7 @@ theorem Mn_le_n_M1 (n : ℕ) (σ : ℝ) : Mn n σ ≤ (n : ℝ) * M1 σ := by
     ((TailOptionPricing.LognormalIIdSetup.integrable_Xσ σ i).sub (integrable_const _)).abs
   have h_int_sum_abs : Integrable
       (fun ω => ∑ i, |Xσ σ i ω - ∫ ω', Xσ σ i ω' ∂(μn n)|) (μn n) :=
-    integrable_finset_sum _ (fun i _ => h_int_each i)
+    integrable_finsetSum _ (fun i _ => h_int_each i)
   have h_int_centred : Integrable
       (fun ω => (∑ i, Xσ σ i ω) - ∑ i : Fin n, ∫ ω', Xσ σ i ω' ∂(μn n)) (μn n) :=
     (TailOptionPricing.LognormalIIdSetup.integrable_sum_Xσ σ n).sub (integrable_const _)
@@ -121,7 +125,7 @@ theorem Mn_le_n_M1 (n : ℕ) (σ : ℝ) : Mn n σ ≤ (n : ℝ) * M1 σ := by
         apply integral_mono_ae h_int_centred.abs h_int_sum_abs
         exact .of_forall h_pt
     _ = ∑ i, ∫ ω, |Xσ σ i ω - ∫ ω', Xσ σ i ω' ∂(μn n)| ∂(μn n) :=
-        integral_finset_sum _ (fun i _ => h_int_each i)
+        integral_finsetSum _ (fun i _ => h_int_each i)
     _ = ∑ _ : Fin n, ∫ ω, |Y σ ω - 1| ∂(gaussianReal 0 1) := by
         apply Finset.sum_congr rfl
         intros i _
@@ -178,7 +182,7 @@ private theorem integrableOn_prob_sum_Xσ_gt_Ioi (n : ℕ) (σ : ℝ) :
       constructor
       · intro h; linarith
       · intro h; linarith
-    · push_neg at h'
+    · push Not at h'
       rw [max_eq_right h'.le]
       constructor
       · intro h; linarith

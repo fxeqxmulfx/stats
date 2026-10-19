@@ -1,3 +1,5 @@
+module
+
 /-
   Strong-Pareto core: put-call parity from
     Taleb–Yarckin–Mann–Delic–Spitznagel,
@@ -11,8 +13,10 @@
 
   See `Stats/Pareto.lean` for the umbrella module.
 -/
-import Stats.Pareto.Put
-import Stats.Pareto.Returns
+public import Stats.Pareto.Put
+public import Stats.Pareto.Returns
+
+@[expose] public section
 
 open Real Set MeasureTheory Filter Topology intervalIntegral
 

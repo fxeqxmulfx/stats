@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -21,9 +23,11 @@
   * Measurability, iIndepFun, IdentDistrib structure.
   * Non-negativity, integrability, partial-sum mean `n`.
 -/
-import Stats.Kappa.LognormalAsymptotic
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.Probability.Independence.Basic
+public import Stats.Kappa.LognormalAsymptotic
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.Probability.Independence.Basic
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal
@@ -105,7 +109,7 @@ theorem integrable_Xσ (σ : ℝ) {n : ℕ} (i : Fin n) :
 /-- **Integrability of the partial sum** `S_n σ ω := ∑ i, Xσ σ i ω` under `μn n`. -/
 theorem integrable_sum_Xσ (σ : ℝ) (n : ℕ) :
     Integrable (fun ω => ∑ i, Xσ σ i ω) (μn n) :=
-  integrable_finset_sum _ (fun i _ => integrable_Xσ σ i)
+  integrable_finsetSum _ (fun i _ => integrable_Xσ σ i)
 
 /-- **Mean of `Xσ σ i` under `μn n` is 1.**  By `IdentDistrib` with `Y σ`,
     whose mean is 1 (from [`LognormalAsymptotic.integral_Y_eq_one`](Stats/Kappa/LognormalAsymptotic.lean)). -/
@@ -116,7 +120,7 @@ theorem integral_Xσ_eq_one (σ : ℝ) {n : ℕ} (i : Fin n) :
 /-- **Mean of the partial sum is `n`**. -/
 theorem integral_sum_Xσ_eq (σ : ℝ) (n : ℕ) :
     (∫ ω, ∑ i, Xσ σ i ω ∂(μn n)) = (n : ℝ) := by
-  rw [integral_finset_sum _ (fun i _ => integrable_Xσ σ i)]
+  rw [integral_finsetSum _ (fun i _ => integrable_Xσ σ i)]
   simp [integral_Xσ_eq_one σ]
 
 end TailOptionPricing.LognormalIIdSetup

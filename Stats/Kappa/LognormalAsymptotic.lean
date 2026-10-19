@@ -1,3 +1,5 @@
+module
+
 /-
   Taleb's κ-metric for pre-asymptotic fat-tailedness.
     "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
@@ -38,9 +40,11 @@
   Provides the σ-asymptotic input to the Loulakis main argument
   ([LoulakisAlgebraic](Stats/Kappa/LoulakisAlgebraic.lean)).
 -/
-import Stats.Kappa.LognormalMeasure
-import Stats.Kappa.MadLayerCake
-import Mathlib.Probability.Distributions.Gaussian.Real
+public import Stats.Kappa.LognormalMeasure
+public import Stats.Kappa.MadLayerCake
+public import Mathlib.Probability.Distributions.Gaussian.Real
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Real Filter Topology
 open scoped NNReal
@@ -170,7 +174,7 @@ private lemma pos_part_sub_one_eq (y : ℝ) (_hy : 0 ≤ y) :
   by_cases h : y ≤ 1
   · have h1 : y - 1 ≤ 0 := by linarith
     rw [max_eq_right h1, min_eq_left h]; ring
-  · push_neg at h
+  · push Not at h
     have h1 : 0 < y - 1 := by linarith
     rw [max_eq_left h1.le, min_eq_right h.le]
 
@@ -183,7 +187,7 @@ private lemma abs_sub_one_eq_two_pos_part_plus (y : ℝ) (_hy : 0 ≤ y) :
   by_cases h : y ≤ 1
   · have h1 : y - 1 ≤ 0 := by linarith
     rw [abs_of_nonpos h1, max_eq_right h1]; ring
-  · push_neg at h
+  · push Not at h
     have h1 : 0 < y - 1 := by linarith
     rw [abs_of_pos h1, max_eq_left h1.le]; ring
 
