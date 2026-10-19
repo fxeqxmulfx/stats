@@ -23,5 +23,8 @@ public import Stats.BlackScholes.Erfc
 public import Stats.BlackScholes.Greeks
 public import Stats.BlackScholes.PutCall
 public import Stats.BlackScholes.Smile
+public import Stats.BlackScholes.ReturnsSmile
+public import Stats.BlackScholes.ReturnsSmileExamples
+public import Stats.BlackScholes.StrictButterfly
 
 @[expose] public section

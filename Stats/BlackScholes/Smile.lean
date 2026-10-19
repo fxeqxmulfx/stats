@@ -9,9 +9,11 @@ module
                  = −Φ(d₂)   + S₀·φ(d₁) · σ'(K)
   where the second term is the "smile correction" of the paper.
 
-  We work with a `σ`-parametric closed-form `callPriceBS_σ S₀ σ K` (real-valued
-  `σ`), avoiding the `ℝ≥0` parametrisation of `callPriceBS`.  The connection
-  to `callPriceBS` itself is not needed for the smile result and is omitted.
+  Here `σ` denotes total volatility. At time to expiry `t`, annual volatility
+  is multiplied by `sqrt t`; Stats.BlackScholes.ReturnsSmile carries that
+  factor through the strike derivative and the returns-tail bound.
+  The theorem `callPriceBS_σ_eq_callPriceBS_riskNeutral` below connects this
+  real-valued parametrization to the integral-defined lognormal call price.
 -/
 public import Stats.BlackScholes.Greeks
 public import Stats.BlackScholes.Erfc
@@ -291,14 +293,12 @@ theorem callPriceBS_σ_eq_callPriceBS_riskNeutral
   rw [h_sq]
 
 open ProbabilityTheory MeasureTheory in
-/-- **Eq. (10) assembled, with smile correction (paper-form).**
-
-    Combines `alpha_lower_bound_erfc` (the no-smile α-bound) with
-    `callPriceBS_σ_smile_hasDerivAt` (the smile-correction term
-    `S₀ · φ(d₁) · σ'(K)`).  The hypothesis `h_no_arb` is the smile-aware
-    Eq. (9) — the strict version of which would follow from the matched
-    butterfly hypothesis on the *smile-corrected* BSC; we take it as
-    given here and derive the α-bound by `alpha_lower_bound`. -/
+/-- **Conditional price-tail bound for a supplied digital inequality.**
+    This algebraic helper assumes `h_no_arb`; it does not derive that input
+    from a differentiable smile or a matched butterfly. Its tail model is
+    `(l / K)^α`. The final returns-tail bound in arXiv:1908.02347v3,
+    "Arbitrage Boundaries", is proved by
+    `alpha_lower_bound_returns_smile_erfc` in Stats.BlackScholes.ReturnsSmile. -/
 theorem alpha_lower_bound_smile_erfc
     {l α S₀ K₁ σ' : ℝ} {σ : ℝ → ℝ}
     (hl : 0 < l) (hK₁ : l < K₁)

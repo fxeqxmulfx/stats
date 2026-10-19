@@ -11,12 +11,13 @@ probabilistic interpretation of completeness.**
 The corrected mathematical core of **Tail Option Pricing Under Power Laws**
 has the strongest coverage. Its call formulas, calibration, relative prices,
 corrected put integral, convexity, and log-return theorem are proved.
-The final smile-dependent bound still needs to be assembled for the paper's
-returns-tail parameterization.
+The final returns-tail bound now follows from an actual differentiable
+volatility smile, matching prices and the local butterfly condition.
+Global consistency of an arbitrary central-model/tail splice remains separate.
 
 | Paper and reviewed version | Complete? | Established coverage | Main remaining gap |
 | --- | --- | --- | --- |
-| [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Most of the corrected analytic core; full slowly varying log-return theorem and call asymptotics | Final returns-tail bound with an actual volatility smile; literal errors in the paper |
+| [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected positive minimum-size definition, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; defective Pareto Beta expression; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
@@ -98,6 +99,60 @@ confirms that executable numerical code is unchanged.
 `./make.py index` regenerated 105 modules and 593 named theorems with zero
 sorry, vacuous or placeholder markers. After `dt refresh project`, all 670
 previously indexed public names and their elaborated types are unchanged.
+
+## Full review and repair loop (2026-10-19)
+
+The renewed pass now follows the entire claim registry, repairs issues in
+small commits, and rechecks the source and certificates after each repair.
+Incomplete distributional bridges remain issues until proved; a supplied
+formula is not accepted as the missing probability theorem.
+
+### Repair 1: the actual returns-tail smile bound and a sign counterexample
+
+Reread `papers/arXiv-1908.02347v3/OptionPricingPL2022.tex`, section
+**Arbitrage Boundaries**, display `arbitrage`, its following derivative
+inequality and the final unnumbered display. The printed `BSC' ≥ C'` is
+incorrect. The new `exists_returns_smile_parameters` constructs matching
+Pareto-returns and genuine Black--Scholes call curves with a nonconstant
+smile. Their local mixed butterfly is nonnegative but `BSC' < C'`.
+The strictness provides a counterexample to the printed direction under
+the source's own matching and butterfly conditions.
+
+[BlackScholes/ReturnsSmile.lean](Stats/BlackScholes/ReturnsSmile.lean)
+now derives the negative smile derivative from `HasDerivAt σ σ' K`,
+uses annual volatility times `sqrt t`, and proves the final index bound
+with denominator `log (l * S₀ / (K - S₀))`. The paper's displayed Gaussian
+term is kept as its normalized PDF; `bsSmileDigital_eq_erfc` proves the
+equivalent `erfc` form. `bsSmileDigital` is explicitly a derivative
+expression, without asserting a probability law for every arbitrary smile.
+Positivity needed by the logarithm follows from domination of the strictly
+positive Pareto tail.
+
+The corrected domain is `α > 1`, `l > 0`, `S₀ > 0`, `t > 0`,
+`σ K > 0`, and the strict interior strike `S₀ * (1 + l) < K`.
+At the excluded endpoint the logarithmic denominator is zero.
+The matching price and local butterfly are hypotheses, as in the paper;
+the digital inequality is derived rather than supplied as a hypothesis.
+
+[BlackScholes/ReturnsSmileExamples.lean](Stats/BlackScholes/ReturnsSmileExamples.lean)
+constructs satisfying parameters with spot 1, strike 2, expiry 4 and annual
+volatility `(3 - K) / 2` near the anchor. The annual derivative is `-1/2`;
+the total-volatility derivative is `-1`. A positive Black--Scholes call
+price and digital probability determine valid `α > 1` and `0 < l < 1`.
+The construction proves its matching and butterfly conditions, and the
+examples apply both the survival domination and final `erfc` bound.
+The older conditional price-tail helper also receives a concrete example.
+
+The focused example build and default `lake build` pass without warnings;
+the latter checks 3895 jobs. The standalone transitive axiom audit covers
+1304 declarations, including 1118 theorem declarations, with no axioms
+beyond `propext`, `Classical.choice` and `Quot.sound`. All 27 locked Python
+tests and the forbidden-construct check pass. The audit explicitly imports
+every one of the 107 other source modules.
+The regenerated index contains 108 modules and 601 named theorems, with
+zero sorry, vacuous or placeholder markers. `dt refresh project` retains
+all 670 existing public names and types; the repair adds eight public
+declarations. The new source files are at most 151 lines each.
 
 ## Lean upgrade and reproducible verification
 
@@ -446,14 +501,20 @@ $g'(K₁)≤f'(K₁)$, with $f$ on the right and $g$ on the left.
 
 **Missing:** nothing for that necessary condition.
 
-### OP-17. Printed direction of the derivative inequality — not ok
+### OP-17. Printed derivative direction — false; counterexample proved
 
 The paper prints $BSC'(K₁)≥C'(K₁)$.
 The first-order term of the stated butterfly is
 $Δ(C'(K₁)-BSC'(K₁))$, so the necessary inequality has the opposite direction.
 
-**Missing:** correction of the paper's sign. The project proves the corrected
-direction; this is not a Lean proof failure.
+`exists_returns_smile_parameters` in
+[BlackScholes/ReturnsSmileExamples.lean](Stats/BlackScholes/ReturnsSmileExamples.lean)
+constructs matching integral-defined Pareto-returns and Black--Scholes
+curves satisfying the local butterfly, with `BSC' < C'` strictly.
+This refutes the printed direction within the actual option setup.
+
+**Correction:** use `BSC' ≤ C'`. The necessary condition and a counterexample
+to the printed direction are both proved.
 
 ### OP-18. Logarithmic lower bound on α for the S-tail model — ok
 
@@ -465,21 +526,27 @@ specializations.
 
 **Missing:** nothing for this conditional bound.
 
-### OP-19. Final returns-tail bound with σ(K), σ′(K) and t — not ok completely
+### OP-19. Final returns-tail bound with σ(K), σ′(K) and t — ok on the corrected interior domain
 
-[BlackScholes/Smile.lean](Stats/BlackScholes/Smile.lean):
-`callPriceBS_σ_smile_hasDerivAt` proves the genuine smile derivative.
-However, `alpha_lower_bound_smile_erfc` takes an already assembled
-`h_no_arb` and uses $(l/K)^α$ with denominator $log(l/K)$.
+[BlackScholes/ReturnsSmile.lean](Stats/BlackScholes/ReturnsSmile.lean):
+`callPriceReturns_hasDerivAt`, `returns_survival_le_bsSmileDigital`,
+`alpha_lower_bound_returns_smile` and `alpha_lower_bound_returns_smile_erfc`.
+The final theorem derives domination of the **returns** tail
+$((lS₀)/(K-S₀))^α$ from price matching, the local mixed butterfly and the
+actual derivative `HasDerivAt σ σ' K`. Annual volatility and its derivative
+are both multiplied by $sqrt(t)$. The logarithmic denominator is
+$log(lS₀/(K-S₀))$.
 
-The paper's final formula uses the **returns** tail
-$((lS₀)/(K-S₀))^α$, giving denominator $log(lS₀/(K-S₀))$.
-The final Lean theorem's `σ'` is an independent scalar without a
-`HasDerivAt σ σ' K` hypothesis.
+The strike must satisfy `S₀ * (1 + l) < K`; the paper's broader closed
+tail domain includes an endpoint where this denominator vanishes.
+The constructed nonconstant smile in `ReturnsSmileExamples` satisfies all
+the hypotheses, including matching and the local butterfly, at positive
+expiry 4. `bsSmileDigital_eq_erfc` supplies the equivalent `erfc` notation.
+The older `alpha_lower_bound_smile_erfc` remains only a conditional
+price-tail algebra helper and is now documented accordingly.
 
-**Missing:** a composed theorem deriving the correct returns-survival inequality
-from a matched butterfly and the derivative of the actual smile.
-Time must also be explicitly accounted for through total volatility.
+**Missing:** nothing for the corrected local necessary bound. It does not
+prove global absence of arbitrage for arbitrary smile/tail splices.
 
 ### OP-20. Option prices can exist with infinite variance — ok for strong Pareto
 
@@ -2117,10 +2184,10 @@ as a substitute for this source-to-statement mapping.
    evaluation need the corrections described above. Impossible statements
    should be replaced by explicit corrected propositions, with their scope
    recorded.
-5. **Finish the remaining option-pricing bound and distributional limits.**
-   Assemble the return-tail smile bound, actual estimator convergence, and
-   any intended CLT, infinite-product or mixture-tail theorem under explicit
-   hypotheses.
+5. **Finish distributional limits.**
+   The corrected return-tail smile bound is now assembled (OP-19).
+   Prove actual estimator convergence and the intended CLT, infinite-product
+   or mixture-tail theorems under explicit hypotheses.
 6. **Update completeness claims as these steps are completed.**
    Historical roadmap files and module summaries document implementation
    progress; this review should be the current statement-level completeness

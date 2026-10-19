@@ -22,7 +22,10 @@ import all Stats.BlackScholes.CallPrice
 import all Stats.BlackScholes.Erfc
 import all Stats.BlackScholes.Greeks
 import all Stats.BlackScholes.PutCall
+import all Stats.BlackScholes.ReturnsSmile
+import all Stats.BlackScholes.ReturnsSmileExamples
 import all Stats.BlackScholes.Smile
+import all Stats.BlackScholes.StrictButterfly
 import all Stats.BlackScholes.StdNormal
 import all Stats.BlackScholes.Survival
 import all Stats.BlackScholes
