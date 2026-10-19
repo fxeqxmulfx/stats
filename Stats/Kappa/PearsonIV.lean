@@ -7,8 +7,10 @@ module
 
   ## Stats.Kappa.PearsonIV — Pearson IV approximation (paper Section IV-B-3).
 
-  The Pearson IV class is the unimodal solution family of the ODE
+  The paper uses densities satisfying the Pearson differential equation
       f'(x) · (b₀ + b₁ x + b₂ x²) = −(a₀ + a₁ x) · f(x).
+  Here `IsPearsonIV` records differentiability and this equation only;
+  positivity, normalization and unimodality are separate requirements.
   Paper Section IV-B-3 uses Pearson IV as a tractable proxy for the
   lognormal MAD: matching the first four moments of the iid lognormal
   sum determines `(a₀, b₀, b₁, b₂)` (paper's box of formulas, Eq. 12),
@@ -19,15 +21,13 @@ module
 
   * `IsPearsonIV` — ODE-based definition of the Pearson IV class
     (paper Sec. IV-B-3, todo B.3.1).
-  * `pearsonIV_mad_eq` — MAD closed form Eq. 13, derived from the ODE
-    via integration by parts on `Q(x) · f(x)` (todo B.3.2).  The
-    integration-by-parts intermediates are taken as hypotheses, in the
-    pattern of `Stats.Kappa.CubicStudentAsymptotic`
-    (`incompleteGamma_laplace_asymptotic`) — the algebraic content is
-    proven; the analytic IBP is shelled.
-  * `pearsonIVLognormalMatch` — explicit `(a₀, b₀, b₁, b₂)` as functions
-    of `(n, σ)` matching the lognormal iid sum's first four cumulants
-    (todo B.3.3).
+  * `pearsonIV_mad_eq` — algebraic rearrangement of a supplied IBP
+    equation. Its scalar input is not proved to be a centered tail
+    integral; normalization, mean identification and the MAD law bridge
+    remain open (REVIEW.md, K-38).
+  * `pearsonIVLognormalMatch` — the paper's candidate coefficient
+    expressions. Actual existence and cumulant matching of a normalized
+    Pearson law remain open (REVIEW.md, K-39).
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
@@ -116,72 +116,36 @@ theorem pearsonIV_aux_deriv {f : ℝ → ℝ} {a₀ a₁ b₀ b₁ b₂ : ℝ}
 
 /-! ## Pearson IV MAD formula (paper Eq. 13, todo B.3.2). -/
 
-/-- **Pearson IV MAD closed form** (paper Eq. 13, RHS).
-    `pearsonIVMADClosed a₀ a₁ b₀ b₁ b₂ m fm := 2 · Q(m) · fm / (a₁ − 2 b₂)`,
-    where `Q(m) := b₀ + b₁ m + b₂ m²` and `fm := f(m)` is the density at
-    the Pearson IV **mean** `m` (paper page 9: "Let m be the mean").  Note
-    `a₀` is *not* used in the formula itself — it enters only through the
-    mean constraint `m = (b₁ − a₀)/(a₁ − 2 b₂)` (see `pearsonIV_mad_eq`).
-    Defined as a pure algebraic expression to be matched against the
-    De Moivre upper-tail integral. -/
-noncomputable def pearsonIVMADClosed (_a₀ a₁ b₀ b₁ b₂ m fm : ℝ) : ℝ :=
+/-- The algebraic RHS of the paper's Eq. 13 (arXiv:1802.05495v3,
+Section IV-B-3): `2 Q(m) f(m) / (a₁ - 2 b₂)`. The ODE coefficient `a₀`
+does not occur in this expression. Identifying `m` with an actual mean
+and deriving the centered tail integral remain separate analytic tasks. -/
+noncomputable def pearsonIVMADClosed (a₁ b₀ b₁ b₂ m fm : ℝ) : ℝ :=
   2 * pearsonIVQuad b₀ b₁ b₂ m * fm / (a₁ - 2 * b₂)
 
-/-- **Pearson IV MAD formula** (paper Eq. 13, todo B.3.2).
-    Paper page 9: "Let `m` be the mean. ... Using the identity
-        `E(|X − m|) = 2 · ∫_m^∞ (x − m) f(x) dx`
-    and integrating by parts,
-        `E(|X − m|) = 2 (b₀ + b₁ m + b₂ m²) · f(m) / (a₁ − 2 b₂)`.
-    We use cumulants of the n-summed lognormal to match the parameters.
-    Setting `a₁ = 1` and `m = (b₁ − a₀)/(1 − 2 b₂), …`."
-
-    Two ingredients of the paper's derivation are passed in as
-    hypotheses (the analytic content not formalised here):
-
-    * `h_mean_constraint` — `m` is the Pearson IV mean, characterised by
-      `(a₁ − 2 b₂) · m = (b₁ − a₀)`.  This is the constraint that makes
-      the De Moivre identity `E|X − m| = 2 · ∫_m^∞ (x − m) f dx` valid
-      (it holds for `m = E[X]`, which equals `(b₁ − a₀)/(a₁ − 2 b₂)` for
-      a Pearson IV density satisfying the ODE under the standard
-      integrability hypotheses).
-    * `h_ibp` — the IBP intermediate.  Integrating the auxiliary identity
-      `[Q(x) · f(x)]' = (b₁ − a₀) f(x) + (2 b₂ − a₁) x · f(x)`
-      (provided by `pearsonIV_aux_deriv`) from `m` to `∞`, using boundary
-      vanishing `Q(∞) f(∞) = 0` and the mean constraint to cancel the
-      `(b₁ − a₀)(1 − F(m))` and `(a₁ − 2 b₂) m (1 − F(m))` terms, yields
-          `(a₁ − 2 b₂) · ∫_m^∞ (x − m) f(x) dx = Q(m) · f(m)`.
-
-    Under these hypotheses, the De Moivre MAD `2 · intCentered` matches
-    the closed form.  Mathlib `v4.29.1` has no Pearson IV density nor
-    the corresponding integrability lemmas, so the analytic discharge
-    of `h_mean_constraint` and `h_ibp` is left external. -/
-theorem pearsonIV_mad_eq (a₀ a₁ b₀ b₁ b₂ m fm : ℝ) (intCentered : ℝ)
+/-- Algebraic rearrangement of the IBP equation used for Eq. 13 in
+arXiv:1802.05495v3, Section IV-B-3. The scalar `intCentered` and the IBP
+identity are inputs; no density, normalization or mean is constructed
+by this theorem. The former unused mean-constraint hypothesis is removed.
+A probabilistic MAD theorem must derive this input and its law bridge. -/
+theorem pearsonIV_mad_eq (a₁ b₀ b₁ b₂ m fm : ℝ) (intCentered : ℝ)
     (h_den_ne : a₁ - 2 * b₂ ≠ 0)
-    (_h_mean_constraint : (a₁ - 2 * b₂) * m = b₁ - a₀)
     (h_ibp :
         (a₁ - 2 * b₂) * intCentered = pearsonIVQuad b₀ b₁ b₂ m * fm) :
-    2 * intCentered = pearsonIVMADClosed a₀ a₁ b₀ b₁ b₂ m fm := by
-  -- The mean constraint is recorded in the signature for paper fidelity
-  -- (`m = (b₁ − a₀)/(a₁ − 2 b₂)`); it's the analytic precondition that
-  -- makes `h_ibp` valid.  The algebraic conclusion uses only `h_ibp` and
-  -- `h_den_ne`.
+    2 * intCentered = pearsonIVMADClosed a₁ b₀ b₁ b₂ m fm := by
   unfold pearsonIVMADClosed
   rw [eq_div_iff h_den_ne]
   linarith
 
-/-- **Pearson IV MAD = Eq. 13 (verbatim form).**  Rearranged statement
-    of `pearsonIV_mad_eq` matching the paper's printed equation:
-        `E[|X − m|] = 2 · (b₀ + b₁ m + b₂ m²) · f(m) / (a₁ − 2 b₂)`.
-    Identifies the MAD with `2 · intCentered` via the De Moivre identity
-    (paper page 9, mean version). -/
-theorem pearsonIV_mad_eq_paper (a₀ a₁ b₀ b₁ b₂ m fm : ℝ) (intCentered : ℝ)
+/-- The same conditional algebraic rearrangement with the quadratic
+expanded, matching the RHS of Eq. 13. It does not identify the supplied
+scalar with the MAD of an actual Pearson IV law. -/
+theorem pearsonIV_mad_eq_paper (a₁ b₀ b₁ b₂ m fm : ℝ) (intCentered : ℝ)
     (h_den_ne : a₁ - 2 * b₂ ≠ 0)
-    (h_mean_constraint : (a₁ - 2 * b₂) * m = b₁ - a₀)
     (h_ibp :
         (a₁ - 2 * b₂) * intCentered = pearsonIVQuad b₀ b₁ b₂ m * fm) :
     2 * intCentered = 2 * (b₀ + b₁ * m + b₂ * m ^ 2) * fm / (a₁ - 2 * b₂) := by
-  have h := pearsonIV_mad_eq a₀ a₁ b₀ b₁ b₂ m fm intCentered
-    h_den_ne h_mean_constraint h_ibp
+  have h := pearsonIV_mad_eq a₁ b₀ b₁ b₂ m fm intCentered h_den_ne h_ibp
   rw [h]
   unfold pearsonIVMADClosed pearsonIVQuad
   rfl
@@ -199,7 +163,8 @@ theorem pearsonIV_mad_eq_paper (a₀ a₁ b₀ b₁ b₂ m fm : ℝ) (intCentere
     using `v := e^(σ²)` shorthand internally.
 
     The paper sets `a₁ = 1` and `m = (b₁ − a₀)/(1 − 2 b₂)` (the
-    mean constraint of `pearsonIV_mad_eq`).  We follow that convention. -/
+    paper's mean constraint). We use a constant normalization coefficient;
+    no unused sample-size or volatility arguments are supplied to it. -/
 
 /-- **Shared denominator** of paper Eq. 12 (page 9):
         `D(n, σ) := 2 · (6(n − 1) + e^(2σ²)·(e^(σ²)·(5 e^(σ²) + 4) − 3))`.
@@ -273,7 +238,7 @@ noncomputable def pearsonIV_a0_lognormal (n : ℕ) (μ σ : ℝ) : ℝ :=
 /-- **Pearson IV coefficient `a₁`** under lognormal matching (paper page 9):
     "Setting a₁ = 1, …".  The paper normalises `a₁ = 1` so that the
     Pearson IV mean constraint reads `m = (b₁ − a₀)/(1 − 2 b₂)`. -/
-noncomputable def pearsonIV_a1_lognormal (_n : ℕ) (_σ : ℝ) : ℝ := 1
+noncomputable def pearsonIV_a1_lognormal : ℝ := 1
 
 /-- **Pearson IV ↔ lognormal coefficient match** (paper Eq. 12, todo B.3.3).
     The bundled output `(a₀, a₁, b₀, b₁, b₂)` matching the first four
@@ -282,14 +247,14 @@ noncomputable def pearsonIV_a1_lognormal (_n : ℕ) (_σ : ℝ) : ℝ := 1
 noncomputable def pearsonIVLognormalMatch (n : ℕ) (μ σ : ℝ) :
     ℝ × ℝ × ℝ × ℝ × ℝ :=
   (pearsonIV_a0_lognormal n μ σ,
-   pearsonIV_a1_lognormal n σ,
+   pearsonIV_a1_lognormal,
    pearsonIV_b0_lognormal n μ σ,
    pearsonIV_b1_lognormal n μ σ,
    pearsonIV_b2_lognormal n σ)
 
 /-- **Lognormal-match `a₁` is `1`** (paper page 9, "Setting a₁ = 1"). -/
-theorem pearsonIV_lognormal_match_a1 (n : ℕ) (σ : ℝ) :
-    pearsonIV_a1_lognormal n σ = 1 := rfl
+theorem pearsonIV_lognormal_match_a1 :
+    pearsonIV_a1_lognormal = 1 := rfl
 
 /-- **Shared denominator is positive for `n ≥ 1, σ ∈ ℝ`.**  The shared
     denominator `D(n, σ)` is positive: for `n ≥ 1`, `6(n − 1) ≥ 0`, and

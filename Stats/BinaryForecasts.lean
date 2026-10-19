@@ -10,8 +10,9 @@ module
   other.  Concretely, the conflation
         I_1 := ∫_K^∞ g(x) · f(x) dx       (expected payoff)
         I_2 := g(K) · ∫_K^∞ f(x) dx       (binary substitution)
-  becomes an identity *if and only if* `g` is constant above `K`
-  (Definition 5).  For `g(x) = x` and a strong-Pareto density:
+  is an identity for constant payoffs above `K`. The converse asserted
+  in the source's Definition 5 needs additional restrictions and is not
+  proved here; see REVIEW.md, BF-09. For `g(x) = x` and a strong-Pareto density:
         I_1 / I_2 = α / (α − 1) > 1                    (Eq. 7)
   i.e., the binary substitution *systematically underestimates* the
   tail payoff by the multiplicative factor `α/(α − 1)`.
@@ -40,6 +41,7 @@ public import Stats.BinaryForecasts.ParetoSensitivity
 public import Stats.BinaryForecasts.Brier
 public import Stats.BinaryForecasts.Bernoulli
 public import Stats.BinaryForecasts.Exponential
+public import Stats.BinaryForecasts.ExponentialLaw
 public import Stats.BinaryForecasts.SigmaSensitivity
 public import Stats.BinaryForecasts.SigmaClosures
 

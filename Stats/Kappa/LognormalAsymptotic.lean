@@ -169,7 +169,7 @@ theorem integral_min_Y_one_tendsto_zero :
 /-! ### Step 4: `M(1; σ) → 2` as `σ → ∞`. -/
 
 /-- **Identity** `(Y − 1)⁺ = Y − min(Y, 1)` for `Y ≥ 0`. -/
-private lemma pos_part_sub_one_eq (y : ℝ) (_hy : 0 ≤ y) :
+private lemma pos_part_sub_one_eq (y : ℝ) :
     max (y - 1) 0 = y - min y 1 := by
   by_cases h : y ≤ 1
   · have h1 : y - 1 ≤ 0 := by linarith
@@ -182,7 +182,7 @@ private lemma pos_part_sub_one_eq (y : ℝ) (_hy : 0 ≤ y) :
     More useful form: when integrated against a probability measure with
     `𝔼Y = 1`, the `(1 − Y)` term has expectation 0, giving
     `𝔼|Y − 1| = 2·𝔼[(Y − 1)⁺]`. -/
-private lemma abs_sub_one_eq_two_pos_part_plus (y : ℝ) (_hy : 0 ≤ y) :
+private lemma abs_sub_one_eq_two_pos_part_plus (y : ℝ) :
     |y - 1| = 2 * max (y - 1) 0 + (1 - y) := by
   by_cases h : y ≤ 1
   · have h1 : y - 1 ≤ 0 := by linarith
@@ -209,8 +209,8 @@ theorem M_one_tendsto_two :
     have h_pt : ∀ ω, |Y σ ω - 1|
         = 2 * (Y σ ω - min (Y σ ω) 1) + (1 - Y σ ω) := by
       intro ω
-      rw [abs_sub_one_eq_two_pos_part_plus _ (Y_nonneg σ ω)]
-      rw [pos_part_sub_one_eq _ (Y_nonneg σ ω)]
+      rw [abs_sub_one_eq_two_pos_part_plus _]
+      rw [pos_part_sub_one_eq _]
     have h_fun_eq : (fun ω => |Y σ ω - 1|)
         = fun ω => 2 * (Y σ ω - min (Y σ ω) 1) + (1 - Y σ ω) :=
       funext h_pt

@@ -725,29 +725,16 @@ theorem putShadow_hasDerivAt_alpha {l α K : ℝ} (hα : 1 < α) (hl : 0 < l) (h
 #print axioms TailOptionPricing.putShadow_hasDerivAt_alpha
 
 -- Tier 3 Item 1: CVaR risk-measure properties
-/-
-theorem paretoVaR_mono_p {l α p q : ℝ}
-    (hα_pos : 0 < α) (hl : 0 ≤ l) (_hp : 0 ≤ p) (hq_lt : q < 1)
-    (hpq : p ≤ q) :
-    paretoVaR l α p ≤ paretoVaR l α q
--/
+-- Monotonicity of the VaR expression does not require a nonnegative lower confidence parameter.
 #print axioms TailOptionPricing.paretoVaR_mono_p
-/-
-theorem paretoVaR_mono_l {l₁ l₂ α p : ℝ}
-    (_hα_pos : 0 < α) (hp_lt : p < 1) (hl : l₁ ≤ l₂) :
-    paretoVaR l₁ α p ≤ paretoVaR l₂ α p
--/
+-- Scale monotonicity of the expression holds for all real tail-index parameters.
 #print axioms TailOptionPricing.paretoVaR_mono_l
 /-
 theorem paretoVaR_scale (c l α p : ℝ) :
     paretoVaR (c * l) α p = c * paretoVaR l α p
 -/
 #print axioms TailOptionPricing.paretoVaR_scale
-/-
-theorem paretoCVaR_mono_p {l α p q : ℝ}
-    (hα : 1 < α) (hl : 0 ≤ l) (hp : 0 ≤ p) (hq_lt : q < 1) (hpq : p ≤ q) :
-    paretoCVaR l α p ≤ paretoCVaR l α q
--/
+-- The CVaR-expression inequality also omits the unused lower confidence bound.
 #print axioms TailOptionPricing.paretoCVaR_mono_p
 /-
 theorem paretoCVaR_mono_l {l₁ l₂ α p : ℝ}
@@ -861,11 +848,7 @@ theorem paretoSampleMaxSurvival_eq_one_sub_pow {n : ℕ} {l α x : ℝ} :
     paretoSampleMaxSurvival n l α x = 1 - (1 - survival l α x) ^ n
 -/
 #print axioms TailOptionPricing.paretoSampleMaxSurvival_eq_one_sub_pow
-/-
-theorem paretoSampleMaxSurvival_at_l {n : ℕ} {l α : ℝ}
-    (hl : 0 < l) (_hα_pos : 0 < α) (hn : 1 ≤ n) :
-    paretoSampleMaxSurvival n l α l = 1
--/
+-- This is a boundary identity of the candidate maximum formula for every real alpha.
 #print axioms TailOptionPricing.paretoSampleMaxSurvival_at_l
 /-
 theorem paretoSampleMaxSurvival_union_bound {n : ℕ} {l α x : ℝ}
@@ -901,10 +884,7 @@ theorem kelly_log_second_deriv_nonpos {f s : ℝ} (h : 0 < 1 + f * s) :
     -(s ^ 2) / (1 + f * s) ^ 2 ≤ 0
 -/
 #print axioms TailOptionPricing.kelly_log_second_deriv_nonpos
-/-
-theorem kelly_marginal_at_zero {s : ℝ} (_hs_pos : 0 < s) :
-    s / (1 + 0 * s) = s
--/
+-- The pointwise zero-stake payoff identity holds for every real realized payoff.
 #print axioms TailOptionPricing.kelly_marginal_at_zero
 
 -- Tier 3 Item 7: MLE confidence intervals for α̂
@@ -930,11 +910,7 @@ theorem paretoMLE_asymptoticVariance_pos {α : ℝ} {n : ℕ}
     0 < paretoMLE_asymptoticVariance α n
 -/
 #print axioms TailOptionPricing.paretoMLE_asymptoticVariance_pos
-/-
-theorem paretoMLE_asymptoticVariance_scaling {α : ℝ} {n : ℕ}
-    (_hα_pos : 0 < α) (hn : 0 < n) :
-    paretoMLE_asymptoticVariance α n * n = α ^ 2
--/
+-- The supplied scalar variance expression scales as 1/n for every real alpha.
 #print axioms TailOptionPricing.paretoMLE_asymptoticVariance_scaling
 /-
 theorem paretoCIBound_nonneg {z α : ℝ} {n : ℕ}
@@ -967,12 +943,7 @@ theorem squaredReturn_survival_eq_survival {l α x : ℝ}
     survival l α (Real.sqrt x) = survival (l ^ (2:ℝ)) (α / 2) x
 -/
 #print axioms TailOptionPricing.squaredReturn_survival_eq_survival
-/-
-theorem gammaPnL_constant_eq {c l α : ℝ}
-    (_hα : 2 < α) (_hl : 0 < l) :
-    ∫ s in Ioi l, gammaPnLIntegrand (fun _ => c) s * paretoDensity l α s
-      = (1 / 2) * c * paretoMoment l α 2
--/
+-- Constant factoring holds for all total integrals; a finite-expectation interpretation needs integrability.
 #print axioms TailOptionPricing.gammaPnL_constant_eq
 /-
 theorem gammaPnL_constant_integrableOn_iff {c l α : ℝ}
@@ -1013,19 +984,7 @@ theorem paretoPutStripCost_eq {g'' : ℝ → ℝ} {l α a F : ℝ}
           (l ^ α * K ^ (1 - α) / (α - 1) + K - α * l / (α - 1))
 -/
 #print axioms TailOptionPricing.paretoPutStripCost_eq
-/-
-theorem paretoCarrMadan {g g' g'' : ℝ → ℝ} {l α a b F S : ℝ}
-    (_hα : 1 < α) (_hl : 0 < l) (_ha : l ≤ a)
-    (hF : F ∈ Set.Icc a b) (hS : S ∈ Set.Icc a b)
-    (hg_cont   : ContinuousOn g (Set.Icc a b))
-    (hg'_cont  : ContinuousOn g' (Set.Icc a b))
-    (hg''_cont : ContinuousOn g'' (Set.Icc a b))
-    (hg_deriv  : ∀ x ∈ Set.Ioo a b, HasDerivAt g (g' x) x)
-    (hg'_deriv : ∀ x ∈ Set.Ioo a b, HasDerivAt g' (g'' x) x) :
-    g S = g F + g' F * (S - F)
-        + (∫ K in a..F, max (K - S) 0 * g'' K)
-        + (∫ K in F..b, max (S - K) 0 * g'' K)
--/
+-- This model-free smooth-payoff identity has no Pareto parameters or assumptions.
 #print axioms TailOptionPricing.paretoCarrMadan
 
 -- Tier 4 Item 3: K-decay rates of Greeks (Pareto vs BS)
@@ -1037,11 +996,7 @@ theorem paretoVega_relative_eq {l α K : ℝ}
       = Real.log (l / K) - 1 / (α - 1)
 -/
 #print axioms TailOptionPricing.paretoVega_relative_eq
-/-
-theorem paretoVega_relative_tendsto_atBot {l α : ℝ}
-    (_hα : 1 < α) (hl : 0 < l) :
-    Tendsto (fun K : ℝ => Real.log (l / K) - 1 / (α - 1)) atTop atBot
--/
+-- The logarithmic expression tends to minus infinity for every alpha and positive scale.
 #print axioms TailOptionPricing.paretoVega_relative_tendsto_atBot
 /-
 theorem bsVega_tendsto_zero_atTop {S₀ σ : ℝ} (hS₀ : 0 < S₀) (hσ : 0 < σ) :
@@ -1082,10 +1037,7 @@ theorem kappa_cauchy {M : ℕ → ℝ} {c : ℝ}
     kappa M n₀ n = 1
 -/
 #print axioms TailOptionPricing.kappa_cauchy
-/-
-theorem n_nu_gaussian (n_g : ℕ) (_hn_g : 0 < n_g) :
-    n_nu n_g 0 = (n_g : ℝ)
--/
+-- The scalar sample-size expression equals its baseline, including baseline zero.
 #print axioms TailOptionPricing.n_nu_gaussian
 /-
 theorem n_nu_gt_n_g {n_g : ℕ} {κ_g : ℝ}
@@ -1100,14 +1052,7 @@ theorem log_MAD_telescope {M : ℕ → ℝ} {n₀ n : ℕ} (h_le : n₀ ≤ n) :
           (Real.log (M (n₀ + i + 1)) - Real.log (M (n₀ + i)))
 -/
 #print axioms TailOptionPricing.log_MAD_telescope
-/-
-theorem kappa_decomposition {M : ℕ → ℝ} {n₀ n : ℕ}
-    (_hn₀ : 0 < n₀) (h_le : n₀ ≤ n) :
-    kappa M n₀ n
-      = 2 - (Real.log n - Real.log n₀) /
-          (∑ i ∈ Finset.range (n - n₀),
-              (Real.log (M (n₀ + i + 1)) - Real.log (M (n₀ + i))))
--/
+-- The logarithmic telescoping identity needs n0 <= n, with total-log conventions at zero.
 #print axioms TailOptionPricing.kappa_decomposition
 /-
 theorem kappa_decomposition_local {M : ℕ → ℝ} {n₀ n : ℕ}
@@ -1278,11 +1223,7 @@ theorem I1_eq_I2_heaviside {f : ℝ → ℝ} {K : ℝ} :
     I1 (heaviside K) f K = I2 (heaviside K) f K
 -/
 #print axioms TailOptionPricing.I1_eq_I2_heaviside
-/-
-theorem I1_pareto_id_eq {l α K : ℝ}
-    (_hα : 1 < α) (_hl : 0 < l) (_hK : l ≤ K) :
-    I1 id (paretoDensity l α) K = paretoTailExpectation l α K
--/
+-- These two total-integral definitions coincide for every parameter value.
 #print axioms TailOptionPricing.I1_pareto_id_eq
 /-
 theorem I2_pareto_id_eq {l α K : ℝ}
@@ -1408,10 +1349,7 @@ theorem inseparability_jensen_strict {g : ℝ → ℝ}
     g (a * x + b * y) < a * g x + b * g y
 -/
 #print axioms TailOptionPricing.inseparability_jensen_strict
-/-
-theorem exp_survival_eq {lam K : ℝ} (hlam : 0 < lam) (hK : 0 ≤ K) :
-    ∫ x in Ioi K, expDensity lam x = Real.exp (-(lam * K))
--/
+-- The raw exponential-kernel integral formula holds above every real threshold; the supported-law bridge is separate.
 #print axioms TailOptionPricing.exp_survival_eq
 /-
 theorem exp_tail_expectation_eq {lam K : ℝ} (hlam : 0 < lam) (hK : 0 ≤ K) :
@@ -1542,11 +1480,7 @@ theorem epistemicExcessKurtosis_nonneg (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) 
 #print axioms TailOptionPricing.epistemicExcessKurtosis_nonneg
 
 -- Hidden moments of a probability distribution (arXiv:2004.05894v1)
-/-
-theorem paretoTailMoment_eq {l α p K : ℝ}
-    (hα : 0 < α) (hl : 0 < l) (hp : p < α) (hK : l ≤ K) :
-    paretoTailMoment l α p K = α * l ^ α * K ^ (p - α) / (α - p)
--/
+-- The deterministic integral formula needs p < alpha and a positive threshold/scale; positive alpha is required for its law interpretation.
 #print axioms TailOptionPricing.paretoTailMoment_eq
 /-
 theorem paretoTailMoment_at_zero {l α K : ℝ}
@@ -1687,12 +1621,7 @@ theorem lognormal_kappa_tendsto_zero_as_sigma_to_zero
     Tendsto (fun σ => lognormalKappaProxy n μ σ) (𝓝 0) (𝓝 0)
 -/
 #print axioms TailOptionPricing.lognormal_kappa_tendsto_zero_as_sigma_to_zero
-/-
-theorem lognormal_kappa_tendsto_zero_as_n_to_infty
-    (μ σ : ℝ) (hσ : σ ≠ 0) :
-    Tendsto (fun n : ℕ => lognormalKappaProxy n μ σ) atTop (𝓝 0)
--- Discharged via the closed-form `C(σ) / n → 0`; no CLT needed.
--/
+-- The excess-kurtosis proxy limit holds for zero volatility too; it is not a canonical-MAD limit.
 #print axioms TailOptionPricing.lognormal_kappa_tendsto_zero_as_n_to_infty
 
 -- General cumulant infrastructure (todo3.md C.4 / todo4.md §4.1)
@@ -1787,10 +1716,7 @@ theorem one_sub_one_sub_pow_ge {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (n : �
     1 - (1 - p) ^ n ≥ (n : ℝ) * p - (n.choose 2 : ℝ) * p ^ 2
 -/
 #print axioms TailOptionPricing.MaxIIdBound.one_sub_one_sub_pow_ge
-/-
-theorem prob_all_le_iid ... iid X with representative law Y ...
-    μ.real {ω | ∀ i, X i ω ≤ t} = (ν.real {ω' | Y ω' ≤ t}) ^ n
--/
+-- The iid maximum-CDF formula uses independence and identical laws, whose a.e. measurability suffices.
 #print axioms TailOptionPricing.MaxIIdBound.prob_all_le_iid
 /-
 theorem prob_max_iid_gt ... :
@@ -1841,12 +1767,7 @@ theorem lognormalReal_real_Ioi_le {μ : ℝ} {v : ℝ≥0}
 #print axioms TailOptionPricing.LognormalMarkov.lognormalReal_real_Ioi_le
 
 -- Loulakis algebraic lower bound (todo5.md Phase C.3a).
-/-
-theorem M_n_lower_bound ... iid nonneg X with representative law Y₀ of mean m ... :
-    2 * (n · ∫_{t>0} ℙ(Y₀ > nm + t) dt
-         − C(n,2) · ∫_{t>0} ℙ(Y₀ > nm + t)² dt)
-      ≤ ∫ ω, |(∑ i, X i ω) - n·m| ∂μ
--/
+-- The actual Loulakis bound uses sum integrability/mean and tail convergence, without separate redundant representative moment assumptions.
 #print axioms TailOptionPricing.LoulakisAlgebraic.M_n_lower_bound
 
 -- σ→∞ asymptotic of `M(1)` (todo5.md Phase B.7).
@@ -2099,22 +2020,11 @@ theorem kappa_lognormal_star (σ : ℝ) {n : ℕ} (hn : 1 < n) :
 #print axioms TailOptionPricing.kappa_lognormal_star
 
 -- Section IV-B-3 (Pearson IV approximation, paper Eq. 12 + Eq. 13).
-/-
-theorem pearsonIV_mad_eq (a₀ a₁ b₀ b₁ b₂ m fm intCentered : ℝ)
-    (h_den_ne : a₁ - 2 * b₂ ≠ 0)
-    (_h_mean_constraint : (a₁ - 2 * b₂) * m = b₁ - a₀)
-    (h_ibp : (a₁ - 2 * b₂) * intCentered = pearsonIVQuad b₀ b₁ b₂ m * fm) :
-    2 * intCentered = pearsonIVMADClosed a₀ a₁ b₀ b₁ b₂ m fm
--/
+-- The supplied IBP scalar equation is rearranged without an unused mean constraint or unused ODE coefficient.
 #print axioms TailOptionPricing.pearsonIV_mad_eq
-/-
-theorem pearsonIV_mad_eq_paper (paper-form Eq. 13)
--/
+-- The expanded Eq.13 RHS is conditional scalar algebra, without a proved Pearson density or MAD bridge.
 #print axioms TailOptionPricing.pearsonIV_mad_eq_paper
-/-
-theorem pearsonIV_lognormal_match_a1 (n : ℕ) (σ : ℝ) :
-    pearsonIV_a1_lognormal n σ = 1  -- paper Eq. 12 "a₁ = 1" coefficient
--/
+-- The normalization coefficient is a constant one, with no unused sample-size or volatility arguments.
 #print axioms TailOptionPricing.pearsonIV_lognormal_match_a1
 /-
 theorem pearsonIVLognormalDen_pos (n : ℕ) (σ : ℝ) (hn : 0 < n) :

@@ -43,12 +43,15 @@ namespace TailOptionPricing
 noncomputable def paretoTailMoment (l α p K : ℝ) : ℝ :=
   ∫ s in Ioi K, s ^ p * paretoDensity l α s
 
-/-- **Closed form (paper Eq. 2):**  For `α > p`, `l > 0`, `l ≤ K`,
+/-- **Closed integral form (paper Eq. 2):** For `α > p`, `l > 0`, `l ≤ K`,
         μ_{K, p}(K) = α · l^α · K^{p − α} / (α − p).
-    Generalises `paretoTailExpectation_eq` (p = 1) and recovers the
-    survival function (p = 0). -/
+    The integral identity is valid for any real `α` with `p < α`.
+    Its Pareto moment interpretation additionally requires `α > 0`;
+    that formerly unused hypothesis is removed from the algebraic API.
+    At positive `α`, this generalises the tail expectation at `p = 1`
+    and recovers the supported-tail formula at `p = 0`. -/
 theorem paretoTailMoment_eq {l α p K : ℝ}
-    (_hα : 0 < α) (hl : 0 < l) (hp : p < α) (hK : l ≤ K) :
+    (hl : 0 < l) (hp : p < α) (hK : l ≤ K) :
     paretoTailMoment l α p K = α * l ^ α * K ^ (p - α) / (α - p) := by
   have hK_pos : 0 < K := hl.trans_le hK
   have hαp_pos : 0 < α - p := by linarith
@@ -83,7 +86,7 @@ theorem paretoTailMoment_at_zero {l α K : ℝ}
     paretoTailMoment l α 0 K = survival l α K := by
   have hα_ne : α ≠ 0 := hα.ne'
   have hK_pos : 0 < K := hl.trans_le hK
-  rw [paretoTailMoment_eq hα hl (by linarith : (0:ℝ) < α) hK]
+  rw [paretoTailMoment_eq hl (by linarith : (0:ℝ) < α) hK]
   unfold survival
   rw [show (0 - α : ℝ) = -α from by ring,
       show (α - 0 : ℝ) = α from by ring,
@@ -96,7 +99,7 @@ theorem paretoTailMoment_at_zero {l α K : ℝ}
 theorem paretoTailMoment_at_one {l α K : ℝ}
     (hα : 1 < α) (hl : 0 < l) (hK : l ≤ K) :
     paretoTailMoment l α 1 K = paretoTailExpectation l α K := by
-  rw [paretoTailMoment_eq (by linarith : (0:ℝ) < α) hl hα hK,
+  rw [paretoTailMoment_eq hl hα hK,
       paretoTailExpectation_eq hα hl hK]
 
 /-! ## Sample survival ratio (paper Remark 1).

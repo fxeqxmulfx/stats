@@ -164,7 +164,7 @@ example : TailOptionPricing.kappa (fun k => (k : ℝ) ^ ((1 : ℝ) / (3 / 2))) 1
     (by norm_num) (by norm_num) (by intro k _; simp) (by norm_num) (by norm_num)
 
 example : TailOptionPricing.n_nu 30 0 = 30 :=
-  TailOptionPricing.n_nu_gaussian 30 (by norm_num)
+  TailOptionPricing.n_nu_gaussian 30
 
 -- The singular parameter is a value of the total formula, not a sample-size claim.
 example : TailOptionPricing.n_nu 30 1 = 1 := by

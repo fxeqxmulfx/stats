@@ -507,9 +507,11 @@ in Lean.  False alarm (pass 4) retracted after seeing LaTeX source.
   Hypothesis is the IBP intermediate
   `(a₁ − 2 b₂) · intCentered = Q(m) · f(m)`, obtained from the ODE +
   boundary vanishing + the mean constraint.  Conclusion:
-  `2 · intCentered = pearsonIVMADClosed`.  Mean constraint included
-  in the signature for paper fidelity (analytic precondition for
-  `h_ibp` to hold).*
+  `2 · intCentered = pearsonIVMADClosed`.
+  Review 2026-10-19: this is conditional scalar algebra. The actual
+  integral, normalized density, mean and IBP derivation remain open
+  (REVIEW.md, K-38). The unused mean constraint and `a₀` argument
+  were removed; they did not establish these analytic requirements.*
 
 - [x] **`pearsonIV_lognormal_match`** — explicit `a₀, b₀, b₁, b₂` as
   functions of `n, σ` (paper Eq. 12 box of formulas, verbatim from
@@ -522,7 +524,8 @@ in Lean.  False alarm (pass 4) retracted after seeing LaTeX source.
   Five coefficient definitions plus shared denominator
   `pearsonIVLognormalDen n σ` in `Stats/Kappa/PearsonIV.lean`:
 
-  * `pearsonIV_a1_lognormal n σ := 1`  (paper convention).
+  * `pearsonIV_a1_lognormal := 1` (constant paper convention; the
+    ignored `n, σ` arguments were removed in the 2026-10-19 review).
   * `pearsonIV_b2_lognormal n σ := e^(2σ²)·(e^(σ²)−1)·(2 e^(σ²)+3) / D`.
   * `pearsonIV_b1_lognormal n μ σ := (e^(σ²)−1)·e^(μ+σ²/2)·[...] / D`.
   * `pearsonIV_b0_lognormal n μ σ := −n·(e^(σ²)−1)·e^(2(μ+σ²))·[...] / D`.

@@ -104,7 +104,6 @@ variable {Ω : Type*} {m : MeasurableSpace Ω} {μ : Measure Ω}
 theorem prob_all_le_iid {Ω' : Type*} {m' : MeasurableSpace Ω'} {ν : Measure Ω'}
     [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
     {n : ℕ} {Y : Ω' → ℝ} {X : Fin n → Ω → ℝ}
-    (_h_meas : ∀ i, Measurable (X i))
     (h_indep : iIndepFun X μ)
     (h_id : ∀ i, IdentDistrib (X i) Y μ ν)
     (t : ℝ) :
@@ -165,7 +164,7 @@ theorem prob_max_iid_gt {Ω' : Type*} {m' : MeasurableSpace Ω'} {ν : Measure �
     exact MeasurableSet.iInter (fun i => (h_meas i) measurableSet_Iic)
   rw [measureReal_compl h_meas_set,
       probReal_univ,
-      prob_all_le_iid (ν := ν) (Y := Y) h_meas h_indep h_id t]
+      prob_all_le_iid (ν := ν) (Y := Y) h_indep h_id t]
 
 /-! ### Step 3: combined inequality. -/
 

@@ -371,6 +371,82 @@ declarations. All 717 previous names remain, with 714 unchanged types and
 the three documented stronger scalar inequalities; 43 declarations are
 added. Each new module has at most 138 lines.
 
+### Repair 5: genuine assumptions, supported exponential tails and helper scope
+
+Reread the κ definition and decomposition in
+`papers/arXiv-1802.05495v3/kappa-n-final.tex` (lines 272–300), the
+Loulakis argument (lines 689–699), and the Pearson ODE, mean convention,
+Eq. 13 and candidate coefficients (lines 710–749). Also reread the
+truncated Pareto moment in `papers/arXiv-2004.05894v1/MaxHiddenTail.tex`
+(lines 203–213), and Definitions 4–5 and Theorem 2 in
+`papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`
+(lines 317–355 and 626–635).
+
+The source's probability domains remain necessary for their probabilistic
+interpretations. Several Lean helpers, however, are stronger identities
+of total integrals or real expressions. Their unused hypotheses had been
+hidden under names beginning with `_h`. Those hypotheses are now deleted,
+with callers and the verification annotations updated. This includes the
+κ telescoping identity, the sample-size formula and inverse, constant
+gamma-PnL factoring, the Carr–Madan alias, a truncated-moment integral,
+VaR/CVaR expression monotonicity, the MLE candidate-variance scaling and
+the pointwise Kelly derivative. The abstract iid maximum and Loulakis
+bounds also lose unused inputs; their actual probability statements and
+the canonical lognormal specialization remain intact.
+
+`pearsonIVMADClosed` loses its ignored `a₀` argument. The two conditional
+MAD algebra lemmas lose that parameter and the unused mean constraint;
+they still require the IBP equation as input. The normalized coefficient
+`pearsonIV_a1_lognormal` is now a real constant, with no ignored sample-size
+or volatility arguments. No actual Pearson density, mean, cumulant match
+or MAD identity is manufactured by these changes. K-38 and K-39 remain
+incomplete. The lognormal proxy's limit also holds at zero volatility;
+its unused nonzero-volatility assumption is removed without identifying
+the proxy with a sum's MAD.
+
+[Probability/Exponential.lean](Stats/Probability/Exponential.lean) shares
+the already proved full survival of Mathlib's exponential law:
+`P(X>K)=exp(-λK)` for `K≥0`, and `P(X>K)=1` for `K<0`.
+[BinaryForecasts/ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean)
+now connects the raw-kernel integral to that actual law on its correct
+domain. The analytic integral itself holds for every real threshold;
+the former unused `K≥0` premise is removed from `exp_survival_eq`.
+A negative-threshold certificate proves the distinction: at rate one and
+threshold minus one, the actual survival is one, while the raw-kernel
+integral is `exp(1)>1`. The moved full-survival declaration retains its
+name, type and public re-export.
+
+[Review/Assumptions.lean](Stats/Review/Assumptions.lean) supplies concrete
+examples, including zero parameters and negative values that demonstrate
+the stronger algebraic domains, and a smooth affine Carr–Madan payoff.
+[Review/ProbabilityAssumptions.lean](Stats/Review/ProbabilityAssumptions.lean)
+uses an actual nondegenerate independent Gaussian product sample and its
+lognormal transforms to verify the revised iid maximum and Loulakis APIs.
+The new modules are at most 106 lines.
+
+The Kelly and MLE comments now describe their proved scope: pointwise
+derivatives, candidate scalar formulas and elementary identities. They
+do not claim a justified derivative of an expectation, an optimal stake,
+an estimator CLT, coverage or a finite-sample variance bound. The
+binary-forecast overview likewise records Theorem 2's actual bounded-score
+moment proof, while retaining the open general Theorem 1 and distributional
+gaps. Rereading the sentence immediately before Theorem 1 also corrects
+this review's earlier attribution: the source explicitly assumes `g(x)=x`
+for that section. The nonlinear exponential-payoff example below obstructs
+an extension of Theorem 1, rather than refuting its stated linear scope.
+
+**Verification:** the default build passes all 3915 jobs without warnings.
+The transitive audit checks 1449 declarations, including 1246 theorem
+declarations, and reports only `Quot.sound`, `Classical.choice` and
+`propext`; the standalone audit also passes. All 27 Python tests and the
+forbidden-construct and whitespace checks pass. The generated index has
+135 modules, 670 named theorems and zero sorry, vacuous or placeholder
+markers. Its exhaustive audit imports all 134 other modules. The refreshed
+`dt` index has 761 project declarations. All 760 prior public names remain:
+737 types are unchanged and 23 have the documented stronger hypotheses or
+simplified parameter lists. The supported exponential-survival bridge
+adds one public theorem.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -1192,7 +1268,9 @@ differentiability and ODE assumptions.
 (a₁−2b₂) intCentered = Q(m) f(m).
 ```
 
-The conclusion follows by division.
+The conclusion follows by division. The unused mean constraint and `a₀`
+parameter have been removed; their presence did not establish the mean
+or derive the assumed equation.
 
 **Missing:** the actual integral, density normalization and integrability,
 boundary decay of $Qf$, integration of the ODE on the half-line, mean
@@ -1201,8 +1279,9 @@ The essential analytic step remains a hypothesis.
 
 ### K-39. Pearson IV parameters matched to lognormal cumulants — not ok completely
 
-`pearsonIVLognormalMatch` defines explicit coefficients.
-Some positivity facts and $a₁=1$ are proved.
+`pearsonIVLognormalMatch` defines explicit candidate coefficients.
+Some positivity facts are proved. The $a₁=1$ normalization is a constant
+definition with no sample-size or volatility arguments.
 
 **Missing:** existence of a normalized Pearson density on the valid domain,
 its four actual matched cumulants and an approximation-error bound.
@@ -1279,10 +1358,13 @@ Main module: [BinaryForecasts.lean](Stats/BinaryForecasts.lean).
 
 **Paper verdict: not ok.** Several integral and derivative calculations are
 proved, including the exact strong-Pareto ratio and the displayed Gaussian
-sensitivity expression. Neither named theorem has its complete stochastic
-statement formalized. Some statements in the source also require correction:
-Theorem 1 needs restrictions on the payoff, and Eq. 8 differentiates a different
-quantity from the originally defined payoff gap.
+sensitivity expression. Theorem 2's actual bounded-score moment statement
+is proved, without independence. The general Theorem 1 and the later
+distributional and CLT claims remain incomplete. Some statements in the
+source also require correction: Definition 5's unrestricted converse needs
+additional hypotheses, and Eq. 8 differentiates a different quantity from
+the originally defined payoff gap. Theorem 1 is read with the source's
+explicit preceding assumption `g(x)=x`.
 
 ### BF-01. Definition 1: events and measurable random variables — ok as infrastructure
 
@@ -1328,15 +1410,23 @@ $E[X;X>K]/(K P(X>K))=α/(α-1)$ for $α>1$, $l>0$, $K≥l$.
 **Missing:** nothing for this exact Pareto integral statement. The tail
 expectation and survival formulas are established by integration.
 
-### BF-06. Exponential borderline case — ok for the integral formulas
+### BF-06. Exponential borderline case — ok for the formulas and survival law
 
 [Exponential.lean](Stats/BinaryForecasts/Exponential.lean):
 `exp_survival_eq`, `exp_tail_expectation_eq` and `exp_conditional_excess`
 prove, for $λ>0$ and $K≥0$,
 $P(X>K)=exp(-λK)$ and $E[X|X>K]-K=1/λ$ as density-integral identities.
 
-**Missing:** nothing for these analytic formulas. There is no separately
-assembled limit theorem placing the law in a formal D₁ predicate.
+[ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean) also proves
+that the raw-kernel survival integral equals the actual supported
+exponential-law probability on this domain. Below zero, the actual survival
+is one, whereas the analytic kernel integral exceeds one; a concrete
+certificate checks that distinction.
+
+**Missing:** nothing for these analytic formulas and the supported-survival
+bridge. There is no separately assembled limit theorem placing the law
+in a formal D₁ predicate, or a conditional-expectation law bridge for the
+excess formula.
 
 ### BF-07. Definition 5: I₁ and I₂ — ok as integral definitions
 
@@ -1366,17 +1456,21 @@ nonmonotone payoffs, integral cancellation is another obstruction. A strict
 gap for an increasing payoff needs positivity of the density on a set where
 $g(x)>g(K)$.
 
-### BF-10. Theorem 1: general convergence of I₁/I₂ — not ok
+### BF-10. Theorem 1: linear-payoff convergence of I₁/I₂ — not ok as assembled
 
-The theorem is stated after the definition of an arbitrary payoff $g$, but its
-limit is the characteristic scale defined for $g(x)=x$.
+The source explicitly assumes $g(x)=x$ immediately before Theorem 1
+(line 351). Its limit is the characteristic scale of Definition 4.
+The previous version of this review overlooked that sentence and
+incorrectly treated the theorem as an unrestricted-payoff assertion.
 
-**Missing:** a corrected payoff hypothesis and a general distribution theorem.
-The literal statement is false even for a strictly increasing, integrable
-payoff: for an Exp(1) density and $g(x)=exp(x/2)$, at $K≥0$,
+**Missing:** the general distribution theorem for this linear payoff,
+with an actual survival law, tail expectation and the stated limit.
+An extension to arbitrary payoffs would need additional hypotheses:
+for an Exp(1) density and $g(x)=exp(x/2)$, at $K≥0$,
 $I₁=2exp(-K/2)$ and $I₂=exp(-K/2)$, so their ratio is two.
-The underlying law has characteristic scale one. This counterexample is an
-analytic check in this review; it is not a new Lean theorem.
+The underlying law has characteristic scale one. This example is an
+analytic check of that broader extension; it neither refutes the source's
+linear-payoff theorem nor constitutes a new Lean theorem.
 
 ### BF-11. Theorem 1's strong-Pareto, linear-payoff specialization — ok
 

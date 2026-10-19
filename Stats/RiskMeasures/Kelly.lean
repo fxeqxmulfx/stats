@@ -5,9 +5,9 @@ module
 
   ## Stats.RiskMeasures.Kelly — Kelly criterion (Item 6).
 
-  Implicit characterisation of `f*` as the unique zero of the
-  (strictly concave) Kelly objective's derivative under iid
-  Pareto returns.
+  Definitions of density-weighted log payoffs and their pointwise
+  derivatives and curvature. No derivative-under-the-integral theorem,
+  constrained portfolio problem or optimal stake is proved here.
 
   See `Stats/RiskMeasures.lean` for the umbrella module.
 -/
@@ -26,22 +26,20 @@ namespace TailOptionPricing
     α)` the integrand `log(1 + f·s)` admits no elementary
     antiderivative against the Pareto density — closed forms involve
     Lerch / hypergeometric special functions.  The maximisation is
-    nonetheless well-posed: `g` is **strictly concave** in `f`, so
-    any interior critical point is the unique global maximum.
+    a separate problem: admissible stakes, integrability and an actual
+    objective derivative must be established before asserting an optimum.
 
     We formalise the algebraic / analytic ingredients:
 
     * Pointwise derivative `d/df log(1 + f·s) = s / (1 + f·s)`,
     * Pointwise second derivative
         `d²/df² log(1 + f·s) = −s² / (1 + f·s)²`,
-    * Strict concavity in `f`, on the open half-line `f > −1/s`.
+    * Nonpositivity of the pointwise curvature when `1 + f*s > 0`.
 
-    Combined with `setIntegral_mono`, these lift to strict concavity
-    of the Kelly objective in `f` (integration preserves convexity
-    properties of the integrand pointwise), so `kellyObjective` is
-    strictly concave wherever the integral is defined — the
-    **implicit characterisation of `f*`** as the unique zero of
-    `g'(f) = E[X / (1 + f·X)]` follows.
+    Lifting these facts to an objective requires integrability and
+    differentiation or strict-concavity arguments for the integral.
+    The pointwise statements below do not supply those steps or prove
+    existence of a critical point for an unconstrained positive payoff.
 
     Time-vs-ensemble subtleties (Tier 8) are out of scope here. -/
 
@@ -49,14 +47,14 @@ namespace TailOptionPricing
 noncomputable def kellyIntegrand (f l α s : ℝ) : ℝ :=
   Real.log (1 + f * s) * paretoDensity l α s
 
-/-- **Kelly objective:** `g(f) := E[log(1 + f·X)] = ∫_l^∞
-    log(1+f·s) · paretoDensity(s) ds`. -/
+/-- The density integral `∫_l^∞ log(1+f*s) paretoDensity(s) ds`.
+An expected-log-growth interpretation requires a valid Pareto law,
+admissible stakes and integrability. -/
 noncomputable def kellyObjective (f l α : ℝ) : ℝ :=
   ∫ s in Ioi l, kellyIntegrand f l α s
 
-/-- **Kelly marginal integrand:** `d/df log(1 + f·s) = s / (1 + f·s)`,
-    weighted by the Pareto density.  Used to express the Kelly
-    objective's derivative under the integral sign. -/
+/-- The pointwise marginal expression weighted by the Pareto density.
+No differentiation under the objective's integral is asserted here. -/
 noncomputable def kellyMarginalIntegrand (f l α s : ℝ) : ℝ :=
   s / (1 + f * s) * paretoDensity l α s
 
@@ -101,12 +99,10 @@ theorem kelly_log_second_deriv_nonpos {f s : ℝ} (h : 0 < 1 + f * s) :
   · exact neg_nonpos_of_nonneg (sq_nonneg s)
   · exact h_sq_pos.le
 
-/-- **Kelly objective marginal vanishes at `f = 0`**: at zero stake the
-    marginal expected log-growth equals the unconditional mean
-    `E[X] = α·l/(α−1)`.  Implicit first-order condition `g'(0) > 0`
-    when `α > 1` says zero stake is not optimal — bet some positive
-    amount. -/
-theorem kelly_marginal_at_zero {s : ℝ} (_hs_pos : 0 < s) :
+/-- At zero stake the pointwise marginal payoff equals the realized
+payoff `s`. This scalar identity has no positivity requirement and does
+not assert that an expected marginal vanishes or identify an optimum. -/
+theorem kelly_marginal_at_zero {s : ℝ} :
     s / (1 + 0 * s) = s := by
   rw [zero_mul, add_zero, div_one]
 

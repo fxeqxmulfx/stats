@@ -212,7 +212,7 @@ noncomputable def n_nu (n_g : ℕ) (κ_g : ℝ) : ℝ :=
 /-- **The sample-size expression at κ = 0** equals its baseline.
     This algebraic identity concerns Taleb's display `simpleequiv`
     (arXiv:1802.05495v3); it does not identify a probability law. -/
-theorem n_nu_gaussian (n_g : ℕ) (_hn_g : 0 < n_g) :
+theorem n_nu_gaussian (n_g : ℕ) :
     n_nu n_g 0 = (n_g : ℝ) := by
   unfold n_nu
   rw [sub_zero, div_one, Real.rpow_one]
@@ -254,10 +254,10 @@ theorem n_nu_gt_n_g {n_g : ℕ} {κ_g : ℝ}
 noncomputable def n_g_of_n_nu (n_ν : ℝ) (κ_g : ℝ) : ℝ :=
   n_ν ^ (1 - κ_g)
 
-/-- **Round-trip identity (n_nu inverse).**  For `n_g > 0` and `κ_g ≠ 1`,
+/-- **Round-trip identity (n_nu inverse).** For every `n_g : ℕ` and `κ_g ≠ 1`,
     applying `n_g_of_n_nu` to `n_nu n_g κ_g` recovers `n_g`. -/
 theorem n_g_of_n_nu_n_nu {n_g : ℕ} {κ_g : ℝ}
-    (_hn_g : 0 < n_g) (hκ : κ_g ≠ 1) :
+    (hκ : κ_g ≠ 1) :
     n_g_of_n_nu (n_nu n_g κ_g) κ_g = (n_g : ℝ) := by
   unfold n_g_of_n_nu n_nu
   have hn_g_nn : (0:ℝ) ≤ n_g := Nat.cast_nonneg _
@@ -403,17 +403,19 @@ theorem log_MAD_telescope {M : ℕ → ℝ} {n₀ n : ℕ} (h_le : n₀ ≤ n) :
     linarith [ih]
 
 /-- **κ additive decomposition (paper Eq. 2, post-substitution form).**
-    For any `M : ℕ → ℝ` with `M k > 0` on `[n₀, n]` and `n > n₀ ≥ 1`,
-    the κ-metric admits the telescoping representation
+    The expression telescopes for any `M : ℕ → ℝ` and `n₀ ≤ n`, including
+    zero endpoints under Lean's total logarithm and division conventions:
         κ(n₀, n) = 2 − log(n/n₀) /
                    Σ_{i=0}^{n−n₀−1} (log(M(n₀+i+1)) − log(M(n₀+i))).
 
-    Convenient for analyzing *running* κ as `n` grows, decomposed into
+    Its probabilistic κ interpretation needs positive sample sizes and
+    actual nondegenerate MADs. For valid parameters it analyzes running κ,
+    decomposed into
     per-step contributions.  Equivalent to Eq. 2 of the paper after
     rewriting each local term via the per-step κ; see
     `kappa_decomposition_local` for the literal Eq. 2 form. -/
 theorem kappa_decomposition {M : ℕ → ℝ} {n₀ n : ℕ}
-    (_hn₀ : 0 < n₀) (h_le : n₀ ≤ n) :
+    (h_le : n₀ ≤ n) :
     kappa M n₀ n
       = 2 - (Real.log n - Real.log n₀) /
           (∑ i ∈ Finset.range (n - n₀),
@@ -440,7 +442,7 @@ theorem kappa_decomposition_local {M : ℕ → ℝ} {n₀ n : ℕ}
           (∑ i ∈ Finset.range (n - n₀),
               (Real.log ((n₀ + i + 1 : ℕ) : ℝ) - Real.log ((n₀ + i : ℕ) : ℝ)) /
                 (2 - kappa M (n₀ + i) (n₀ + i + 1))) := by
-  rw [kappa_decomposition hn₀ h_le]
+  rw [kappa_decomposition h_le]
   congr 2
   apply Finset.sum_congr rfl
   intro i hi

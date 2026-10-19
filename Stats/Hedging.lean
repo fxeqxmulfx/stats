@@ -102,11 +102,12 @@ theorem squaredReturn_survival_eq_survival {l α x : ℝ}
 noncomputable def gammaPnLIntegrand (Γ : ℝ → ℝ) (s : ℝ) : ℝ :=
   (1 / 2) * Γ s * s ^ (2:ℝ)
 
-/-- **Constant-Gamma gamma-P&L equals half-times-Gamma times the second
-    moment.**  For Pareto returns with `α > 2`, taking `Γ ≡ c`, the
-    expected single-step gamma P&L is `½ · c · paretoMoment l α 2`. -/
-theorem gammaPnL_constant_eq {c l α : ℝ}
-    (_hα : 2 < α) (_hl : 0 < l) :
+/-- Factoring a constant Gamma from the total density integral gives
+`½ c` times the second-moment integral for all real parameters.
+For a genuine finite Pareto expectation require `α > 2` and `l > 0`
+and the corresponding integrability result; this factorization alone
+does not establish those probabilistic conditions. -/
+theorem gammaPnL_constant_eq {c l α : ℝ} :
     ∫ s in Ioi l, gammaPnLIntegrand (fun _ => c) s * paretoDensity l α s
       = (1 / 2) * c * paretoMoment l α 2 := by
   unfold gammaPnLIntegrand paretoMoment paretoMomentIntegrand
@@ -244,10 +245,10 @@ theorem paretoPutStripCost_eq {g'' : ℝ → ℝ} {l α a F : ℝ}
     where the put-strip and call-strip costs admit the explicit Pareto
     closed-form substitutions (see `paretoCallStripCost_eq` and
     `paretoPutStripCost_eq`).
-    This restates `carrMadan` for use with Pareto-internal pricing — the
-    identity itself is model-free at the payoff level. -/
-theorem paretoCarrMadan {g g' g'' : ℝ → ℝ} {l α a b F S : ℝ}
-    (_hα : 1 < α) (_hl : 0 < l) (_ha : l ≤ a)
+    This is a model-free alias of `carrMadan` at the payoff level. The
+    unused Pareto parameters and their hypotheses have been removed;
+    pricing the strips is handled by the separate pricing theorems. -/
+theorem paretoCarrMadan {g g' g'' : ℝ → ℝ} {a b F S : ℝ}
     (hF : F ∈ Set.Icc a b) (hS : S ∈ Set.Icc a b)
     (hg_cont   : ContinuousOn g (Set.Icc a b))
     (hg'_cont  : ContinuousOn g' (Set.Icc a b))
@@ -302,13 +303,13 @@ theorem paretoVega_relative_eq {l α K : ℝ}
   --   = A · B / D² · D / A = B / D = log(l/K) - 1/D
   field_simp
 
-/-- **Pareto Vega-to-price ratio tends to `−∞` as `K → ∞`.**  The
-    relative Pareto sensitivity `(∂C/∂α) / C` is *unbounded below* in
-    `K`, diverging linearly in `−log K`.  Qualitative asymmetry vs
-    Black–Scholes: a small change in tail index `α` produces an
-    arbitrarily large *relative* change in deep-OTM tail prices. -/
+/-- The logarithmic expression tends to `−∞` as `K → ∞`, for every
+real `α` and positive `l`. On the pricing domain `α > 1`, the preceding
+`paretoVega_relative_eq` identifies it with the relative Pareto call
+sensitivity. This limit alone does not extend that pricing identity
+to parameters outside its domain. -/
 theorem paretoVega_relative_tendsto_atBot {l α : ℝ}
-    (_hα : 1 < α) (hl : 0 < l) :
+    (hl : 0 < l) :
     Tendsto (fun K : ℝ => Real.log (l / K) - 1 / (α - 1)) atTop atBot := by
   -- log(l/K) = log l - log K *eventually* for K > 0, then log K → ∞.
   have h_logK_atTop : Tendsto (fun K : ℝ => Real.log K) atTop atTop :=

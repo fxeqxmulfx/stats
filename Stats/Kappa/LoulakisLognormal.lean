@@ -204,9 +204,6 @@ theorem M_n_lower_lognormal (n : ℕ) (σ : ℝ) :
     fun i => TailOptionPricing.LognormalIIdSetup.identDistrib_Xσ σ i
   have h_nonneg : ∀ (i : Fin n) (ω : Ωspace n), 0 ≤ Xσ σ i ω :=
     fun i ω => TailOptionPricing.LognormalIIdSetup.Xσ_nonneg σ i ω
-  have hY_int : Integrable (Y σ) (gaussianReal 0 1) := Y_integrable_local σ
-  have h_mean : (∫ ω', Y σ ω' ∂(gaussianReal 0 1)) = (1 : ℝ) :=
-    TailOptionPricing.LognormalAsymptotic.integral_Y_eq_one σ
   have h_S_int : Integrable (fun ω => ∑ i, Xσ σ i ω) (μn n) :=
     TailOptionPricing.LognormalIIdSetup.integrable_sum_Xσ σ n
   have h_S_mean : (∫ ω, ∑ i, Xσ σ i ω ∂(μn n)) = (n : ℝ) * (1 : ℝ) := by
@@ -230,7 +227,7 @@ theorem M_n_lower_lognormal (n : ℕ) (σ : ℝ) :
   -- Apply the abstract bound.
   have h := TailOptionPricing.LoulakisAlgebraic.M_n_lower_bound
     (μ := μn n) (ν := gaussianReal 0 1) (n := n) (Y₀ := Y σ) (X := Xσ σ)
-    h_meas_Y h_meas h_indep h_id h_nonneg hY_int (m := 1) h_mean
+    h_meas_Y h_meas h_indep h_id h_nonneg (m := 1)
     h_S_int h_S_mean h_pmax_int' h_pmax_sq_int' h_psum_int'
   -- `n * 1 = n` simplifies the LHS/RHS of `h` to match the goal.
   simp only [mul_one] at h

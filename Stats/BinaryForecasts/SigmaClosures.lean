@@ -63,7 +63,7 @@ private theorem hasDerivAt_neg_σ_phi_div {σ : ℝ} (hσ : σ ≠ 0) (x : ℝ) 
 open ProbabilityTheory MeasureTheory in
 /-- **Antiderivative for `φ_σ(x)`.**
         `d/dx [Φ(x/σ)] = φ_σ(x)`. -/
-private theorem hasDerivAt_stdNormalCdf_div {σ : ℝ} (_hσ : σ ≠ 0) (x : ℝ) :
+private theorem hasDerivAt_stdNormalCdf_div {σ : ℝ}  (x : ℝ) :
     HasDerivAt (fun y : ℝ => stdNormalCdf (y / σ))
       (gaussianPDF_σ σ x) x := by
   have h_inner : HasDerivAt (fun y : ℝ => y / σ) (1 / σ) x :=
@@ -152,7 +152,7 @@ theorem integral_gaussianPDF_σ {K σ : ℝ} (hσ : 0 < σ) :
   have hσ_ne : σ ≠ 0 := hσ.ne'
   set G : ℝ → ℝ := fun y : ℝ => stdNormalCdf (y / σ) with hG_def
   have h_G_deriv : ∀ x : ℝ, HasDerivAt G (gaussianPDF_σ σ x) x := by
-    intro x; exact hasDerivAt_stdNormalCdf_div hσ_ne x
+    intro x; exact hasDerivAt_stdNormalCdf_div x
   have h_G_tendsto : Tendsto G atTop (𝓝 1) := tendsto_stdNormalCdf_div_atTop hσ
   have h_nonneg : ∀ x ∈ Set.Ioi K, 0 ≤ gaussianPDF_σ σ x := by
     intro x _

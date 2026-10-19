@@ -66,14 +66,16 @@ The proof chains:
 
 /-- **Loulakis algebraic lower bound on `M(n)`.**  For an iid nonneg
     family `X : Fin n → Ω → ℝ` with common law `Y₀ : Ω' → ℝ`,
-    integrable, with per-summand mean `m`,
+    with an integrable sum whose mean is `n*m`,
 
         `𝔼_μ |S_n − n·m|
            ≥ 2n · ∫_{t > 0} ℙ_ν(Y₀ > n·m + t) dt
              − 2·C(n,2) · ∫_{t > 0} ℙ_ν(Y₀ > n·m + t)² dt`.
 
-    Hypotheses bundle the iid structure, integrability, non-negativity,
-    measurability, and the mean condition.  Combined with the lognormal
+    Hypotheses bundle the iid structure, sum integrability, non-negativity,
+    measurability, the sum-mean condition and the needed tail-integral
+    convergence. Separate unused assumptions on the representative's
+    mean and integrability are removed. Combined with the lognormal
     Hölder bound ([LognormalMarkov](Stats/Kappa/LognormalMarkov.lean))
     and the σ→∞ asymptotic of `M(1; σ)`, this yields
     `liminf_{σ → ∞} M(n; σ)/M(1; σ) ≥ n` (paper Loulakis result). -/
@@ -85,8 +87,7 @@ theorem M_n_lower_bound
     (h_indep : iIndepFun X μ)
     (h_id : ∀ i, IdentDistrib (X i) Y₀ μ ν)
     (h_nonneg : ∀ i ω, 0 ≤ X i ω)
-    (_hY₀_int : Integrable Y₀ ν)
-    {m : ℝ} (_h_mean : (∫ ω', Y₀ ω' ∂ν) = m)
+    {m : ℝ}
     (h_S_int : Integrable (fun ω => ∑ i, X i ω) μ)
     (h_S_mean : (∫ ω, ∑ i, X i ω ∂μ) = (n : ℝ) * m)
     (h_pmax_int : MeasureTheory.IntegrableOn

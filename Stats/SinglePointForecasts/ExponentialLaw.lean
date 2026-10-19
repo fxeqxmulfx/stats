@@ -6,8 +6,7 @@ module
   positive elapsed time t and positive initial value X₀ produces an actual
   Pareto law: survival one below X₀ and (X₀/s)^(λ/t) above X₀.
 -/
-public import Mathlib.Probability.Distributions.Exponential
-public import Mathlib.Tactic.Linarith
+public import Stats.Probability.Exponential
 public import Mathlib.Tactic.FunProp
 public import Mathlib.Tactic.Ring
 
@@ -16,15 +15,6 @@ public import Mathlib.Tactic.Ring
 open Real Set MeasureTheory ProbabilityTheory
 
 namespace TailOptionPricing
-
-/-- Actual exponential-law survival, including its support boundary. -/
-theorem expMeasure_real_Ioi {r : ℝ} (hr : 0 < r) (c : ℝ) :
-    (expMeasure r).real (Ioi c) = if 0 ≤ c then Real.exp (-(r * c)) else 1 := by
-  let : IsProbabilityMeasure (expMeasure r) := isProbabilityMeasure_expMeasure hr
-  have h := measureReal_add_measureReal_compl (μ := expMeasure r)
-    (s := Iic c) measurableSet_Iic
-  rw [compl_Iic, probReal_univ, ← cdf_eq_real, cdf_expMeasure_eq hr] at h
-  split_ifs with hc <;> split_ifs at h <;> linarith
 
 /-- Pushforward of the supported exponential rate law by the paper's
 actual growth map. Here `t` is the positive elapsed time `t-t₀`. -/

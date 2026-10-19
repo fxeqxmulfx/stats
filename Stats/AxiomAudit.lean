@@ -15,6 +15,7 @@ import all Stats.BinaryForecasts.Brier
 import all Stats.BinaryForecasts.CharacteristicScale
 import all Stats.BinaryForecasts.Conflation
 import all Stats.BinaryForecasts.Exponential
+import all Stats.BinaryForecasts.ExponentialLaw
 import all Stats.BinaryForecasts.ParetoSensitivity
 import all Stats.BinaryForecasts.SigmaClosures
 import all Stats.BinaryForecasts.SigmaSensitivity
@@ -91,6 +92,7 @@ import all Stats.Pareto.Put
 import all Stats.Pareto.PutCallParity
 import all Stats.Pareto.Returns
 import all Stats.Pareto.TailRisk
+import all Stats.Probability.Exponential
 import all Stats.RegularVariation
 import all Stats.RegularVariation.Abelian
 import all Stats.RegularVariation.Abelian.Basic
@@ -115,8 +117,10 @@ import all Stats.RegularVariation.UCT.Measurable
 import all Stats.RegularVariation.UCT.Monotone
 import all Stats.RegularVariation.UCT.Potter
 import all Stats.RegularVariation.Verify
+import all Stats.Review.Assumptions
 import all Stats.Review.LognormalLegacy
 import all Stats.Review.ParetoLegacy
+import all Stats.Review.ProbabilityAssumptions
 import all Stats.ReviewChecks
 import all Stats.RiskMeasures
 import all Stats.RiskMeasures.CVaR

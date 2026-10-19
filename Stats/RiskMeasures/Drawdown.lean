@@ -54,11 +54,12 @@ theorem paretoSampleMaxSurvival_eq_one_sub_pow {n : ℕ} {l α x : ℝ} :
   unfold paretoSampleMaxSurvival paretoSampleMaxCDF survival
   rfl
 
-/-- **Survival at `l` is `1`** (the maximum is almost surely above the
-    Pareto lower-bound `l`):
-        `paretoSampleMaxSurvival n l α l = 1` for `n ≥ 1` and `l > 0`. -/
+/-- Boundary identity of the candidate maximum-survival expression for
+every real `α`, positive scale and nonempty sample. Interpreting it as
+an actual Pareto-maximum probability additionally needs a positive index
+and an iid-law bridge; those facts are not assumed or proved here. -/
 theorem paretoSampleMaxSurvival_at_l {n : ℕ} {l α : ℝ}
-    (hl : 0 < l) (_hα_pos : 0 < α) (hn : 1 ≤ n) :
+    (hl : 0 < l)  (hn : 1 ≤ n) :
     paretoSampleMaxSurvival n l α l = 1 := by
   have h_l_l : (l / l) ^ α = 1 := by
     rw [div_self hl.ne']

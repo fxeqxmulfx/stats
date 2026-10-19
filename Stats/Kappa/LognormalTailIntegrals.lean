@@ -70,7 +70,7 @@ theorem integral_min_Y_const_tendsto_zero {k : ℝ} (hk : 0 < k) :
 /-! ### An σ → 1. -/
 
 /-- **Pointwise identity** `(Y σ ω − n)⁺ = Y σ ω − min(Y σ ω, n)` for `n ≥ 0`. -/
-private lemma pos_part_sub_const_eq (σ n ω : ℝ) (_hn : 0 ≤ n) :
+private lemma pos_part_sub_const_eq (σ n ω : ℝ) :
     max (Y σ ω - n) 0 = Y σ ω - min (Y σ ω) n := by
   by_cases h : Y σ ω ≤ n
   · have h1 : Y σ ω - n ≤ 0 := by linarith
@@ -85,7 +85,7 @@ theorem integral_pos_part_Y_sub_n_tendsto_one {n : ℝ} (hn : 0 < n) :
       atTop (𝓝 1) := by
   -- Rewrite via the identity `(Y − n)⁺ = Y − min(Y, n)`.
   have h_pt : ∀ σ ω, max (Y σ ω - n) 0 = Y σ ω - min (Y σ ω) n :=
-    fun σ ω => pos_part_sub_const_eq σ n ω hn.le
+    fun σ ω => pos_part_sub_const_eq σ n ω
   have h_fun_eq : ∀ σ, (fun ω => max (Y σ ω - n) 0)
       = fun ω => Y σ ω - min (Y σ ω) n := fun σ => funext (h_pt σ)
   -- Integrate: ∫(Y − min(Y, n)) = ∫Y − ∫min(Y, n) = 1 − ∫min(Y, n).

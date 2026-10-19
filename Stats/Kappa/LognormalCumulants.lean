@@ -415,8 +415,8 @@ theorem lognormal_kappa_tendsto_zero_as_sigma_to_zero
 
 /-- **`κ_{1, n} → 0` as `n → ∞`** (paper Appendix B).  The
     excess-kurtosis proxy tends to `0` along `atTop` for any fixed
-    `μ, σ` (`σ ≠ 0` hypothesis is paper convention; the proof goes
-    through for all σ).
+    `μ, σ`, including zero volatility. The former unused nonzero-volatility
+    hypothesis is removed; the quantity remains an excess-kurtosis proxy.
 
     The paper frames this as a CLT-convergence signature, but the
     closed form `lognormalKappaProxy_closed_form` already exhibits
@@ -425,7 +425,7 @@ theorem lognormal_kappa_tendsto_zero_as_sigma_to_zero
     The limit is then elementary `Tendsto (C / ·) atTop (𝓝 0)` — no
     CLT machinery required. -/
 theorem lognormal_kappa_tendsto_zero_as_n_to_infty
-    (μ σ : ℝ) (_hσ : σ ≠ 0) :
+    (μ σ : ℝ) :
     Tendsto (fun n : ℕ => lognormalKappaProxy n μ σ) atTop (𝓝 0) := by
   set C : ℝ :=
     Real.exp (4 * σ^2) + 2 * Real.exp (3 * σ^2) + 3 * Real.exp (2 * σ^2) - 6

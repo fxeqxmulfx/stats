@@ -35,11 +35,14 @@ open ProbabilityTheory
     the borderline class of Definition 4: thin-tailed by `λ = 1` but
     with positive constant conditional excess. -/
 
-/-- **Exponential density** `λ · e^(−λx)`. -/
+/-- Exponential density kernel `λ exp(-λx)`. It is the supported
+exponential density on `[0,∞)`; its values below zero are not a PDF. -/
 noncomputable def expDensity (lam x : ℝ) : ℝ := lam * Real.exp (-(lam * x))
 
-/-- **Exponential survival** `ℙ(X > K) = e^(−λK)` for any `K ≥ 0`. -/
-theorem exp_survival_eq {lam K : ℝ} (hlam : 0 < lam) (_hK : 0 ≤ K) :
+/-- Integral of the raw exponential kernel above any real threshold.
+For `K ≥ 0` it is the genuine exponential survival; the separate theorem
+`exp_survival_eq_measure` states that supported-law bridge. -/
+theorem exp_survival_eq {lam K : ℝ} (hlam : 0 < lam) :
     ∫ x in Ioi K, expDensity lam x = Real.exp (-(lam * K)) := by
   -- Antiderivative of λ·e^(−λx) is −e^(−λx).
   set F : ℝ → ℝ := fun x => -Real.exp (-(lam * x)) with hF_def
@@ -190,7 +193,7 @@ theorem exp_conditional_excess {lam K : ℝ} (hlam : 0 < lam) (hK : 0 ≤ K) :
   have hlam_ne : lam ≠ 0 := hlam.ne'
   have h_exp_pos : 0 < Real.exp (-(lam * K)) := Real.exp_pos _
   have h_exp_ne : Real.exp (-(lam * K)) ≠ 0 := h_exp_pos.ne'
-  rw [exp_tail_expectation_eq hlam hK, exp_survival_eq hlam hK]
+  rw [exp_tail_expectation_eq hlam hK, exp_survival_eq hlam]
   field_simp
   ring
 

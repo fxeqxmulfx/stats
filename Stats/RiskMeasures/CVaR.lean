@@ -25,10 +25,11 @@ namespace TailOptionPricing
     `paretoCVaR ≥ paretoVaR` inequality (Expected Shortfall ≥
     Value-at-Risk). -/
 
-/-- **`paretoVaR` is monotone in `p`.**  Higher confidence → larger
-    quantile threshold.  Follows from monotonicity of `(1−p)^(−1/α)`. -/
+/-- The VaR expression is monotone for every `p ≤ q < 1`, with positive
+tail index and nonnegative scale. The quantile interpretation uses the
+probability range `0 ≤ p`; that assumption is not needed for this inequality. -/
 theorem paretoVaR_mono_p {l α p q : ℝ}
-    (hα_pos : 0 < α) (hl : 0 ≤ l) (_hp : 0 ≤ p) (hq_lt : q < 1)
+    (hα_pos : 0 < α) (hl : 0 ≤ l) (hq_lt : q < 1)
     (hpq : p ≤ q) :
     paretoVaR l α p ≤ paretoVaR l α q := by
   have h1mq_pos : 0 < 1 - q := by linarith
@@ -45,10 +46,10 @@ theorem paretoVaR_mono_p {l α p q : ℝ}
   rw [Real.rpow_neg h1mp_pos.le, Real.rpow_neg h1mq_pos.le]
   exact mul_le_mul_of_nonneg_left hinv_mono hl
 
-/-- **`paretoVaR` is monotone in `l`.**  Larger scale → larger VaR
-    at every confidence level. -/
+/-- The VaR expression is monotone in its scale for every real tail-index
+parameter and `p < 1`. A Pareto-law interpretation needs a positive index. -/
 theorem paretoVaR_mono_l {l₁ l₂ α p : ℝ}
-    (_hα_pos : 0 < α) (hp_lt : p < 1) (hl : l₁ ≤ l₂) :
+    (hp_lt : p < 1) (hl : l₁ ≤ l₂) :
     paretoVaR l₁ α p ≤ paretoVaR l₂ α p := by
   have h1mp_pos : 0 < 1 - p := by linarith
   have hpow_pos : 0 < (1 - p) ^ (-(1 / α)) := Real.rpow_pos_of_pos h1mp_pos _
@@ -64,14 +65,14 @@ theorem paretoVaR_scale (c l α p : ℝ) :
 /-- **`paretoCVaR` is monotone in `p`.**  Direct from `paretoCVaR =
     α/(α−1) · paretoVaR` and monotonicity of `paretoVaR` in `p`. -/
 theorem paretoCVaR_mono_p {l α p q : ℝ}
-    (hα : 1 < α) (hl : 0 ≤ l) (hp : 0 ≤ p) (hq_lt : q < 1) (hpq : p ≤ q) :
+    (hα : 1 < α) (hl : 0 ≤ l) (hq_lt : q < 1) (hpq : p ≤ q) :
     paretoCVaR l α p ≤ paretoCVaR l α q := by
   have hα_pos : 0 < α := by linarith
   have hfac_pos : 0 < α / (α - 1) := by
     apply div_pos hα_pos; linarith
   unfold paretoCVaR
   exact mul_le_mul_of_nonneg_left
-    (paretoVaR_mono_p hα_pos hl hp hq_lt hpq) hfac_pos.le
+    (paretoVaR_mono_p hα_pos hl hq_lt hpq) hfac_pos.le
 
 /-- **`paretoCVaR` is monotone in `l`.**  Larger scale → larger CVaR. -/
 theorem paretoCVaR_mono_l {l₁ l₂ α p : ℝ}
@@ -82,7 +83,7 @@ theorem paretoCVaR_mono_l {l₁ l₂ α p : ℝ}
     apply div_pos hα_pos; linarith
   unfold paretoCVaR
   exact mul_le_mul_of_nonneg_left
-    (paretoVaR_mono_l hα_pos hp_lt hl) hfac_pos.le
+    (paretoVaR_mono_l hp_lt hl) hfac_pos.le
 
 /-- **`paretoCVaR` is positively homogeneous in `l`:**
     `paretoCVaR(c·l, α, p) = c · paretoCVaR(l, α, p)`. -/

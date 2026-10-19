@@ -5,8 +5,10 @@ module
 
   ## Stats.RiskMeasures.MLE — confidence intervals for the tail-index MLE (Item 7).
 
-  Closed form `α̂ = n / Σ log(Xᵢ/l)` and its asymptotic variance
-  `α²/n` via the chi-square representation of `n/α̂`.
+  Scalar estimator expressions, a Pareto-tail/logarithm identity and
+  candidate asymptotic variance/interval formulas. The iid estimator law,
+  Fisher-information calculation, estimator CLT and interval coverage
+  are not constructed here.
 
   See `Stats/RiskMeasures.lean` for the umbrella module.
 -/
@@ -30,19 +32,11 @@ namespace TailOptionPricing
     `α̂` is asymptotically unbiased, and by the delta method has
     asymptotic variance `α² / n`.
 
-    We formalise the algebraic ingredients:
-
-    * `paretoMLE_invForm`: `α̂ = n / Σ log(X_i / l)` is the **reciprocal
-      sample mean** of `log(X_i / l)`.
-    * `paretoLogShift_eq`: `log(X / l)` has Exponential(α) distribution
-      under `X ~ Pareto(l, α)` — captured pointwise via the
-      transformation `log ∘ (l/x)^α` (the rate parameter).
-    * `paretoCIBound`: closed-form asymptotic confidence-interval
-      half-width `z_{p/2} · α / √n`.
-
-    Higher-order asymptotics (CLT for `α̂_n`) require Mathlib's CLT,
-    which is not yet upstream; we restrict to the algebraic identities
-    and the symbolic CI bound. -/
+    These statements motivate the formulas. The code below proves scalar
+    reciprocal identities and a pointwise power/log transformation, then
+    bounds supplied variance and interval expressions. It does not define
+    an observed iid sample or prove its transformed law, estimator moments,
+    a delta-method limit or confidence-interval coverage. -/
 
 /-- **Pareto MLE (inverse form):** `1/α̂ = (1/n) · Σ log(X_i / l)`.
     Encoded for an abstract sum-of-logs `S` and sample size `n`. -/
@@ -94,13 +88,13 @@ theorem paretoMLE_at_expected {α : ℝ} {n : ℕ} (hα_pos : 0 < α) (hn : n �
     sampling of size `n`, the variance of `α̂_n` is `α² / n` to leading
     order — the inverse Fisher information evaluated at the true `α`.
 
-    Symbolic definition; the formal asymptotic statement requires
-    Mathlib's CLT (currently not part of `Stats/`).  The definition
-    below records the bound for downstream consumers. -/
+    This is a symbolic candidate expression. No estimator CLT or actual
+    variance identification is proved here, and it is not asserted to
+    bound the finite-sample variance. -/
 noncomputable def paretoMLE_asymptoticVariance (α : ℝ) (n : ℕ) : ℝ :=
   α ^ 2 / n
 
-/-- **MLE asymptotic variance is positive** for `α > 0` and `n > 0`. -/
+/-- The candidate variance expression is positive for `α > 0` and `n > 0`. -/
 theorem paretoMLE_asymptoticVariance_pos {α : ℝ} {n : ℕ}
     (hα_pos : 0 < α) (hn : 0 < n) :
     0 < paretoMLE_asymptoticVariance α n := by
@@ -108,11 +102,11 @@ theorem paretoMLE_asymptoticVariance_pos {α : ℝ} {n : ℕ}
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   positivity
 
-/-- **MLE asymptotic variance scales as `1/n`.**  The product
-    `n · Var(α̂_n) = α²` is sample-size-invariant — the canonical
-    `O(1/n)` parametric convergence rate. -/
+/-- The supplied asymptotic-variance expression scales as `1/n` for
+every real `α` and positive `n`. This algebra does not prove that an
+actual estimator's variance or asymptotic variance equals that expression. -/
 theorem paretoMLE_asymptoticVariance_scaling {α : ℝ} {n : ℕ}
-    (_hα_pos : 0 < α) (hn : 0 < n) :
+    (hn : 0 < n) :
     paretoMLE_asymptoticVariance α n * n = α ^ 2 := by
   unfold paretoMLE_asymptoticVariance
   have hn_ne : (n : ℝ) ≠ 0 := (Nat.cast_pos.mpr hn).ne'
