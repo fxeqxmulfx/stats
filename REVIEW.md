@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, actual Normal–Gamma/Student law with corrected scale | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and sharp Student moments |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, actual Normal–Gamma/Student law with corrected scale and sharp moment/mean domains | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and Student tail asymptotics |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2934,6 +2934,42 @@ The new module has 150 lines. Its positive shape/rate domain, inverse
 precision exponents, and the source's finite-moment and unrestricted
 compound-mean wording were checked beside local Section VI.
 
+### 2026-10-19: sharp compound/Student moments and corrected mean claim
+
+[GammaCompoundMomentDomain.lean](Stats/EpistemicUncertainty/GammaCompoundMomentDomain.lean)
+proves both directions of actual Gaussian-mixture centered-power L1:
+it holds exactly when the corresponding dispersion power is L1.
+For necessity, the genuine independent Gaussian representation gives
+integrable sections for almost every innovation. A nonzero innovation
+section exists because the standard Gaussian has no atom at zero;
+dividing its nonzero power forces prior power L1.
+
+Applying the proved actual Gamma inverse-order criterion yields the
+sharp actual Normal--Gamma condition `alpha>k/2`, including failure at
+equality. The conventional Student centered power is L1 precisely
+when `nu>k`, at every positive scale. Ordinary first-moment L1 holds
+exactly for `alpha>1/2` or, equivalently, `nu>1`. Under this necessary
+condition the actual mean equals the location by independently L1
+mixture integration.
+
+The source's unrestricted mean claim is false: a proper shape-one-quarter,
+rate-two compound has no finite first moment. At location one its
+undefined Bochner integral equals zero and differs from the claimed
+location one. The source's centered location-zero model also has no
+finite mean in this small-shape range. EU-31 is now closed with corrected
+Student scale and mean domain; tail asymptotics remain in EU-32.
+
+Verification: all 4,172 default-build jobs pass without warnings. The
+audit checks 2,566 declarations and 2,219 theorems with zero non-core
+axioms. The index records 242 modules and 1,323 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,481 previous
+indexed names and types are preserved, with ten additions and no
+duplicates; the audit imports all 240 other `Stats/` modules.
+The new module has 183 lines. The actual outcome model, equality
+boundaries, corrected finite-mean hypothesis and concrete proper
+counterexample were reread beside the local Section VI claims.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4980,7 +5016,7 @@ comparison. Matching mean/CV or comparing right tails of precision is
 insufficient: large outcome values also depend on behavior near zero
 precision.
 
-### EU-31. Section VI: evaluate the Normal–Gamma compound integral — not ok
+### EU-31. Section VI: evaluate the Normal–Gamma compound integral — ok with corrected scale and mean domain
 
 `epistemicNormalGammaLaw` is now the actual Gaussian Markov mixture
 with the proper Gamma precision prior mapped by inverse square root.
@@ -5020,10 +5056,21 @@ df-four scale-one law, which differs from the proper scale-two law.
 prior condition `alpha+p>0`, including failure at equality. The inverse
 orders needed for dispersion are L1 precisely when `alpha>k/2`.
 
-**Missing:** transfer of that sharp nonintegrability to the compound
-outcome and resolution of the source's unrestricted mean claim.
-The displayed compound-law evaluation and corrected conventional
-Student identification are proved.
+`epistemicGaussianMixtureLaw_integrable_sub_pow_iff` proves both
+directions of the actual compound/scale L1 equivalence by the independent
+Gaussian model and nonzero innovation sections. Hence the actual
+Normal–Gamma centered k-th power is L1 exactly for `alpha>k/2`, and
+the conventional Student one exactly for `nu>k`, including boundary
+failure. First-moment L1 holds exactly for `alpha>1/2` or `nu>1`;
+the corrected actual mean equals the location on this domain.
+`epistemicNormalGamma_mean_counterexample` supplies a proper small-shape
+law with no finite first moment and refutes the literal unrestricted
+mean-equals-location formula at location one.
+
+**Missing:** nothing for this item. The Student scale is corrected to
+`sqrt(beta/alpha)`, and a finite mean requires `alpha>1/2`; the printed
+unrestricted claims are false. Tail asymptotics and uncertainty
+monotonicity remain separately tracked in EU-32.
 
 ### EU-32. Increasing epistemic uncertainty decreases the Student tail index — not ok
 

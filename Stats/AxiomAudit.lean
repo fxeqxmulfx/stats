@@ -176,6 +176,7 @@ import all Stats.EpistemicUncertainty.GammaCompoundIntegral
 import all Stats.Probability.StudentDensity
 import all Stats.EpistemicUncertainty.GammaCompoundStudentForm
 import all Stats.EpistemicUncertainty.GammaCompoundStudent
+import all Stats.EpistemicUncertainty.GammaCompoundMomentDomain
 import all Stats.EpistemicUncertainty.GammaMatch
 import all Stats.Probability.GammaTail
 import all Stats.Probability.GammaCalculus

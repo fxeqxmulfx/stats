@@ -147,6 +147,7 @@ public import Stats.EpistemicUncertainty.GammaCompoundIntegral
 public import Stats.Probability.StudentDensity
 public import Stats.EpistemicUncertainty.GammaCompoundStudentForm
 public import Stats.EpistemicUncertainty.GammaCompoundStudent
+public import Stats.EpistemicUncertainty.GammaCompoundMomentDomain
 public import Stats.EpistemicUncertainty.GammaMatch
 public import Stats.Probability.GammaTail
 public import Stats.Probability.GammaCalculus
