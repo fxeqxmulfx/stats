@@ -18,7 +18,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | Paper and reviewed version | Complete? | Established coverage | Main remaining gap |
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
-| [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected positive minimum-size definition, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; defective Pareto Beta expression; proxy limits |
+| [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Deterministic tail-moment integral and Beta(1,n) function identities | Main Proposition 1, actual iid maximum law, asymptotics and Gaussian comparison |
@@ -73,7 +73,7 @@ significance for sample sufficiency**, displays `md` and `simpleequiv`
 
 | Checked claim | Assessment in this batch |
 | --- | --- |
-| Pareto Beta/ratio/κ diagnostics | **ok** as certificates about the current definitions. For `α > 1`, each separate Beta integral diverges, so Lean's total integral is zero; the resulting κ expression is 2. **Issue remains:** this is not the actual Pareto MAD or a counterexample to a correctly defined probabilistic κ. |
+| Pareto Beta/ratio/κ diagnostics | **ok** as certificates about the historical definitions. Separate divergent Beta integrals gave zero ratio and κ = 2. Repair 2 below replaces that expression; the old certificates now explicitly target the isolated legacy model. They do not refute a correctly defined probabilistic κ. |
 | Historical zero-size minimum | **ok** as a certificate of the old repository bug. The paper already requires positive size. The existing zero-MAD and unit-MAD regression theorems check the repaired definition on synthetic functions. |
 | Power, square-root and linear reference curves | **Fixed descriptions:** all three theorems assume `hM_form`. Their parameters are satisfiable, but those witnesses do not establish an iid-sum law. The linear case is not a Cauchy finite-MAD theorem. The paper's finite-mean interpretation needs stable index greater than 1. |
 | Proposed sample-size power formula | **Fixed descriptions:** `n_nu` is the supplied power expression from `simpleequiv`, not a proved minimum or a variance-matching theorem. **Issue remains:** identification with the integer criterion `md`, and an approximation-error bound. |
@@ -153,6 +153,71 @@ The regenerated index contains 108 modules and 601 named theorems, with
 zero sorry, vacuous or placeholder markers. `dt refresh project` retains
 all 670 existing public names and types; the repair adds eight public
 declarations. The new source files are at most 151 lines each.
+
+### Repair 2: replace the divergent Pareto Beta difference
+
+Reread `papers/arXiv-1802.05495v3/kappa-n-final.tex`, Table I's Pareto
+row and incomplete-Beta footnote (line 209), Definition 1 and Table III's
+`α = 2` row (line 254). The literal footnote integrals diverge separately.
+The corrected statement uses their finite interior difference:
+
+```text
+Bcentered(z,a,b) = ∫_(1/2)^z t^(a-1) (1-t)^(b-1) dt
+Bcentered(u,a,b) - Bcentered(v,a,b) = ∫_v^u t^(a-1) (1-t)^(b-1) dt,
+    0 < u,v < 1.
+```
+
+The common base cancels, so this is an ordinary convergent integral, even
+at the paper's negative parameters. It is an explicit correction of the
+printed footnote, not subtraction of two separately zero-valued total
+integrals. The endpoints, signs, outer factor, exponents and integration
+limit in the Pareto row are otherwise preserved.
+
+[Kappa/Pareto.lean](Stats/Kappa/Pareto.lean) exposes focused modules for
+the definitions, proper Beta calculus, positivity, lower bounds and exact
+regressions. `paretoIntegrand_intervalIntegrable` proves convergence of the
+outer integral for every `α > 1`, and `paretoRatio_pos` proves positivity.
+At `α = 2`, the Beta kernel is at least 27 on `(0,1)`. Integrating the
+resulting rational lower bound gives
+
+```text
+paretoRatio 2 ≥ 207/160 > 1
+paretoKappa 2 < 2.
+```
+
+The rational integral `23/7680` used in this bound is proved by the
+fundamental theorem of calculus. These certificates exclude the old
+degeneration without assuming the desired ratio or changing the κ formula.
+The legacy zero certificates now use `StatsReview.legacyParetoIntegrand`,
+`legacyParetoRatio` and `legacyParetoKappa` from
+[Review/ParetoLegacy.lean](Stats/Review/ParetoLegacy.lean); they cannot be
+applied to the corrected production definitions.
+
+An independent numerical sanity check integrated the actual scale-one
+Pareto density over the one-variable and two-variable shortfall regions.
+At `α = 2`, it gives `M(1) = 1`, `M(2) = 1.637326536084`, and
+`κ = 0.594206583413`. Integrating the corrected Beta expression agrees
+within `5e-16` in this run, and the paper rounds κ to 0.594. This is a
+floating-point cross-check, not a Lean probability-law identification or
+a certified numerical error bound.
+
+**Remaining:** prove the corrected expression equals the genuine iid-Pareto
+sum MAD ratio. The new analytic certificates do not supply that missing
+bridge by definition; K14 remains incomplete in its distributional reading.
+
+**Verification:** the default `lake build` and standalone `./make.py audit`
+pass without warnings. The transitive audit checks 1337 declarations,
+including 1146 theorem declarations, and finds only `Quot.sound`,
+`Classical.choice` and `propext`. All 27 Python tests, the forbidden-construct
+check and `git diff --check` pass. The regenerated index contains 116 modules
+and 620 named theorems, with zero sorry, vacuous or placeholder markers.
+The axiom audit explicitly imports all 115 other modules.
+`dt refresh project` indexes 699 declarations: all 678 previous public names
+and types remain, with 21 additions. The three legacy regression theorem
+names in the separate `StatsReview` namespace were deliberately changed to
+identify their obsolete definitions. Public Pareto function types are
+preserved, while their integrand now uses the documented finite difference.
+Each new module is at most 103 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -707,9 +772,10 @@ calculates κ of that expression.
 The scope of “Gamma” also needs clarification: the row is not proved for
 arbitrary Gamma shape parameters.
 
-### K-14. Table I: Pareto — not ok; certified semantic defect
+### K-14. Table I: Pareto — finite-Beta defect repaired; MAD bridge still open
 
-[Kappa/TableI.lean](Stats/Kappa/TableI.lean) defines
+[Kappa/Pareto/Defs.lean](Stats/Kappa/Pareto/Defs.lean) retains the literal
+footnote definition only for diagnostics:
 
 ```text
 incompleteBeta(z,a,b) = ∫₀^z t^(a−1)(1−t)^(b−1) dt.
@@ -718,24 +784,30 @@ incompleteBeta(z,a,b) = ∫₀^z t^(a−1)(1−t)^(b−1) dt.
 The Pareto row uses $a=-α$, $b=1-α$, $α>1$ and two $z$ values in $(0,1)$.
 Both integrals diverge at zero because of $t^{-α-1}$.
 Mathlib's total real integral assigns zero to a nonintegrable integrand.
-Consequently the two Beta terms separately become zero.
+Consequently the two Beta terms separately became zero in the old formula.
 
 [ReviewChecks.lean](Stats/ReviewChecks.lean) proves, without non-core axioms:
 
 - `incompleteBeta_pareto_eq_zero`;
-- `paretoIntegrand_eq_zero`;
-- `paretoRatio_eq_zero`;
-- `paretoKappa_eq_two`: **the current Pareto κ expression equals 2 for every $α>1$**.
+- `legacy_paretoIntegrand_eq_zero`;
+- `legacy_paretoRatio_eq_zero`;
+- `legacy_paretoKappa_eq_two`: **the historical expression equals 2 for every $α>1$**.
 
 This contradicts the intended positive MAD ratio and, for example, Table III's
 approximately 0.594 entry at $α=2$.
-`kappa_pareto_general` compiles because both sides use the same defective ratio.
-The paper's own integral-definition footnote also omits the continuation issue.
+The paper's integral-definition footnote omits this divergence issue.
+The current `paretoIntegrand` instead uses a common interior Beta primitive.
+`incompleteBetaCentered_sub` identifies its difference with a single
+convergent integral between the positive endpoints. The corrected outer
+integral converges for all `α > 1`, and its ratio is strictly positive.
+`paretoRatio_two_lower_bound` proves `paretoRatio 2 ≥ 207/160`; consequently
+`paretoKappa_two_lt_two` excludes the old constant-two defect.
+`kappa_pareto_general` remains an algebraic identity on the supplied reference
+function, rather than a proof of the missing probability theorem.
 
-**Missing:** an appropriate analytically continued Beta definition, or a single
-convergent integral between the two positive endpoints representing their
-difference, followed by an actual Pareto MAD derivation.
-Subtracting two separately zero-valued total integrals is not regularization.
+**Missing:** the actual iid-Pareto sum MAD derivation and its identification
+with this corrected finite-integral expression. The analytic correction and
+its nondegenerate regression certificates are now proved.
 
 ### K-15. Table I: Gaussian switching variance — not ok
 
@@ -2162,12 +2234,11 @@ as a substitute for this source-to-statement mapping.
 ## What needs to be repaired first
 
 1. **Repair definitions that produce certified wrong objects.**
-   The Pareto Table I Beta expression uses a nonintegrable real interval
-   integral and yields the constant κ value two. It needs a valid integral or
-   a correctly defined analytic continuation, followed by the genuine MAD
-   identification. The minimum sample-size definition has already been
-   repaired to exclude zero; its distributional sufficiency interpretation
-   still needs the actual MAD functions and approximation proof.
+   The Pareto Table I expression now uses a convergent interior Beta
+   difference, with exact certificates excluding the zero/constant-two
+   degeneration. Its genuine MAD identification remains open. The minimum
+   sample-size definition also excludes zero; its distributional sufficiency
+   interpretation needs the actual MAD functions and approximation proof.
 2. **Add probability-law and MAD bridges.**
    Prioritize the exponential MAD integral, Student and stable sum laws,
    Gaussian mixtures and actual iid maxima. The measurable Brier average
@@ -2215,7 +2286,9 @@ documentation and comments are also in English.
 The minimum-size definition is now repaired, with positivity, attainment and
 empty-set characterization theorems plus regression certificates. The old
 zero-collapse certificate is retained against a clearly named historical
-definition. The Pareto diagnostic still describes an unresolved current defect.
+definition. The Pareto zero-collapse diagnostic now also targets an isolated
+historical model; the current finite-Beta expression is convergent and
+nondegenerate, with its probability-law/MAD bridge still open.
 The deeper probability bridges, false literal paper assertions and missing
 asymptotic theorems remain explicitly marked **not ok**. Completing them is
 substantive mathematical work, rather than a compiler-version adjustment.

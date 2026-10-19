@@ -1,51 +1,27 @@
 module
 
 /-
-  Taleb's κ-metric for pre-asymptotic fat-tailedness.
-    "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
-    arXiv:1802.05495v3 (Nov 2018).
+  Algebraic reference curves for Taleb, arXiv:1802.05495v3, Table I.
 
-  ## Stats.Kappa.TableI — closed-form κ₁ for general distributions
-  (paper Table I, rows 1, 3, 4, 5).
+  The input ratios are formula expressions. The helper `tableIMAD` assigns
+  them at the two-point baseline; the resulting kappa identities do not
+  prove that these functions are actual iid-sum MADs.
 
-  Following the same definitional convention as
-  `Stats.Kappa.GaussianSwitchingMean` and
-  `Stats.Kappa.LognormalCumulants`, we take each row's M(2)/M(1)
-  ratio as a primitive expression: the underlying MAD integrals
-  against the respective densities are not formalised (each would
-  be a multi-hundred-line probability-theory exercise blocked on
-  Mathlib infrastructure).  For every row we
+  Student T, switching-variance and lognormal expressions remain formula
+  calculations without their distributional MAD bridges. The lognormal
+  Table I row is the n = 2 specialization; the paper labels it approximate.
+  The separate kappa-star expression uses the (1,n) baseline.
 
-    1. Define the closed-form `…Ratio` (M(2)/M(1)).
-    2. Build an MAD oracle `tableIMAD Ratio` with `M(1) = 1`,
-       `M(2) = Ratio`.
-    3. Define `…Kappa` as the paper-printed κ₁ closed form.
-    4. Prove `kappa oracle 1 2 = …Kappa` by direct algebra.
+  The Pareto row uses the corrected convergent Beta difference proved in
+  Stats.Kappa.Pareto. The literal footnote's divergent integrals are kept
+  only in the historical diagnostics, not in the current ratio.
 
-  Distributions covered (paper Table I):
-
-  * `kappa_studentT_general` — Student T tail index `α > 1`
-    (row 1).  Uses Mathlib `Real.Gamma`.
-  * `kappa_pareto_general` — Pareto tail index `α > 1`
-    (row 3).  Uses the incomplete Beta function (defined here as a
-    primitive `incompleteBeta`; Mathlib `v4.29.1` has only the
-    *complete* Beta `Complex.betaIntegral`).
-  * `kappa_normal_switching_variance` — Normal `(μ, σ²)` with
-    switching variance `σ²·a` w.p. `p` (row 4).  Paper footnote
-    (b): "switching both variance and mean … can produce negative
-    values for kappa".
-  * `kappa_lognormal_explicit` — Lognormal `(μ, σ²)` approximation
-    (row 5).  Uses `Real.erf` (`Stats.BlackScholes.Erfc`); the
-    paper itself qualifies this row as `≈`.
-
-  Row 2 (Exponential/Gamma) lives in `Stats.Kappa.Exponential`.
-
-  See `Stats/Kappa.lean` for the umbrella module.
+  See REVIEW.md, K12-K16, for the precise remaining probability claims.
 -/
-public import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
-public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+public import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 public import Stats.BlackScholes.Erfc
 public import Stats.Kappa.Basic
+public import Stats.Kappa.Pareto
 
 @[expose] public section
 
@@ -53,11 +29,12 @@ open Real Set Filter Topology MeasureTheory
 
 namespace TailOptionPricing
 
-/-! ## Generic `(1, R)`-calibrated MAD oracle. -/
+/-! ## Generic `(1, R)` reference function. -/
 
-/-- **`(1, R)`-calibrated MAD oracle.**  Returns `1` at `n = 1`,
-    the closed-form ratio `R = M(2)/M(1)` at `n = 2`, and `0`
-    elsewhere.  At the `(1, 2)` baseline the κ-metric reduces to
+/-- **`(1, R)` reference function.** Returns `1` at `n = 1`,
+    the supplied ratio expression `R` at `n = 2`, and `0`
+    elsewhere. This is not a distributional MAD model. At the `(1, 2)`
+    baseline the abstract κ expression reduces to
     the bare form `2 − log(2)/log(R)` (see `kappa_tableIMAD_bare`). -/
 noncomputable def tableIMAD (R : ℝ) : ℕ → ℝ
   | 1 => 1
@@ -66,9 +43,9 @@ noncomputable def tableIMAD (R : ℝ) : ℕ → ℝ
 
 /-- **Bare-form κ identity for `tableIMAD`.**  Pure algebraic
     identity: `kappa (tableIMAD R) 1 2 = 2 − log(2)/log(R)` for
-    every `R : ℝ`.  No positivity on `R` is needed: Mathlib's
-    `Real.log` is `0` outside the positive reals by convention,
-    so the identity holds syntactically. -/
+    every `R : ℝ`.  No positivity on `R` is needed: this is an algebraic identity
+    using Lean's total real logarithm and division, not a statement
+    that every real `R` is a valid MAD ratio. -/
 private lemma kappa_tableIMAD_bare (R : ℝ) :
     kappa (tableIMAD R) 1 2 = 2 - Real.log 2 / Real.log R := by
   unfold kappa
@@ -134,60 +111,16 @@ theorem kappa_studentT_general {α : ℝ}
   -- Goal: `2 − log(2)/log(R) = 2 − 2·log(2)/(2·log(R))`.
   field_simp
 
-/-! ## Pareto closed-form κ₁ (Table I row 3).
+/-! ## Corrected Pareto expression (Table I row 3).
 
-    Paper Table I footnote (a): `B_z(a, b) := ∫_0^z t^(a−1)
-    (1 − t)^(b−1) dt` is the incomplete Beta function.  Mathlib
-    `v4.29.1` provides only the *complete* Beta function
-    (`Complex.betaIntegral` on `[0, 1]`); the incomplete version
-    is defined here as a primitive. -/
+    Stats.Kappa.Pareto proves convergence and positivity after replacing the
+    two divergent Beta integrals by a single finite interior difference.
+    The probability-law/MAD bridge remains separate from this algebra.
+-/
 
-/-- **Incomplete Beta function** (real, primitive form):
-        `B_z(a, b) := ∫_0^z t^(a − 1) · (1 − t)^(b − 1) dt`.
-    For `a > 0`, `b > 0`, `z ∈ [0, 1]` the integral converges;
-    outside that regime Lean's `intervalIntegral` returns `0`
-    when the integrand is not integrable, consistent with the
-    extended-real conventions in the rest of the κ-metric
-    formalisation. -/
-noncomputable def incompleteBeta (z a b : ℝ) : ℝ :=
-  ∫ t in (0 : ℝ)..z, t ^ (a - 1) * (1 - t) ^ (b - 1)
-
-/-- **Pareto integrand** (paper Table I row 3, body of the
-    `∫_0^(2/(α − 1))` integral, verbatim from arXiv LaTeX source
-    `kappa-n-final.tex` line 209):
-        `−2 α² · (y + 2)^(−2α − 1) · (2/(α − 1) − y)
-              · ( B_{1/(y+2)}(−α, 1−α) − B_{(y+1)/(y+2)}(−α, 1−α) )`.
-
-    Audit 2026-05-13 pass 5 fix: previous transcriptions had three
-    independent errors — additive bracket instead of multiplicative,
-    wrong second `B` subscript (`(2/(α−1)−y)/(y+2)` instead of
-    `(y+1)/(y+2)`), and wrong sign between the `B` terms.  All
-    corrected per LaTeX. -/
-noncomputable def paretoIntegrand (α y : ℝ) : ℝ :=
-  -2 * α ^ 2 * (y + 2) ^ (-2 * α - 1) * (2 / (α - 1) - y) *
-    (incompleteBeta (1 / (y + 2)) (-α) (1 - α)
-      - incompleteBeta ((y + 1) / (y + 2)) (-α) (1 - α))
-
-/-- **Pareto M(2)/M(1) ratio** (paper Table I row 3, verbatim from
-    LaTeX source):
-        `R_Par(α) := (α − 1)^(2 − α) · α^(α − 1) · ∫_0^(2/(α − 1))
-                       paretoIntegrand α y dy`.
-
-    Audit 2026-05-13 pass 5 fix: previous transcription had outer
-    factor `((α−1)^(2−α) · α^(−α))^α` with spurious outer `^α` and
-    wrong exponent on `α` (`−α` instead of `α−1`).  Corrected per
-    LaTeX. -/
-noncomputable def paretoRatio (α : ℝ) : ℝ :=
-  (α - 1) ^ (2 - α) * α ^ (α - 1) *
-    ∫ y in (0 : ℝ)..(2 / (α - 1)), paretoIntegrand α y
-
-/-- **Pareto closed-form κ₁** (paper Table I row 3):
-        `κ₁ = 2 − log(2) / log(R_Par(α))`. -/
-noncomputable def paretoKappa (α : ℝ) : ℝ :=
-  2 - Real.log 2 / Real.log (paretoRatio α)
-
-/-- **Pareto κ₁ identity** (paper Table I row 3).  Direct
-    instance of the bare-form κ identity on `tableIMAD`. -/
+/-- Algebraic κ identity for the corrected Pareto ratio expression.
+    Source: arXiv:1802.05495v3, Table I, with the finite-Beta correction in
+    Stats.Kappa.Pareto.Defs. This is not an iid-sum MAD identification. -/
 theorem kappa_pareto_general (α : ℝ) :
     kappa (tableIMAD (paretoRatio α)) 1 2 = paretoKappa α := by
   rw [kappa_tableIMAD_bare]
