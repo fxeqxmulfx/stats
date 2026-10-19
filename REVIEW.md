@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound and kurtosis | Infinite-law and higher-moment questions, numerical claims, Gamma approximation and compound-integrand simplification |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis | Infinite-law and higher-moment questions, numerical claims, Gamma approximation |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2513,6 +2513,37 @@ The mixture-moment, compound-law, density and moment modules have
 conversion and kurtosis convention were reread beside the local
 Section V equation and its following moment claims.
 
+### 2026-10-19: the source's explicit compound exponential integrand
+
+[CompoundIntegrand.lean](Stats/EpistemicUncertainty/CompoundIntegrand.lean)
+completes the second equality of Section V's Eq. compound. A positive
+log-precision standard deviation `S` gives its actual Gaussian density
+with variance `S^2`; positive precision gives its conditional Gaussian
+density in the printed `sqrt(lambda)` parametrization. The product of
+the actual lognormal precision density and conditional Gaussian density
+is proved pointwise equal to
+`exp(-((log(lambda))^2+lambda*S^2*x^2)/(2*S^2))/(2*pi*sqrt(lambda)*S)`.
+The proof combines exponential factors, inverse-precision algebra and
+the positive square-root identities, retaining both domain hypotheses.
+
+`epistemicNormalLognormalDensity_eq_exp_integral` then proves that
+this positive-half-line exponential integral is the density of the
+actual compound probability law already constructed. The integration
+variable lambda is bound; the resulting source density depends on
+`x,S`. This completes the compound law, both density representations,
+normalization and corrected moment claims in EU-27. The separate
+approximation of this law by a Gamma-precision mixture remains open.
+
+Verification: all 4,154 default-build jobs pass without warnings. The
+audit checks 2,386 declarations and 2,049 theorems with zero non-core
+axioms. The index records 224 modules and 1,179 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,334 previous
+indexed names and types are preserved, with four additions and no
+duplicates; the audit imports all 222 other `Stats/` modules.
+The new 111-line module's square-root normalization, exponent and
+positive parameter domain were checked against the local Eq. compound.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4436,7 +4467,7 @@ unnormalized sum of growing variance does not have a fixed normal limit.
 EU-25's separate linearization theorem requires its accumulated-error
 condition before an approximation argument can be used.
 
-### EU-27. Normal–Lognormal mixture — probability law and moments ok; integrand not ok completely
+### EU-27. Normal–Lognormal mixture and moments — ok with kurtosis convention corrected
 
 The actual precision prior `LognormalMeasure.lognormalReal m v` is now constructed, with
 positive support, whole-measure Gaussian log transform, and every real
@@ -4459,9 +4490,14 @@ counterexample excludes the source's displayed value under the
 Pearson convention. These are compound-population moments, distinct
 from the constant-error finite-sum model.
 
-**Missing:** simplification of the product of the two proved densities
-to the single explicit exponential integrand printed in Eq. compound.
-The law, interchanges, normalization and moments themselves are proved.
+`epistemic_compound_density_product` proves that the product of the
+actual densities equals the single combined exponential integrand in
+Eq. compound. `epistemicNormalLognormalDensity_eq_exp_integral` gives
+the resulting actual density integral for the source's `S>0` domain.
+
+**Missing:** nothing for the actual mixture, its density representations,
+normalization or corrected moments. The later Gamma approximation is
+a separate distributional claim.
 
 ### EU-28. Gamma/Lognormal moment and coefficient-of-variation matching — not ok
 
