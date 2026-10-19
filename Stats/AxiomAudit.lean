@@ -162,6 +162,10 @@ import all Stats.Probability.GaussianMoments
 import all Stats.Probability.GaussianShiftedMoments
 import all Stats.Probability.Lognormal
 import all Stats.Probability.LognormalDensity
+import all Stats.Probability.GaussianMixtureMoments
+import all Stats.EpistemicUncertainty.CompoundLaw
+import all Stats.EpistemicUncertainty.CompoundDensity
+import all Stats.EpistemicUncertainty.CompoundMoments
 import all Stats.Probability.Exponential
 import all Stats.Probability.ExponentialIntegration
 import all Stats.Probability.HiddenMass

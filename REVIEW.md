@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, corrected exceedance and moments, bounds and weak limit, log remainders, refuted uncentered approximation and corrected iid lognormal CLT | Higher-moment and infinite-law questions, numerical claims, compound mixtures |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound and kurtosis | Infinite-law and higher-moment questions, numerical claims, Gamma approximation and compound-integrand simplification |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2461,6 +2461,58 @@ The moment and density modules have 131 and 111 lines. Their parameters,
 inverse moments, coefficient of variation and positive-variance density
 domain were checked against the local Sections V–VI and Appendix B.
 
+### 2026-10-19: actual Normal–Lognormal compound, density and kurtosis
+
+[GaussianMixtureMoments.lean](Stats/Probability/GaussianMixtureMoments.lean)
+supplies the general probability bridge for Section V. An independently
+integrable scale power and a Gaussian innovation power give L1 of the
+actual compound centered power. Their independent product representation
+then justifies Fubini and factors the actual moment into the two actual
+input moments. The actual mean is the common Gaussian location, the
+variance is the actual second scale moment, and the fourth moment about
+that location is three times the fourth scale moment. The first moment
+needed for variance is derived from L2, not assumed of the output.
+
+[CompoundLaw.lean](Stats/EpistemicUncertainty/CompoundLaw.lean)
+constructs an actual lognormal precision draw and maps it to standard
+deviation `lambda^(-1/2)`. Positive precision gives conditional variance
+`1/lambda`. The prior is independently proper and positive, with every
+natural scale power L1 by the proved inverse lognormal moments. An
+independent precision draw and standard Gaussian innovation generate
+the entire compound law. All actual centered natural powers are L1.
+
+[CompoundDensity.lean](Stats/EpistemicUncertainty/CompoundDensity.lean)
+proves the actual law has the prior-averaged Gaussian density, with
+total mass one and a.e. finite values. For nonzero log variance it is
+exactly the positive Lebesgue integral of the actual lognormal precision
+density times `GaussianPDF(mu,1/lambda,x)`. This proves the literal
+mixture integral in the first equality of Eq. compound, with the correct
+precision-to-variance conversion. The representation against the actual
+prior remains valid at zero log variance, when that prior is atomic.
+The single combined exponential integrand printed after that equality
+has not yet been formally simplified from the product of densities.
+
+[CompoundMoments.lean](Stats/EpistemicUncertainty/CompoundMoments.lean)
+computes actual mean `mu`, variance `exp(-m+v/2)` and fourth central
+moment `3*exp(-2*m+2*v)`, where `m,v` are the Gaussian log-precision
+parameters. Pearson kurtosis is defined from these actual population
+moments and variance, then proved equal to `3*exp(v)`. Subtracting
+three gives `3*(exp(v)-1)`, the source's displayed value under the
+excess convention. A proper standard-log-precision compound formally
+refutes that value if it is read as Pearson kurtosis.
+
+Verification: all 4,153 default-build jobs pass without warnings. The
+audit checks 2,375 declarations and 2,038 theorems with zero non-core
+axioms. The regenerated index records 223 modules and 1,175 named
+theorems, with zero `sorry`, vacuous or placeholder entries. All 27
+Python tests, forbidden-pattern and whitespace checks pass. All 1,302
+previous indexed names and types are preserved, with 32 additions and
+no duplicates. The audit explicitly imports all 221 other `Stats/` modules.
+The mixture-moment, compound-law, density and moment modules have
+121, 123, 107 and 94 lines. Their actual precision law, variance
+conversion and kurtosis convention were reread beside the local
+Section V equation and its following moment claims.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4384,20 +4436,32 @@ unnormalized sum of growing variance does not have a fixed normal limit.
 EU-25's separate linearization theorem requires its accumulated-error
 condition before an approximation argument can be used.
 
-### EU-27. Normal–Lognormal precision mixture and its moments — not ok
+### EU-27. Normal–Lognormal mixture — probability law and moments ok; integrand not ok completely
 
 The actual precision prior `LognormalMeasure.lognormalReal m v` is now constructed, with
 positive support, whole-measure Gaussian log transform, and every real
 power L1. Its actual moments are `exp(p*m+v*p^2/2)`, including inverse
 moments. `LognormalMeasure.lognormalReal_eq_withDensity` proves the literal positive
 lognormal density and its normalization for nonzero log variance.
-There is not yet a formal compound density or probability law for this section.
+`epistemicNormalLognormalLaw` is the actual compound probability measure,
+generated by independent lognormal precision and Gaussian innovation.
+Positive precision gives conditional Gaussian variance `1/lambda`.
+Every actual centered natural power is proved L1 before evaluating
+moments. `epistemicNormalLognormalLaw_eq_withDensity` identifies the
+whole law's normalized density; for nonzero log variance,
+`epistemicNormalLognormalDensity_eq_lintegral` proves the literal
+positive integral of the two source densities.
 
-**Missing:** the mixture construction, integral interchange and its moments.
-For centered Gaussian precision $Λ$ with $log(Λ)∼N(0,S²)$,
-the raw kurtosis is $3exp(S²)$ and the excess is
-$3(exp(S²)-1)$. The source's displayed “kurtosis” needs that excess
-convention. This is distinct from the constant-error finite-sum model.
+Actual mean, variance and fourth central moment are `mu`,
+`exp(-m+v/2)` and `3*exp(-2*m+2*v)`. The actual Pearson kurtosis is
+`3*exp(v)`, and excess is `3*(exp(v)-1)`. A formal proper-law
+counterexample excludes the source's displayed value under the
+Pearson convention. These are compound-population moments, distinct
+from the constant-error finite-sum model.
+
+**Missing:** simplification of the product of the two proved densities
+to the single explicit exponential integrand printed in Eq. compound.
+The law, interchanges, normalization and moments themselves are proved.
 
 ### EU-28. Gamma/Lognormal moment and coefficient-of-variation matching — not ok
 
