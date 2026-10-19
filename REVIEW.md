@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual finite recursive Gaussian population, corrected outcome moments, symmetry and kurtosis; binomial scale algebra | Branch-counting and density identities, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -1598,6 +1598,78 @@ previous names and types are unchanged, with fifteen additions and no
 duplicate names. The shifted-Gaussian and full mixture-law modules are
 123 and 159 lines.
 
+### Construct the finite branching population and prove its outcome moments
+
+Reread `papers/arXiv-1912.00277v2/FatTailsEpistemic2019.tex`, the
+equiprobable scale branches and repeated Gaussian mixtures (lines
+234–276), and Section III's constant-error moments, symmetry and
+kurtosis (lines 318–346). The printed fourth raw moment starts with
+`3*mu^4`; the actual coefficient is one. Its other terms are retained.
+
+[BranchingLaw.lean](Stats/EpistemicUncertainty/BranchingLaw.lean)
+constructs the actual finite recursive population. Depth zero is the
+genuine Gaussian with mean `mu` and variance `sigma^2`; each additional
+layer equally mixes the recursively constructed populations with base
+scales `sigma*(1+epsilon)` and `sigma*(1-epsilon)`. Every finite depth
+is a probability measure, with L1 powers of every natural order about
+every finite center. The actual mean stays `mu`, and reflection about
+`mu` preserves the whole actual measure. On the source's domain
+`sigma>0`, `epsilon in [0,1)`, all branch standard deviations are
+positive. The measure and moment identities also extend through
+squared variances to the other real parameters in their Lean statements.
+
+[BranchingMoments.lean](Stats/EpistemicUncertainty/BranchingMoments.lean)
+integrates the actual recursive measure, using independently proved
+component L1 at each induction step. For `A=1+epsilon^2` and
+`B=1+6*epsilon^2+epsilon^4`, its actual raw moments are
+
+```text
+E[X]   = mu,
+E[X^2] = mu^2 + sigma^2*A^n,
+E[X^3] = mu^3 + 3*mu*sigma^2*A^n,
+E[X^4] = mu^4 + 6*mu^2*sigma^2*A^n + 3*sigma^4*B^n.
+```
+
+The actual variance is `sigma^2*A^n`; the actual third central moment
+is zero and the actual fourth central moment is `3*sigma^4*B^n`.
+The formulas are proved about arbitrary centers before specializing
+to raw or central moments. The supporting actual Gaussian third
+moment about an arbitrary center is added in GaussianShiftedMoments.
+
+[BranchingKurtosis.lean](Stats/EpistemicUncertainty/BranchingKurtosis.lean)
+identifies the actual variance and fourth central moment with the
+earlier weighted scale expressions. It proves positive actual variance
+for nonzero base scale, zero standardized third moment, and equality
+of the actual Pearson kurtosis with `epistemicKurtosis`. Consequently
+the raw and excess closed expressions, the lower bound three, and
+strictness at positive depth and nonzero uncertainty now concern
+the actual probability population.
+
+The proper one-layer example `mu=sigma=1`, `epsilon=1/2` has actual
+second and third raw moments `9/4` and `19/4`, actual fourth raw
+moment `259/16`, variance `5/4`, central fourth moment `123/16`,
+Pearson kurtosis `123/25` and excess kurtosis `48/25`. The source's
+printed fourth raw formula instead gives `291/16`; a formal actual-law
+counterexample proves their inequality. A depth-two example verifies
+normalization, L1, mean preservation and full reflection invariance.
+
+This closes EU-09–EU-11 and EU-13–EU-15 for the constant-error
+recursive population, and proves the corrected EU-12 theorem together
+with a refutation of the literal source expression. The explicit sign
+probability space, binomial count pushforward, finite density identity,
+arbitrary nested kernels and infinite-depth law remain separate.
+
+**Verification:** all 3991 default-build jobs pass without warnings.
+The standalone audit covers 1972 declarations and 1700 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 188 other
+Stats modules, including private declarations. The regenerated index has
+190 modules and 950 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1058 distinct public names: all 1031
+previous names and types are unchanged, with twenty-seven additions and no
+duplicate names. The three branching modules are 95, 146 and 111 lines;
+the extended shifted-Gaussian helper is 156 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3026,15 +3098,19 @@ algebra does not prove those broader assertions.
 Source: [arXiv:1912.00277v2](https://arxiv.org/abs/1912.00277v2).
 Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 
-**Paper verdict: not ok.** The finite binomial moment algebra and several
-inequalities are proved. The Gaussian mixture itself, its distributional
-moments, the CLT argument and the Normal–Gamma compound law are not formalized.
+**Paper verdict: not ok.** The actual finite recursive constant-error
+Gaussian mixture, corrected first four outcome moments, symmetry and
+kurtosis are proved, along with the binomial scale algebra. Explicit
+branch counting, density identities, general nested kernels, infinite
+limits, the CLT argument and the Normal–Gamma compound law remain open.
 This source has no active numbered Theorem or Proposition environment; both
 numbered Remarks and the mathematical claims are audited below.
 
 ### EU-01. Remark 1: collapse the branching scenarios into one distribution — not ok
 
 `epistemicSigmaMoment` defines a binomial-weighted finite sum.
+`epistemicBranchLaw` now constructs the actual normalized recursive
+constant-error Gaussian population, with actual moments and symmetry.
 
 **Missing:** the probability space of branches, its pushforward to a dispersion
 law, the Gaussian mixture measure, and proof that the branching construction
@@ -3060,11 +3136,12 @@ polynomial expressions do not implement this general construction.
 
 ### EU-04. Section II: the 2ⁿ-component Gaussian density — not ok
 
-The source's sign-vector construction and finite Gaussian density mixture are
-described in comments.
+The source's sign-vector construction is described in comments. The
+constant-error actual measure is now constructed recursively by
+`epistemicBranchLaw` and proved to be a probability measure.
 
-**Missing:** the actual density/measure and an equality with the recursively
-constructed model. For Gaussian standard deviations, require positive base
+**Missing:** the explicit sign-vector density and its equality with the
+recursively constructed measure. For Gaussian standard deviations, require positive base
 scale and positive multiplicative factors; the algebraic Lean identities alone
 permit parameter values outside that density model.
 
@@ -3097,61 +3174,82 @@ $M₂=1+ε²$ and $M₄=1+6ε²+ε⁴$.
 `epistemicVariance_eq` and `epistemicSigmaFourthMoment_eq` prove
 the weighted second/fourth powers of the scale.
 
-**Missing:** nothing for the finite sums. Despite the first theorem's name,
-its conclusion does not mention the variance of an outcome random variable
-$X$.
+`epistemicBranchLaw_variance_eq_scaleMoment` now identifies the second
+scale sum with the actual outcome variance. Three times the fourth
+scale sum is proved to be the actual fourth central outcome moment.
 
-### EU-09. First raw outcome moment and preservation of μ — not ok
+**Missing:** nothing for these identities. An explicit scale random
+variable and binomial pushforward remain separate in EU-05–EU-06.
+
+### EU-09. First raw outcome moment and preservation of μ — ok for the finite recursive law
 
 The source states $E[X]=μ$ for the mixture.
 
-**Missing:** a Gaussian mixture random variable, first-moment integrability,
-and the expectation calculation.
+`epistemicBranchLaw_mean` proves the actual expectation is `mu` at
+every finite depth. The population is normalized and its observation
+is independently proved L1.
 
-### EU-10. Second raw outcome moment and variance — not ok as probability statements
+**Missing:** nothing for this finite constant-error population.
+
+### EU-10. Actual second raw outcome moment and variance — ok for the finite recursive law
 
 The source gives $E[X²]=μ²+σ²(1+ε²)^n$ and
 $Var(X)=σ²(1+ε²)^n$.
 
-**Missing:** identify the weighted dispersion second moment with the mixture's
-central second moment, then prove the raw-moment and variance equalities.
-EU-08 proves only the weighted scale expression.
+`epistemicBranchLaw_moment_two` and `epistemicBranchLaw_variance` now
+prove these actual-law equalities. The actual variance is identified
+with the earlier weighted dispersion second moment.
 
-### EU-11. Third raw outcome moment and zero skewness — not ok
+**Missing:** nothing for the finite constant-error population.
+
+### EU-11. Actual third raw outcome moment and zero skewness — ok for the finite recursive law
 
 The source gives $E[X³]=μ³+3μσ²(1+ε²)^n$ and zero skewness.
 
-**Missing:** the actual third-moment integral, symmetry/centering, and
-nondegenerate variance for the skewness ratio.
+`epistemicBranchLaw_moment_three` proves the actual raw moment.
+The actual third central moment vanishes; the standardized ratio is
+zero. `epistemicBranchLaw_variance_pos` supplies positive actual
+variance when `sigma` is nonzero. Full reflection symmetry is EU-13.
 
-### EU-12. Fourth raw outcome moment — not ok literally or distributionally
+**Missing:** nothing on this finite nondegenerate constant-error domain.
+
+### EU-12. Fourth raw outcome moment — false as printed; corrected actual theorem proved
 
 The source prints $3μ⁴$ as the leading term.
 
-**Missing:** correct it to $μ⁴$, then establish the Gaussian-mixture moment
-identity. For a mixture with common mean $μ$ and random standard deviation
-$Σ$, the raw fourth moment is
-$μ⁴+6μ²E[Σ²]+3E[Σ⁴]$. Even at zero uncertainty, the printed $3μ⁴$
-does not give the noncentered Gaussian fourth moment.
-The module proves the dispersion fourth moment, without this outcome-moment
-bridge.
+`epistemicBranchLaw_moment_four` proves the corrected actual formula
+with leading `mu^4` and all remaining terms retained. The proper
+one-layer model with `mu=sigma=1`, `epsilon=1/2` has actual fourth
+raw moment `259/16`, whereas the printed expression gives `291/16`.
+`epistemicBranchLaw_fourth_source_counterexample` formally certifies
+the discrepancy. Actual fourth-power L1 is proved independently.
 
-### EU-13. Symmetry of the outcome distribution — not ok
+**Missing:** nothing for the corrected finite recursive-law theorem
+and literal refutation. The source's erroneous expression is not proved.
+
+### EU-13. Actual symmetry of the outcome distribution — ok for the finite recursive law
 
 The source states that layering scale uncertainty preserves symmetry.
 
-**Missing:** construct the common-center Gaussian mixture and prove invariance
-of its law under reflection about $μ$.
+`epistemicBranchLaw_reflection` proves that the actual population's
+pushforward under `x -> 2*mu-x` equals the same actual measure at
+every finite depth. A nondegenerate depth-two example verifies it.
 
-### EU-14. Closed raw- and excess-kurtosis expressions — ok algebraically
+**Missing:** nothing for this finite constant-error population.
+
+### EU-14. Actual raw- and excess-kurtosis expressions — ok for the finite recursive law
 
 `epistemicKurtosis_eq` and `epistemicExcessKurtosis_eq` prove
 $3(1+6ε²+ε⁴)^n/(1+ε²)^{2n}$ and that quantity minus three, assuming $σ≠0$.
 
-**Missing:** nothing for the defined expression. Its interpretation as the
-kurtosis of $X$ remains **not ok** until EU-10 and EU-12 are proved.
+`epistemicBranchLawKurtosis_eq` now identifies this expression with the
+ratio of actual central moments. `epistemicBranchLawKurtosis_closed`
+and `epistemicBranchLaw_excessKurtosis` prove the stated actual raw
+and excess formulas, with positive actual variance for `sigma!=0`.
 
-### EU-15. Kurtosis at least three, and strictly greater with uncertainty — ok algebraically
+**Missing:** nothing for this finite constant-error population.
+
+### EU-15. Actual kurtosis at least three, and strictly greater with uncertainty — ok for the finite recursive law
 
 `epistemicMomentFactor_four_ge_two_sq`,
 `epistemicMomentFactor_four_strict`,
@@ -3159,8 +3257,14 @@ kurtosis of $X$ remains **not ok** until EU-10 and EU-12 are proved.
 `epistemicExcessKurtosis_nonneg` prove the inequalities.
 Strictness requires $n≥1$, $σ≠0$ and $ε≠0$.
 
-**Missing:** nothing for these scalar inequalities. A kurtosis inequality is
-not a regularly varying tail theorem.
+`epistemicBranchLawKurtosis_ge_three` and
+`epistemicBranchLawKurtosis_gt_three` prove these inequalities for
+the actual normalized recursive population, using its actual moments.
+The one-layer positive-scale, half-error model has actual kurtosis
+`123/25>3` and positive actual variance.
+
+**Missing:** nothing for these actual finite-population inequalities.
+A kurtosis inequality does not establish a regularly varying tail.
 
 ### EU-16. Geometric divergence of variance and kurtosis as n → ∞ — not ok
 

@@ -15,14 +15,18 @@ module
   The candidate raw kurtosis is strictly greater than 3 when n ≥ 1,
   σ ≠ 0 and ε ≠ 0.
 
-  A Gaussian-mixture law, its outcome moments, divergence limits,
-  a CLT and the Normal-Gamma compound-law theorem are not constructed
-  here. Higher kurtosis alone does not establish a power-law tail.
+  BranchingLaw constructs the actual normalized finite recursive population.
+  BranchingMoments and BranchingKurtosis prove its outcome moments,
+  reflection symmetry and the actual interpretation of the scale formulas.
+  Binomial counting, density identities, divergence limits, a CLT and the
+  Normal-Gamma compound-law theorem remain separate. Higher kurtosis alone
+  does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 public import Stats.Pareto
+public import Stats.EpistemicUncertainty.BranchingLaw
 
 @[expose] public section
 

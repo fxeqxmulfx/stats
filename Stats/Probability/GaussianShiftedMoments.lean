@@ -65,6 +65,35 @@ theorem gaussianReal_momentAbout_two (μ c : ℝ) (v : NNReal) :
     gaussianReal_zero_moment_two, integral_id_gaussianReal]
   simp
 
+/-- Actual third Gaussian moment about an arbitrary center, used by
+arXiv:1912.00277v2, Section III's common-mean branching mixture. -/
+theorem gaussianReal_momentAbout_three (μ c : ℝ) (v : NNReal) :
+    (∫ x : ℝ, (x - c) ^ 3 ∂gaussianReal μ v) = (μ - c) ^ 3 + 3 * (v : ℝ) * (μ - c) := by
+  have hmap : (gaussianReal 0 v).map (fun x : ℝ => μ + x) = gaussianReal μ v := by
+    simpa only [zero_add] using gaussianReal_map_const_add (μ := 0) (v := v) μ
+  have hm : AEStronglyMeasurable (fun x : ℝ => (x - c) ^ 3)
+      ((gaussianReal 0 v).map (fun x : ℝ => μ + x)) :=
+    ((measurable_id.sub_const c).pow_const 3).aestronglyMeasurable
+  rw [← hmap, integral_map (measurable_const_add μ).aemeasurable hm]
+  have he : (fun x : ℝ => (μ + x - c) ^ 3) =
+      fun x : ℝ => x ^ 3 + 3 * (μ - c) * x ^ 2 + 3 * (μ - c) ^ 2 * x + (μ - c) ^ 3 := by
+    funext x
+    ring
+  have hi : Integrable (fun x : ℝ => x) (gaussianReal 0 v) := by
+    simpa only [pow_one] using gaussianReal_integrable_pow 0 v 1
+  have h3 := gaussianReal_integrable_pow 0 v 3
+  have h2 := (gaussianReal_integrable_pow 0 v 2).const_mul (3 * (μ - c))
+  have h1 := hi.const_mul (3 * (μ - c) ^ 2)
+  have h32 : Integrable (fun x : ℝ => x ^ 3 + 3 * (μ - c) * x ^ 2) (gaussianReal 0 v) :=
+    h3.add h2
+  have hs : Integrable (fun x : ℝ => x ^ 3 + 3 * (μ - c) * x ^ 2 +
+      3 * (μ - c) ^ 2 * x) (gaussianReal 0 v) := h32.add h1
+  rw [he, integral_add hs (integrable_const _), integral_add h32 h1, integral_add h3 h2,
+    integral_const_mul, integral_const_mul, gaussianReal_zero_moment_three,
+    gaussianReal_zero_moment_two, integral_id_gaussianReal]
+  simp
+  ring
+
 /-- Actual fourth Gaussian moment about an arbitrary center for
 arXiv:1802.05495v3, Eq. 17. In particular the noncentered term is
 (mu-c)^4, not (mu-c)^2. Every integrated polynomial term is L1. -/
@@ -110,6 +139,10 @@ example : (∫ x : ℝ, x ^ 3 ∂gaussianReal 0 9) = 0 := gaussianReal_zero_mome
 
 example : (∫ x : ℝ, (x - 1) ^ 2 ∂gaussianReal 2 9) = 10 := by
   rw [gaussianReal_momentAbout_two]
+  norm_num
+
+example : (∫ x : ℝ, (x - 1) ^ 3 ∂gaussianReal 2 9) = 28 := by
+  rw [gaussianReal_momentAbout_three]
   norm_num
 
 example : (∫ x : ℝ, (x - 1) ^ 4 ∂gaussianReal 2 9) = 298 := by

@@ -57,7 +57,9 @@ module
     Stats/EpistemicUncertainty.lean — branching epistemic uncertainty
                               (arXiv:1912.00277v2): binomial-tree moment
                               factor M_k(ε), weighted scale second/fourth
-                              moments, candidate kurtosis inequalities,
+                              moments, actual finite recursive Gaussian
+                              population and outcome moments, actual
+                              kurtosis inequalities and symmetry,
                               decaying-error product bounds,
                               log-additivity of multiplicative errors.
     Stats/HiddenMoments.lean  — hidden moments of a probability distribution
@@ -99,6 +101,7 @@ public import Stats.Hedging
 public import Stats.Kappa
 public import Stats.BinaryForecasts
 public import Stats.EpistemicUncertainty
+public import Stats.EpistemicUncertainty.BranchingKurtosis
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
