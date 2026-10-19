@@ -27,6 +27,8 @@ module
   BinomialSurvival proves actual centered Gaussian and erfc exceedance sums.
   LayerLaw and LayerMoments construct actual varying-error populations and
   prove their dispersion moments, variance and fourth central moment products.
+  DecayingBounds and DecayingLimits prove uniform caps and finite limits
+  of the actual second and fourth moments for geometric decay kappa<1.
   General layer-dependent sign constructions and densities, nested kernels,
   a CLT and the Normal-Gamma compound-law theorem remain separate.
   Higher kurtosis alone does not establish a power-law tail.

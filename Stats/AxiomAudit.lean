@@ -52,6 +52,8 @@ import all Stats.Copula.Basic
 import all Stats.EpistemicUncertainty
 import all Stats.EpistemicUncertainty.BranchingLaw
 import all Stats.EpistemicUncertainty.BranchingMoments
+import all Stats.EpistemicUncertainty.DecayingBounds
+import all Stats.EpistemicUncertainty.DecayingLimits
 import all Stats.EpistemicUncertainty.BranchingKurtosis
 import all Stats.EpistemicUncertainty.BranchingLimits
 import all Stats.EpistemicUncertainty.ScaleLaw

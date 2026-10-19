@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Explicit sign-vector densities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Explicit sign-vector densities, nested kernels, higher-moment and limit-law questions, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2049,6 +2049,53 @@ The audit explicitly imports all 198 other `Stats/` modules. The law and
 moment modules are 151 and 188 lines; the source statements, zero-based
 indices and sign correction were checked against the local manuscript.
 
+### Bound and converge the actual decaying-error moment sequences
+
+Reread arXiv:1912.00277v2, Section IV's capped-moment claims, variance
+product and fourth central moment (`FatTailsEpistemic2019.tex`, lines
+416–441). The necessary geometric decay is `0<=kappa<1`.
+
+[DecayingBounds.lean](Stats/EpistemicUncertainty/DecayingBounds.lean)
+proves the source parameters keep the actual dispersion positive a.e.
+at every finite depth. Starting from actual outcome moments, finite
+products are bounded by exponentials of finite sums; convergent geometric
+sums then give uniform bounds
+
+```text
+actual variance <= sigma^2 * exp(epsilon_1^2/(1-kappa^2))
+actual central fourth moment <= 3*sigma^4 *
+  exp(6*epsilon_1^2/(1-kappa^2)+epsilon_1^4/(1-kappa^4)).
+```
+
+[DecayingLimits.lean](Stats/EpistemicUncertainty/DecayingLimits.lean)
+proves the actual fourth central moment increases with depth for arbitrary
+varying errors. Together with the earlier actual variance monotonicity,
+the uniform caps give finite real limits for both true moment sequences.
+Each limit lies between its base Gaussian moment and its displayed cap.
+No infinite-depth distribution or expectation/limit interchange is assumed.
+
+For mean one, scale two, initial error one-half and decay one-half,
+concrete witnesses place the actual variance limit in `[4,4*exp(1/3)]`
+and the actual fourth central moment limit in `[48,48*exp(31/15)]`.
+The nondecaying `kappa=1` endpoint is separately checked: the actual
+varying-error population reduces to the proved constant-error law, and
+its variance diverges for nonzero scale and error. Thus the source's
+closed parameter interval cannot alone supply a capped-moment claim.
+
+EU-22's actual second- and fourth-moment bounds and finite limits are
+proved. All-orders bounds, identification of an infinite-depth law,
+the displayed numerical coefficients and joint parameter limits remain.
+
+Verification: the full build passes 4,077 jobs without warnings. The
+audit checks 2,113 declarations and 1,823 theorems with zero non-core
+axioms. The index records 202 modules and 1,027 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,130 previous public
+names and types are preserved; seven are added without duplicates.
+The audit explicitly imports all 200 other `Stats/` modules. The bounds
+and limits modules are 107 and 114 lines. Their actual-law domains and
+endpoint distinction were checked against the local Section IV source.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3482,7 +3529,7 @@ Gaussian mixture, its whole-law binomial collapse, normalized density and
 corrected exceedance formula, first four outcome moments, symmetry and
 kurtosis are proved.
 Explicit layer-dependent sign constructions and densities, nested kernels,
-general infinite constructions and decaying-error limits, the CLT
+general infinite constructions and higher-moment limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
 are proved. The actual constant-error laws have the proved unscaled
@@ -3810,16 +3857,32 @@ has actual variance `85/16` and fourth central moment `43419/256`.
 
 **Missing:** nothing for the finite varying-error fourth central moment.
 
-### EU-22. Capped moments and convergence for decaying errors — not ok
+### EU-22. Capped moments and convergence for decaying errors — not ok fully
 
-Actual finite-population variance and fourth central moments are now
-identified with the products. Their infinite-depth limits remain separate.
+The actual finite-population variance and fourth central moments equal
+the source products. For `0<=kappa<1`,
+`epistemicLayerBranchLaw_variance_decaying_le` bounds every actual variance
+by `sigma^2*exp(epsilon_1^2/(1-kappa^2))`.
+`epistemicLayerBranchLaw_centralMoment_four_decaying_le` bounds every actual
+fourth central moment by
+`3*sigma^4*exp(6*epsilon_1^2/(1-kappa^2)+epsilon_1^4/(1-kappa^4))`.
 
-**Missing:** infinite-product convergence, quantitative bounds and the
-limiting moment theorems. Require actual decay, such as $0≤κ<1$;
-the source's interval $[0,1]$ includes $κ=1$, which reduces to the
-nondecaying case. The example coefficients 1.23 and 9.88 are not certified.
-A joint limit $κ→1$, $ε→0$ also requires control of their relative rates.
+The actual moment sequences are monotone in depth, and
+`epistemicLayerBranchLaw_variance_decaying_converges` and
+`epistemicLayerBranchLaw_centralMoment_four_decaying_converges` prove
+finite real limits between the base Gaussian moments and these caps.
+These are limits of actual moments, without assuming an infinite law
+or interchanging expectation and a weak limit.
+`epistemicLayerScaleLaw_ae_pos_decaying` gives genuine positive dispersion
+at every finite depth for the source parameters.
+`epistemicLayerBranchLaw_variance_kappa_one_diverges` verifies that
+`kappa=1` with nonzero error is the nondecaying case, with unbounded
+actual variance; the closed interval alone does not ensure decay.
+
+**Missing:** the all-orders higher-moment extension, an actual infinite-depth
+law with justified moment convergence to that law, and certified numerical
+coefficients 1.23 and 9.88. A joint limit `kappa->1`, `epsilon->0` also
+requires control of their relative rates.
 
 ### EU-23. Section V: exact log-additivity — ok
 
