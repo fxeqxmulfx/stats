@@ -17,7 +17,7 @@ module
 -/
 public import Stats.Pareto.Mispricing
 public import Stats.RiskMeasures.Moments
-public import Stats.HiddenMoments
+public import Stats.HiddenMoments.TailMoment
 
 @[expose] public section
 

@@ -46,6 +46,14 @@ import all Stats.Copula.Basic
 import all Stats.EpistemicUncertainty
 import all Stats.Hedging
 import all Stats.HiddenMoments
+import all Stats.HiddenMoments.Counterexample
+import all Stats.HiddenMoments.Examples
+import all Stats.HiddenMoments.Maximum
+import all Stats.HiddenMoments.Mean
+import all Stats.HiddenMoments.SurvivalKernel
+import all Stats.HiddenMoments.SurvivalMass
+import all Stats.HiddenMoments.TailMoment
+import all Stats.HiddenMoments.Threshold
 import all Stats.Kappa
 import all Stats.Kappa.Basic
 import all Stats.Kappa.CubicStudent
@@ -93,6 +101,8 @@ import all Stats.Pareto.PutCallParity
 import all Stats.Pareto.Returns
 import all Stats.Pareto.TailRisk
 import all Stats.Probability.Exponential
+import all Stats.Probability.HiddenMass
+import all Stats.Probability.SampleMaximum
 import all Stats.RegularVariation
 import all Stats.RegularVariation.Abelian
 import all Stats.RegularVariation.Abelian.Basic

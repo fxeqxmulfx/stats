@@ -21,7 +21,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
-| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Deterministic tail-moment integral and Beta(1,n) function identities | Main Proposition 1, actual iid maximum law, asymptotics and Gaussian comparison |
+| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Tail-moment integral, actual finite iid Pareto maximum, supported hidden-mass Beta(1,n) CDF and actual mean 1/(n+1) | General-p Proposition 1, asymptotics, distribution-free extension and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
@@ -504,6 +504,73 @@ forbidden-construct check and whitespace check pass. All 761 elaborated
 public names and types are unchanged after `dt refresh project`. Index
 regeneration reports 135 modules, 670 named theorems and zero sorry,
 vacuous or placeholder markers.
+
+## Gap-closing goal (2026-10-19)
+
+The user requested **solve all gaps**. The full six-paper claim registry
+remains the objective; the following completed group does not close the
+remaining distributional, approximation, limit and modeling entries.
+
+### Actual iid Pareto maximum and hidden probability mass
+
+Reread `papers/arXiv-2004.05894v1/MaxHiddenTail.tex`, the maximum
+construction and moment decomposition (lines 159–175), Proposition 1 and
+its Fréchet substitution (lines 185–219), and Remark 1 (lines 230–237).
+The exact finite-sample calculation is now proved for actual observations.
+
+[Probability/SampleMaximum.lean](Stats/Probability/SampleMaximum.lean)
+constructs a genuine finite product sample law and the maximum of its
+observed coordinates. Independence, the common marginal and maximum
+measurability are proved. For any real probability law, including atoms,
+the strict and non-strict lower-tail probabilities are the corresponding
+marginal probabilities raised to the sample size.
+[HiddenMoments/Maximum.lean](Stats/HiddenMoments/Maximum.lean) specializes
+this to the supported Pareto measure. Its full CDF is zero below the scale
+and `(1-(l/k)^α)^n` above it, for positive scale/index and nonempty samples.
+The maximum lies strictly above the support boundary almost surely.
+
+[Probability/HiddenMass.lean](Stats/Probability/HiddenMass.lean) defines
+the quantity of interest as the **actual population probability beyond
+the observed maximum**, `ν.real (Ioi (sampleMaximum x))`. It is measurable,
+bounded between zero and one, and integrable under the actual product law
+without moment assumptions on the sampled values.
+[HiddenMoments/SurvivalMass.lean](Stats/HiddenMoments/SurvivalMass.lean)
+identifies it almost surely with `(l/K_n)^α` and proves its complete CDF:
+
+```text
+P(H_n ≤ y) = 0                  if y ≤ 0,
+             1-(1-y)^n          if 0 < y < 1,
+             1                  if y ≥ 1.
+```
+
+This is the supported Beta(1,n) CDF of the actual hidden mass and actual
+sample-survival ratio. It is not assigned as either variable's definition.
+[Mean.lean](Stats/HiddenMoments/Mean.lean) uses their proved integrability,
+actual tail probabilities and layer cake to prove `E[H_n]=1/(n+1)`.
+[Counterexample.lean](Stats/HiddenMoments/Counterexample.lean) proves that
+the actual pushforward law differs from the printed Exp(n) law: the former
+has no mass above one, while the latter has positive mass there.
+This corrects the source's exact exponential/`1/n` assertions; no
+Fréchet or exponential limit has been inferred without a limit proof.
+
+Concrete nondegenerate witnesses use two independent Pareto(1,2)
+observations: `P(K₂≤2)=9/16`, `P(H₂≤1/4)=7/16`, and `E[H₂]=1/3`.
+They cover the support branches, remaining hypotheses and integrability.
+The former large HiddenMoments module is split into focused files while
+retaining its public names; the Pareto measure imports only the tail-moment
+foundation to keep the new maximum-law imports acyclic.
+
+**Verification:** all 3925 default-build jobs pass without warnings. The
+standalone exhaustive audit checks 1518 declarations, including 1305
+theorem declarations, with only `Quot.sound`, `Classical.choice` and
+`propext`. The regenerated index contains 145 modules and 702 named
+theorems, with zero sorry, vacuous or placeholder markers; the audit
+explicitly imports all 144 other modules. All 27 Python tests, the
+forbidden-construct check and `git diff --check` pass. `dt refresh project`
+indexes 802 public declarations: all 761 previous names and types remain
+unchanged, and 41 declarations are added. The focused example build checks
+the four central theorem axioms and nondegenerate probability witnesses.
+Every new Lean module has at most 192 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -2108,19 +2175,23 @@ polynomial identities alone.
 Source: [arXiv:2004.05894v1](https://arxiv.org/abs/2004.05894v1).
 Main module: [HiddenMoments.lean](Stats/HiddenMoments.lean).
 
-**Paper verdict: not ok.** The strong-Pareto tail-moment integral and several
-polynomial/Beta-kernel calculations are proved. Proposition 1, the actual
-iid-maximum law and the pushforward law of the hidden moment are missing.
-The source uses a Fréchet approximation where an exact finite-sample Pareto
-calculation has a different law.
+**Paper verdict: not ok.** The strong-Pareto tail-moment integral, actual
+finite iid maximum law, actual hidden-mass CDF and its expectation are
+proved. The zeroth hidden moment has the supported Beta(1,n) CDF and mean
+`1/(n+1)`; the printed exact exponential law is formally refuted.
+General-p Proposition 1, limit theorems and the Gaussian comparison remain
+incomplete. The source's Fréchet substitution requires a precise
+approximation or asymptotic statement.
 
 ### HM-01. Visible-plus-hidden moment decomposition — not ok as assembled
 
 The source splits the population moment at the random sample maximum.
 
-**Missing:** an iid sample and its maximum, integrability of the population
-moment, and the integral-splitting theorem applied at that random threshold.
-The repository computes the hidden integral for a deterministic threshold.
+The actual iid sample and its measurable maximum are now constructed.
+
+**Missing:** the population moment's integrability and the integral-splitting
+theorem assembled at that random threshold. The deterministic hidden
+tail-moment integral is an ingredient.
 
 ### HM-02. Eq. 2: strong-Pareto p-th tail moment — ok
 
@@ -2141,16 +2212,16 @@ $L^{-α}$ survival coefficient and later $L^α$ scale formulas need a
 consistent scale convention before combining its displayed statements
 literally.
 
-### HM-04. Exact iid sample-maximum CDF — not ok as a probability theorem
+### HM-04. Exact iid sample-maximum CDF — ok
 
-`paretoSampleMaxCDF` in
-[Drawdown.lean](Stats/RiskMeasures/Drawdown.lean) is defined by
-$(1-(l/k)^α)^n$.
+`paretoSampleMaximum_cdf` in
+[Maximum.lean](Stats/HiddenMoments/Maximum.lean) proves the CDF of the
+actual coordinate maximum under the actual Pareto product sample law.
+For positive scale/index and nonempty samples it equals
+$(1-(l/k)^α)^n$ above the scale and zero below it.
 
-**Missing:** the iid Pareto random variables, the finite maximum, and proof
-that its law has this CDF for $k≥l$. The function is not a globally defined
-CDF below the support unless extended there appropriately; also require a
-nonempty sample.
+**Missing:** nothing for this exact finite-sample probability statement.
+The earlier scalar expression remains available as its supported branch.
 
 ### HM-05. Replacing the finite maximum by a Fréchet law — not ok exactly
 
@@ -2168,8 +2239,10 @@ or an asymptotic mode strong enough to give an exact density conclusion.
 There is no Lean probability-law theorem for the density printed in
 Proposition 1.
 
-**Missing:** HM-04 or a justified Fréchet approximation, definition of
-$μ_{K_n,p}$ as a random variable, the monotone change of variables,
+HM-04 supplies the actual exact maximum law.
+
+**Missing:** a justified Fréchet approximation for the printed expression,
+definition of general $μ_{K_n,p}$ as a random variable, monotone change of variables,
 Jacobian, support, normalization and equality of laws. The current
 deterministic tail-moment formula is an ingredient rather than this result.
 
@@ -2179,20 +2252,27 @@ For a finite continuous iid sample, the remaining survival mass at its
 maximum is supported in $[0,1]$. An ordinary exponential distribution has
 positive mass above one.
 
-**Missing:** replace the exact assertion by the Beta(1,n) law, or state and
-prove the scaled exponential asymptotic. The source's exponential expression
-comes from the Fréchet approximation.
+`paretoHiddenMass_not_exponential` now proves the actual finite-sample
+pushforward differs from Exp(n). `paretoHiddenMass_cdf` and
+`paretoSampleSurvivalRatio_cdf` prove the corrected supported Beta(1,n) CDF.
 
-### HM-08. Candidate Beta CDF and its maximum-CDF substitution — ok algebraically
+**Missing:** nothing for that finite-sample correction and refutation.
+The scaled exponential asymptotic is still open in HM-12; the source's
+unscaled exponential expression comes from the Fréchet substitution.
+
+### HM-08. Beta CDF and its maximum-CDF substitution — ok
 
 `paretoSampleSurvivalRatioCDF_eq_one_sub_maxCDF` proves the substitution
 between the two defined real functions. The candidate ratio CDF is
 $1-(1-y)^n$.
 
-**Missing:** nothing for this algebraic equality. Its actual probability-law
-interpretation remains **not ok** until the iid maximum and pushforward are
-constructed. Outside $[0,1]$ the polynomial requires a support extension
-before being called a CDF on the whole real line.
+`paretoHiddenMass_cdf` now establishes the actual probability statement
+under the true product sample law, including both support branches.
+`paretoSampleSurvivalRatio_cdf` transfers it to the explicit ratio by an
+almost-sure equality.
+
+**Missing:** nothing for these CDF identities. The global actual CDF uses
+the supported extension, rather than the polynomial outside `[0,1]`.
 
 ### HM-09. Derivative of the candidate CDF — ok
 
@@ -2202,13 +2282,17 @@ $n(1-y)^{n-1}$.
 **Missing:** nothing for the polynomial derivative. Normalization and
 identification with the law of the actual sample ratio are separate steps.
 
-### HM-10. Beta-kernel mean 1/(n+1) — ok as an integral
+### HM-10. Actual hidden-mass mean 1/(n+1) — ok
 
 `paretoSampleSurvivalRatio_mean` proves
 $∫₀¹ y n(1-y)^{n-1}dy=1/(n+1)$ for $n≥1$.
 
-**Missing:** nothing for this integral. Calling it $E[(l/K_n)^α]$
-requires the probability-law bridge in HM-08.
+`paretoHiddenMass_mean` additionally proves the expectation of the actual
+population hidden mass under the actual iid sample law. Measurability,
+boundedness, integrability and the almost-sure Pareto-ratio identification
+are proved, rather than assumed.
+
+**Missing:** nothing for the actual zeroth hidden-moment expectation.
 
 ### HM-11. Difference between 1/n and 1/(n+1) — ok algebraically
 
@@ -2220,7 +2304,7 @@ limit statement is not present.
 
 ### HM-12. Scaled sample-survival ratio converges to Exp(1) — not ok
 
-The candidate Beta CDF and the exact mean integral are available.
+The actual finite-sample supported Beta CDF and its actual mean are available.
 
 **Missing:** a convergence-in-distribution theorem for $n(1-F(K_n))$
 and the identification of its limiting exponential law. A mean comparison
@@ -2298,8 +2382,8 @@ mean of the observed sample.
 
 ### HM-20. Confidence about the size of the unseen and risk applications — not ok
 
-The module provides deterministic tail-moment expressions and a candidate
-Beta-kernel mean.
+The module provides deterministic tail-moment expressions and the actual
+finite-sample law and mean of the zeroth hidden moment.
 
 **Missing:** the relevant estimator, its distribution, confidence/coverage
 bounds and the decision or loss model for the stated applications.

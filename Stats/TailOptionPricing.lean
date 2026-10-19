@@ -63,9 +63,10 @@ module
     Stats/HiddenMoments.lean  — hidden moments of a probability distribution
                               (arXiv:2004.05894v1): Pareto p-th tail moment
                               closed form α·L^α·K^(p−α)/(α−p) (Eq. 2);
-                              candidate Beta(1, n) CDF/PDF function identities
-                              and its mean integral 1/(n+1). Actual iid
-                              maximum and pushforward-law bridges remain.
+                              actual finite iid maximum law and the hidden
+                              population mass's supported Beta(1,n) CDF and
+                              mean 1/(n+1); a certificate refutes the literal
+                              finite-sample exponential-law assertion.
     Stats/SinglePointForecasts.lean — single-point forecasts for fat-tailed
                               variables (arXiv:2007.16096v1): actual supported
                               exponential-growth/Pareto law; unbiased iid

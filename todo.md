@@ -28,7 +28,7 @@ risk measures, and tail-sensitive statistical inference.
 | **1802.05495v3** — A pre-asymptotic metric for fat-tailedness (κ) | `Kappa` | Abstract algebra and actual Loulakis limit; several MAD/sum-law bridges incomplete |
 | **1907.11162v3** — Binary forecasts vs real-world payoffs | `BinaryForecasts` | Integral/derivative identities and actual Theorem 2; general Theorem 1 and CLTs incomplete |
 | **1912.00277v2** — Branching epistemic uncertainty | `EpistemicUncertainty` | Weighted scale-moment algebra; outcome-mixture law and limiting results incomplete |
-| **2004.05894v1** — Hidden moments of a probability distribution | `HiddenMoments` | Tail-moment integral and candidate Beta function identities; maximum/pushforward laws incomplete |
+| **2004.05894v1** — Hidden moments of a probability distribution | `HiddenMoments` | Tail-moment integral, actual iid maximum and supported hidden-mass CDF/mean; general-p laws, asymptotics and Gaussian comparison incomplete |
 | **2007.16096v1** — Single-point forecasts for fat-tailed variables | `SinglePointForecasts` | Actual exponential-growth law and empirical-survival MSE/RMSE; general limits and risk models incomplete |
 
 ## Paper typos found and corrected
