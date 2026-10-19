@@ -2649,7 +2649,7 @@ lognormal populations at thresholds one and e witness the hypotheses.
 
 Verification: all 4,160 default-build jobs pass without warnings. The
 audit checks 2,450 declarations and 2,109 theorems with zero non-core
-axioms. The index records 230 modules and 1,220 named theorems, with
+axioms. The index records 230 modules and 1,221 named theorems, with
 zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
 forbidden-pattern and whitespace checks pass. All 1,373 previous
 indexed names and types are preserved, with ten additions and no
