@@ -19,9 +19,9 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
-| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
+| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives, actual probability integral transform | General Theorem 1, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
-| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; sample-mean refutation | Explicit general-p density, scaled exponential weak limit, distribution-free extension and Gaussian comparison |
+| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density, scaled exponential weak limit and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
@@ -751,6 +751,70 @@ All 27 Python tests and the forbidden/whitespace checks pass. The refreshed
 declaration index has 863 distinct public names, with all 842 previous
 names and types unchanged, 21 additions and no duplicates. The seven new
 modules are at most 143 lines each.
+
+### Probability integral transform and distribution-free hidden mass
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Appendix B, **Distribution of the probability** (lines 815–828), and
+`papers/arXiv-2004.05894v1/MaxHiddenTail.tex`, Remark 1 (lines 229–239).
+The first source states that `F_X(X)` is uniform when the actual law has
+a continuous CDF. The second emphasizes independence of hidden probability
+mass from the Pareto scale and tail index. The continuous-law hidden-mass
+result below is an explicitly broader mathematical extension of that remark.
+
+[Probability/CDFTransform.lean](Stats/Probability/CDFTransform.lean)
+proves the actual CDF sublevel probabilities, including threshold zero.
+It constructs the upper endpoint of each nonempty sublevel below one
+using closedness, boundedness, monotonicity and the intermediate value
+theorem. The proof allows flat CDF regions, so it does not impose an
+everywhere strictly increasing inverse absent from the source assumptions.
+
+[Probability/IntegralTransform.lean](Stats/Probability/IntegralTransform.lean)
+proves the equality of the actual transformed measure with Beta(1,1),
+and identifies that measure with Lebesgue measure restricted to `(0,1)`.
+`probabilityIntegralTransform` applies to a measurable observation on any
+probability space, using the CDF of its actual pushforward law. Thus the
+uniform law is established as a measure equality, not introduced as a
+hypothesis or a forecast-probability definition. The source's informal
+inverse notation is implemented by the proved sublevel endpoint argument.
+
+[ContinuousLaw.lean](Stats/HiddenMoments/ContinuousLaw.lean) proves for
+every positive finite iid sample from a probability law with continuous
+CDF:
+
+```text
+P(F(sample maximum) <= q) = q^n             for 0 <= q < 1,
+P(actual hidden mass >= y) = (1-y)^n        for 0 < y <= 1,
+law(actual hidden mass) = Beta(1,n),
+E[actual hidden mass] = 1/(n+1).
+```
+
+The true product sample supplies independence. The hidden mass is the
+actual population probability beyond its observed maximum, with its
+boundedness, measurability and L1 property already proved. The equality
+of laws includes the support branches and the endpoint at hidden mass
+one. Atomic populations are outside the stated continuity hypothesis.
+The unscaled exact exponential law printed in the second source remains
+false; distribution independence does not repair that law.
+
+[ContinuousLawExamples.lean](Stats/HiddenMoments/ContinuousLawExamples.lean)
+proves continuity of the actual exponential CDF, including its flat
+negative half-line and support boundary. This provides a genuine
+non-Pareto witness: for Exp(1) and two observations, the actual hidden
+mass has Beta(1,2) law, tail probability `9/16` at `1/4`, and expectation
+`1/3`. The examples also instantiate the CDF sublevel endpoint, its zero
+threshold, both uniform-measure formulations and a nonconstant coordinate
+observation on an actual product probability space.
+
+**Verification:** all 3954 default-build jobs pass without warnings. The
+standalone audit checks 1665 declarations, including 1424 theorem
+declarations, with only the three permitted core axioms. The generated
+index has 164 modules and 770 named theorems, with zero sorry, vacuous or
+placeholder markers; all 163 other modules are imported by the audit.
+All 27 Python tests and the forbidden/whitespace checks pass. The refreshed
+declaration index has 875 distinct public names: all 863 previous names
+and types remain unchanged, with 12 additions and no duplicates. The
+four new modules are at most 104 lines each.
 
 ## Lean upgrade and reproducible verification
 
@@ -1994,14 +2058,21 @@ normal approximation in a specified metric. A kurtosis correction of order
 $1/N$ is not itself a theorem that the full distribution converges at that
 rate.
 
-### BF-31. Appendix B: probability integral transform — not ok in this formalization
+### BF-31. Appendix B: probability integral transform — ok for a continuous actual CDF
 
-The source invokes the uniform law of $F_X(X)$ for a continuous CDF.
+`probabilityIntegralTransform` now proves that a measurable observation's
+actual CDF transform has the uniform law, represented by Lebesgue measure
+restricted to `(0,1)`. The theorem uses the CDF of the observation's actual
+pushforward law and requires its continuity, as the source does.
 
-**Missing:** a theorem applying the transform to the source's forecast model,
-including continuity and an appropriate generalized inverse. The imported
-probability framework alone does not make this paper-specific claim a proved
-declaration.
+`exists_cdf_sublevel_boundary` implements the generalized-inverse step
+without assuming strict monotonicity; `cdfTransform_probability_le`
+proves the actual unit-interval sublevel probabilities, including zero.
+Actual exponential-law and nonconstant product-coordinate examples
+satisfy the hypotheses.
+
+**Missing:** nothing for this continuous-CDF transform. An arbitrary Beta
+forecast model and its joint law with outcomes are separate claims in BF-32.
 
 ### BF-32. Appendix B: Beta forecast probabilities and Brier-score distribution — not ok
 
@@ -2554,14 +2625,21 @@ Integrating over the whole real line instead gives $1/(n+1)$.
 These are analytic checks; neither Gaussian hidden-mass integral is a proved
 project theorem.
 
-### HM-17. Distribution independence of hidden probability mass — not ok generally
+### HM-17. Distribution independence of hidden probability mass — ok for continuous CDFs
 
 The source emphasizes that the $p=0$ result does not depend on tail thickness.
 
-**Missing:** the probability integral transform for a continuous law,
-independence, the maximum-order-statistic law and the Beta pushforward.
-A Pareto-specific polynomial identity is not the distribution-free
-probability theorem. Atomic laws require a different formulation.
+`continuousHiddenMass_map_beta` now proves the actual hidden-mass law is
+Beta(1,n) for every probability population with a continuous CDF and every
+nonempty finite iid sample. `sampleMaximum_cdf_transform` and
+`continuousHiddenMass_tail_ge` prove the corresponding actual probability
+statements, and `continuousHiddenMass_mean` gives expectation `1/(n+1)`.
+The sample law is an actual independent product; the variable is an actual
+population tail probability. Exp(1) supplies non-Pareto witnesses.
+
+**Missing:** nothing for this continuous-CDF extension. The exact
+finite-sample exponential claim remains false, and atomic populations
+require a different formulation.
 
 ### HM-18. Higher-moment numerical comparisons and convergence claims — not ok
 

@@ -34,6 +34,8 @@ module
     (polynomial positivity + full derivation).
   * `Stats.BinaryForecasts.SigmaClosures` — Eq. 8 integral closures
     via `stdNormalCdf` and Gaussian PDF.
+  * `Stats.Probability.IntegralTransform` — Appendix B's probability
+    integral transform, proved for the actual continuous-CDF law.
 -/
 public import Stats.BinaryForecasts.CharacteristicScale
 public import Stats.BinaryForecasts.Conflation
@@ -44,5 +46,6 @@ public import Stats.BinaryForecasts.Exponential
 public import Stats.BinaryForecasts.ExponentialLaw
 public import Stats.BinaryForecasts.SigmaSensitivity
 public import Stats.BinaryForecasts.SigmaClosures
+public import Stats.Probability.IntegralTransform
 
 @[expose] public section

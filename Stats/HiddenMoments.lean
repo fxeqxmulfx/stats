@@ -19,3 +19,5 @@ public import Stats.HiddenMoments.SampleMeanExamples
 public import Stats.HiddenMoments.MomentMean
 public import Stats.HiddenMoments.MomentAsymptotic
 public import Stats.HiddenMoments.MomentMeanExamples
+public import Stats.HiddenMoments.ContinuousLaw
+public import Stats.HiddenMoments.ContinuousLawExamples

@@ -67,7 +67,8 @@ module
                               population mass's supported Beta(1,n) CDF and
                               mean 1/(n+1), exact general-p hidden-moment
                               pushforward, Gamma-ratio expectation and its
-                              asymptotic;
+                              asymptotic, distribution-free hidden mass for
+                              continuous-CDF populations;
                               certificates refute the finite-sample
                               exponential law and necessary underestimation
                               of the arithmetic sample mean.

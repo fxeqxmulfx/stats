@@ -48,6 +48,8 @@ import all Stats.Hedging
 import all Stats.HiddenMoments
 import all Stats.HiddenMoments.BetaKernel
 import all Stats.HiddenMoments.BetaLaw
+import all Stats.HiddenMoments.ContinuousLaw
+import all Stats.HiddenMoments.ContinuousLawExamples
 import all Stats.HiddenMoments.Counterexample
 import all Stats.HiddenMoments.Decomposition
 import all Stats.HiddenMoments.DecompositionExamples
@@ -113,8 +115,10 @@ import all Stats.Pareto.Returns
 import all Stats.Pareto.TailRisk
 import all Stats.Probability.BetaAsymptotic
 import all Stats.Probability.BetaMoments
+import all Stats.Probability.CDFTransform
 import all Stats.Probability.Exponential
 import all Stats.Probability.HiddenMass
+import all Stats.Probability.IntegralTransform
 import all Stats.Probability.SampleMaximum
 import all Stats.Probability.SampleMean
 import all Stats.Probability.TruncatedMoments
