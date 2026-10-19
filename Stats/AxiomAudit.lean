@@ -186,6 +186,8 @@ import all Stats.EpistemicUncertainty.GammaOutcomeTail
 import all Stats.Probability.Concentration
 import all Stats.EpistemicUncertainty.GammaConcentration
 import all Stats.EpistemicUncertainty.GammaGaussianLimit
+import all Stats.Probability.MomentTail
+import all Stats.EpistemicUncertainty.CompoundTailComparison
 import all Stats.Probability.GammaTail
 import all Stats.Probability.GammaCalculus
 import all Stats.Probability.GammaHazard

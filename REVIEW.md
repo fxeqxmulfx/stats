@@ -3082,6 +3082,42 @@ The exact source parameters, properness domain, actual integrals,
 precision-to-dispersion map and unit-variance Gaussian boundary were
 reread beside local Section VI and Eq. compoundGamma.
 
+### 2026-10-19: refute the matched Gamma outcome tail lower bound
+
+[MomentTail.lean](Stats/Probability/MomentTail.lean) proves actual
+polynomial Markov bounds, faster-than-every-power tail decay from
+all natural moments, and cancellation of a shared positive-power
+normalization in a tail ratio. Its conclusions do not assert
+exponential moments or Gaussian decay.
+
+[CompoundTailComparison.lean](Stats/EpistemicUncertainty/CompoundTailComparison.lean)
+applies those results to the actual centered Normal--Lognormal
+population. For every positive epistemic log variance, both of its
+tail probabilities divided by the corresponding exact matched
+Gamma-compound probabilities tend to zero. The denominators have
+the independently proved positive Student survival coefficient.
+Both actual inequalities are eventually strict. Even an eventual
+Gamma lower bound for the outcome right tail is formally refuted,
+including a proper normalized pair at variance one.
+
+Thus right-tail domination between precision priors does not transfer
+to the inverse-precision Gaussian mixture as proposed in Section VI
+and the Discussion. EU-30 records the counterexample and keeps the
+unspecified bulk-approximation metric separate. Every paper verdict
+remains not ok.
+
+Verification: all 4,182 build jobs pass without warnings. The audit
+checks 2,689 declarations and 2,334 theorems with zero non-core axioms.
+The regenerated index has 252 modules and 1,395 named theorems, with
+zero sorry, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,561 previous
+indexed names and types are preserved, with 12 additions and no
+duplicates; the audit imports all 250 other Stats modules.
+The new modules have 151 and 154 lines. Their actual priors,
+moment-matched source parameters, centered outcome construction and
+two-sided tail comparison were reread beside local Sections V, VI
+and the Discussion.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -5120,16 +5156,34 @@ Gamma/lognormal heavy-tail distinction under that criterion.
 
 **Missing:** their maximum-domain claims.
 
-### EU-30. Gamma as a lower bound for Lognormal, then for the outcome mixture — not ok
+### EU-30. Gamma as a lower bound for Lognormal, then for the outcome mixture — not ok; outcome tail bound refuted
 
 The source uses a same-CV Gamma approximation to support conclusions about
 the lognormal mixture.
 
-**Missing:** specify the order or error metric, prove the precision-law
-comparison and prove that the mixing operation preserves the desired outcome
-comparison. Matching mean/CV or comparing right tails of precision is
-insufficient: large outcome values also depend on behavior near zero
-precision.
+`epistemicNormalLognormalLaw_tail_rpow_tendsto_zero` proves both actual
+centered Normal--Lognormal outcome tails decay faster than every reciprocal
+real power. Its all-natural-moment L1 domain comes from the independently
+constructed precision/Gaussian model. Polynomial Markov bounds with a
+higher integer moment prove the tail limits, without assuming them.
+
+For every positive epistemic log variance, the actual Normal--Lognormal
+right-tail probability divided by the exact moment-matched Gamma outcome
+right-tail probability tends to zero. The same holds on the left.
+`eventually_epistemicNormalLognormal_tail_lt_matchedGamma` proves eventual
+strict inequalities on both sides, using the Gamma outcome's actual
+positive Student survival coefficient.
+`epistemicMatchedGamma_not_outcome_tail_lower_bound` refutes even eventual
+right-tail domination by the Lognormal outcome, and the variance-one
+counterexample verifies that both actual populations are proper.
+Thus the source's outcome-tail lower-bound interpretation fails in the
+opposite direction. These limits do not assert exponential moments or
+Gaussian decay of the Normal--Lognormal population.
+
+**Missing:** a specified order or quantitative error metric supporting
+the source's qualitative bulk approximation. Right-tail order of precision
+does not transfer through inverse precision; the proposed outcome tail
+comparison is formally refuted, rather than left as an unproved premise.
 
 ### EU-31. Section VI: evaluate the Normal–Gamma compound integral — ok with corrected scale and mean domain
 
