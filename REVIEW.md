@@ -950,6 +950,67 @@ new modules are at most 141 lines each. The audit's import-list header
 was shortened without changing its algorithm, keeping that aggregator
 at 200 lines.
 
+### Actual exponential conditional means and characteristic-scale limits
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 4, **Characteristic scale** (lines 317–327). The source's
+quantities are conditional expectations under the physical population
+law. Its dimensionless limit `lambda` is separate from the exponential
+rate parameter; the Lean results use rate `r>0`.
+
+[ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean) now bridges
+the density first-tail-moment formula to the actual supported Exp(r)
+measure. It proves actual tail L1, positive probability of every finite
+upper tail, and normalization of the actual conditional measure
+`cond (expMeasure r) (Ioi K)`. This is the population restriction scaled
+by the inverse of its own actual tail probability, rather than a law
+introduced by a desired conditional-mean value.
+
+For nonnegative thresholds, the module proves L1 of the conditional
+observation and computes the actual expectations:
+
+```text
+actual first tail moment = (K+1/r)*exp(-r*K),
+E[X | X>K] = K+1/r,
+E[X-K | X>K] = 1/r.
+```
+
+The conditional integrability proof transfers a proved density-kernel
+L1 bound through the actual law and its finite normalizing factor.
+Linearity under the proved L1 and probability conditions identifies the
+last integral with the source's `E[X|X>K]-K`. Neither an expected value
+nor its integrability is assumed from the source's scalar formula.
+The support restriction `K>=0` is explicit;
+positivity and normalization of the conditional tail law hold at all
+finite real thresholds.
+
+`expMeasure_cond_mean_excess_tendsto` proves the actual conditional
+mean excess tends to `1/r>0` as the threshold goes to infinity.
+`expMeasure_cond_characteristicScale_tendsto` proves the actual
+conditional mean divided by the threshold tends to one. These verify
+the source's two operational limit properties for the actual exponential
+population. They do not classify arbitrary populations as rapidly or
+regularly varying, and do not assert a general finite-mean theorem from
+an undefined thin-tail label.
+
+Concrete witnesses use rate two and threshold three: the actual first
+tail moment is `(7/2)*exp(-6)`, the actual conditional mean is `7/2`,
+and the actual mean excess is `1/2`. The conditional observation lies
+above three almost surely under a proved probability measure and is
+integrable. Additional examples check positive tail probability below
+the support and both actual-law limits. All nine new hypothesis families
+have concrete satisfying instances, and five central axiom prints check
+their transitive proof dependencies.
+
+**Verification:** all 3971 default-build jobs pass without warnings. The
+standalone audit checks 1723 declarations, including 1470 theorem
+declarations, with only the three permitted core axioms. The generated
+index has 172 modules and 805 named theorems, with zero sorry, vacuous or
+placeholder markers. All 27 Python tests and the forbidden/whitespace
+checks pass. The refreshed declaration index has 911 distinct public
+names: all 902 previous names and types remain unchanged, with nine
+additions and no duplicates. The expanded actual-law module is 169 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -1914,23 +1975,29 @@ $E[X;X>K]/(K P(X>K))=α/(α-1)$ for $α>1$, $l>0$, $K≥l$.
 **Missing:** nothing for this exact Pareto integral statement. The tail
 expectation and survival formulas are established by integration.
 
-### BF-06. Exponential borderline case — ok for the formulas and survival law
+### BF-06. Exponential borderline case — actual conditional means and limits proved
 
-[Exponential.lean](Stats/BinaryForecasts/Exponential.lean):
 `exp_survival_eq`, `exp_tail_expectation_eq` and `exp_conditional_excess`
-prove, for $λ>0$ and $K≥0$,
-$P(X>K)=exp(-λK)$ and $E[X|X>K]-K=1/λ$ as density-integral identities.
+prove the density-integral formulas for positive rate and nonnegative
+threshold. The supported-survival bridge and its below-support
+counterexample remain in
+[ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean).
 
-[ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean) also proves
-that the raw-kernel survival integral equals the actual supported
-exponential-law probability on this domain. Below zero, the actual survival
-is one, whereas the analytic kernel integral exceeds one; a concrete
-certificate checks that distinction.
+`expMeasure_tail_mean` and `expMeasure_tail_integrable_id` now establish
+the actual supported first tail moment and L1 condition.
+`expMeasure_cond_probability`, `expMeasure_cond_integrable_id`,
+`expMeasure_cond_mean` and `expMeasure_cond_mean_excess` establish the
+normalized actual conditional law, its L1 observation, mean `K+1/r`
+and mean excess `1/r`.
 
-**Missing:** nothing for these analytic formulas and the supported-survival
-bridge. There is no separately assembled limit theorem placing the law
-in a formal D₁ predicate, or a conditional-expectation law bridge for the
-excess formula.
+`expMeasure_cond_mean_excess_tendsto` proves the positive limiting mean
+excess. `expMeasure_cond_characteristicScale_tendsto` proves the actual
+conditional-mean ratio tends to one. Rate-two, threshold-three examples
+satisfy all hypotheses under a genuine exponential population.
+
+**Missing:** nothing for these exact exponential-law expectations and
+operational limits. General distribution-class predicates and their
+class-wide implications are separate claims in BF-04 and BF-10.
 
 ### BF-07. Definition 5: I₁ and I₂ — ok as integral definitions
 

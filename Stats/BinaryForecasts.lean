@@ -31,6 +31,8 @@ module
     (Bernoulli cumulants κ_3/κ_4 via cumulant-generating function).
   * `Stats.BinaryForecasts.Exponential` — paper Definition 4
     borderline case (exponential as borderline class).
+  * `Stats.BinaryForecasts.ExponentialLaw` — Definition 4's actual
+    conditional means, integrability, normalization and scale limits.
   * `Stats.BinaryForecasts.SigmaSensitivity` — paper Eq. 8 σ-derivation
     (polynomial positivity + full derivation).
   * `Stats.BinaryForecasts.SigmaClosures` — Eq. 8 integral closures
