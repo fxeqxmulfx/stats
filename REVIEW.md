@@ -2777,6 +2777,36 @@ The new module has 151 lines. The actual exponential tail comparison,
 positive support and nondegenerate-domain correction were reread
 beside the local Section VI heavy-tail and finite-moment claims.
 
+### 2026-10-19: actual Normal--Gamma population and integrable moments
+
+[GammaCompoundLaw.lean](Stats/EpistemicUncertainty/GammaCompoundLaw.lean)
+constructs Section VI's actual Normal--Gamma mixture from the normalized
+Gamma precision law. Gamma precision is strictly positive a.e.; its
+inverse square root induces a proper positive dispersion prior.
+The Gaussian Markov mixture is therefore a probability measure for
+every positive Gamma shape and rate. An independent actual Gamma draw
+and standard Gaussian innovation generate the same whole law.
+
+For natural order k with `a>k/2`, the actual dispersion power is
+independently L1, and its moment is
+`r^(k/2)*Gamma(a-k/2)/Gamma(a)`. The actual compound centered power is
+then L1 by the independent Gaussian model; its expectation factors into
+that prior moment and the actual standard Gaussian k-th moment, with
+Fubini justified by L1. Shape three, rate two and fourth-power examples
+witness properness and all moment conditions.
+
+Verification: all 4,165 default-build jobs pass without warnings. The
+audit checks 2,495 declarations and 2,152 theorems with zero non-core
+axioms. The index records 235 modules and 1,260 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,413 previous
+indexed names and types are preserved, with eleven additions and no
+duplicates; the audit imports all 233 other `Stats/` modules.
+The new module has 168 lines. The independent precision model, inverse
+variance transformation, rate convention and sufficient moment-order
+condition were reread beside local Eq. compoundGamma. Sharp failure
+outside that moment range and the Student density identification remain.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4825,10 +4855,18 @@ precision.
 
 ### EU-31. Section VI: evaluate the Normal–Gamma compound integral — not ok
 
-The integral yields a scaled Student density in the source.
+`epistemicNormalGammaLaw` is now the actual Gaussian Markov mixture
+with the proper Gamma precision prior mapped by inverse square root.
+`epistemicNormalGammaLaw_probability` proves properness for all positive
+shape and rate. `epistemicNormalGammaLaw_outcome_model` identifies the
+whole law with an independent Gamma precision and Gaussian innovation.
+Centered powers are independently L1 for `alpha>k/2`; their actual
+moments factor into the evaluated Gamma inverse moment and Gaussian
+moment by justified Fubini.
 
-**Missing:** normalization of the Gamma precision law, integrability,
-evaluation of the Gamma integral and equality of probability measures.
+**Missing:** evaluation of the compound density integral and its
+identification with the correctly scaled Student probability measure.
+Sharp nonintegrability outside the proved moment range also remains.
 For the printed rate parameterization, the resulting Student law has
 $2α$ degrees of freedom and scale $sqrt(β/α)$; calling $β$ its
 standard Student scale requires correction or a declared alternative
