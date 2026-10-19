@@ -110,6 +110,7 @@ public import Stats.EpistemicUncertainty.FractionalMoments
 public import Stats.EpistemicUncertainty.ScaleConcentration
 public import Stats.EpistemicUncertainty.OutcomeLimit
 public import Stats.EpistemicUncertainty.BinomialCollapse
+public import Stats.EpistemicUncertainty.BinomialDensity
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation

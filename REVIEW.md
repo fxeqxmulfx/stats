@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian populations, corrected moments, symmetry, kurtosis, moment divergence and point-mass weak limit | General layer-dependent construction and density identities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian populations, corrected moments, symmetry, kurtosis, moment divergence and point-mass weak limit | General layer-dependent constructions and densities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -1920,6 +1920,43 @@ three without duplicates. The audit explicitly imports all 194 other
 `Stats/` modules. The new module is 180 lines; its statements were checked
 against the local Section III source and the finite fair-branch model.
 
+### Identify the actual normalized binomial Gaussian density
+
+Reread arXiv:1912.00277v2, Section III's binomial Gaussian formula
+(`FatTailsEpistemic2019.tex`, lines 318–324), beside the finite actual
+measure construction of Sections II–III. The source assumes positive
+base dispersion and error in `[0,1)`.
+
+[BinomialDensity.lean](Stats/EpistemicUncertainty/BinomialDensity.lean)
+proves every displayed component standard deviation is positive, then
+identifies the actual recursive population with Lebesgue measure weighted
+by the printed finite density. The proof starts with the independently
+constructed Gaussian mixture measure. Each genuine nondegenerate Gaussian
+has its actual Gaussian density, and finite-sum and scalar linearity of
+`withDensity` transport the proved probability weights to the real density.
+The population is not defined by this density identity.
+
+The density is independently proved nonnegative, measurable and L1.
+Applying the actual law's total mass to its density bridge proves its
+nonnegative integral is one; its real integral is one as well. Actual
+probabilities of every measurable event equal restricted real density
+integrals. A depth-two, mean-one, scale-two, error-one-half population
+witnesses the density bridge, both normalizations, L1 and an actual
+threshold-three exceedance integral.
+
+This proves the constant-error density part of EU-04 and the genuine
+survival-integral part of EU-18. General varying-layer sign densities,
+the closed-form exceedance sum and certified numerical tables remain.
+
+Verification: the full build passes 4,071 jobs without warnings; the
+audit checks 2,046 declarations and 1,766 theorems with zero non-core
+axioms. The index records 197 modules and 989 named theorems, with zero
+`sorry`, vacuous or placeholder entries. All 27 Python tests and the
+forbidden-pattern and whitespace checks pass. The declaration index
+preserves all 1,089 old names and types and adds nine without duplicates.
+The audit imports all 195 other `Stats/` modules. The density module
+is 156 lines; its positive-scale statements match the local source.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3349,9 +3386,9 @@ Source: [arXiv:1912.00277v2](https://arxiv.org/abs/1912.00277v2).
 Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 
 **Paper verdict: not ok.** The actual finite recursive constant-error
-Gaussian mixture, its whole-law binomial collapse, corrected first four
-outcome moments, symmetry and kurtosis are proved. General layer-dependent
-sign constructions, density identities and nested kernels,
+Gaussian mixture, its whole-law binomial collapse and normalized density,
+corrected first four outcome moments, symmetry and kurtosis are proved.
+General layer-dependent sign constructions and densities, nested kernels,
 general infinite constructions and decaying-error limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
@@ -3400,14 +3437,19 @@ polynomial expressions do not implement this general construction.
 
 ### EU-04. Section II: the 2ⁿ-component Gaussian density — not ok
 
-The source's sign-vector construction is described in comments. The
-constant-error actual measure is now constructed recursively by
-`epistemicBranchLaw` and proved to be a probability measure.
+The source's general sign-vector construction is described in comments.
+For constant errors, `epistemicBranchLaw` is an actual probability law,
+`epistemicBranchLaw_eq_binomial_mixture` identifies its Gaussian components,
+and `epistemicBranchLaw_eq_withDensity` proves its genuine Lebesgue density
+is `epistemicBinomialDensity`. Each component standard deviation is proved
+positive for `sigma>0`, `0<=epsilon<1`. The real density is nonnegative,
+measurable and L1; its real and nonnegative integrals both equal one.
+`epistemicBranchLaw_real_eq_integral_density` gives actual event probabilities
+as restricted integrals of this density.
 
-**Missing:** the explicit sign-vector density and its equality with the
-recursively constructed measure. For Gaussian standard deviations, require positive base
-scale and positive multiplicative factors; the algebraic Lean identities alone
-permit parameter values outside that density model.
+**Missing:** the general layer-dependent sign-vector density and its equality
+with the corresponding general recursive measure. The constant-error density
+identity and normalization are proved on the source's positive-scale domain.
 
 ### EU-05. Section III: actual constant-error collapse to binomial weights — ok
 
@@ -3425,8 +3467,8 @@ Gaussian measures. Concrete depth-two positive-scale witnesses include
 an actual middle-scale probability of one-half.
 
 **Missing:** nothing for the actual constant-error measure collapse.
-The positive-scale density identity and the general layer-dependent
-sign construction remain separately recorded in EU-04 and EU-01.
+Its positive-scale density identity is also proved in EU-04. The general
+layer-dependent sign construction remains separately recorded in EU-01.
 
 ### EU-06. Actual natural-order dispersion moment — ok for the finite constant-error law
 
@@ -3600,8 +3642,11 @@ Growing kurtosis alone does not establish regular variation.
 
 The source gives a weighted erfc sum and ratios to a baseline Gaussian.
 
-**Missing:** the actual mixture survival integral, the weighted erfc identity,
-and certified numerical values/error bounds. The displayed threshold must be
+`epistemicBranchLaw_real_eq_integral_density` now proves the actual
+mixture survival integral on the positive-scale constant-error domain.
+
+**Missing:** the weighted erfc identity and certified numerical values/error
+bounds. The displayed threshold must be
 centered by $μ$, unless the calculation has explicitly set $μ=0$.
 
 ### EU-19. Section IV: decaying-error variance product — not ok as a variance derivation

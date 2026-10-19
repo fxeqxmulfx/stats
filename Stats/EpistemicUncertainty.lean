@@ -22,9 +22,11 @@ module
   moments under nonzero uncertainty. OutcomeLimit proves the constant-error
   laws converge weakly to the point mass at their common mean.
   BinomialCollapse identifies the actual binomial-weighted dispersion and
-  Gaussian population measures. General layer-dependent sign constructions,
-  density identities, nested kernels, a CLT and the Normal-Gamma compound-law
-  theorem remain separate. Higher kurtosis alone does not establish a power-law tail.
+  Gaussian population measures. BinomialDensity proves the actual
+  constant-error density and its normalization on the positive-scale domain.
+  General layer-dependent sign constructions and densities, nested kernels,
+  a CLT and the Normal-Gamma compound-law theorem remain separate.
+  Higher kurtosis alone does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real

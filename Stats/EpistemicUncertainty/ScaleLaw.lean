@@ -4,7 +4,8 @@ module
   Actual finite random-dispersion law for arXiv:1912.00277v2,
   Sections II–III. Its natural moments are computed as genuine integrals.
   An independent standard Gaussian innovation generates exactly the
-  recursively constructed outcome law. Binomial counting is separate.
+  recursively constructed outcome law. BinomialCollapse identifies its
+  actual binomial count representation.
 -/
 public import Stats.EpistemicUncertainty
 
@@ -64,7 +65,7 @@ theorem epistemicScaleLaw_moment (n k : ℕ) (σ ε : ℝ) :
 
 /-- The earlier binomial scale expression now equals an actual
 dispersion expectation of every natural order (Section III). This
-moment equality does not assert the missing branch-count pushforward. -/
+moment equality is complemented by the whole-law result in BinomialCollapse. -/
 theorem epistemicScaleLaw_moment_eq_sigmaMoment (n k : ℕ) (σ ε : ℝ) :
     (∫ s : ℝ, s ^ k ∂epistemicScaleLaw n σ ε) = epistemicSigmaMoment n k σ ε := by
   rw [epistemicScaleLaw_moment, epistemicSigmaMoment_eq]
