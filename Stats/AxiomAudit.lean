@@ -52,6 +52,8 @@ import all Stats.HiddenMoments.DecompositionExamples
 import all Stats.HiddenMoments.Examples
 import all Stats.HiddenMoments.Maximum
 import all Stats.HiddenMoments.Mean
+import all Stats.HiddenMoments.SampleMean
+import all Stats.HiddenMoments.SampleMeanExamples
 import all Stats.HiddenMoments.SurvivalKernel
 import all Stats.HiddenMoments.SurvivalMass
 import all Stats.HiddenMoments.TailMoment
@@ -107,6 +109,7 @@ import all Stats.Pareto.TailRisk
 import all Stats.Probability.Exponential
 import all Stats.Probability.HiddenMass
 import all Stats.Probability.SampleMaximum
+import all Stats.Probability.SampleMean
 import all Stats.Probability.TruncatedMoments
 import all Stats.RegularVariation
 import all Stats.RegularVariation.Abelian

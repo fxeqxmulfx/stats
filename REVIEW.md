@@ -613,7 +613,7 @@ the random threshold almost surely, and proves both sample quantities
 integrable. The visible population integral is strictly below the finite
 population moment almost surely. This is the valid population-truncation
 target; the source's stronger statement about an arithmetic sample mean
-still requires the separate counterexample described in HM-19.
+is refuted separately in the following group and HM-19.
 
 Nondegenerate Pareto(1,2) product examples check the true mean two,
 the conditional density-integral bridges, measurability and L1 of both
@@ -632,6 +632,55 @@ all 802 previous names and types remain unchanged, with 28 additions.
 The new example instance is named explicitly so the declaration index
 retains both example modules' instances without a name collision.
 The five new modules are at most 103 lines each.
+
+### Actual arithmetic sample mean: unbiasedness and an overshoot counterexample
+
+Reread `MaxHiddenTail.tex`, **Applications and Conclusion** (lines 275–278).
+The source says that a right-tailed one-sided distribution's **sample mean**
+will necessarily underestimate the true mean. This statement concerns a
+different quantity from the unrescaled population integral below its
+observed maximum.
+
+[Probability/SampleMean.lean](Stats/Probability/SampleMean.lean) defines
+the arithmetic mean of the actual observed coordinates. It proves
+measurability, integrability and unbiasedness whenever the population
+first moment is integrable and the sample is nonempty. No second-moment
+assumption is used, and the mean is not supplied as a desired scalar value.
+[HiddenMoments/SampleMean.lean](Stats/HiddenMoments/SampleMean.lean)
+specializes this to the genuine Pareto product law and its proved actual
+population mean `m=α*l/(α-1)`, for `l>0` and `α>1`.
+
+The same module proves, for **every positive finite sample size**,
+
+```text
+E[arithmetic sample mean] = m
+P(arithmetic sample mean > m) ≥ (l/(n*m))^α > 0.
+```
+
+The lower bound comes from one observation exceeding `n*m`, while the
+other observations are nonnegative almost surely. Both support and the
+event probability follow from the actual marginal law. The theorem
+`paretoSampleMean_not_always_below_mean` formally refutes the source's
+literal necessary-underestimation claim, with a finite actual mean.
+The corrected truncated-population-integral inequality from the preceding
+group remains valid.
+
+For Pareto(1,2), the actual two-observation mean has expectation two and
+overshoot probability at least `1/16`. The one-observation example has
+overshoot probability exactly `1/4`.
+[SampleMeanExamples.lean](Stats/HiddenMoments/SampleMeanExamples.lean)
+checks these numerical probabilities, all remaining parameter and
+integrability conditions, and the three central theorem axioms.
+
+**Verification:** all 3933 default-build jobs pass without warnings. The
+standalone audit checks 1591 declarations, including 1362 theorem
+declarations, with only the three permitted core axioms. The generated
+index has 153 modules and 739 named theorems, with zero sorry, vacuous or
+placeholder markers. All 27 Python tests and the forbidden/whitespace
+checks pass. The refreshed declaration index has 842 distinct public
+names: all 830 previous names and types remain unchanged, with 12
+additions and no duplicate names. The three new modules have 57, 113 and
+72 lines respectively.
 
 ## Lean upgrade and reproducible verification
 
@@ -2240,8 +2289,10 @@ Main module: [HiddenMoments.lean](Stats/HiddenMoments.lean).
 finite iid maximum law, actual hidden-mass CDF and its expectation are
 proved. The zeroth hidden moment has the supported Beta(1,n) CDF and mean
 `1/(n+1)`; the printed exact exponential law is formally refuted.
-General-p Proposition 1, limit theorems and the Gaussian comparison remain
-incomplete. The source's Fréchet substitution requires a precise
+The actual finite-mean arithmetic sample mean is unbiased, and the
+source's necessary-underestimation claim is formally refuted for every
+nonempty Pareto sample. General-p Proposition 1, limit theorems and the
+Gaussian comparison remain incomplete. The source's Fréchet substitution requires a precise
 approximation or asymptotic statement.
 
 ### HM-01. Visible-plus-hidden moment decomposition — ok for the exact Pareto model
@@ -2440,21 +2491,28 @@ The source plots hidden moments and compares Pareto and Gaussian behavior.
 rates, or certified numerical integrations. The existing deterministic
 Pareto formula does not validate all sample-size plots.
 
-### HM-19. A one-sided sample mean necessarily underestimates the true mean — not ok
+### HM-19. Necessary sample-mean underestimation — false literally; correction proved
 
 The conclusion's statement about the actual sample mean is too strong.
 
-**Missing:** a corrected target and a proved bias/probability statement.
-A finite iid sample mean is unbiased when the first moment exists and can
-exceed the population mean; a single sufficiently large Pareto observation
-already supplies such an example. The population integral truncated at the
-sample maximum is a different quantity and omits positive tail mass.
-The formalization must distinguish that truncated integral from the arithmetic
-mean of the observed sample.
+`sampleMean` is the actual observed arithmetic average, proved measurable,
+integrable and unbiased under a finite population first moment.
+`paretoSampleMean_unbiased` proves its actual expectation, and
+`paretoSampleMean_upper_tail_lower` proves a strictly positive overshoot
+probability for every nonempty finite iid Pareto sample with `l>0`, `α>1`.
+The threshold is the actual finite population mean.
+
+`paretoSampleMean_not_always_below_mean` refutes the literal claim.
+For Pareto(1,2) at size one, the actual overshoot probability is `1/4`;
+at size two, it is at least `1/16` while the mean remains two.
 
 `paretoSample_visibleMoment_lt_population` now proves the corrected
 truncated-population-integral statement, almost surely under the actual
-finite iid sample law. It does not assert a bias of the arithmetic sample mean.
+finite iid sample law. The two sample quantities are explicitly distinguished.
+
+**Missing:** nothing for the finite-mean unbiasedness, refutation and
+corrected population-truncation statement. Confidence bounds and the
+decision models of HM-20 remain separate.
 
 ### HM-20. Confidence about the size of the unseen and risk applications — not ok
 
