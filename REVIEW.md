@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual finite recursive Gaussian population, corrected moments, symmetry, kurtosis and moment divergence; binomial scale algebra | Branch-counting and density identities, infinite-depth laws, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive Gaussian population, corrected moments, symmetry, kurtosis, moment divergence and constant-error point-mass weak limit | Branch-counting and density identities, general nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -1801,6 +1801,65 @@ previous names and types are unchanged, with four additions and no
 duplicate names. The fractional-moment module is 97 lines; the scale-law
 module is 130 lines after extracting general finite-law L1.
 
+### Identify the actual unscaled depth limit
+
+Reread arXiv:1912.00277v2, Section III's divergence discussion and
+apparent power-law behavior (`FatTailsEpistemic2019.tex`, lines
+344–358). The depth limit must be distinguished from a moving-threshold
+or rescaled tail claim. Here the base scale, error and common mean
+are fixed as depth tends to infinity.
+
+[ScaleConcentration.lean](Stats/EpistemicUncertainty/ScaleConcentration.lean)
+applies Markov's inequality to the actual integrable fractional
+dispersion power. Positivity of the actual dispersion identifies
+the power event with the actual threshold event. For every fixed
+positive threshold, the actual dispersion tail probability tends
+to zero. The portmanteau closed-set criterion then proves that the
+actual dispersion probability laws converge weakly to `Dirac(0)`.
+The proof controls every closed set away from zero by one of those
+actual tail probabilities.
+
+[OutcomeLimit.lean](Stats/EpistemicUncertainty/OutcomeLimit.lean)
+carries this genuine weak limit through the actual independent
+Gaussian product model. Continuity of probability-measure products
+and the map `(s,z) -> mu+s*z` gives
+
+```text
+actual outcome law at depth n  -> weakly Dirac(mu),
+for sigma>0 and 0<epsilon<1, with mu, sigma, epsilon fixed.
+```
+
+The transformed limiting product law is computed explicitly: its
+scale coordinate is zero, so its outcome is the constant `mu`.
+Weak-limit uniqueness formally excludes any different probability
+law as an unscaled weak limit of this population sequence. A joint
+theorem proves that the same actual sequence has this point-mass
+weak limit and divergent actual variance. Moment divergence is
+therefore not a moment formula for a nondegenerate limiting law.
+
+The positive base scale two, half error and common mean one model
+verifies the actual Markov bound, vanishing dispersion tail at
+threshold one, both weak limits, an actual weak-limit witness for
+the uniqueness theorem, and the joint divergent-variance assertion.
+
+This settles the fixed-parameter unscaled weak-limit question in
+EU-17. A nondegenerate power-law weak-limit interpretation is
+incompatible with these actual laws. The source's looser graphical
+tail-shape discussion, a moving-threshold asymptotic, a rescaled
+limit, and a finite-depth regular-variation theorem are different
+claims and are not supplied by this result.
+
+**Verification:** all 3999 default-build jobs pass without warnings.
+The standalone audit covers 2014 declarations and 1735 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 193 other
+Stats modules, including private declarations. The regenerated index has
+195 modules and 974 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1086 distinct public names: all 1078
+previous names and types are unchanged, with eight additions and no
+duplicate names. The concentration and outcome-limit modules are 114 and
+101 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3233,9 +3292,11 @@ Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 Gaussian mixture, corrected first four outcome moments, symmetry and
 kurtosis are proved, along with the binomial scale algebra. Explicit
 branch counting, density identities, general nested kernels,
-infinite-depth populations and decaying-error limits, the CLT argument
-and the Normal–Gamma compound law remain open. Actual finite-population
-variance, fourth central moment and kurtosis divergence are proved.
+general infinite constructions and decaying-error limits, the CLT
+argument and the Normal–Gamma compound law remain open. Actual
+finite-population variance, fourth central moment and kurtosis divergence
+are proved. The actual constant-error laws have the proved unscaled
+point-mass weak limit at their common mean.
 This source has no active numbered Theorem or Proposition environment; both
 numbered Remarks and the mathematical claims are audited below.
 
@@ -3433,7 +3494,7 @@ populations witness every divergence statement.
 **Missing:** nothing for these limits of finite-population moments.
 An infinite-depth law or tail-class claim is separate in EU-17.
 
-### EU-17. Finite-depth or infinite-depth power-law tail generation — not ok
+### EU-17. Power-law tail generation — not ok as stated; unscaled point-mass weak limit proved
 
 The module proves growing moment expressions.
 For the actual dispersion law, `epistemicScaleLaw_moment_rpow` now
@@ -3443,12 +3504,21 @@ these actual fractional moments tend to zero, while the actual first
 dispersion moment stays fixed. A limit-law argument must account for
 this behavior as well as the growing outcome variance and kurtosis.
 
-**Missing:** a precise tail-class claim, the distribution under study and, for
-an infinite construction, a limit law. A finite mixture of nondegenerate
-Gaussians has all moments and a moment generating function finite at every
-real argument. Larger kurtosis by itself does not make that finite mixture
-regularly varying. An infinite-depth distribution requires a separate
-existence and tail analysis.
+`epistemicScaleLaw_tail_tendsto_zero` and
+`epistemicScaleProba_tendsto_dirac` now prove concentration and weak
+convergence of the actual dispersion laws to `Dirac(0)`.
+`epistemicOutcomeProba_tendsto_dirac` uses the independent Gaussian
+product model to prove the actual unscaled outcomes converge weakly
+to `Dirac(mu)` for fixed `sigma>0`, `epsilon in (0,1)` and common mean.
+`epistemicOutcomeProba_weak_limit_unique` formally identifies every
+weak limit with this point mass. The same actual sequence's variance
+is proved to diverge. Thus a different nondegenerate power-law weak
+limit on this fixed-parameter, unscaled domain is excluded.
+
+**Missing:** a precise mathematical interpretation and proof for the
+source's graphical tail-shape assertion, any moving-threshold or
+rescaled limit, and a formal finite-depth tail-class statement.
+Growing kurtosis alone does not establish regular variation.
 
 ### EU-18. Constant-error exceedance formula and numerical tables — not ok
 

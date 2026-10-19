@@ -19,9 +19,11 @@ module
   BranchingMoments and BranchingKurtosis prove its outcome moments,
   reflection symmetry and the actual interpretation of the scale formulas.
   BranchingLimits proves geometric divergence of these finite populations'
-  moments under nonzero uncertainty. Binomial counting, density identities,
-  infinite-depth laws, a CLT and the Normal-Gamma compound-law theorem
-  remain separate. Higher kurtosis alone does not establish a power-law tail.
+  moments under nonzero uncertainty. OutcomeLimit proves the constant-error
+  laws converge weakly to the point mass at their common mean. Binomial
+  counting, density identities, general nested kernels, a CLT and the
+  Normal-Gamma compound-law theorem remain separate. Higher kurtosis alone
+  does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.
 -/
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
