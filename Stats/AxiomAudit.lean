@@ -178,14 +178,14 @@ meta import Lean.Util.CollectAxioms
 open Lean in
 run_cmd do
   let env ← getEnv
+  let statsModules := env.header.moduleNames.map fun n => n == `Stats || n.toString.startsWith "Stats."
   let mut declarations : Nat := 0
   let mut theorems : Nat := 0
   let mut failures : Nat := 0
   let mut axioms : NameSet := {}
   for (name, info) in env.constants.toList do
     let some idx := env.getModuleIdxFor? name | continue
-    let moduleName := env.header.moduleNames[idx.toNat]!
-    unless moduleName == `Stats || moduleName.toString.startsWith "Stats." do
+    unless statsModules[idx.toNat]! do
       continue
     declarations := declarations + 1
     match info with

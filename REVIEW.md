@@ -1011,6 +1011,36 @@ checks pass. The refreshed declaration index has 911 distinct public
 names: all 902 previous names and types remain unchanged, with nine
 additions and no duplicates. The expanded actual-law module is 169 lines.
 
+### Cache module membership in repeated verification scans
+
+Both the transitive axiom audit and the compiled-proof scanner used to
+recompute their project-module predicate for every imported declaration.
+They now compute the same predicate once per imported module and look up
+the result by the declaration's module index. Each retains its original
+predicate and exhaustive `import all` coverage, including private
+declarations. The scanner constructs a source path only for an actual
+finding; its type/value inspection, opaque-value handling and line lookup
+are unchanged. The axiom audit still calls `Lean.collectAxioms` for every
+selected declaration and rejects every axiom outside the existing three.
+
+Separate Lean benchmarks compared the entire ordered declaration arrays
+selected by the old and cached predicates. Both comparisons were exactly
+equal at 1723 roots. On this machine, selection alone changed from
+92341 ms to 330 ms for the axiom audit and from 90300 ms to 325 ms for
+the compiled-proof scanner. These are selection timings, not full-build
+timings. A separate optimized audit computation took 920 ms and reported
+the same 1723 declarations, 1470 theorem declarations and three core
+axioms. This changes verification cost without changing a mathematical
+claim or its dependencies.
+
+**Verification:** the default build passes all 3971 jobs without warnings;
+the rebuilt audit module takes 3.3 seconds. The standalone audit retains
+the same counts and zero non-core axioms. The generated index remains
+172 modules and 805 named theorems with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check
+pass. The refreshed declaration index retains all 911 public names and
+their exact types, with no additions or duplicates.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility

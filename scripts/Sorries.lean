@@ -34,12 +34,13 @@ private partial def nameLine (n : Name) : CommandElabM (Option Nat) := do
 
 run_cmd do
   let env ← getEnv
+  let statsModules := env.header.moduleNames.map fun n => (`Stats).isPrefixOf n
   for (name, ci) in env.constants.toList do
     let some idx := env.getModuleIdxFor? name | continue
-    let mod := env.header.moduleNames[idx.toNat]!
-    unless (`Stats).isPrefixOf mod do continue
-    let path := "/".intercalate (mod.components.map (·.toString (escape := false)))
-      ++ ".lean"
+    unless statsModules[idx.toNat]! do continue
     let valueHasSorry := ((ci.value? (allowOpaque := true)).map Expr.hasSorry).getD false
     unless ci.type.hasSorry || valueHasSorry do continue
+    let mod := env.header.moduleNames[idx.toNat]!
+    let path := "/".intercalate (mod.components.map (·.toString (escape := false)))
+      ++ ".lean"
     IO.println s!"{path}\t{(← nameLine ci.name).getD 0}\t{ci.name}"
