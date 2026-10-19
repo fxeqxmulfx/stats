@@ -47,6 +47,8 @@ import all Stats.EpistemicUncertainty
 import all Stats.Hedging
 import all Stats.HiddenMoments
 import all Stats.HiddenMoments.Counterexample
+import all Stats.HiddenMoments.Decomposition
+import all Stats.HiddenMoments.DecompositionExamples
 import all Stats.HiddenMoments.Examples
 import all Stats.HiddenMoments.Maximum
 import all Stats.HiddenMoments.Mean
@@ -94,8 +96,10 @@ import all Stats.Pareto
 import all Stats.Pareto.AbstractCall
 import all Stats.Pareto.Basic
 import all Stats.Pareto.Calibration
+import all Stats.Pareto.Integration
 import all Stats.Pareto.Measure
 import all Stats.Pareto.Mispricing
+import all Stats.Pareto.Moments
 import all Stats.Pareto.Put
 import all Stats.Pareto.PutCallParity
 import all Stats.Pareto.Returns
@@ -103,6 +107,7 @@ import all Stats.Pareto.TailRisk
 import all Stats.Probability.Exponential
 import all Stats.Probability.HiddenMass
 import all Stats.Probability.SampleMaximum
+import all Stats.Probability.TruncatedMoments
 import all Stats.RegularVariation
 import all Stats.RegularVariation.Abelian
 import all Stats.RegularVariation.Abelian.Basic

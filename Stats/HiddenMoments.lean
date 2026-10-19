@@ -12,3 +12,5 @@ public import Stats.HiddenMoments.Maximum
 public import Stats.HiddenMoments.Mean
 public import Stats.HiddenMoments.Counterexample
 public import Stats.HiddenMoments.Examples
+public import Stats.HiddenMoments.Decomposition
+public import Stats.HiddenMoments.DecompositionExamples

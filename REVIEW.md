@@ -570,7 +570,68 @@ forbidden-construct check and `git diff --check` pass. `dt refresh project`
 indexes 802 public declarations: all 761 previous names and types remain
 unchanged, and 41 declarations are added. The focused example build checks
 the four central theorem axioms and nondegenerate probability witnesses.
-Every new Lean module has at most 192 lines.
+Every new Lean module has at most 193 lines.
+
+### Actual population moments and decomposition at the observed maximum
+
+Reread `MaxHiddenTail.tex`, the opening population-moment decomposition
+(lines 159–175) and Eq. 2 (lines 203–213), and
+`papers/arXiv-2007.16096v1/coronaIJF_paperArXiv.tex`, the moment footnote
+(line 181) and Remark 3's finite-mean discussion (lines 214–217).
+
+[Pareto/Integration.lean](Stats/Pareto/Integration.lean) now connects
+integration against the genuine supported Pareto measure to the existing
+density integrals. It proves both the integral identity and the exact
+integrability equivalence, including restricted sets.
+[Pareto/Moments.lean](Stats/Pareto/Moments.lean) then proves
+
+```text
+Integrable (x ↦ x^p) (paretoMeasure l α) ↔ p < α
+E[X^p] = α l^p / (α-p)                 when p < α
+E[X^p ; X>k] = α l^α k^(p-α)/(α-p)     when p < α and k ≥ l.
+```
+
+These are statements about the actual measure, with positive scale and
+tail index. The first is the exact strong-Pareto moment threshold; it
+does not extend the source's incorrect boundary assertion to arbitrary
+slowly varying tails. Concrete examples prove finite mean two and a
+nonintegrable second moment for Pareto(1,2).
+
+[Probability/TruncatedMoments.lean](Stats/Probability/TruncatedMoments.lean)
+defines the visible and hidden quantities as actual population integrals
+below and above the observed coordinate maximum. Joint measurability of
+the threshold kernels proves that both are measurable sample functions.
+Integrability of the population power suffices for both quantities to be
+integrable under the actual product sample law, using a bound by the
+population absolute moment. Their pointwise and expected sums equal the
+population moment; neither is an empirical arithmetic mean.
+
+[HiddenMoments/Decomposition.lean](Stats/HiddenMoments/Decomposition.lean)
+assembles the source's split at the actual maximum. It identifies the
+visible density integral and the hidden tail integral, applies Eq. 2 at
+the random threshold almost surely, and proves both sample quantities
+integrable. The visible population integral is strictly below the finite
+population moment almost surely. This is the valid population-truncation
+target; the source's stronger statement about an arithmetic sample mean
+still requires the separate counterexample described in HM-19.
+
+Nondegenerate Pareto(1,2) product examples check the true mean two,
+the conditional density-integral bridges, measurability and L1 of both
+sample quantities, their expected sum two, and the actual hidden first
+moment `2/K_n` almost surely. No expectation, law or integrability
+conclusion is supplied as a hypothesis without an actual witness.
+
+**Verification:** all 3930 default-build jobs pass without warnings. The
+standalone transitive audit checks 1563 declarations, including 1341
+theorem declarations, with only the three permitted core axioms. The
+generated index has 150 modules and 729 named theorems, with zero sorry,
+vacuous or placeholder markers; all 149 other modules are explicitly
+imported by the audit. All 27 Python tests and the forbidden/whitespace
+checks pass. The refreshed project index has 830 distinct public names:
+all 802 previous names and types remain unchanged, with 28 additions.
+The new example instance is named explicitly so the declaration index
+retains both example modules' instances without a name collision.
+The five new modules are at most 103 lines each.
 
 ## Lean upgrade and reproducible verification
 
@@ -2183,15 +2244,18 @@ General-p Proposition 1, limit theorems and the Gaussian comparison remain
 incomplete. The source's Fréchet substitution requires a precise
 approximation or asymptotic statement.
 
-### HM-01. Visible-plus-hidden moment decomposition — not ok as assembled
+### HM-01. Visible-plus-hidden moment decomposition — ok for the exact Pareto model
 
 The source splits the population moment at the random sample maximum.
 
-The actual iid sample and its measurable maximum are now constructed.
+`paretoSample_moment_decomposition` splits the actual population moment
+at the actual observed maximum for positive scale/index and `p<α`.
+The population power's integrability, sample-function measurability and
+integrability, and the expected decomposition are proved. The visible and
+hidden density expressions are identified with the actual measure integrals.
 
-**Missing:** the population moment's integrability and the integral-splitting
-theorem assembled at that random threshold. The deterministic hidden
-tail-moment integral is an ingredient.
+**Missing:** nothing for this finite-sample exact-Pareto decomposition.
+An asymptotic-tail model remains a separate extension.
 
 ### HM-02. Eq. 2: strong-Pareto p-th tail moment — ok
 
@@ -2200,7 +2264,9 @@ $∫_K^∞ x^p αl^αx^{-α-1}dx=αl^αK^{p-α}/(α-p)$
 for $l>0$, $α>0$, $p<α$, $K≥l$.
 
 **Missing:** nothing for this exact integral. It is not merely a rearrangement
-of a supplied closed expression.
+of a supplied closed expression. `paretoMeasure_tailMoment_eq` additionally
+identifies the result as a true truncated expectation under the supported
+Pareto law, with a separate population-integrability theorem.
 
 ### HM-03. Zeroth and first tail-moment specializations — ok
 
@@ -2241,10 +2307,13 @@ Proposition 1.
 
 HM-04 supplies the actual exact maximum law.
 
+The actual general-p hidden moment is now a measurable integrable random
+variable, with Eq. 2 proved at the actual random maximum almost surely.
+
 **Missing:** a justified Fréchet approximation for the printed expression,
-definition of general $μ_{K_n,p}$ as a random variable, monotone change of variables,
-Jacobian, support, normalization and equality of laws. The current
-deterministic tail-moment formula is an ingredient rather than this result.
+the general-p change of variables, Jacobian, density support and
+normalization, and the corresponding equality of laws. The actual
+finite-sample maximum and tail-moment formula supply the inputs.
 
 ### HM-07. Remark 1: sample survival ratio is exponential — not ok literally
 
@@ -2315,8 +2384,11 @@ alone does not establish convergence of laws.
 The source gives the Fréchet-model expression
 $l^p n^{p/α-1}Γ(1-p/α)$.
 
-**Missing:** the hidden-moment pushforward, expectation integrability, the
-Gamma calculation and a precise finite-sample/asymptotic distinction.
+The actual general-p hidden moment and its expectation integrability are
+now proved for `p<α`.
+
+**Missing:** its pushforward-law calculation, the Gamma evaluation and a
+precise finite-sample/asymptotic distinction.
 For the exact strong-Pareto model, writing $r=1-p/α>0$, the expected
 hidden moment is analytically
 $l^p Γ(r)Γ(n+1)/Γ(n+1+r)$, whose leading term is the printed
@@ -2379,6 +2451,10 @@ already supplies such an example. The population integral truncated at the
 sample maximum is a different quantity and omits positive tail mass.
 The formalization must distinguish that truncated integral from the arithmetic
 mean of the observed sample.
+
+`paretoSample_visibleMoment_lt_population` now proves the corrected
+truncated-population-integral statement, almost surely under the actual
+finite iid sample law. It does not assert a bias of the arithmetic sample mean.
 
 ### HM-20. Confidence about the size of the unseen and risk applications — not ok
 
@@ -2489,6 +2565,10 @@ Concentration, CLT and uniform empirical-process guarantees remain separate.
 `paretoMean_not_integrable_when_alpha_le_one` and
 `paretoMean_not_integrable_at_alpha_one` prove nonintegrability of the
 actual first-moment density integrand for $l>0$.
+`paretoMeasure_integrable_id_iff` now additionally proves that the actual
+identity random variable under the supported Pareto probability measure
+is integrable exactly when `1<α`, for positive scale/index. The density
+integrability conclusion is therefore connected to the genuine law.
 
 **Missing:** nothing for this strong-Pareto statement. The conclusion is
 nonintegrability, rather than an equality claiming Lean's real integral is an
@@ -2527,9 +2607,10 @@ does not establish that the principle is false.
 
 ### SP-12. Remark 3: no forecastability/LLN at α ≤ 1 and very slow LLN at 1 < α ≤ 2 — not ok fully
 
-The strong-Pareto nonintegrability kernel is proved in SP-08.
+The actual strong-Pareto moment threshold is proved in SP-08, and the
+finite iid product sample is constructed.
 
-**Missing:** an iid sample and the applicable LLN/nonconvergence theorem, a
+**Missing:** the applicable LLN/nonconvergence theorem, a
 quantitative sample-size/error rate for finite-mean cases, and a definition of
 forecastability. Absence of a finite mean does not rule out quantile, tail or
 other forecasts. The general $α=1$ statement additionally needs the
