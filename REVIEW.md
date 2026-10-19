@@ -2622,6 +2622,42 @@ The tail, calculus and hazard modules have 113, 113 and 84 lines.
 Their source rate convention and the actual survival derivative were
 checked beside the local Section VI density and hazard displays.
 
+### 2026-10-19: actual lognormal hazard formula and zero limit
+
+[LognormalHazard.lean](Stats/Probability/LognormalHazard.lean) defines
+the hazard using the proved density of the actual lognormal measure
+and its actual survival probability. Nonzero log variance and positive
+input give strictly positive survival. Standardizing the Gaussian log
+density and using the actual log-transform law identifies this hazard
+with the standard Gaussian Mills ratio times
+`z/(sqrt(v)*x)`, where `z=(log(x)-m)/sqrt(v)`.
+
+`lognormalHazard_tendsto_zero` proves the source's zero asymptotic
+failure rate for every log location m and nonzero log variance v.
+The Gaussian threshold z tends to infinity, the previously proved
+actual Gaussian Mills ratio tends to one, and the lognormal scaling
+factor tends to zero by `log(x)/x -> 0` and `1/x -> 0`. The argument
+uses the actual probability-law ratio throughout.
+
+`lognormalHazard_eq_erfc` separately proves Section VI's literal
+displayed formula, with the source's sigma equal to `sqrt(v)`.
+Its numerator is `sqrt(2/pi)*exp(-(m-log(x))^2/(2*v))`; its denominator
+is `sqrt(v)*x*erfc((log(x)-m)/(sqrt(2)*sqrt(v)))`. The square-root
+normalization is proved algebraically, and the erfc denominator is
+nonzero by the actual positive survival probability. Proper standard
+lognormal populations at thresholds one and e witness the hypotheses.
+
+Verification: all 4,160 default-build jobs pass without warnings. The
+audit checks 2,450 declarations and 2,109 theorems with zero non-core
+axioms. The index records 230 modules and 1,220 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,373 previous
+indexed names and types are preserved, with ten additions and no
+duplicates; the audit imports all 228 other `Stats/` modules. The
+new module has 200 lines. Its actual survival, nonzero-variance domain,
+erfc coefficient and parameter interpretation were checked against
+the local Section VI display and limit claim.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4614,9 +4650,18 @@ population to refute the printed reciprocal limit; the stronger
 `gammaHazard_not_tendsto_inverse_rate` excludes it for all positive
 rates other than one. The exact unit-shape survival is exponential.
 
-**Missing:** the lognormal hazard formula and zero limit, the resulting
-Gamma/lognormal tail domination, and their maximum-domain claims. The
-Gamma finite-positive-exponential-moment classification is not yet formal.
+`LognormalMeasure.lognormalHazard` uses the actual normalized lognormal
+law and its proved density. Its displayed erfc formula is proved by
+`lognormalHazard_eq_erfc`; its denominator is strictly positive on the
+positive continuous domain. `lognormalHazard_tendsto_zero` proves the
+zero limit using the actual Gaussian Mills ratio and the vanishing
+logarithmic scaling factor, for every log location and nonzero log
+variance.
+
+**Missing:** the resulting Gamma/lognormal tail-probability domination,
+their maximum-domain claims, and the Gamma incomplete-Gamma display in
+the stated rate convention. The Gamma finite-positive-exponential-moment
+classification is not yet formal.
 In the source's
 density $β^α y^{α-1}exp(-βy)/Γ(α)$, $β$ is a rate, so the Gamma
 hazard limit is $β$, not $1/β$. This Gamma law has a finite MGF for

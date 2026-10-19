@@ -143,6 +143,7 @@ public import Stats.EpistemicUncertainty.GammaMatch
 public import Stats.Probability.GammaTail
 public import Stats.Probability.GammaCalculus
 public import Stats.Probability.GammaHazard
+public import Stats.Probability.LognormalHazard
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
