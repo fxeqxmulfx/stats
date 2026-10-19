@@ -2419,6 +2419,48 @@ and CLT modules have 110 and 179 lines; their actual centering, variance,
 normalization and added iid/radius hypotheses were checked against the
 local Section V argument.
 
+### 2026-10-19: actual lognormal prior, density and real-order moments
+
+[Lognormal.lean](Stats/Probability/Lognormal.lean) extends the existing
+`LognormalMeasure.lognormalReal`, the exponential pushforward of `N(m,v)`.
+It is an
+independently normalized probability law, supported on positive values,
+and applying the logarithm recovers the entire Gaussian measure.
+All real powers, including negative ones, are proved L1 using Gaussian
+exponential integrability before evaluating their integrals. The actual
+moment is `E[X^p]=exp(p*m+v*p^2/2)` for every real p. Natural moments
+follow, supplying a probability interpretation of Appendix B's lognormal
+raw-moment formula in the kappa paper as well as Section V's inverse
+precision moments.
+
+The actual prior has mean `exp(m+v/2)`, inverse mean `exp(-m+v/2)`,
+variance `(exp(v)-1)*exp(2*m+v)` and squared coefficient of variation
+`exp(v)-1`. L2 is supplied independently before applying the variance
+identity. These formulas hold at zero log variance too, where the law
+is a point mass.
+
+[LognormalDensity.lean](Stats/Probability/LognormalDensity.lean)
+identifies the actual positive-variance prior's Lebesgue density as
+`GaussianPDF(m,v,log(x))/x` on `x>0`, and zero elsewhere. The
+one-dimensional change-of-variables theorem for `x=exp(z)` proves
+Jacobian cancellation inside nonnegative integrals. Applying that
+identity to measurable events proves equality of whole measures with
+the prescribed density. Its total mass one and a.e. finiteness follow
+from the actual probability population. A nonzero variance hypothesis
+is explicit for the density theorem, distinguishing the point-mass
+boundary. The standard prior `m=0,v=1` supplies concrete witnesses.
+
+Verification: all 4,149 default-build jobs pass without warnings. The
+audit checks 2,339 declarations and 2,006 theorems with zero non-core
+axioms. The index records 219 modules and 1,149 named theorems with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,285 previous
+indexed names and types are preserved, with 17 additions and no
+duplicates. The audit explicitly imports all 217 other `Stats/` modules.
+The moment and density modules have 131 and 111 lines. Their parameters,
+inverse moments, coefficient of variation and positive-variance density
+domain were checked against the local Sections V–VI and Appendix B.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4344,7 +4386,12 @@ condition before an approximation argument can be used.
 
 ### EU-27. Normal–Lognormal precision mixture and its moments — not ok
 
-There is no formal compound density or probability law for this section.
+The actual precision prior `LognormalMeasure.lognormalReal m v` is now constructed, with
+positive support, whole-measure Gaussian log transform, and every real
+power L1. Its actual moments are `exp(p*m+v*p^2/2)`, including inverse
+moments. `LognormalMeasure.lognormalReal_eq_withDensity` proves the literal positive
+lognormal density and its normalization for nonzero log variance.
+There is not yet a formal compound density or probability law for this section.
 
 **Missing:** the mixture construction, integral interchange and its moments.
 For centered Gaussian precision $Λ$ with $log(Λ)∼N(0,S²)$,
@@ -4356,9 +4403,12 @@ convention. This is distinct from the constant-error finite-sum model.
 
 The source matches Gamma shape/rate to a lognormal precision law.
 
-**Missing:** the actual two distributions' moments and the matching formulas
-as proved identities. Equality of the first two moments does not by itself
-provide a distributional approximation error bound.
+The actual lognormal prior has the proved mean `exp(m+v/2)`, variance
+`(exp(v)-1)*exp(2*m+v)` and squared coefficient of variation `exp(v)-1`.
+
+**Missing:** the Gamma distribution's actual moments and the matching
+formulas as proved identities. Equality of the first two moments does
+not by itself provide a distributional approximation error bound.
 
 ### EU-29. Gamma and Lognormal tail/hazard comparison — not ok
 

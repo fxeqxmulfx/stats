@@ -131,6 +131,8 @@ public import Stats.EpistemicUncertainty.PrecisionCounterexample
 public import Stats.EpistemicUncertainty.LogRemainder
 public import Stats.EpistemicUncertainty.LogErrorMoments
 public import Stats.EpistemicUncertainty.PrecisionCLT
+public import Stats.Probability.Lognormal
+public import Stats.Probability.LognormalDensity
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
