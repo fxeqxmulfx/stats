@@ -21,3 +21,5 @@ public import Stats.HiddenMoments.MomentAsymptotic
 public import Stats.HiddenMoments.MomentMeanExamples
 public import Stats.HiddenMoments.ContinuousLaw
 public import Stats.HiddenMoments.ContinuousLawExamples
+public import Stats.HiddenMoments.ExponentialLimit
+public import Stats.HiddenMoments.ExponentialLimitExamples

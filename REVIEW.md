@@ -21,7 +21,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives, actual probability integral transform | General Theorem 1, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
-| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density, scaled exponential weak limit and Gaussian comparison |
+| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
@@ -815,6 +815,60 @@ All 27 Python tests and the forbidden/whitespace checks pass. The refreshed
 declaration index has 875 distinct public names: all 863 previous names
 and types remain unchanged, with 12 additions and no duplicates. The
 four new modules are at most 104 lines each.
+
+### Actual scaled hidden-mass laws converge weakly to Exp(1)
+
+Reread `papers/arXiv-2004.05894v1/MaxHiddenTail.tex`, Remark 1 (lines
+229–235), together with the Fréchet substitution in the proof of
+Proposition 1 (lines 209–219). The source prints an exact exponential
+law with rate `n` for unscaled finite-sample hidden mass. That statement
+remains false. The corrected asymptotic is `n*H_n` converging in law to
+Exp(1), where `H_n` is the actual population tail probability beyond the
+actual iid sample maximum.
+
+[Probability/WeakCDF.lean](Stats/Probability/WeakCDF.lean) proves a
+sufficient criterion turning pointwise convergence of actual real CDFs
+into weak convergence of probability measures. Its proof converts CDF
+differences into probabilities of bounded half-open intervals, then
+applies the π-system neighborhood criterion for the weak topology.
+Thus the resulting limit is a genuine weak-convergence theorem.
+
+[ScaledLaw.lean](Stats/HiddenMoments/ScaledLaw.lean) defines the actual
+pushforward probability measure of `(n+1)*H_(n+1)` from `n+1` observed
+coordinates. The positive-size indexing avoids an empty maximum. Its
+exact CDF is obtained from the already proved actual Beta(1,n+1) law
+at the threshold `t/(n+1)`, with all real thresholds allowed. The target
+`unitExponentialLaw` is Mathlib's normalized actual Exp(1) measure.
+
+[ExponentialLimit.lean](Stats/HiddenMoments/ExponentialLimit.lean) proves
+pointwise convergence at every real threshold, including zero and the
+negative half-line, using Euler's exponential limit in the positive
+interior branch. `scaledHiddenMassLaw_tendsto` then proves convergence in
+the weak topology on probability measures for every population with
+continuous CDF. `continuous_paretoMeasure_cdf` verifies that condition
+for every positive strong-Pareto scale and tail index, and
+`paretoScaledHiddenMassLaw_tendsto` supplies the source-specific corollary.
+No population moment assumption is needed.
+
+[ExponentialLimitExamples.lean](Stats/HiddenMoments/ExponentialLimitExamples.lean)
+checks that index zero uses one observation and that index one scales a
+two-observation hidden mass by two. For an Exp(1) population, the latter
+actual CDF is `3/4` at one, zero at zero and negative one, and one at two.
+The examples instantiate actual CDF convergence, the generic
+CDF-to-weak-convergence criterion, and both exponential and Pareto weak
+limits. Pareto(1,1/2) provides a concrete infinite-mean population: its
+mean integrability fails while its scaled hidden-mass laws still converge.
+
+**Verification:** all 3967 default-build jobs pass without warnings. The
+standalone audit checks 1686 declarations, including 1437 theorem
+declarations, with only the three permitted core axioms. The generated
+index has 168 modules and 776 named theorems, with zero sorry, vacuous or
+placeholder markers; all 167 other modules are explicitly audited.
+All 27 Python tests and the forbidden/whitespace checks pass. The refreshed
+declaration index has 886 distinct names, preserving all 875 previous
+names and types without duplicates. The 11 additions include the
+compiler-generated congruence lemma for the bundled scaled law. The
+four new modules are at most 93 lines each.
 
 ## Lean upgrade and reproducible verification
 
@@ -2521,7 +2575,7 @@ pushforward differs from Exp(n). `paretoHiddenMass_cdf` and
 `paretoSampleSurvivalRatio_cdf` prove the corrected supported Beta(1,n) CDF.
 
 **Missing:** nothing for that finite-sample correction and refutation.
-The scaled exponential asymptotic is still open in HM-12; the source's
+The scaled exponential weak limit is now proved in HM-12; the source's
 unscaled exponential expression comes from the Fréchet substitution.
 
 ### HM-08. Beta CDF and its maximum-CDF substitution — ok
@@ -2566,16 +2620,27 @@ are proved, rather than assumed.
 `paretoSampleSurvivalRatio_mean_asymptotic_gap` proves
 $1/n-1/(n+1)=1/(n(n+1))$.
 
-**Missing:** nothing for the equality. An explicit big-O or distributional
-limit statement is not present.
+**Missing:** nothing for the equality. An explicit big-O estimate for this
+scalar difference is not stated. The actual scaled distributional limit
+is now proved separately in HM-12.
 
-### HM-12. Scaled sample-survival ratio converges to Exp(1) — not ok
+### HM-12. Scaled sample-survival ratio converges to Exp(1) — ok
 
-The actual finite-sample supported Beta CDF and its actual mean are available.
+`scaledHiddenMassLaw_tendsto` now proves full weak convergence of the
+actual scaled hidden-mass pushforwards to Mathlib's actual Exp(1)
+probability measure. The positive sample sizes are indexed by `n+1`.
+`scaledHiddenMassLaw_cdf_tendsto` proves the actual CDF convergence at
+every real threshold, and `probabilityMeasure_tendsto_of_cdf` supplies
+the proved bridge to the weak topology.
 
-**Missing:** a convergence-in-distribution theorem for $n(1-F(K_n))$
-and the identification of its limiting exponential law. A mean comparison
-alone does not establish convergence of laws.
+The result holds for every probability population with continuous CDF.
+`paretoScaledHiddenMassLaw_tendsto` specializes it to every positive
+strong-Pareto scale and tail index; continuity is proved, not supplied
+without a witness. Actual exponential and infinite-mean Pareto examples
+check the hypotheses.
+
+**Missing:** nothing for this corrected scaled exponential weak limit.
+The exact finite-sample unscaled exponential assertion remains false.
 
 ### HM-13. Expected general-p hidden moment — corrected exact mean and asymptotic proved
 

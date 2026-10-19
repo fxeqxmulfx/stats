@@ -68,7 +68,8 @@ module
                               mean 1/(n+1), exact general-p hidden-moment
                               pushforward, Gamma-ratio expectation and its
                               asymptotic, distribution-free hidden mass for
-                              continuous-CDF populations;
+                              continuous-CDF populations and the scaled
+                              exponential weak limit;
                               certificates refute the finite-sample
                               exponential law and necessary underestimation
                               of the arithmetic sample mean.
