@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial Gaussian laws, finite conditional-density hierarchy, corrected exceedance and moments, moment bounds and weak limit, iid counterexample to uncentered lognormal approximation | Higher-moment and limit-law questions, numerical claims, corrected CLT and compound mixtures |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, corrected exceedance and moments, bounds and weak limit, log remainders, refuted uncentered approximation and corrected iid lognormal CLT | Higher-moment and infinite-law questions, numerical claims, compound mixtures |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2375,6 +2375,50 @@ duplicates; the audit imports all 213 other `Stats/` modules.
 The new 151-line module's domain, signed remainder and accumulated rate
 condition were reread beside the local Section V approximation.
 
+### 2026-10-19: corrected iid CLT for actual log precision
+
+[LogErrorMoments.lean](Stats/EpistemicUncertainty/LogErrorMoments.lean)
+computes the actual expectation and variance of `log(1+epsilon_i)`
+under the signed error law, then transfers those integrals to the
+infinite iid process. For `0<epsilon<1`, the mean is exactly
+`m=log(1-epsilon^2)/2<0`, and the actual variance is
+`v=((log(1+epsilon)-log(1-epsilon))/2)^2>0`. These are probability-law
+moments, including independently justified integrability, rather than
+parameters declared to equal desired formulas.
+
+[PrecisionCLT.lean](Stats/EpistemicUncertainty/PrecisionCLT.lean)
+proves a corrected theorem for general iid errors on any probability
+space with a uniform a.e. radius `|epsilon_i|<=r<1`. Monotonicity of
+the logarithm supplies an actual bound on every log factor, hence L2.
+Measurable composition preserves independence and identical distribution.
+The iid CLT therefore applies with the actual log-factor mean and
+variance. The exact finite log-product identity gives convergence in
+distribution of
+`(log(lambda_n)-log(lambda_hat)-n*E[log(1+epsilon_0)])/sqrt(n)`
+to the genuine centered Gaussian with that log-factor variance.
+The proof uses no first-order log approximation and assumes no desired
+limit or moment identity.
+
+For the same signed iid product used in the counterexample,
+`epistemic_signed_log_precision_CLT` substitutes the proved exact
+negative mean `m` and positive variance `v`. Continuous mapping also
+proves that the exponential of this centered, normalized log product
+converges to the exponential of the Gaussian, an actual lognormal
+limit. Initial precision two and errors of magnitude `1/100` witness
+all corrected assumptions. The original uncentered approximation remains
+false; this corrected limit concerns the explicitly normalized product.
+
+Verification: all 4,147 default-build jobs pass without warnings. The
+audit checks 2,320 declarations and 1,988 theorems with zero non-core
+axioms. The index has 217 modules and 1,133 named theorems, with zero
+`sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,273 previous indexed
+names and types are preserved, with 12 additions and no duplicates.
+The audit explicitly imports all 215 other `Stats/` modules. The log-moment
+and CLT modules have 110 and 179 lines; their actual centering, variance,
+normalization and added iid/radius hypotheses were checked against the
+local Section V argument.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4264,7 +4308,7 @@ errors near zero.
 do not supply the extra rate condition for arbitrary errors in the paper;
 the proposed fixed-error uncentered CLT is formally refuted in EU-26.
 
-### EU-26. CLT and lognormal precision law — false as printed; corrected CLT not ok
+### EU-26. CLT and lognormal precision law — false as printed; corrected iid CLT ok
 
 The source appeals to independent errors with finite variances bounded below.
 
@@ -4278,15 +4322,25 @@ zero, whereas the proposed `N(0,n*epsilon^2)` probability is always one half
 at positive depths. Their discrepancy tends to one half. The actual
 product's whole law and positive support are proved before taking this limit.
 
-**Missing:** a normalized convergence-in-distribution theorem, centering and
-an appropriate Lindeberg/Lyapunov or iid hypothesis, as well as log-factor
-moment assumptions. EU-25 now proves deterministic approximation control
-under an explicit accumulated-error condition; an arbitrary source model
-must satisfy that condition before the linearization can be used in a CLT.
-Finite variances and a positive lower bound alone do not guarantee a CLT for
-nonidentically distributed independent variables. Nor does zero mean of
-$ε_i$ imply zero mean of $log(1+ε_i)$. An unnormalized sum whose variance
-grows with $n$ does not converge to a fixed normal law.
+`epistemic_log_precision_CLT` proves the corrected theorem for iid errors
+uniformly bounded in magnitude by `r<1`. The log factors are proved L2.
+The actual log precision is centered by the initial log precision plus
+`n*E[log(1+epsilon_0)]` and normalized by `sqrt(n)`; it converges in
+distribution to a centered Gaussian with the actual log-factor variance.
+For the signed iid model, `epistemic_signed_log_precision_CLT` gives the
+explicit strictly negative mean `log(1-epsilon^2)/2` and strictly positive
+variance `((log(1+epsilon)-log(1-epsilon))/2)^2`.
+`epistemic_signed_precision_normalized_lognormal_CLT` proves a genuine
+lognormal limit for the exponential of that centered, normalized log.
+
+**Missing:** nothing for the printed-claim counterexample or the corrected
+bounded-iid theorem. Extending the corrected theorem to independent,
+nonidentically distributed errors would need Lindeberg/Lyapunov conditions;
+finite variances bounded below alone do not guarantee such a CLT.
+Zero mean of the errors does not center their logarithms, and an
+unnormalized sum of growing variance does not have a fixed normal limit.
+EU-25's separate linearization theorem requires its accumulated-error
+condition before an approximation argument can be used.
 
 ### EU-27. Normal–Lognormal precision mixture and its moments — not ok
 

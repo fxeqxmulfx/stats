@@ -129,6 +129,8 @@ public import Stats.EpistemicUncertainty.PrecisionErrors
 public import Stats.EpistemicUncertainty.PrecisionLaw
 public import Stats.EpistemicUncertainty.PrecisionCounterexample
 public import Stats.EpistemicUncertainty.LogRemainder
+public import Stats.EpistemicUncertainty.LogErrorMoments
+public import Stats.EpistemicUncertainty.PrecisionCLT
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
