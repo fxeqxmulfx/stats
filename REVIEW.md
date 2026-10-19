@@ -2744,6 +2744,39 @@ The new module has 156 lines. The actual ratio, continuous-variance
 domain, derivative signs and eventual comparison were checked beside
 the local Section VI hazard-to-tail argument.
 
+### 2026-10-19: exact actual lognormal exponential-moment domain
+
+[LognormalMGF.lean](Stats/Probability/LognormalMGF.lean) proves that
+`exp(-t*x)` divided by actual lognormal survival tends to zero for
+every `t>0` and nonzero log variance. This follows by specializing the
+proved actual Gamma/lognormal ratio to unit shape, whose actual Gamma
+survival is exactly exponential.
+
+A hypothetical L1 positive exponential moment would give a Chernoff
+upper bound on the lognormal survival. Dividing that bound by the
+positive actual survival would make one at most a quantity tending to
+zero, a contradiction. Thus every positive exponential moment fails
+for every nondegenerate lognormal population, despite its already
+proved finite polynomial moments. Nonpositive arguments are independently
+L1 by the bound `exp(t*x)<=1` on the actual positive support.
+
+The zero-log-variance boundary is an actual Dirac measure at `exp(m)`;
+all its exponential moments exist and its MGF is `exp(t*exp(m))`.
+The exact general integrability criterion is `v=0 or t<=0`, and a
+strictly positive exponential moment exists precisely when `v=0`.
+Proper standard-lognormal and atomic examples check both domains.
+
+Verification: all 4,164 default-build jobs pass without warnings. The
+audit checks 2,481 declarations and 2,140 theorems with zero non-core
+axioms. The index records 234 modules and 1,251 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,404 previous
+indexed names and types are preserved, with nine additions and no
+duplicates; the audit imports all 232 other `Stats/` modules.
+The new module has 151 lines. The actual exponential tail comparison,
+positive support and nondegenerate-domain correction were reread
+beside the local Section VI heavy-tail and finite-moment claims.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4769,8 +4802,15 @@ an exponentially weighted ratio is eventually decreasing.
 tail-probability inequality. This statement concerns right tails and
 does not establish the global or outcome-mixture ordering in EU-30.
 
-**Missing:** their maximum-domain claims. Lognormal nonintegrability
-of every positive exponential moment is also not yet formal.
+`LognormalMeasure.lognormalReal_exponential_tail_ratio_tendsto_zero`
+proves the actual lognormal survival dominates every decreasing
+exponential tail. `lognormalReal_not_integrable_exp_mul` proves that
+every strictly positive exponential moment fails for nonzero log
+variance. The exact integrability domain is `v=0 or t<=0`; the atomic
+zero-variance case admits all exponential moments. This completes the
+Gamma/lognormal heavy-tail distinction under that criterion.
+
+**Missing:** their maximum-domain claims.
 
 ### EU-30. Gamma as a lower bound for Lognormal, then for the outcome mixture — not ok
 

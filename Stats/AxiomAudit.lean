@@ -176,6 +176,7 @@ import all Stats.Probability.GammaHazard
 import all Stats.Probability.GammaHazardFormula
 import all Stats.Probability.LognormalHazard
 import all Stats.Probability.GammaLognormalTail
+import all Stats.Probability.LognormalMGF
 import all Stats.Probability.Exponential
 import all Stats.Probability.ExponentialIntegration
 import all Stats.Probability.HiddenMass
