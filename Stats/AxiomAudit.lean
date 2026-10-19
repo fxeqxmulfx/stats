@@ -1,12 +1,7 @@
 module
 
-/-
-  Audit every declaration originating in Stats modules, including private
-  declarations, for transitive dependence on non-standard axioms.
-  Run: lake build Stats.AxiomAudit
-  Keep the `import all` list exhaustive when adding Stats source modules;
-  these imports include their private declarations under the module system.
--/
+/- Audit all Stats declarations, including private ones, for transitive axioms.
+   Keep the `import all` list exhaustive. Run `./run.py audit`. -/
 import all Stats
 import all Stats.Arbitrage
 import all Stats.BinaryForecasts
@@ -14,9 +9,12 @@ import all Stats.BinaryForecasts.Bernoulli
 import all Stats.BinaryForecasts.Brier
 import all Stats.BinaryForecasts.CharacteristicScale
 import all Stats.BinaryForecasts.Conflation
+import all Stats.BinaryForecasts.ConflationCounterexample
+import all Stats.BinaryForecasts.ConflationCounterexampleExamples
 import all Stats.BinaryForecasts.Exponential
 import all Stats.BinaryForecasts.ExponentialLaw
 import all Stats.BinaryForecasts.ParetoSensitivity
+import all Stats.BinaryForecasts.PayoffGap
 import all Stats.BinaryForecasts.SigmaClosures
 import all Stats.BinaryForecasts.SigmaSensitivity
 import all Stats.BlackScholes
@@ -120,6 +118,7 @@ import all Stats.Probability.BetaAsymptotic
 import all Stats.Probability.BetaMoments
 import all Stats.Probability.CDFTransform
 import all Stats.Probability.Exponential
+import all Stats.Probability.ExponentialIntegration
 import all Stats.Probability.HiddenMass
 import all Stats.Probability.IntegralTransform
 import all Stats.Probability.SampleMaximum
@@ -176,7 +175,6 @@ import all Stats.Theorem1
 import all Stats.Verify
 meta import Lean.Elab.Command
 meta import Lean.Util.CollectAxioms
-
 open Lean in
 run_cmd do
   let env ← getEnv

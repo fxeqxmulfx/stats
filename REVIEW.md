@@ -19,7 +19,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
-| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives, actual probability integral transform | General Theorem 1, CLT and Brier-score distribution |
+| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Exact tail-integral cases, corrected payoff converse and counterexample, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | General Theorem 1, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
@@ -869,6 +869,86 @@ declaration index has 886 distinct names, preserving all 875 previous
 names and types without duplicates. The 11 additions include the
 compiler-generated congruence lemma for the bundled scaled law. The
 four new modules are at most 93 lines each.
+
+### Fixed-density payoff equality: counterexample and corrected converse
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 5, **Substitution of integral** (lines 339–350). The source
+fixes a density and a positive threshold, then says `I1=I2` holds if and
+only if the payoff is constant above that threshold. Its following
+sentence separately considers positive first derivatives. The fixed-density
+converse is false for a general impact function, even if it is smooth,
+nonnegative and genuinely integrable.
+
+[Probability/ExponentialIntegration.lean](Stats/Probability/ExponentialIntegration.lean)
+proves actual supported exponential-law integration and L1 bridges, and
+normalization of its real PDF. This makes the counterexample use a true
+density on the whole real line. The raw expression `exp(-x)` alone is
+not a normalized real-line density; the supported exponential PDF agrees
+with it on the positive tail used below.
+
+[ConflationCounterexample.lean](Stats/BinaryForecasts/ConflationCounterexample.lean)
+uses the actual Exp(1) PDF, the positive threshold `K=1`, and
+`g(x)=(x-2)^2`. It proves
+
+```text
+I1(g, f, 1) = I2(g, f, 1) = exp(-1) > 0,
+actual Exp(1) expectation of g above one = exp(-1),
+g is differentiable, nonnegative, and L1 on that actual tail,
+g(2)=0 and g(4)=4, so g is not constant above one.
+```
+
+The positive value is proved by an antiderivative and integrability of
+polynomials times `exp(-x)`, not supplied by definition. Both points of
+payoff variation have strictly positive density. Thus neither an empty
+tail, a nonintegrable real integral, a signed payoff nor variation only
+outside the support explains the equality. The excess `g(x)-g(1)` changes
+sign and cancels in the integral.
+`conflation_fixed_density_counterexample` packages the formal refutation
+with its differentiability, nonnegativity, L1 and positive-payoff conditions.
+An identity quantified over **every** possible density would be a
+different assertion; this counterexample concerns the fixed-density
+reading in Definition 5. It does not refute the following separate
+positive-derivative claim.
+
+[PayoffGap.lean](Stats/BinaryForecasts/PayoffGap.lean) proves a corrected
+characterization for actual finite population measures. If the payoff
+is L1 on the measured tail and `g(x)>=g(K)` almost everywhere there, then
+
+```text
+actual payoff expectation = g(K) * actual tail probability
+    iff g(x)=g(K) almost everywhere under the restricted tail law.
+```
+
+The one-sided bound rules out cancellation. The almost-everywhere
+conclusion concerns the actual measured support and does not assert
+pointwise values outside that support. The same module proves the exact
+strict-gap criterion: the gap is positive if and only if the restricted
+tail law assigns positive probability to `g(x)>g(K)`. In particular,
+strict excess almost everywhere and positive tail probability imply a
+strict gap. The results apply to all real thresholds, including the
+source's positive-threshold domain.
+
+[ConflationCounterexampleExamples.lean](Stats/BinaryForecasts/ConflationCounterexampleExamples.lean)
+checks a normalized PDF, positive density at both counterexample points,
+the actual expected payoff and its L1 property, and the zero integral of
+the excess. A constant payoff of two has actual tail expectation
+`2*exp(-1)`, witnessing the corrected equality. The linear payoff under
+the same actual law witnesses the L1, one-sided bound, positive tail
+probability and strict-gap hypotheses. Five central theorem axiom prints
+and the transitive audit check all new proof dependencies.
+
+**Verification:** all 3971 default-build jobs pass without warnings. The
+standalone audit checks 1714 declarations, including 1461 theorem
+declarations, with only the three permitted core axioms. The generated
+index has 172 modules and 796 named theorems, with zero sorry, vacuous or
+placeholder markers; all 171 other modules are explicitly audited.
+All 27 Python tests and the forbidden/whitespace checks pass. The refreshed
+declaration index has 902 distinct public names, preserving all 886
+previous names and types with 16 additions and no duplicates. The four
+new modules are at most 141 lines each. The audit's import-list header
+was shortened without changing its algorithm, keeping that aggregator
+at 200 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -1868,17 +1948,29 @@ on the upper tail. `I1_eq_I2_heaviside` proves the threshold-indicator case.
 
 **Missing:** nothing for the sufficient direction.
 
-### BF-09. Definition 5's “if and only if” and general strict gap — not ok
+### BF-09. Fixed-density converse — refuted; corrected converse and strict gap proved
 
-The source states that equality occurs only for a constant payoff above $K$.
-The Lean theorem proves only the sufficient direction.
+`conflation_fixed_density_counterexample` formally refutes the unrestricted
+fixed-density only-if reading of Definition 5. A smooth nonnegative payoff,
+`g(x)=(x-2)^2`, gives equal positive integrals under the actual supported
+Exp(1) PDF at `K=1`, while varying at points of positive density. Its actual
+tail expectation and L1 property are proved.
 
-**Missing:** a valid converse with hypotheses that rule out cancellation and
-variation outside the density's support. Without these restrictions a payoff
-can vary where $f=0$ while preserving equality. For unrestricted signed or
-nonmonotone payoffs, integral cancellation is another obstruction. A strict
-gap for an increasing payoff needs positivity of the density on a set where
-$g(x)>g(K)$.
+`tailPayoff_eq_binary_iff_ae_eq` proves the corrected actual-law converse:
+under tail L1 and the one-sided bound `g>=g(K)` almost everywhere, equality
+holds exactly for an almost-everywhere constant payoff under the measured
+tail law. This explicitly replaces the unrestricted pointwise conclusion.
+
+`tailPayoff_strict_gap_iff` proves that strict payoff excess on a set of
+positive actual tail probability is exactly the criterion for a strict
+gap under that bound. `tailPayoff_strict_gap` gives the strict-a.e.,
+positive-tail special case. Actual Exp(1) constant and linear payoffs
+instantiate all hypothesis families.
+
+**Missing:** nothing for this fixed-density refutation and specified
+corrected actual-law statements. A universal identity over all possible
+densities has different quantifiers; pointwise constancy outside the
+measured support is not claimed.
 
 ### BF-10. Theorem 1: linear-payoff convergence of I₁/I₂ — not ok as assembled
 

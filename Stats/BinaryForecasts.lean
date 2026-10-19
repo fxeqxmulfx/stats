@@ -10,9 +10,10 @@ module
   other.  Concretely, the conflation
         I_1 := ∫_K^∞ g(x) · f(x) dx       (expected payoff)
         I_2 := g(K) · ∫_K^∞ f(x) dx       (binary substitution)
-  is an identity for constant payoffs above `K`. The converse asserted
-  in the source's Definition 5 needs additional restrictions and is not
-  proved here; see REVIEW.md, BF-09. For `g(x) = x` and a strong-Pareto density:
+  is an identity for constant payoffs above `K`. A smooth nonnegative
+  counterexample refutes Definition 5's fixed-density pointwise converse.
+  A one-sided bound gives a corrected a.e. converse and a strict gap;
+  see REVIEW.md, BF-09. For `g(x) = x` and a strong-Pareto density:
         I_1 / I_2 = α / (α − 1) > 1                    (Eq. 7)
   i.e., the binary substitution *systematically underestimates* the
   tail payoff by the multiplicative factor `α/(α − 1)`.
@@ -36,6 +37,8 @@ module
     via `stdNormalCdf` and Gaussian PDF.
   * `Stats.Probability.IntegralTransform` — Appendix B's probability
     integral transform, proved for the actual continuous-CDF law.
+  * `Stats.BinaryForecasts.PayoffGap` and `ConflationCounterexample` —
+    Definition 5's corrected a.e. converse, strict gap and counterexample.
 -/
 public import Stats.BinaryForecasts.CharacteristicScale
 public import Stats.BinaryForecasts.Conflation
@@ -47,5 +50,8 @@ public import Stats.BinaryForecasts.ExponentialLaw
 public import Stats.BinaryForecasts.SigmaSensitivity
 public import Stats.BinaryForecasts.SigmaClosures
 public import Stats.Probability.IntegralTransform
+public import Stats.BinaryForecasts.PayoffGap
+public import Stats.BinaryForecasts.ConflationCounterexample
+public import Stats.BinaryForecasts.ConflationCounterexampleExamples
 
 @[expose] public section
