@@ -2807,6 +2807,35 @@ variance transformation, rate convention and sufficient moment-order
 condition were reread beside local Eq. compoundGamma. Sharp failure
 outside that moment range and the Student density identification remain.
 
+### 2026-10-19: actual normalized Normal--Gamma density integral
+
+[GammaCompoundDensity.lean](Stats/EpistemicUncertainty/GammaCompoundDensity.lean)
+identifies the whole actual compound law with its prior-averaged
+Gaussian Lebesgue density. Changing from the induced dispersion prior
+back to the genuine Gamma precision law gives Eq. compoundGamma's
+positive-axis integral of Gamma density times Gaussian density with
+variance `1/lambda`. The precision-zero boundary is Lebesgue-null;
+all positive inputs have the proved reciprocal-variance interpretation.
+
+The averaged density is measurable, integrates to one and is finite
+Lebesgue-a.e., all from the independently proper population construction.
+Actual measurable event probabilities are its density integrals, and
+the actual compound is absolutely continuous with respect to volume.
+The checked shape-one-quarter, rate-two examples show that normalization
+requires no finite-outcome-moment condition.
+
+Verification: all 4,166 default-build jobs pass without warnings. The
+audit checks 2,505 declarations and 2,161 theorems with zero non-core
+axioms. The index records 236 modules and 1,269 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,424 previous
+indexed names and types are preserved, with ten additions and no
+duplicates; the audit imports all 234 other `Stats/` modules.
+The new module has 153 lines. Its actual precision integral, null
+boundary, normalized measure equality and positive parameter domain
+were reread beside the local Eq. compoundGamma. The Euler evaluation
+and identification of the corrected Student scale remain separate.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4864,7 +4893,13 @@ Centered powers are independently L1 for `alpha>k/2`; their actual
 moments factor into the evaluated Gamma inverse moment and Gaussian
 moment by justified Fubini.
 
-**Missing:** evaluation of the compound density integral and its
+`epistemicNormalGammaLaw_eq_withDensity` now proves the actual normalized
+Lebesgue density representation. `epistemicNormalGammaDensity_eq_lintegral`
+identifies it with the positive-precision integral in Eq. compoundGamma.
+Its integral is one, it is measurable and finite a.e., and the whole
+compound measure is absolutely continuous for every positive shape/rate.
+
+**Missing:** explicit Euler evaluation of that density integral and its
 identification with the correctly scaled Student probability measure.
 Sharp nonintegrability outside the proved moment range also remains.
 For the printed rate parameterization, the resulting Student law has
