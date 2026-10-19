@@ -65,8 +65,12 @@ module
                               closed form α·L^α·K^(p−α)/(α−p) (Eq. 2);
                               actual finite iid maximum law and the hidden
                               population mass's supported Beta(1,n) CDF and
-                              mean 1/(n+1); a certificate refutes the literal
-                              finite-sample exponential-law assertion.
+                              mean 1/(n+1), exact general-p hidden-moment
+                              pushforward, Gamma-ratio expectation and its
+                              asymptotic;
+                              certificates refute the finite-sample
+                              exponential law and necessary underestimation
+                              of the arithmetic sample mean.
     Stats/SinglePointForecasts.lean — single-point forecasts for fat-tailed
                               variables (arXiv:2007.16096v1): actual supported
                               exponential-growth/Pareto law; unbiased iid

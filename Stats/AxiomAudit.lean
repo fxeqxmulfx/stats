@@ -46,12 +46,17 @@ import all Stats.Copula.Basic
 import all Stats.EpistemicUncertainty
 import all Stats.Hedging
 import all Stats.HiddenMoments
+import all Stats.HiddenMoments.BetaKernel
+import all Stats.HiddenMoments.BetaLaw
 import all Stats.HiddenMoments.Counterexample
 import all Stats.HiddenMoments.Decomposition
 import all Stats.HiddenMoments.DecompositionExamples
 import all Stats.HiddenMoments.Examples
 import all Stats.HiddenMoments.Maximum
 import all Stats.HiddenMoments.Mean
+import all Stats.HiddenMoments.MomentAsymptotic
+import all Stats.HiddenMoments.MomentMean
+import all Stats.HiddenMoments.MomentMeanExamples
 import all Stats.HiddenMoments.SampleMean
 import all Stats.HiddenMoments.SampleMeanExamples
 import all Stats.HiddenMoments.SurvivalKernel
@@ -106,6 +111,8 @@ import all Stats.Pareto.Put
 import all Stats.Pareto.PutCallParity
 import all Stats.Pareto.Returns
 import all Stats.Pareto.TailRisk
+import all Stats.Probability.BetaAsymptotic
+import all Stats.Probability.BetaMoments
 import all Stats.Probability.Exponential
 import all Stats.Probability.HiddenMass
 import all Stats.Probability.SampleMaximum

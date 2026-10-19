@@ -21,7 +21,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
-| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Tail-moment integral, actual finite iid Pareto maximum, supported hidden-mass Beta(1,n) CDF and actual mean 1/(n+1) | General-p Proposition 1, asymptotics, distribution-free extension and Gaussian comparison |
+| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; sample-mean refutation | Explicit general-p density, scaled exponential weak limit, distribution-free extension and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
@@ -681,6 +681,76 @@ checks pass. The refreshed declaration index has 842 distinct public
 names: all 830 previous names and types remain unchanged, with 12
 additions and no duplicate names. The three new modules have 57, 113 and
 72 lines respectively.
+
+### Exact hidden-moment law, Gamma expectation and asymptotic
+
+Reread `papers/arXiv-2004.05894v1/MaxHiddenTail.tex`, section **The Invisible
+Tail for a Power Law**, Proposition 1, its following mean display, Eq. 2
+and Remark 1 (lines 159–239). The printed general-p density and mean use a
+Fréchet replacement for the finite-sample maximum. For an exact Pareto
+sample, the actual hidden mass has support `[0,1]` and the Beta(1,n) law.
+
+[Probability/BetaMoments.lean](Stats/Probability/BetaMoments.lean) proves
+normalization, power integrability and power expectations of the actual
+Mathlib Beta measure. The proof multiplies its supported density by a
+power and identifies the result with a multiple of another normalized
+Beta density. No desired moment value is used as a definition.
+[BetaKernel.lean](Stats/HiddenMoments/BetaKernel.lean) proves the supported
+Beta(1,n) PDF and its full CDF, including both support branches.
+[BetaLaw.lean](Stats/HiddenMoments/BetaLaw.lean) then proves equality of the
+actual hidden-mass pushforward with this measure, using the already
+proved CDF of the genuine product sample. It also proves integrability
+and actual expectations of hidden-mass powers above -1.
+
+For `l>0`, `α>0`, `p<α` and positive finite sample size, write
+`r=(α-p)/α=1-p/α>0` and `c=α*l^p/(α-p)`. The actual population tail integral
+at the actual maximum satisfies, almost surely,
+
+```text
+M_hidden,p = c * H^r,       H has the actual Beta(1,n) law,
+E[M_hidden,p] = l^p * Gamma(r) * Gamma(n+1) / Gamma(n+1+r).
+```
+
+[MomentMean.lean](Stats/HiddenMoments/MomentMean.lean) proves both the
+pushforward equality for the genuine hidden p-th moment and the exact
+expectation. Its random variable and L1 property were established from
+population integrals in the preceding group. The Gamma-ratio result is a
+new finite-sample correction, not a literal formalization of the source's
+Fréchet expectation.
+
+[Probability/BetaAsymptotic.lean](Stats/Probability/BetaAsymptotic.lean)
+connects Euler's real Gamma approximants to scaled Beta values.
+[MomentAsymptotic.lean](Stats/HiddenMoments/MomentAsymptotic.lean) applies
+Euler's limit to the actual expectation and proves
+
+```text
+n^r * E[M_hidden,p] -> l^p * Gamma(r),
+E[M_hidden,p] / (l^p * n^(-r) * Gamma(r)) -> 1.
+```
+
+The Lean sequences use sample size `n+1`, covering every positive size
+without an artificial empty maximum. Since `-r=p/α-1`, the denominator
+is precisely the paper's expression, now justified as an asymptotic for
+the exact strong-Pareto law. This result does not assert an approximation
+for an arbitrary regularly varying population.
+
+[MomentMeanExamples.lean](Stats/HiddenMoments/MomentMeanExamples.lean)
+provides genuine Pareto(1,2) product samples and Beta(1,2) witnesses for
+every hypothesis family. The expected hidden first moment is `4/3` for
+one observation and `16/15` for two; the expected hidden moment of order
+-2 is `1/12` for two observations. The examples also check the normalized
+PDF, actual pushforwards, a negative hidden-mass power's integrability,
+both asymptotic statements and the central transitive axioms.
+
+**Verification:** all 3950 default-build jobs pass without warnings. The
+standalone audit checks 1641 declarations, including 1406 theorem
+declarations, with only the three permitted core axioms. The generated
+index has 160 modules and 759 named theorems, with zero sorry, vacuous or
+placeholder markers; the audit explicitly imports all 159 other modules.
+All 27 Python tests and the forbidden/whitespace checks pass. The refreshed
+declaration index has 863 distinct public names, with all 842 previous
+names and types unchanged, 21 additions and no duplicates. The seven new
+modules are at most 143 lines each.
 
 ## Lean upgrade and reproducible verification
 
@@ -2287,7 +2357,9 @@ Main module: [HiddenMoments.lean](Stats/HiddenMoments.lean).
 
 **Paper verdict: not ok.** The strong-Pareto tail-moment integral, actual
 finite iid maximum law, actual hidden-mass CDF and its expectation are
-proved. The zeroth hidden moment has the supported Beta(1,n) CDF and mean
+proved. The general-p hidden moment now has a genuine scaled-Beta
+pushforward, exact Gamma-ratio expectation and its printed leading
+asymptotic. The zeroth hidden moment has the supported Beta(1,n) CDF and mean
 `1/(n+1)`; the printed exact exponential law is formally refuted.
 The actual finite-mean arithmetic sample mean is unbiased, and the
 source's necessary-underestimation claim is formally refuted for every
@@ -2360,11 +2432,12 @@ HM-04 supplies the actual exact maximum law.
 
 The actual general-p hidden moment is now a measurable integrable random
 variable, with Eq. 2 proved at the actual random maximum almost surely.
+`paretoHiddenMoment_map_beta_rpow` proves its genuine law as a scaled
+power pushforward of the normalized Beta(1,n) measure.
 
-**Missing:** a justified Fréchet approximation for the printed expression,
-the general-p change of variables, Jacobian, density support and
-normalization, and the corresponding equality of laws. The actual
-finite-sample maximum and tail-moment formula supply the inputs.
+**Missing:** the explicit density and its Jacobian/support calculation,
+and a justified Fréchet approximation for the printed density. The exact
+pushforward and its actual expectation are now proved.
 
 ### HM-07. Remark 1: sample survival ratio is exponential — not ok literally
 
@@ -2399,8 +2472,11 @@ the supported extension, rather than the polynomial outside `[0,1]`.
 `paretoSampleSurvivalRatioPDF_eq_deriv` proves the derivative
 $n(1-y)^{n-1}$.
 
-**Missing:** nothing for the polynomial derivative. Normalization and
-identification with the law of the actual sample ratio are separate steps.
+`betaPDFReal_one_nat_eq` supplies the normalized supported density, and
+`paretoHiddenMass_map_beta` identifies it with the actual hidden-mass law.
+
+**Missing:** nothing for the polynomial derivative and its supported
+finite-sample density interpretation.
 
 ### HM-10. Actual hidden-mass mean 1/(n+1) — ok
 
@@ -2430,22 +2506,26 @@ The actual finite-sample supported Beta CDF and its actual mean are available.
 and the identification of its limiting exponential law. A mean comparison
 alone does not establish convergence of laws.
 
-### HM-13. Expected general-p hidden moment and Gamma formula — not ok
+### HM-13. Expected general-p hidden moment — corrected exact mean and asymptotic proved
 
 The source gives the Fréchet-model expression
-$l^p n^{p/α-1}Γ(1-p/α)$.
+$l^p n^{p/α-1}Γ(1-p/α)$; it is not the exact finite-sample expectation.
 
-The actual general-p hidden moment and its expectation integrability are
-now proved for `p<α`.
+For the actual strong-Pareto product sample with `l>0`, `α>0`, `p<α` and
+`n>0`, `paretoHiddenMoment_mean_gamma` now proves the exact expectation
+$l^p Γ(r)Γ(n+1)/Γ(n+1+r)$, where $r=1-p/α>0$.
+The hidden-moment random variable, L1 property, Beta pushforward law and
+Gamma evaluation are all proved from the population measure and actual
+sample coordinates.
 
-**Missing:** its pushforward-law calculation, the Gamma evaluation and a
-precise finite-sample/asymptotic distinction.
-For the exact strong-Pareto model, writing $r=1-p/α>0$, the expected
-hidden moment is analytically
-$l^p Γ(r)Γ(n+1)/Γ(n+1+r)$, whose leading term is the printed
-Fréchet expression. This exact formula and its Gamma-ratio asymptotic are
-not proved in the project. This review's formula is a direct analytic check,
-not a newly added Lean result.
+`paretoHiddenMoment_mean_scaled_tendsto` proves the scaled expectation
+limit. `paretoHiddenMoment_mean_ratio_tendsto` proves its ratio to the
+printed expression tends to one. Thus the printed expression has a
+precise asymptotic interpretation for the exact strong-Pareto model.
+
+**Missing:** nothing for this corrected exact-Pareto expectation and
+asymptotic. A general regularly varying population or an exact Fréchet
+maximum model would require separate assumptions and law calculations.
 
 ### HM-14. Gaussian hidden moment in terms of incomplete Gamma — not ok
 

@@ -16,3 +16,6 @@ public import Stats.HiddenMoments.Decomposition
 public import Stats.HiddenMoments.DecompositionExamples
 public import Stats.HiddenMoments.SampleMean
 public import Stats.HiddenMoments.SampleMeanExamples
+public import Stats.HiddenMoments.MomentMean
+public import Stats.HiddenMoments.MomentAsymptotic
+public import Stats.HiddenMoments.MomentMeanExamples
