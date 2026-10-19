@@ -31,15 +31,22 @@ instance epistemicScaleLaw_probability (n : ℕ) (σ ε : ℝ) :
     unfold epistemicScaleLaw
     infer_instance
 
-/-- L1 of every actual natural-order dispersion power, before its
-evaluation in Section III's formula. -/
-theorem epistemicScaleLaw_integrable_pow (n k : ℕ) (σ ε : ℝ) :
-    Integrable (fun s : ℝ => s ^ k) (epistemicScaleLaw n σ ε) := by
+/-- Every real-valued function is L1 under this finite recursive atomic
+dispersion law (Sections II–III). No global measurability is assumed:
+the finite Dirac construction supplies the required a.e. measurability. -/
+theorem epistemicScaleLaw_integrable (n : ℕ) (σ ε : ℝ) (f : ℝ → ℝ) :
+    Integrable f (epistemicScaleLaw n σ ε) := by
   induction n generalizing σ with
   | zero => exact integrable_dirac (by finiteness)
   | succ n ih =>
     rw [epistemicScaleLaw, equalMixture_integrable_iff]
     exact ⟨ih _, ih _⟩
+
+/-- L1 of every actual natural-order dispersion power, before its
+evaluation in Section III's formula. -/
+theorem epistemicScaleLaw_integrable_pow (n k : ℕ) (σ ε : ℝ) :
+    Integrable (fun s : ℝ => s ^ k) (epistemicScaleLaw n σ ε) :=
+  epistemicScaleLaw_integrable _ _ _ _
 
 /-- Actual natural-order dispersion moment, Section III. The recurrence
 is integrated under its true probability law, not defined by this value. -/

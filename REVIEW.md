@@ -1760,6 +1760,47 @@ previous names and types are unchanged, with nine additions and no
 duplicate names. The scale-law module and extended Gaussian helper are
 123 and 168 lines.
 
+### Test the depth-limit tail claim using actual fractional moments
+
+Reread arXiv:1912.00277v2, Section III's moment formulas and growth
+discussion (lines 326–346) and its apparent power-law depth behavior
+(line 358). Higher moment divergence does not identify a weak limit.
+The actual dispersion law now permits a separate check using
+fractional powers.
+
+[FractionalMoments.lean](Stats/EpistemicUncertainty/FractionalMoments.lean)
+extends the actual natural-order dispersion calculation to every real
+order `p`, on the source's positive-scale domain `sigma>0` and
+`0<=epsilon<1`. The genuine finite-law moment is
+
+```text
+E[Sigma_n^p] = sigma^p * (((1+epsilon)^p+(1-epsilon)^p)/2)^n.
+```
+
+The finite recursive atomic construction independently proves L1 of
+every real-valued function of the dispersion; no moment value is
+assumed. For `0<p<1` and `0<epsilon<1`, strict concavity of the real
+power gives a strictly positive per-layer factor below one. The actual
+fractional dispersion moments therefore tend to zero geometrically.
+Positive base scale two, half error and order one-half supply concrete
+L1, moment, strict-contraction and limit certificates.
+
+This result concerns the same actual dispersion population whose mean
+stays `sigma` and whose associated outcome variance diverges. It
+provides additional evidence for analyzing EU-17; it does not by
+itself assert a limiting outcome law or a tail-class theorem.
+
+**Verification:** all 3995 default-build jobs pass without warnings.
+The standalone audit covers 2001 declarations and 1724 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 191 other
+Stats modules, including private declarations. The regenerated index has
+193 modules and 968 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1078 distinct public names: all 1074
+previous names and types are unchanged, with four additions and no
+duplicate names. The fractional-moment module is 97 lines; the scale-law
+module is 130 lines after extracting general finite-law L1.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3395,6 +3436,12 @@ An infinite-depth law or tail-class claim is separate in EU-17.
 ### EU-17. Finite-depth or infinite-depth power-law tail generation — not ok
 
 The module proves growing moment expressions.
+For the actual dispersion law, `epistemicScaleLaw_moment_rpow` now
+proves the real-order moment formula. For `0<p<1` and nonzero error
+in `(0,1)`, `epistemicScaleLaw_fractional_moment_tendsto_zero` proves
+these actual fractional moments tend to zero, while the actual first
+dispersion moment stays fixed. A limit-law argument must account for
+this behavior as well as the growing outcome variance and kurtosis.
 
 **Missing:** a precise tail-class claim, the distribution under study and, for
 an infinite construction, a limit law. A finite mixture of nondegenerate
