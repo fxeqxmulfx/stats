@@ -35,7 +35,9 @@ module
   its actual Markov kernel and normalized marginal density by Tonelli.
   HierarchyLaw and HierarchyDensity construct finite conditional Markov
   hierarchies with positive scale support and actual iterated densities.
-  Literal conditional-density inputs, a CLT and the Normal-Gamma compound-law
+  DensityKernel, DensityInputs and PositiveDensityInputs build the source's
+  actual normalized positive-parent density transitions and prove the literal
+  repeated density-product formula. A CLT and the Normal-Gamma compound-law
   theorem remain separate.
   Higher kurtosis alone does not establish a power-law tail.
   See REVIEW.md, EU-01–EU-34, for paper correspondence and missing work.

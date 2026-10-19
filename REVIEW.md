@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Literal density-input hierarchy, higher-moment and limit-law questions, numerical claims, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Higher-moment and limit-law questions, numerical claims, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2237,6 +2237,59 @@ explicitly imports all 206 other `Stats/` modules. The hierarchy law and
 density modules are 119 and 180 lines, with the conditional source
 parameter correction recorded in their docstrings.
 
+### Build the source's actual conditional density inputs and literal nested products
+
+Reread arXiv:1912.00277v2, Section II's density inputs, Eq. 1 and the
+multi-layer display (`FatTailsEpistemic2019.tex`, lines 205–232). The
+corrected construction states joint measurability explicitly, normalizes
+conditional densities on positive scales, records their parent dependence,
+and replaces the displayed fixed Gaussian sigma by the sampled observation
+scale. Transition order runs from outer uncertainty toward that scale.
+
+[DensityKernel.lean](Stats/EpistemicUncertainty/DensityKernel.lean)
+constructs actual positive priors and conditional kernels directly from
+nonnegative Lebesgue-density inputs. The prescribed conditional integral
+one gives a genuine Markov law; absolute continuity gives positive support.
+Its actual nonnegative test-function integrals are exactly the source's
+density-weighted positive-half-line integrals. A continuous conditional
+density uniform on `(1+s^2,2+s^2]` is jointly measurable and normalized
+by Lebesgue interval length, and explicitly depends on its parent scale.
+
+[DensityInputs.lean](Stats/EpistemicUncertainty/DensityInputs.lean)
+proves the actual kernel hierarchy equals the literal repeated integrals
+weighted by every `f_i`. The two-layer result pulls the outer factor inside
+the inner integral with justified measurability, giving exactly
+`f_0*f_1*GaussianPDF`. The actual Gaussian outcome law has this density,
+whose normalization comes from the independently constructed probability
+population. No desired marginal formula is assumed as an input condition.
+
+[PositiveDensityInputs.lean](Stats/EpistemicUncertainty/PositiveDensityInputs.lean)
+requires the conditional densities to normalize only at positive parents.
+A global extension at invalid nonpositive parent parameters makes the kernels
+well-defined Markov laws. A positive-domain congruence theorem then proves
+that extension changes none of the original repeated density integrals.
+The final actual density uses the original `f_i`, is measurable, has total
+mass one and is finite Lebesgue-a.e. Its continuous witness is deliberately
+zero at nonpositive parents, where it has mass zero rather than one;
+thus the theorem's positive-parent assumptions are independently exercised.
+Both fixed positive and continuous positive hyperpriors are checked.
+
+EU-03's corrected finite nested-density construction is proved, including
+actual kernels, normalization, support and the density-product interchanges.
+This does not identify an infinite-depth law or supply the separate CLT,
+compound-law approximation, or additional moment and tail claims.
+
+Verification: the full build passes 4,095 jobs without warnings. The
+audit checks 2,258 declarations and 1,935 theorems with zero non-core
+axioms. The index records 211 modules and 1,095 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. The declaration index
+preserves all 1,195 old names and types and adds 38 without duplicates.
+The audit imports all 209 other `Stats/` modules. The density-kernel,
+input-integral and positive-input modules have 164, 190 and 195 lines;
+their source normalization domain and conditional parameter correction
+were checked against the local Section II manuscript.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3672,8 +3725,9 @@ kurtosis are proved.
 The explicit independent fair sign-vector construction, its general
 varying-error Gaussian mixture and normalized density are also proved.
 Finite conditional Markov hierarchies and their actual iterated Gaussian
-densities are proved. Literal density-input specializations, infinite
-constructions and higher-moment limits, the CLT
+densities are proved, including construction from normalized positive-parent
+conditional density inputs and their literal repeated density products.
+Infinite constructions and higher-moment limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
 are proved. The actual constant-error laws have the proved unscaled
@@ -3705,8 +3759,8 @@ The general finite varying-error populations have actual dispersion moments,
 variance and fourth central moment products as well.
 
 **Missing:** nothing for this explicit finite fair-branch construction.
-The general finite conditional Markov hierarchy is also proved in EU-03;
-its literal density-input specialization remains separate.
+The general finite conditional Markov hierarchy and its literal normalized
+positive-parent density-input specialization are also proved in EU-03.
 The source's displayed matrix/vector row mismatch is corrected in EU-04.
 
 ### EU-02. Remark 2: uncertainty around a zero probability implies a positive floor — not ok
@@ -3719,7 +3773,7 @@ probability-valued error model with both signs. An uncertain estimate alone
 does not imply a universal strictly positive lower bound on the true
 probability.
 
-### EU-03. Section II: repeated integration over parameter uncertainty — not ok
+### EU-03. Section II: actual repeated conditional density integration — corrected
 
 `epistemicGaussianScaleKernel` now constructs the genuine measurable
 Gaussian conditional law and proves it is a Markov kernel.
@@ -3755,11 +3809,29 @@ Gaussian must depend on the sampled observation scale `hat sigma_1`.
 The corrected kernel model orders transitions from outer uncertainty
 toward that observation scale and records each conditional dependency.
 
-**Missing:** construct arbitrary conditional scale kernels directly from
-the source's jointly measurable normalized density inputs `f_i`, and
-specialize the kernel integrals to the literal repeated products of those
-Lebesgue densities. The actual normalized finite Markov hierarchy and its
-corrected iterated Gaussian density are proved.
+`epistemicDensityScaleKernel` now constructs each actual conditional
+kernel directly from its prescribed nonnegative density on the positive
+half-line. Joint measurability and conditional mass one give the actual
+Markov law; positive scale support follows from absolute continuity.
+A positive hyperprior is likewise constructed from its input density.
+`epistemicHierarchyIntegral_density_inputs` turns every conditional kernel
+integral into the source's literal positive-half-line density-weighted
+integrals; the two-layer theorem explicitly gives `f_0*f_1*GaussianPDF`.
+
+`epistemicPositiveDensityHierarchyLaw_eq_withDensity` needs normalization
+only at positive parent scales, as in the source. Global kernels are built
+by extending invalid nonpositive parents, and positive-domain integral
+congruence proves the final formula retains the original `f_i` exactly.
+`epistemicPositiveDensityHierarchyPDF_lintegral` proves total mass one;
+the original density is measurable and finite Lebesgue-a.e. A continuous
+parent-dependent unit-interval conditional density and continuous prior
+witness the assumptions. Another witness is zero at nonpositive parents,
+so the source-domain theorem does not assume global normalization.
+
+**Missing:** nothing for this corrected finite conditional-density
+construction, with joint measurability explicit and the Gaussian depending
+on the sampled observation scale. Infinite-depth laws and additional
+moment/tail claims remain separate.
 
 ### EU-04. Section II: actual 2ⁿ-component Gaussian density — corrected
 
