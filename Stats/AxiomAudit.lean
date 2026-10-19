@@ -20,8 +20,15 @@ import all Stats.BinaryForecasts.SigmaClosures
 import all Stats.BinaryForecasts.SigmaSensitivity
 import all Stats.BlackScholes
 import all Stats.BlackScholes.CallPrice
+import all Stats.BlackScholes.CallPrice.Basic
+import all Stats.BlackScholes.CallPrice.ClosedForm
+import all Stats.BlackScholes.CallPrice.Deriv
+import all Stats.BlackScholes.CallPrice.Positive
 import all Stats.BlackScholes.Erfc
 import all Stats.BlackScholes.Greeks
+import all Stats.BlackScholes.LognormalExamples
+import all Stats.BlackScholes.LognormalLaw
+import all Stats.BlackScholes.LognormalMatch
 import all Stats.BlackScholes.PutCall
 import all Stats.BlackScholes.ReturnsSmile
 import all Stats.BlackScholes.ReturnsSmileExamples
@@ -108,6 +115,7 @@ import all Stats.RegularVariation.UCT.Measurable
 import all Stats.RegularVariation.UCT.Monotone
 import all Stats.RegularVariation.UCT.Potter
 import all Stats.RegularVariation.Verify
+import all Stats.Review.LognormalLegacy
 import all Stats.Review.ParetoLegacy
 import all Stats.ReviewChecks
 import all Stats.RiskMeasures

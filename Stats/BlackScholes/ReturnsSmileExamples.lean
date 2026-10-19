@@ -24,24 +24,8 @@ private theorem sampleBSCall_pos : 0 < sampleBSCall := by
   have hlink := callPriceBS_σ_eq_callPriceBS_riskNeutral
     (S₀ := 1) (K := 2) (v := 1) (by norm_num) (by norm_num) (by norm_num)
   norm_num at hlink
-  rw [sampleBSCall, hlink, callPriceBS]
-  have hp : ∀ x : ℝ, 0 < survivalLN 1 (-(1 / 2)) 1 x := by
-    intro x
-    have heq := survivalLN_riskNeutral_eq_stdNormalCdf
-      (S₀ := 1) (K := x) (v := 1) (by norm_num)
-    norm_num at heq
-    rw [heq]
-    exact stdNormalCdf_pos _
-  have hsupp : Function.support (survivalLN 1 (-(1 / 2)) 1) = Set.univ := by
-    ext x
-    simp only [Function.mem_support, Set.mem_univ, iff_true]
-    exact (hp x).ne'
-  apply (setIntegral_pos_iff_support_of_nonneg_ae
-    (Filter.Eventually.of_forall (fun x => (hp x).le))
-    (integrableOn_survivalLN (by norm_num) (by norm_num))).mpr
-  norm_num at hsupp
-  rw [hsupp, Set.univ_inter, Real.volume_Ioi]
-  simp
+  rw [sampleBSCall, hlink]
+  exact callPriceBS_pos (by norm_num) (by norm_num) (by norm_num)
 
 /-- A nonempty set of parameters satisfies all the matching and butterfly
 hypotheses of the paper's final bound. No no-arbitrage inequality is

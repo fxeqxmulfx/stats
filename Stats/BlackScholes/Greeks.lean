@@ -34,8 +34,8 @@ theorem callPriceBS_riskNeutral_hasDerivAt_stdNormalCdf
         ((Real.log (S₀ / K) - (v : ℝ) / 2) / Real.sqrt (v : ℝ))) K := by
   have h : HasDerivAt (callPriceBS S₀ (-((v : ℝ) / 2)) v)
       (-(survivalLN S₀ (-((v : ℝ) / 2)) v K)) K :=
-    callPriceBS_hasDerivAt hS₀ hK
-  rwa [survivalLN_riskNeutral_eq_stdNormalCdf hv] at h
+    callPriceBS_hasDerivAt hS₀ hv hK
+  rwa [survivalLN_riskNeutral_eq_stdNormalCdf hS₀ hv hK] at h
 
 open ProbabilityTheory MeasureTheory in
 /-- **Risk-neutral martingale property of the spot.**  Under risk-neutral
@@ -257,7 +257,7 @@ theorem BSC_riskNeutral_tail_dominates_at_match
     stdNormalCdf
       ((Real.log (S₀ / K₁) - (v : ℝ) / 2) / Real.sqrt (v : ℝ)) := by
   have h := BSC_lognormal_tail_dominates_at_match
-    hα hl hK₁ hS₀ ha_pos ha_lt h_match h_butterfly
-  rwa [survivalLN_riskNeutral_eq_stdNormalCdf hv] at h
+    hα hl hK₁ hS₀ hv ha_pos ha_lt h_match h_butterfly
+  rwa [survivalLN_riskNeutral_eq_stdNormalCdf hS₀ hv (hl.trans hK₁)] at h
 
 end TailOptionPricing

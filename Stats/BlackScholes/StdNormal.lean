@@ -185,37 +185,14 @@ theorem gaussianReal_real_Ioi_eq {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) (c : �
   rw [Measure.map_apply (by fun_prop) measurableSet_Ioi, h_preimage]
 
 open ProbabilityTheory MeasureTheory in
-/-- **Lognormal survival in standard-normal CDF form.**  For `v ≠ 0`,
-    the lognormal tail equals `1 − Φ((log(s/S₀) − μ) / √v)`. -/
-theorem survivalLN_eq_one_sub_stdNormalCdf {S₀ μ : ℝ} {v : ℝ≥0}
-    (hv : v ≠ 0) (s : ℝ) :
+/-- **Lognormal survival in standard-normal CDF form.** Positive spot,
+    threshold and variance are required by the logarithm and standardisation. -/
+theorem survivalLN_eq_one_sub_stdNormalCdf {S₀ μ s : ℝ} {v : ℝ≥0}
+    (hS₀ : 0 < S₀) (hv : v ≠ 0) (hs : 0 < s) :
     survivalLN S₀ μ v s =
     1 - stdNormalCdf ((Real.log (s / S₀) - μ) / Real.sqrt (v : ℝ)) := by
-  have h_eq : survivalLN S₀ μ v s =
-      (gaussianReal μ v).real (Set.Ioi (Real.log (s / S₀))) := by
-    unfold survivalLN
-    show ∫ x in Set.Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x =
-         ((gaussianReal μ v) (Set.Ioi (Real.log (s / S₀)))).toReal
-    rw [gaussianReal_apply_eq_integral _ hv,
-        ENNReal.toReal_ofReal (by
-          apply MeasureTheory.setIntegral_nonneg measurableSet_Ioi
-          intro x _; exact gaussianPDFReal_nonneg μ v x)]
-  rw [h_eq, gaussianReal_real_Ioi_eq hv, ← one_sub_stdNormalCdf]
-
-open ProbabilityTheory in
-/-- **Survival = Gaussian-measure tail.**  For `v ≠ 0`, the lognormal survival
-    is the `gaussianReal`-measure of the corresponding `Ioi` set. -/
-theorem survivalLN_eq_gaussianReal_real_Ioi {S₀ μ : ℝ} {v : ℝ≥0}
-    (hv : v ≠ 0) (s : ℝ) :
-    survivalLN S₀ μ v s =
-    (gaussianReal μ v).real (Set.Ioi (Real.log (s / S₀))) := by
-  unfold survivalLN
-  show ∫ x in Set.Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x =
-       ((gaussianReal μ v) (Set.Ioi (Real.log (s / S₀)))).toReal
-  rw [gaussianReal_apply_eq_integral _ hv,
-      ENNReal.toReal_ofReal (by
-        apply MeasureTheory.setIntegral_nonneg measurableSet_Ioi
-        intro x _; exact gaussianPDFReal_nonneg μ v x)]
+  rw [survivalLN_eq_gaussianReal_real_Ioi hS₀ hs,
+    gaussianReal_real_Ioi_eq hv, ← one_sub_stdNormalCdf]
 
 /-! ### Mills' ratio for the standard normal.
 

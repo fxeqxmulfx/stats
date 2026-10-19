@@ -5,12 +5,13 @@ module
   continuity, monotonicity, the quadratic Markov / Chernoff tail bound, and
   integrability on positive half-lines.
 
-  `survivalLN S₀ μ v s = ∫ x ∈ Ioi (log(s/S₀)), gaussianPDFReal μ v x`
-  is the risk-neutral lognormal tail probability of `S_T = S₀ · exp X`
-  where `X ∼ 𝒩(μ, v)`.
+  `survivalLN S₀ μ v s = lognormalLaw S₀ μ v (Ioi s)` is the actual
+  tail probability of `S_T = S₀ · exp X`, `X ∼ 𝒩(μ, v)`. The PDF tail
+  formula requires positive spot, positive threshold and nonzero variance.
+  Risk neutrality further requires μ = -v/2.
 -/
 public import Stats.Arbitrage
-public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Stats.BlackScholes.LognormalLaw
 public import Mathlib.Probability.Moments.Basic
 
 @[expose] public section
@@ -21,14 +22,46 @@ open scoped NNReal
 namespace TailOptionPricing
 
 open ProbabilityTheory in
-/-- Risk-neutral lognormal survival function: `Q(S_T > s) = Q(X > log(s/S₀))`
-    where `X ∼ 𝒩(μ, v)`. -/
+/-- Actual survival of the Gaussian pushforward, including support and
+degenerate-variance cases. It is risk-neutral when `μ = -v/2`. -/
 noncomputable def survivalLN (S₀ μ : ℝ) (v : ℝ≥0) (s : ℝ) : ℝ :=
-  ∫ x in Set.Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x
+  (lognormalLaw S₀ μ v).real (Ioi s)
+
+/-- The law transformation needs positive spot and threshold; unlike a
+PDF representation, it does not require positive variance. -/
+theorem survivalLN_eq_gaussianReal_real_Ioi {S₀ μ s : ℝ} {v : ℝ≥0}
+    (hS₀ : 0 < S₀) (hs : 0 < s) :
+    survivalLN S₀ μ v s =
+      (ProbabilityTheory.gaussianReal μ v).real (Ioi (Real.log (s / S₀))) :=
+  lognormalLaw_real_Ioi_of_pos hS₀ hs
 
 open ProbabilityTheory in
-/-- The lognormal survival is continuous on `Ioi 0`. -/
-theorem survivalLN_continuousOn {S₀ μ : ℝ} (hS₀ : 0 < S₀) (v : ℝ≥0) :
+/-- Density-tail representation on its correct domain. -/
+theorem survivalLN_eq_integral {S₀ μ s : ℝ} {v : ℝ≥0}
+    (hS₀ : 0 < S₀) (hv : v ≠ 0) (hs : 0 < s) :
+    survivalLN S₀ μ v s = ∫ x in Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x := by
+  rw [survivalLN_eq_gaussianReal_real_Ioi hS₀ hs]
+  show ((gaussianReal μ v) (Ioi (Real.log (s / S₀)))).toReal = _
+  rw [gaussianReal_apply_eq_integral _ hv, ENNReal.toReal_ofReal
+    (setIntegral_nonneg measurableSet_Ioi (fun x _ => gaussianPDFReal_nonneg μ v x))]
+
+/-- A positive terminal value exceeds every nonpositive threshold. -/
+theorem survivalLN_of_nonpos {S₀ μ s : ℝ} {v : ℝ≥0}
+    (hS₀ : 0 < S₀) (hs : s ≤ 0) : survivalLN S₀ μ v s = 1 :=
+  lognormalLaw_real_Ioi_of_nonpos hS₀ hs
+
+/-- The zero-variance survival is a strict step at the deterministic value. -/
+theorem survivalLN_zero_var (S₀ μ s : ℝ) :
+    survivalLN S₀ μ 0 s = if s < S₀ * Real.exp μ then 1 else 0 := by
+  by_cases h : s < S₀ * Real.exp μ <;>
+    simp [survivalLN, lognormalLaw_zero_var, Measure.real, Measure.dirac_apply',
+      measurableSet_Ioi, h]
+
+open ProbabilityTheory in
+/-- For nonzero variance the lognormal survival is continuous on `Ioi 0`.
+The zero-variance survival has an atom and is excluded. -/
+theorem survivalLN_continuousOn {S₀ μ : ℝ} {v : ℝ≥0}
+    (hS₀ : 0 < S₀) (hv : v ≠ 0) :
     ContinuousOn (survivalLN S₀ μ v) (Set.Ioi 0) := by
   have h_log_cont : ContinuousOn (fun s : ℝ => Real.log (s / S₀)) (Set.Ioi 0) := by
     apply ContinuousOn.log
@@ -44,40 +77,31 @@ theorem survivalLN_continuousOn {S₀ μ : ℝ} (hS₀ : 0 < S₀) (v : ℝ≥0)
     have hc : c - 1 < c := by linarith
     exact (hasDerivAt_integral_Ioi hc h_pdf_int.integrableOn
               h_pdf_cont.continuousOn).continuousAt
-  intro s hs
-  exact (h_inner_cont.continuousAt.comp_continuousWithinAt (h_log_cont s hs))
+  have hc : ContinuousOn
+      (fun s => ∫ x in Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x) (Ioi 0) :=
+    fun s hs => h_inner_cont.continuousAt.comp_continuousWithinAt (h_log_cont s hs)
+  exact hc.congr (fun s hs => survivalLN_eq_integral hS₀ hv hs)
 
 open ProbabilityTheory in
 /-- The lognormal survival function is non-negative everywhere. -/
 theorem survivalLN_nonneg (S₀ μ : ℝ) (v : ℝ≥0) (s : ℝ) :
-    0 ≤ survivalLN S₀ μ v s :=
-  setIntegral_nonneg measurableSet_Ioi
-    (fun x _ => gaussianPDFReal_nonneg μ v x)
+    0 ≤ survivalLN S₀ μ v s := measureReal_nonneg
 
 open ProbabilityTheory in
 /-- The lognormal survival is bounded above by 1 (it is a probability). -/
-theorem survivalLN_le_one {S₀ μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) (s : ℝ) :
-    survivalLN S₀ μ v s ≤ 1 := by
-  unfold survivalLN
-  calc (∫ x in Set.Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x)
-      ≤ ∫ x, gaussianPDFReal μ v x := by
-        apply MeasureTheory.setIntegral_le_integral (integrable_gaussianPDFReal μ v)
-        exact ae_of_all _ (gaussianPDFReal_nonneg μ v)
-    _ = 1 := integral_gaussianPDFReal_eq_one μ hv
+theorem survivalLN_le_one {S₀ μ : ℝ} {v : ℝ≥0} (s : ℝ) :
+    survivalLN S₀ μ v s ≤ 1 := measureReal_le_one
+
+/-- Survival is antitone for every probability law, including its atoms. -/
+theorem survivalLN_antitone (S₀ μ : ℝ) (v : ℝ≥0) :
+    Antitone (survivalLN S₀ μ v) :=
+  fun _ _ h => measureReal_mono (Ioi_subset_Ioi h)
 
 open ProbabilityTheory in
 /-- The lognormal survival is monotonically decreasing on `Ioi 0`. -/
-theorem survivalLN_antitoneOn {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀) :
-    AntitoneOn (survivalLN S₀ μ v) (Set.Ioi 0) := by
-  intro s₁ hs₁ s₂ hs₂ h_le
-  unfold survivalLN
-  have hs₁_pos : 0 < s₁ := hs₁
-  have h_log_le : Real.log (s₁ / S₀) ≤ Real.log (s₂ / S₀) :=
-    Real.log_le_log (div_pos hs₁_pos hS₀) (by gcongr)
-  apply MeasureTheory.setIntegral_mono_set
-    ((integrable_gaussianPDFReal μ v).integrableOn)
-    (ae_of_all _ (gaussianPDFReal_nonneg μ v))
-  exact Filter.Eventually.of_forall (Set.Ioi_subset_Ioi h_log_le)
+theorem survivalLN_antitoneOn {S₀ μ : ℝ} {v : ℝ≥0} :
+    AntitoneOn (survivalLN S₀ μ v) (Set.Ioi 0) :=
+  (survivalLN_antitone S₀ μ v).antitoneOn _
 
 open ProbabilityTheory in
 /-- **Tail bound for the lognormal survival.**  Markov / Chernoff applied to
@@ -86,25 +110,10 @@ open ProbabilityTheory in
 theorem survivalLN_le_quadratic {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀)
     {s : ℝ} (hs : 0 < s) :
     survivalLN S₀ μ v s ≤ S₀ ^ 2 * Real.exp (2 * μ + 2 * (v : ℝ)) / s ^ 2 := by
-  by_cases hv : v = 0
-  · subst hv
-    have h0 : survivalLN S₀ μ 0 s = 0 := by
-      unfold survivalLN
-      simp [gaussianPDFReal_zero_var]
-    rw [h0]
-    positivity
-  have : NullSingletonClass (gaussianReal μ v) := nullSingletonClass_gaussianReal hv
-  have h_eq : survivalLN S₀ μ v s =
+  have h_le : survivalLN S₀ μ v s ≤
       (gaussianReal μ v).real (Set.Ici (Real.log (s / S₀))) := by
-    unfold survivalLN
-    show ∫ x in Set.Ioi (Real.log (s / S₀)), gaussianPDFReal μ v x =
-         ((gaussianReal μ v) (Set.Ici (Real.log (s / S₀)))).toReal
-    rw [← measure_congr Ioi_ae_eq_Ici,
-        gaussianReal_apply_eq_integral _ hv,
-        ENNReal.toReal_ofReal (by
-          apply MeasureTheory.setIntegral_nonneg measurableSet_Ioi
-          intro x _; exact gaussianPDFReal_nonneg μ v x)]
-  rw [h_eq]
+    rw [survivalLN_eq_gaussianReal_real_Ioi hS₀ hs]
+    exact measureReal_mono Ioi_subset_Ici_self
   have h_int : Integrable (fun x => Real.exp (2 * x)) (gaussianReal μ v) :=
     integrable_exp_mul_gaussianReal 2
   have h_chernoff :=
@@ -117,7 +126,7 @@ theorem survivalLN_le_quadratic {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀)
     congr 1
     ring
   rw [h_mgf] at h_chernoff
-  refine h_chernoff.trans ?_
+  refine h_le.trans (h_chernoff.trans ?_)
   have h_log_eq : Real.log (S₀ ^ 2 / s ^ 2) = -(2 : ℝ) * Real.log (s / S₀) := by
     rw [Real.log_div (by positivity : (S₀^2 : ℝ) ≠ 0)
                      (by positivity : (s^2 : ℝ) ≠ 0)]
@@ -139,8 +148,7 @@ theorem integrableOn_survivalLN {S₀ μ a : ℝ} {v : ℝ≥0}
   have h_g_int : IntegrableOn (fun s : ℝ => C * s ^ (-2 : ℝ)) (Set.Ioi a) volume :=
     (integrableOn_Ioi_rpow_of_lt (by norm_num : (-2 : ℝ) < -1) ha).const_mul C
   refine MeasureTheory.Integrable.mono_nonneg h_g_int ?_ ?_ ?_
-  · refine ContinuousOn.aestronglyMeasurable ?_ measurableSet_Ioi
-    exact (survivalLN_continuousOn hS₀ v).mono (Set.Ioi_subset_Ioi ha.le)
+  · exact (survivalLN_antitone S₀ μ v).measurable.aestronglyMeasurable
   · exact (ae_restrict_iff' measurableSet_Ioi).mpr
       (Filter.Eventually.of_forall (fun s _ => survivalLN_nonneg S₀ μ v s))
   · apply (ae_restrict_iff' measurableSet_Ioi).mpr

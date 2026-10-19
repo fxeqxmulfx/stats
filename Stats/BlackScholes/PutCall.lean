@@ -34,8 +34,9 @@ theorem integral_exp_gaussianReal {μ : ℝ} {v : ℝ≥0} :
   rw [← h_mgf]; exact h
 
 open ProbabilityTheory MeasureTheory in
-/-- **Black–Scholes put price** under risk-neutral lognormal pricing.
-    `P(K) = E_Q[(K − S_T)⁺]` with `S_T = S₀ · exp(X)`, `X ∼ 𝒩(μ, v)`. -/
+/-- **Lognormal put price at zero interest rates.**
+    `P(K) = E[(K − S_T)⁺]` with `S_T = S₀ · exp(X)`, `X ∼ 𝒩(μ, v)`.
+    The choice `μ = -v/2` is risk-neutral. -/
 noncomputable def putPriceBS (S₀ μ : ℝ) (v : ℝ≥0) (K : ℝ) : ℝ :=
   ∫ x, max (K - S₀ * Real.exp x) 0 ∂(gaussianReal μ v)
 
@@ -45,38 +46,23 @@ open ProbabilityTheory MeasureTheory in
     which is `S₀ · E[exp(X)] − K`.  For risk-neutral `μ = −v/2`, this is the
     classical `BSC − P = S₀ − K`. -/
 theorem putCallParity_BS
-    {S₀ μ K : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀) (hv : v ≠ 0) (hK : 0 < K) :
+    {S₀ μ K : ℝ} {v : ℝ≥0} :
     callPriceBS S₀ μ v K - putPriceBS S₀ μ v K =
     S₀ * Real.exp (μ + (v : ℝ) / 2) - K := by
-  rw [callPriceBS_eq_expectation hS₀ hv hK]
+  rw [callPriceBS_eq_expectation]
   unfold putPriceBS
   have h_int_exp : Integrable (fun x : ℝ => Real.exp x) (gaussianReal μ v) := by
     simpa using integrable_exp_mul_gaussianReal (μ := μ) (v := v) 1
   have h_int_S₀exp : Integrable (fun x : ℝ => S₀ * Real.exp x) (gaussianReal μ v) :=
     h_int_exp.const_mul S₀
-  have h_meas_call : AEStronglyMeasurable
-      (fun x : ℝ => max (S₀ * Real.exp x - K) 0) (gaussianReal μ v) := by
-    apply Continuous.aestronglyMeasurable; fun_prop
-  have h_meas_put : AEStronglyMeasurable
-      (fun x : ℝ => max (K - S₀ * Real.exp x) 0) (gaussianReal μ v) := by
-    apply Continuous.aestronglyMeasurable; fun_prop
-  have h_int_call : Integrable
-      (fun x : ℝ => max (S₀ * Real.exp x - K) 0) (gaussianReal μ v) := by
-    refine MeasureTheory.Integrable.mono_nonneg h_int_S₀exp h_meas_call ?_ ?_
-    · exact Filter.Eventually.of_forall (fun _ => le_max_right _ _)
-    · refine Filter.Eventually.of_forall (fun x => ?_)
-      have h_pos : 0 < S₀ * Real.exp x := mul_pos hS₀ (Real.exp_pos _)
-      exact max_le (by linarith) h_pos.le
   have h_int_const : Integrable (fun _ : ℝ => K) (gaussianReal μ v) :=
     integrable_const K
+  have h_int_call : Integrable
+      (fun x : ℝ => max (S₀ * Real.exp x - K) 0) (gaussianReal μ v) :=
+    (h_int_S₀exp.sub h_int_const).pos_part
   have h_int_put : Integrable
-      (fun x : ℝ => max (K - S₀ * Real.exp x) 0) (gaussianReal μ v) := by
-    refine MeasureTheory.Integrable.mono_nonneg h_int_const h_meas_put ?_ ?_
-    · exact Filter.Eventually.of_forall (fun _ => le_max_right _ _)
-    · refine Filter.Eventually.of_forall (fun x => ?_)
-      have h_pos : 0 ≤ S₀ * Real.exp x :=
-        mul_nonneg hS₀.le (Real.exp_pos _).le
-      exact max_le (by linarith) hK.le
+      (fun x : ℝ => max (K - S₀ * Real.exp x) 0) (gaussianReal μ v) :=
+    (h_int_const.sub h_int_S₀exp).pos_part
   rw [← MeasureTheory.integral_sub h_int_call h_int_put]
   have h_pointwise : ∀ x : ℝ,
       max (S₀ * Real.exp x - K) 0 - max (K - S₀ * Real.exp x) 0 =
@@ -113,7 +99,7 @@ theorem putPriceBS_closed_form_general
         ((Real.log (K / S₀) - μ - (v : ℝ)) / Real.sqrt (v : ℝ)) := by
   have h_parity : callPriceBS S₀ μ v K - putPriceBS S₀ μ v K =
       S₀ * Real.exp (μ + (v : ℝ) / 2) - K :=
-    putCallParity_BS hS₀ hv hK
+    putCallParity_BS
   have h_closed : callPriceBS S₀ μ v K =
       S₀ * Real.exp (μ + (v : ℝ) / 2) *
         (1 - stdNormalCdf
@@ -136,7 +122,7 @@ theorem putPriceBS_closed_form_riskNeutral
         (-((Real.log (S₀ / K) - (v : ℝ) / 2) / Real.sqrt (v : ℝ))) -
     S₀ * stdNormalCdf
       (-((Real.log (S₀ / K) + (v : ℝ) / 2) / Real.sqrt (v : ℝ))) := by
-  have h_parity := putCallParity_BS hS₀ (v := v) hv hK (μ := -((v : ℝ) / 2))
+  have h_parity := putCallParity_BS (S₀ := S₀) (K := K) (v := v) (μ := -((v : ℝ) / 2))
   have h_closed := callPriceBS_closed_form_riskNeutral hS₀ hv hK
   have h_exp_zero : Real.exp (-((v : ℝ) / 2) + (v : ℝ) / 2) = 1 := by
     rw [show -((v : ℝ) / 2) + (v : ℝ) / 2 = 0 from by ring, Real.exp_zero]
@@ -159,10 +145,10 @@ theorem putPriceBS_strictConvexOn {S₀ μ : ℝ} {v : ℝ≥0}
       (fun K : ℝ =>
         callPriceBS S₀ μ v K + (K - S₀ * Real.exp (μ + (v : ℝ) / 2)))
       (Set.Ioi 0) := by
-    intro K hK
+    intro K _
     have h_parity : callPriceBS S₀ μ v K - putPriceBS S₀ μ v K =
         S₀ * Real.exp (μ + (v : ℝ) / 2) - K :=
-      putCallParity_BS hS₀ hv hK
+      putCallParity_BS
     linarith
   have h_aff : ConvexOn ℝ (Set.Ioi 0)
       (fun K : ℝ => K - S₀ * Real.exp (μ + (v : ℝ) / 2)) := by

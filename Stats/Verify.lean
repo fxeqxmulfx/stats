@@ -283,25 +283,16 @@ theorem survival_isRegularlyVarying {l α : ℝ} (hl : 0 < l) :
 #print axioms TailOptionPricing.survival_isRegularlyVarying
 
 -- Concrete lognormal Black–Scholes survival
-/-
-theorem survivalLN_continuousOn {S₀ μ : ℝ} (hS₀ : 0 < S₀) (v : ℝ≥0) :
-    ContinuousOn (survivalLN S₀ μ v) (Set.Ioi 0)
--/
+-- Continuity requires positive spot and nonzero variance; see the actual-law regression.
 #print axioms TailOptionPricing.survivalLN_continuousOn
 /-
 theorem survivalLN_nonneg (S₀ μ : ℝ) (v : ℝ≥0) (s : ℝ) :
     0 ≤ survivalLN S₀ μ v s
 -/
 #print axioms TailOptionPricing.survivalLN_nonneg
-/-
-theorem survivalLN_le_one {S₀ μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) (s : ℝ) :
-    survivalLN S₀ μ v s ≤ 1
--/
+-- The actual survival is at most one for every variance, including zero.
 #print axioms TailOptionPricing.survivalLN_le_one
-/-
-theorem survivalLN_antitoneOn {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀) :
-    AntitoneOn (survivalLN S₀ μ v) (Set.Ioi 0)
--/
+-- The actual survival is antitone, with no spot or variance restriction.
 #print axioms TailOptionPricing.survivalLN_antitoneOn
 /-
 theorem survivalLN_le_quadratic {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀)
@@ -315,17 +306,7 @@ theorem integrableOn_survivalLN {S₀ μ a : ℝ} {v : ℝ≥0}
     IntegrableOn (survivalLN S₀ μ v) (Set.Ioi a) volume
 -/
 #print axioms TailOptionPricing.integrableOn_survivalLN
-/-
-theorem BSC_lognormal_tail_dominates_at_match
-    {l α S₀ μ K₁ a : ℝ} {v : ℝ≥0}
-    (hα : 1 < α) (hl : 0 < l) (hK₁ : l < K₁)
-    (hS₀ : 0 < S₀) (ha_pos : 0 < a) (ha_lt : a < K₁)
-    (h_match : (∫ s in Set.Ioi K₁, survivalLN S₀ μ v s) = callPrice l α K₁)
-    (h_butterfly : ∀ᶠ ΔK in 𝓝[>] (0:ℝ),
-        callPrice l α (K₁ + ΔK) + (∫ s in Set.Ioi (K₁ - ΔK), survivalLN S₀ μ v s)
-          ≥ 2 * callPrice l α K₁) :
-    (l / K₁) ^ α ≤ survivalLN S₀ μ v K₁
--/
+-- The density-based comparison assumes positive spot and nonzero variance.
 #print axioms TailOptionPricing.BSC_lognormal_tail_dominates_at_match
 
 -- Standard normal CDF and connection to lognormal survival
@@ -358,32 +339,18 @@ theorem gaussianReal_real_Ioi_eq {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) (c : �
     (gaussianReal 0 1).real (Set.Ioi ((c - μ) / Real.sqrt (v : ℝ)))
 -/
 #print axioms TailOptionPricing.gaussianReal_real_Ioi_eq
-/-
-theorem survivalLN_eq_one_sub_stdNormalCdf {S₀ μ : ℝ} {v : ℝ≥0}
-    (hv : v ≠ 0) (s : ℝ) :
-    survivalLN S₀ μ v s =
-    1 - stdNormalCdf ((Real.log (s / S₀) - μ) / Real.sqrt (v : ℝ))
--/
+-- The CDF formula assumes positive spot, threshold and variance.
 #print axioms TailOptionPricing.survivalLN_eq_one_sub_stdNormalCdf
 
 -- Black–Scholes call price as integral and its derivative
-/-
-theorem callPriceBS_hasDerivAt {S₀ μ K : ℝ} {v : ℝ≥0}
-    (hS₀ : 0 < S₀) (hK : 0 < K) :
-    HasDerivAt (callPriceBS S₀ μ v) (-(survivalLN S₀ μ v K)) K
--/
+-- The smooth call derivative assumes positive spot, strike and variance.
 #print axioms TailOptionPricing.callPriceBS_hasDerivAt
 /-
 theorem callPriceBS_continuousOn {S₀ μ : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀) :
     ContinuousOn (callPriceBS S₀ μ v) (Set.Ioi 0)
 -/
 #print axioms TailOptionPricing.callPriceBS_continuousOn
-/-
-theorem survivalLN_hasDerivAt {S₀ μ K : ℝ} {v : ℝ≥0}
-    (hS₀ : 0 < S₀) (hK : 0 < K) :
-    HasDerivAt (survivalLN S₀ μ v)
-      (-gaussianPDFReal μ v (Real.log (K / S₀)) / K) K
--/
+-- The density derivative assumes positive spot, strike and variance.
 #print axioms TailOptionPricing.survivalLN_hasDerivAt
 /-
 theorem callPriceBS_strictConvexOn {S₀ μ : ℝ} {v : ℝ≥0}
@@ -423,19 +390,9 @@ theorem callPriceBS_σ_smile_hasDerivAt
          ((Real.log (S₀ / K₀) + (σ K₀)^2 / 2) / σ K₀) * σ') K₀
 -/
 #print axioms TailOptionPricing.callPriceBS_σ_smile_hasDerivAt
-/-
-theorem survivalLN_eq_gaussianReal_real_Ioi {S₀ μ : ℝ} {v : ℝ≥0}
-    (hv : v ≠ 0) (s : ℝ) :
-    survivalLN S₀ μ v s =
-    (gaussianReal μ v).real (Set.Ioi (Real.log (s / S₀)))
--/
+-- The law transformation assumes positive spot and threshold, including zero variance.
 #print axioms TailOptionPricing.survivalLN_eq_gaussianReal_real_Ioi
-/-
-theorem callPriceBS_eq_expectation {S₀ μ K : ℝ} {v : ℝ≥0}
-    (hS₀ : 0 < S₀) (hv : v ≠ 0) (hK : 0 < K) :
-    callPriceBS S₀ μ v K =
-    ∫ x, max (S₀ * Real.exp x - K) 0 ∂(gaussianReal μ v)
--/
+-- The genuine payoff expectation bridge holds for every scale, strike, mean and variance.
 #print axioms TailOptionPricing.callPriceBS_eq_expectation
 
 -- Mills' ratio (Gaussian one-sided tail bound)
@@ -517,23 +474,14 @@ theorem callPriceBS_closed_form_riskNeutral
 #print axioms TailOptionPricing.callPriceBS_closed_form_riskNeutral
 
 -- Risk-neutral survival in Φ(d₂) and erfc forms
-/-
-theorem survivalLN_riskNeutral_eq_stdNormalCdf
-    {S₀ K : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
-    survivalLN S₀ (-((v : ℝ) / 2)) v K =
-    stdNormalCdf ((Real.log (S₀ / K) - (v : ℝ) / 2) / Real.sqrt (v : ℝ))
--/
+-- The risk-neutral CDF formula assumes positive spot, strike and variance.
 #print axioms TailOptionPricing.survivalLN_riskNeutral_eq_stdNormalCdf
 /-
 theorem one_sub_stdNormalCdf_eq_half_erfc (c : ℝ) :
     1 - stdNormalCdf c = (1/2) * erfc (c / Real.sqrt 2)
 -/
 #print axioms TailOptionPricing.one_sub_stdNormalCdf_eq_half_erfc
-/-
-theorem survivalLN_eq_half_erfc {S₀ μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) (s : ℝ) :
-    survivalLN S₀ μ v s =
-    (1/2) * erfc ((Real.log (s / S₀) - μ) / (Real.sqrt (v : ℝ) * Real.sqrt 2))
--/
+-- The erfc formula assumes positive spot, threshold and variance.
 #print axioms TailOptionPricing.survivalLN_eq_half_erfc
 /-
 theorem alpha_lower_bound_erfc
@@ -632,12 +580,7 @@ theorem integral_exp_gaussianReal {μ : ℝ} {v : ℝ≥0} :
     Real.exp (μ + (v : ℝ) / 2)
 -/
 #print axioms TailOptionPricing.integral_exp_gaussianReal
-/-
-theorem putCallParity_BS
-    {S₀ μ K : ℝ} {v : ℝ≥0} (hS₀ : 0 < S₀) (hv : v ≠ 0) (hK : 0 < K) :
-    callPriceBS S₀ μ v K - putPriceBS S₀ μ v K =
-    S₀ * Real.exp (μ + (v : ℝ) / 2) - K
--/
+-- Put-call parity holds for every scale, strike, mean and variance.
 #print axioms TailOptionPricing.putCallParity_BS
 /-
 theorem putPriceBS_closed_form_general

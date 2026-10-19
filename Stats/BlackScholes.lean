@@ -26,5 +26,7 @@ public import Stats.BlackScholes.Smile
 public import Stats.BlackScholes.ReturnsSmile
 public import Stats.BlackScholes.ReturnsSmileExamples
 public import Stats.BlackScholes.StrictButterfly
+public import Stats.BlackScholes.LognormalExamples
+public import Stats.BlackScholes.LognormalMatch
 
 @[expose] public section

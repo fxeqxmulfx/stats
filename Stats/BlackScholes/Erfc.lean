@@ -66,10 +66,11 @@ open ProbabilityTheory MeasureTheory in
     `survivalLN_eq_one_sub_stdNormalCdf` and rewriting via `erfc`:
         `survivalLN S₀ μ v K = (1/2) · erfc((log(K/S₀) − μ)/(√v · √2))`.
     Direct restatement of the paper's `(1/2) erfc(d₂*/√2)` notation. -/
-theorem survivalLN_eq_half_erfc {S₀ μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) (s : ℝ) :
+theorem survivalLN_eq_half_erfc {S₀ μ s : ℝ} {v : ℝ≥0}
+    (hS₀ : 0 < S₀) (hv : v ≠ 0) (hs : 0 < s) :
     survivalLN S₀ μ v s =
     (1/2) * erfc ((Real.log (s / S₀) - μ) / (Real.sqrt (v : ℝ) * Real.sqrt 2)) := by
-  rw [survivalLN_eq_one_sub_stdNormalCdf hv,
+  rw [survivalLN_eq_one_sub_stdNormalCdf hS₀ hv hs,
       one_sub_stdNormalCdf_eq_half_erfc]
   congr 2
   rw [div_div]
@@ -92,8 +93,8 @@ theorem alpha_lower_bound_erfc
           (Real.sqrt (v : ℝ) * Real.sqrt 2))) /
       Real.log (l / K₁) ≤ α := by
   have h := BSC_lognormal_tail_dominates_at_match
-    hα hl hK₁ hS₀ ha_pos ha_lt h_match h_butterfly
-  rw [survivalLN_eq_half_erfc hv] at h
+    hα hl hK₁ hS₀ hv ha_pos ha_lt h_match h_butterfly
+  rw [survivalLN_eq_half_erfc hS₀ hv (hl.trans hK₁)] at h
   exact alpha_lower_bound hl hK₁ h
 
 end TailOptionPricing

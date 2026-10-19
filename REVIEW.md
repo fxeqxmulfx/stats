@@ -219,6 +219,80 @@ identify their obsolete definitions. Public Pareto function types are
 preserved, while their integrand now uses the documented finite difference.
 Each new module is at most 103 lines.
 
+### Repair 3: lognormal support and zero-variance prices
+
+Reread `papers/arXiv-1908.02347v3/OptionPricingPL2022.tex`, section
+**Arbitrage Boundaries** (lines 285–312), including the positive-strike,
+positive-volatility Gaussian term in the final bound. The former
+`survivalLN` unconditionally used the density tail above `log(s/S₀)`.
+That is a valid lognormal survival representation only for positive spot,
+positive threshold and nonzero variance. It returned `1/2` at
+`S₀ = 1, μ = 0, v = 1, s = 0`, although an exponential Gaussian is
+strictly positive. At zero variance it lost the Gaussian atom entirely,
+and the old call integral was always zero, including in-the-money calls.
+
+[BlackScholes/LognormalLaw.lean](Stats/BlackScholes/LognormalLaw.lean)
+now constructs the actual Gaussian pushforward by `x ↦ S₀ * exp x` and
+proves it is a probability measure. `survivalLN` is this law's real-valued
+measure of `Ioi s`, so the primary API now has the correct support and
+atoms. Its bounds and antitonicity hold without variance or spot hypotheses.
+Positive spot gives survival one for nonpositive thresholds. At zero
+variance the law is `dirac (S₀ * exp μ)`, and its strict survival step is
+proved explicitly. The Gaussian-tail transformation requires positive
+spot and threshold, but applies to zero variance too. The density, CDF
+and erfc formulas additionally require nonzero variance.
+
+The call payoff is proved integrable for every real scale, mean and strike
+and every nonnegative variance. Layer cake proves that the existing
+`callPriceBS` survival integral equals the actual-law payoff expectation;
+Gaussian change of variables gives the driver expectation. The earlier
+restrictions on `callPriceBS_eq_expectation` are removed. In particular,
+
+```text
+callPriceBS S₀ μ 0 K = max (S₀ * exp μ - K) 0
+callPriceBS 2 0 0 1 = 1
+callPriceBS 2 0 0 (-1) = 3.
+```
+
+Put–call parity is strengthened to every scale, strike, mean and variance
+using actual integrable positive-part payoffs. The density-based call
+and survival derivative theorems now require nonzero variance. The actual
+zero-variance call is continuous, but the survival is discontinuous at its
+atom; `survivalLN_zero_var_not_continuousAt` certifies this exclusion.
+The 372-line call-price file is split into payoff, derivative, closed-form
+and positivity modules, each at most 193 lines, with public names re-exported.
+
+[BlackScholes/LognormalExamples.lean](Stats/BlackScholes/LognormalExamples.lean)
+checks the boundaries and instantiates the corrected formula domains.
+[BlackScholes/LognormalMatch.lean](Stats/BlackScholes/LognormalMatch.lean)
+constructs matching genuine risk-neutral lognormal and Pareto call
+integrals with a local nonnegative mixed butterfly, then applies the
+corrected Gaussian-tail and erfc comparisons. It supplies all their
+premises rather than assuming the matching or arbitrage conclusions.
+[Review/LognormalLegacy.lean](Stats/Review/LognormalLegacy.lean) freezes the
+old formulas and proves both failures independently of the repaired API.
+
+Risk neutrality means `μ = -v/2`; the general-mean model is explicitly
+described as a lognormal payoff model. The real-volatility wrapper
+`callPriceBS_σ` remains a closed-form expression whose probability-law
+identification has positive spot, strike and volatility hypotheses. Its
+documentation now directs boundary cases to the actual-law `callPriceBS`.
+No global probability-law assertion is made for an arbitrary smile.
+
+**Verification:** the default build passes all 3902 jobs without warnings.
+The standalone transitive axiom audit checks 1375 declarations, including
+1181 theorem declarations, and finds only `Quot.sound`, `Classical.choice`
+and `propext`. All 27 Python tests, the forbidden-construct check and
+`git diff --check` pass. The index contains 124 modules and 639 named
+theorems with zero sorry, vacuous or placeholder markers; the audit
+explicitly imports all 123 other modules. `dt refresh project` indexes
+717 public declarations. No prior name is removed: 687 of the 699 old
+types are unchanged, twelve have the documented domain corrections or
+strengthenings, and eighteen declarations are added. The changed interfaces
+are the survival continuity/bounds/monotonicity, Gaussian/CDF/erfc bridges,
+smooth survival/call derivatives, lognormal butterfly comparison, call
+expectation and put–call parity. Their downstream uses compile.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -587,7 +661,11 @@ to the printed direction are both proved.
 From $(l/K)^α≤Q$ with $0<l<K$ it proves $log(Q)/log(l/K)≤α$.
 Positivity of $Q$ and the negative denominator are handled.
 [BlackScholes/Greeks.lean](Stats/BlackScholes/Greeks.lean) gives Gaussian/erfc
-specializations.
+specializations. Repair 3 constructs the actual Gaussian pushforward law,
+corrects its survival support and zero-variance call prices, and restricts
+the smooth Gaussian/CDF/erfc forms to positive spot, strike and variance.
+`exists_lognormal_pareto_match` witnesses the matching and local-butterfly
+premises with actual call integrals and applies both comparisons.
 
 **Missing:** nothing for this conditional bound.
 

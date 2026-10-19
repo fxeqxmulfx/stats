@@ -27,7 +27,11 @@ namespace TailOptionPricing
 
 /-- **`σ`-parametric Black–Scholes call price (closed form).**
     `S₀ · Φ(d₁(σ, K)) − K · Φ(d₂(σ, K))`,
-    with `d₁ = (log(S₀/K) + σ²/2)/σ`, `d₂ = (log(S₀/K) − σ²/2)/σ`. -/
+    with `d₁ = (log(S₀/K) + σ²/2)/σ`, `d₂ = (log(S₀/K) − σ²/2)/σ`.
+    This total closed-form expression represents a call price on the
+    positive-spot, positive-strike, positive-volatility domain proved by
+    `callPriceBS_σ_eq_callPriceBS_riskNeutral`. For boundary values use the
+    actual-law `callPriceBS`, which includes the zero-variance payoff. -/
 noncomputable def callPriceBS_σ (S₀ : ℝ) (σ : ℝ) (K : ℝ) : ℝ :=
   S₀ * stdNormalCdf ((Real.log (S₀ / K) + σ^2 / 2) / σ) -
   K * stdNormalCdf ((Real.log (S₀ / K) - σ^2 / 2) / σ)
