@@ -74,6 +74,7 @@ import all Stats.EpistemicUncertainty.PositiveDensityInputs
 import all Stats.EpistemicUncertainty.PrecisionErrors
 import all Stats.EpistemicUncertainty.PrecisionLaw
 import all Stats.EpistemicUncertainty.PrecisionCounterexample
+import all Stats.EpistemicUncertainty.LogRemainder
 import all Stats.EpistemicUncertainty.BinomialCollapse
 import all Stats.EpistemicUncertainty.BinomialDensity
 import all Stats.EpistemicUncertainty.BinomialSurvival

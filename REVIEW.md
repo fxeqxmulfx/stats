@@ -2339,6 +2339,42 @@ precision modules have 141, 126 and 100 lines; their source assumptions
 and the exact scope of the counterexample were checked against local
 Section V, Eqs. errorn through lerrornapprox.
 
+### 2026-10-19: signed log remainders and an accumulated-error condition
+
+[LogRemainder.lean](Stats/EpistemicUncertainty/LogRemainder.lean)
+replaces Section V's informal first-order log approximation by an explicit
+bound valid for either sign of the error. If `|epsilon|<=r<1`, then
+`0<=epsilon-log(1+epsilon)<=epsilon^2/(1-r)`. The proof combines both
+logarithmic inequalities on the positive domain; it does not use the
+incorrect signed quadratic lower bound noted in EU-25.
+
+For any finite family of such errors and positive initial precision,
+the difference between `log(lambda_hat)+sum(epsilon_i)` and the actual
+product's logarithm lies between zero and
+`sum(epsilon_i^2)/(1-r)`. Its absolute error has the same upper bound.
+Thus signed cancellation in the errors does not cancel the log remainder.
+Negative errors and arbitrary three-coordinate fair-sign configurations
+with error magnitude `1/100` satisfy concrete checked examples.
+
+For a triangular array and any positive normalization `a_n`,
+`log_multiplicative_error_normalized_remainder_tendsto_zero` proves
+that the normalized absolute discrepancy tends to zero if
+`sum(epsilon_ni^2)/a_n` tends to zero. A nonzero example with each
+depth-n error `1/(2*(n+1))` has vanishing total discrepancy even for
+normalization one. These are explicit sufficient rate conditions;
+fixed small errors do not automatically satisfy them at a CLT scale,
+as the actual iid counterexample already demonstrates.
+
+Verification: all 4,100 default-build jobs pass without warnings. The
+audit checks 2,306 declarations and 1,974 theorems with zero non-core
+axioms. The regenerated index records 215 modules and 1,121 named
+theorems with zero `sorry`, vacuous or placeholder entries. All 27 Python
+tests, forbidden-pattern and whitespace checks pass. All 1,269 previous
+indexed names and types are preserved, with four additions and no
+duplicates; the audit imports all 213 other `Stats/` modules.
+The new 151-line module's domain, signed remainder and accumulated rate
+condition were reread beside the local Section V approximation.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4206,16 +4242,27 @@ $log(λ̂∏(1+ε_i))=log(λ̂)+Σlog(1+ε_i)$ for positive $λ̂$ and factors.
 
 **Missing:** nothing for the upper bound.
 
-### EU-25. Log linearization and accumulated approximation error — not ok
+### EU-25. Log linearization and accumulated error — ok with explicit rate conditions
 
 The source replaces each log factor by its first-order error.
+`log_one_add_remainder_bounds` proves, for `|epsilon|<=r<1`,
+`0<=epsilon-log(1+epsilon)<=epsilon^2/(1-r)` for both signs.
+`log_multiplicative_error_remainder_bounds` and its absolute-error
+corollary bound the entire finite product's discrepancy by
+`sum(epsilon_i^2)/(1-r)`. All positive-factor hypotheses follow from
+the explicit radius bound.
 
-**Missing:** a valid two-sided remainder estimate on a specified parameter
-range and control of the sum of remainders. A one-sided inequality does not
-give an approximation theorem. The suggestion that
-$ε-ε²/2≤log(1+ε)$ for arbitrary small signed errors has been removed
-from the old code comment: that inequality fails for negative $ε$
-sufficiently close to zero.
+`log_multiplicative_error_normalized_remainder_tendsto_zero` proves
+normalized approximation under the sufficient condition
+`sum(epsilon_ni^2)/a_n -> 0`, for a positive normalization and a uniform
+radius below one. Nonzero shrinking errors `1/(2*(n+1))` give a checked
+example with normalization one. The earlier suggested lower bound
+$ε-ε²/2≤log(1+ε)$ for signed errors is not used; it fails for negative
+errors near zero.
+
+**Missing:** nothing for these quantitative deterministic bounds. They
+do not supply the extra rate condition for arbitrary errors in the paper;
+the proposed fixed-error uncentered CLT is formally refuted in EU-26.
 
 ### EU-26. CLT and lognormal precision law — false as printed; corrected CLT not ok
 
@@ -4233,7 +4280,9 @@ product's whole law and positive support are proved before taking this limit.
 
 **Missing:** a normalized convergence-in-distribution theorem, centering and
 an appropriate Lindeberg/Lyapunov or iid hypothesis, as well as log-factor
-moment assumptions and the approximation control in EU-25.
+moment assumptions. EU-25 now proves deterministic approximation control
+under an explicit accumulated-error condition; an arbitrary source model
+must satisfy that condition before the linearization can be used in a CLT.
 Finite variances and a positive lower bound alone do not guarantee a CLT for
 nonidentically distributed independent variables. Nor does zero mean of
 $ε_i$ imply zero mean of $log(1+ε_i)$. An unnormalized sum whose variance
