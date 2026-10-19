@@ -139,6 +139,7 @@ public import Stats.EpistemicUncertainty.CompoundDensity
 public import Stats.EpistemicUncertainty.CompoundMoments
 public import Stats.EpistemicUncertainty.CompoundIntegrand
 public import Stats.Probability.GammaMoments
+public import Stats.Probability.GammaMomentDomain
 public import Stats.Probability.GammaMGF
 public import Stats.EpistemicUncertainty.GammaCompoundLaw
 public import Stats.EpistemicUncertainty.GammaCompoundDensity

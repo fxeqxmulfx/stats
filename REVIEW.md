@@ -2905,6 +2905,35 @@ the square-root sign, df/scale parameters and the concrete false-scale
 claim were checked beside the local Section VI text. Sharp moment
 failure and the unrestricted mean claim remain to be resolved.
 
+### 2026-10-19: sharp actual Gamma moment domain
+
+[GammaMomentDomain.lean](Stats/Probability/GammaMomentDomain.lean)
+proves that the actual Gamma population power `Lambda^p` is L1 exactly
+when `a+p>0`. Necessity follows from the genuine density near zero:
+on `(0,1)`, its Euler exponential factor is at least `exp(-r)>0`,
+and its Gamma coefficient is positive. L1 of the actual moment would
+therefore make `x^(a+p-1)` L1 on `(0,1)`, forcing `a+p>0`.
+This argument proves failure at equality as well as below the boundary.
+
+The inverse orders needed for conditional dispersion are consequently
+L1 exactly when `a>k/2`. The inverse precision itself is L1 exactly
+when `a>1`; a proper shape-one, rate-one prior refutes unrestricted
+inverse-moment finiteness. Every natural Gamma power is independently
+L1, and its actual moment has the proved Gamma-ratio value.
+The result concerns the precision prior; transfer to the actual
+compound outcome and its unrestricted mean claim still remains.
+
+Verification: all 4,171 default-build jobs pass without warnings. The
+audit checks 2,556 declarations and 2,209 theorems with zero non-core
+axioms. The index records 241 modules and 1,313 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,474 previous
+indexed names and types are preserved, with seven additions and no
+duplicates; the audit imports all 239 other `Stats/` modules.
+The new module has 150 lines. Its positive shape/rate domain, inverse
+precision exponents, and the source's finite-moment and unrestricted
+compound-mean wording were checked beside local Section VI.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4987,9 +5016,14 @@ Gamma mixture, with independently L1 real density and integral one.
 printed beta-as-scale claim: shape two, rate two gives the proper
 df-four scale-one law, which differs from the proper scale-two law.
 
-**Missing:** sharp nonintegrability outside the proved moment range
-and the source's unrestricted mean claim. The displayed compound-law
-evaluation and corrected conventional Student identification are proved.
+`gammaMeasure_integrable_rpow_iff` now proves the sharp actual Gamma
+prior condition `alpha+p>0`, including failure at equality. The inverse
+orders needed for dispersion are L1 precisely when `alpha>k/2`.
+
+**Missing:** transfer of that sharp nonintegrability to the compound
+outcome and resolution of the source's unrestricted mean claim.
+The displayed compound-law evaluation and corrected conventional
+Student identification are proved.
 
 ### EU-32. Increasing epistemic uncertainty decreases the Student tail index — not ok
 

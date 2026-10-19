@@ -168,6 +168,7 @@ import all Stats.EpistemicUncertainty.CompoundDensity
 import all Stats.EpistemicUncertainty.CompoundMoments
 import all Stats.EpistemicUncertainty.CompoundIntegrand
 import all Stats.Probability.GammaMoments
+import all Stats.Probability.GammaMomentDomain
 import all Stats.Probability.GammaMGF
 import all Stats.EpistemicUncertainty.GammaCompoundLaw
 import all Stats.EpistemicUncertainty.GammaCompoundDensity
