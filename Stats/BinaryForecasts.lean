@@ -20,7 +20,8 @@ module
 
   Umbrella module — the formalisation is split into submodules:
 
-  * `Stats.BinaryForecasts.CharacteristicScale` — paper Definition 4.
+  * `Stats.BinaryForecasts.CharacteristicScale` — Definition 4's actual
+    Pareto conditional means, normalization, L1 and scale limit.
   * `Stats.BinaryForecasts.Conflation` — paper Definitions 5–6
     (`I_1`/`I_2`, Gaussian closed form, corrected probability `p*`).
   * `Stats.BinaryForecasts.ParetoSensitivity` — paper Eq. 9 and

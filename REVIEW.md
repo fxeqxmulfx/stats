@@ -1041,6 +1041,57 @@ markers. All 27 Python tests, the forbidden check and whitespace check
 pass. The refreshed declaration index retains all 911 public names and
 their exact types, with no additions or duplicates.
 
+### Actual Pareto conditional means and characteristic-scale limit
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 4 (lines 317–327), the explicit `g(x)=x` restriction and
+Theorem 1 (lines 351–365), and the following **Fat tails** calculation
+(lines 378–384). The new statements concern the exact supported Pareto
+law, not every law with a regularly varying tail. They use the same
+threshold in the conditional event and both tail integrals; the printed
+fat-tail display mixes `K` and `K_p`.
+
+[CharacteristicScale.lean](Stats/BinaryForecasts/CharacteristicScale.lean)
+now proves positive actual tail probability and normalization of
+`cond (paretoMeasure l alpha) (Ioi K)` for every finite threshold when
+`l>0` and `alpha>0`. For `alpha>1`, the actual conditional observation
+is L1 at every finite threshold. Above the support boundary `K>=l`,
+supported density integration and the proved Pareto tail calculation give
+
+```text
+E[X | X>K] = alpha*K/(alpha-1),
+E[X-K | X>K] = K/(alpha-1),
+E[X | X>K]/K = alpha/(alpha-1).
+```
+
+The mean excess uses linearity under proved L1 and probability conditions.
+The actual conditional-mean ratio tends to `alpha/(alpha-1)>1` at
+infinity, verifying this population's operational limit in Definition 4.
+The earlier analytic ratio declarations and their types are preserved.
+The module now uses focused Pareto and conditional-probability imports.
+
+Concrete Pareto(2,3) witnesses at threshold four have conditional mean
+six, mean excess two and ratio `3/2`. They check actual normalization,
+conditional support, L1, both ratio formulas, the limit, and positive
+tail probability below the support. The same actual population has an
+integrable second power with expectation twelve. This corrects the old
+module description: a conditional-mean ratio above one is not a boundary
+between finite and infinite variance. Every new hypothesis family has a
+concrete witness; five central axiom prints check proof dependencies.
+
+The general class predicates, general RV application and Gaussian
+conditional limit remain recorded separately in BF-04, BF-12 and BF-14.
+
+**Verification:** all 3971 default-build jobs pass without warnings.
+The standalone audit covers 1740 declarations and 1487 theorem
+declarations, with only the three core axioms. The regenerated index
+has 172 modules and 812 named theorems, with zero sorry, vacuous or
+placeholder markers. All 27 Python tests, the forbidden check and
+whitespace check pass. The refreshed declaration index has 918 distinct
+public names: all 911 previous names and types remain unchanged, with
+seven additions and no duplicates. The actual-law module is 173 lines.
+The Gaussian users now import their standard-normal dependencies directly.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -1990,20 +2041,30 @@ when an expectation or conditional expectation is used.
 ### BF-04. Definition 4: characteristic scale and classes D₁/D₂ — not ok generally
 
 [CharacteristicScale.lean](Stats/BinaryForecasts/CharacteristicScale.lean)
-proves a particular Pareto ratio.
+proves actual Pareto conditional means and their ratio limit;
+[ExponentialLaw.lean](Stats/BinaryForecasts/ExponentialLaw.lean) proves
+the actual exponential conditional ratio and mean-excess limits.
 
-**Missing:** predicates for the distribution classes, a general conditional
-expectation formulation, and the corresponding limit theorems. Assigning a
-class in a comment is not a proof that an arbitrary law belongs to it.
+**Missing:** predicates for the distribution classes and general
+classification/limit theorems beyond these identified populations.
+Assigning a class in a comment is not a proof that an arbitrary law
+belongs to it.
 
 ### BF-05. Strong-Pareto characteristic-scale formula — ok
 
 `characteristicScale_pareto` proves the ratio
 $E[X;X>K]/(K P(X>K))=α/(α-1)$ for $α>1$, $l>0$, $K≥l$.
 `characteristicScale_pareto_gt_one` proves that the factor exceeds one.
+The actual-law theorems `paretoMeasure_cond_mean`,
+`paretoMeasure_cond_mean_excess`,
+`paretoMeasure_cond_characteristicScale` and its `tendsto` theorem now
+establish the corresponding normalized conditional expectations and
+limit, with tail positivity, probability normalization and L1 proved.
+Pareto(2,3) examples also establish a finite actual second moment;
+this conditional-mean classification is not a variance threshold.
 
-**Missing:** nothing for this exact Pareto integral statement. The tail
-expectation and survival formulas are established by integration.
+**Missing:** nothing for these exact Pareto integral and actual
+conditional-law statements on the specified support domain.
 
 ### BF-06. Exponential borderline case — actual conditional means and limits proved
 
@@ -2089,6 +2150,8 @@ linear-payoff theorem nor constitutes a new Lean theorem.
 
 `pareto_I1_div_I2_eq` proves the exact ratio for $g(x)=x$.
 `pareto_I1_div_I2_tendsto` proves the corresponding `Tendsto` statement.
+The actual normalized-law ratio and limit are independently identified
+by the `paretoMeasure_cond_characteristicScale` theorems in BF-05.
 
 **Missing:** nothing for this specialization. For a payoff $x^p$, the factor
 instead depends on $p$; it cannot be assigned the linear-payoff factor without

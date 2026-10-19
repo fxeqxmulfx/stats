@@ -12,6 +12,7 @@ module
   See `Stats/BinaryForecasts.lean` for the umbrella module.
 -/
 public import Stats.BinaryForecasts.CharacteristicScale
+public import Stats.BlackScholes.StdNormal
 
 @[expose] public section
 
