@@ -5,6 +5,7 @@ import all Stats.Arbitrage
 import all Stats.BinaryForecasts
 import all Stats.BinaryForecasts.Bernoulli
 import all Stats.BinaryForecasts.Brier
+import all Stats.BinaryForecasts.CharacteristicClasses
 import all Stats.BinaryForecasts.CharacteristicScale
 import all Stats.BinaryForecasts.Conflation
 import all Stats.BinaryForecasts.ConflationCounterexample
@@ -119,6 +120,7 @@ import all Stats.Pareto.TailRisk
 import all Stats.Probability.BetaAsymptotic
 import all Stats.Probability.BetaMoments
 import all Stats.Probability.CDFTransform
+import all Stats.Probability.DensityIntegration
 import all Stats.Probability.Exponential
 import all Stats.Probability.ExponentialIntegration
 import all Stats.Probability.HiddenMass

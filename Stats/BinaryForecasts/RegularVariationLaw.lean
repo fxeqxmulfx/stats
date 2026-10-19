@@ -9,7 +9,7 @@ module
 public import Stats.BinaryForecasts.RegularVariation
 public import Stats.RegularVariation.Closure
 public import Stats.BinaryForecasts.Conflation
-public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+public import Stats.Probability.DensityIntegration
 
 @[expose] public section
 
@@ -76,20 +76,6 @@ theorem regularlyVarying_survival_condMean_ratio_tendsto (ν : Measure ℝ) [IsF
       atTop (𝓝 (α / (α - 1))) := by
   obtain ⟨L, hLm, hL, hLp, hS⟩ := survival_slowlyVarying_factor ν hRV
   exact regularVariation_condMean_ratio_tendsto ν hα hLm hL hLp hS
-
-private theorem realDensity_setIntegral (f : ℝ → ℝ) (hm : Measurable f)
-    (hn : ∀ x, 0 ≤ f x) (g : ℝ → ℝ) (s : Set ℝ) :
-    (∫ x in s, g x ∂volume.withDensity (fun x => ENNReal.ofReal (f x))) =
-      ∫ x in s, g x * f x := by
-  have hmf : Measurable (fun x : ℝ => ENNReal.ofReal (f x)) :=
-    ENNReal.measurable_ofReal.comp hm
-  rw [setIntegral_withDensity_eq_setIntegral_toReal_smul' s
-    hmf
-    (Filter.Eventually.of_forall (fun _ => ENNReal.ofReal_lt_top))]
-  simp_rw [ENNReal.toReal_ofReal (hn _), smul_eq_mul]
-  congr 1
-  funext x
-  exact mul_comm _ _
 
 /-- The printed `I1/I2` limit for a nonnegative measurable density of
 an actual finite law, with a regularly varying actual survival (Theorem 1).

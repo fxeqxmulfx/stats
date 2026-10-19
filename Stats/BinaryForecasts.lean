@@ -26,6 +26,8 @@ module
     and linear-payoff ratio limits for general regularly varying survival laws.
   * `Stats.BinaryForecasts.GaussianLaw` — actual standard Gaussian tail
     moments, conditional normalization and the ratio limit one.
+  * `Stats.BinaryForecasts.CharacteristicClasses` — Definition 4's
+    operational classes and both Theorem 1 density implications.
   * `Stats.BinaryForecasts.Conflation` — paper Definitions 5–6
     (`I_1`/`I_2`, Gaussian closed form, corrected probability `p*`).
   * `Stats.BinaryForecasts.ParetoSensitivity` — paper Eq. 9 and
@@ -51,6 +53,7 @@ public import Stats.BinaryForecasts.CharacteristicScale
 public import Stats.BinaryForecasts.RegularVariation
 public import Stats.BinaryForecasts.RegularVariationLaw
 public import Stats.BinaryForecasts.GaussianLaw
+public import Stats.BinaryForecasts.CharacteristicClasses
 public import Stats.BinaryForecasts.Conflation
 public import Stats.BinaryForecasts.ParetoSensitivity
 public import Stats.BinaryForecasts.Brier

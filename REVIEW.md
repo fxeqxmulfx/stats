@@ -19,7 +19,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
-| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Actual general RV and standard Gaussian conditional-mean and density-ratio limits, Pareto and exponential cases, corrected payoff converse and counterexample, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Operational thin-tail class interface, CLT and Brier-score distribution |
+| [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
@@ -1155,7 +1155,8 @@ are included in the default umbrella and exhaustive private axiom audit.
 
 BF-12 is now established for the stated general RV branch. The operational
 thin-tail class interface in BF-04/BF-10 and the Gaussian limit in BF-14
-remain separate; no arbitrary-payoff extension or convergence rate is claimed.
+are supplied by the following repairs. No arbitrary-payoff extension or
+convergence rate is claimed.
 
 **Verification:** all 3973 default-build jobs pass without warnings.
 The standalone audit covers 1777 declarations, including 1523 theorem
@@ -1234,8 +1235,8 @@ certificates check the actual first moment above minus one and the actual
 conditional mean above zero, `2*phi(0)`, using the proved CDF symmetry.
 Both focused modules are publicly exposed and explicitly included in the
 private axiom audit. BF-13's actual first-moment bridge and BF-14's standard
-Gaussian limits are now established. The source's general operational
-class interface remains in BF-04/BF-10.
+Gaussian limits are now established. The following repair supplies the
+source's general operational class interface in BF-04/BF-10.
 
 **Verification:** all 3977 default-build jobs pass without warnings.
 The standalone audit covers 1796 declarations and 1542 theorem declarations,
@@ -1246,6 +1247,80 @@ placeholder markers. All 27 Python tests, the forbidden check and whitespace
 check pass. The refreshed declaration index has 940 distinct public names:
 all 930 previous names and types are unchanged, with ten additions and no
 duplicate names. The two focused modules are 83 and 144 lines.
+
+### Definition 4's actual operational classes and both Theorem 1 implications
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 4 and its three bullets (lines 317–327), Definition 5's two
+density integrals (lines 342–346), the explicit `g(x)=x` restriction
+(line 351), and Theorem 1's proof, **From Eq. chscale** (lines 353–366).
+The class hypotheses in that named theorem refer back to the operational
+conditional-mean limit in Definition 4.
+
+[CharacteristicClasses.lean](Stats/BinaryForecasts/CharacteristicClasses.lean)
+now defines `HasCharacteristicScale nu scale` by that literal limit of
+the actual normalized conditional mean divided by the threshold. The
+source's operational D1 and D2 classes mean limit one and existence of
+a finite limit strictly above one, respectively. The borderline
+exponential condition uses the actual conditional mean minus the
+threshold and a positive finite limiting excess. These are predicates
+of the supplied actual law and limit parameters; no mean is defined by
+a desired closed expression.
+
+`HasCharacteristicScale.wellDefined` proves that a nonzero limiting
+scale forces actual conditional normalization, conditional L1 and
+upper-tail L1 eventually. A ratio eventually separated from zero has
+a nonzero actual integral, which proves its integrability. A zero tail
+measure would give a zero conditional measure and contradict that
+nonzero integral. Finiteness then gives actual probability normalization,
+and the nonzero finite normalizing weight transfers L1 back to the
+population's restricted tail. Thus the source's positive operational
+classes cannot acquire their limits through totalized nonintegrable
+zero integrals or empty tails.
+
+`HasCharacteristicScale.densityRatio` identifies that actual conditional
+quantity with the written `I1 id f K / I2 id f K` for a nonnegative
+measurable density explicitly generating the same law. Both
+`thinTail_I1_div_I2_tendsto` and `fatTail_I1_div_I2_tendsto` prove the
+source's named implications, together with the eventual actual L1 and
+normalization conditions. Their analytic premise is exactly the source's
+Definition 4 class condition. This transfer is the proof given in the
+paper; the preceding RV and Gaussian repairs independently establish
+nontrivial actual-law instances of that premise.
+
+The shared density integration bridge has moved, without changing its
+proof, from the private RV helper to
+[DensityIntegration.lean](Stats/Probability/DensityIntegration.lean).
+That module also proves the density-weighted tail L1 equivalence and
+checks both bridges with the actual supported Exp(2) law. All existing
+public RV theorem types are preserved.
+
+Class membership is proved for the actual standard Gaussian, every
+positive-rate exponential, and every positive-scale Pareto with index
+greater than one. The exponential law also meets the source's borderline
+condition with limiting excess `1/r`; the operational classes therefore
+overlap as their literal definitions permit. Exp(2) supplies concrete
+well-definedness, density-transfer and D1 witnesses. A supported,
+measurable, nonnegative PDF producing the actual normalized Pareto(2,3)
+law supplies the full D2 implication's witness. Every new hypothesis
+family has a concrete satisfying instance.
+
+Theorem 1 is now established with its explicit linear-payoff restriction
+and its literal operational class definitions. Identifications with
+independent analytical tail classes are a separate remaining issue,
+recorded explicitly in BF-04a. This repair does not settle the paper's
+later nonlinear, distributional or CLT claims.
+
+**Verification:** all 3979 default-build jobs pass without warnings.
+The standalone audit covers 1811 declarations and 1553 theorem declarations,
+with only the three permitted core axioms. Its explicit imports cover all
+177 other project modules, including private declarations. The regenerated
+index has 178 modules and 854 named theorems, with zero sorry, vacuous or
+placeholder markers. All 27 Python tests, the forbidden check and whitespace
+check pass. The refreshed declaration index has 954 distinct public names:
+all 940 previous names and types are unchanged, with fourteen additions and
+no duplicate names. The class and shared-density modules are 193 and
+64 lines. The moved density integration proof is byte-for-byte unchanged.
 
 ## Lean upgrade and reproducible verification
 
@@ -2163,8 +2238,11 @@ sensitivity expression. Theorem 2's actual bounded-score moment statement
 is proved, without independence. Theorem 1's general regularly varying,
 linear-payoff branch is now proved for actual survival laws, including
 tail L1 and conditional normalization. The actual standard Gaussian
-conditional-mean and density-ratio limits are also proved. Its thin-tail class interface and
-the later distributional and CLT claims remain incomplete. Some statements in the
+conditional-mean and density-ratio limits are also proved. Both Theorem 1
+implications now follow for the literal operational classes in Definition 4,
+with actual density/law identification and L1 conditions. Independent
+analytical class identifications and the later distributional and CLT claims
+remain incomplete. Some statements in the
 source also require correction: Definition 5's unrestricted converse needs
 additional hypotheses, and Eq. 8 differentiates a different quantity from
 the originally defined payoff gap. Theorem 1 is read with the source's
@@ -2196,7 +2274,7 @@ step function supplies the payoff kernel, rather than the complete experiment.
 measurability and support conditions, and the integrability assumptions needed
 when an expectation or conditional expectation is used.
 
-### BF-04. Definition 4: characteristic scale and classes D₁/D₂ — not ok generally
+### BF-04. Definition 4: operational characteristic scale and classes — ok
 
 [CharacteristicScale.lean](Stats/BinaryForecasts/CharacteristicScale.lean)
 proves actual Pareto conditional means and their ratio limit;
@@ -2207,10 +2285,30 @@ The general regularly varying actual-survival limit, including its
 L1 and probability conditions, is now proved in
 [RegularVariationLaw.lean](Stats/BinaryForecasts/RegularVariationLaw.lean).
 
-**Missing:** predicates for the source's operational classes and general
-thin-tail classification/limit theorems beyond the identified populations.
-Assigning a class in a comment is not a proof that an arbitrary law
-belongs to it.
+`HasCharacteristicScale`, `InThinTailClass`, `InFatTailClass` and
+`InBorderlineExponentialClass` now encode the literal actual conditional
+limits. A nonzero scale implies eventual actual conditional probability,
+conditional L1 and population-tail L1. Gaussian, exponential and Pareto
+membership theorems provide actual law instances, with concrete witnesses.
+
+**Missing:** nothing for these operational definitions, their well-definedness
+on the positive-scale domain and the specified law instances. The broader
+analytical class identifications are recorded separately below.
+
+### BF-04a. Identification with independent analytical tail classes — not ok completely
+
+The source also calls D1 thin-tailed and D2 regularly varying, and its
+Theorem 1 discussion refers to distributions outside the subexponential
+class. A conditional-mean limit predicate does not itself establish all
+such equivalences.
+
+**Established:** actual regularly varying survival with index `-alpha`,
+`alpha>1`, gives the specified conditional limit; Gaussian and exponential
+membership is proved from their actual laws.
+
+**Missing:** formal independent light-tail/subexponential definitions and
+the asserted class-wide implications under precise assumptions, and the
+converse from an operational D2 limit to survival regular variation.
 
 ### BF-05. Strong-Pareto characteristic-scale formula — ok
 
@@ -2292,7 +2390,7 @@ corrected actual-law statements. A universal identity over all possible
 densities has different quantifiers; pointwise constancy outside the
 measured support is not claimed.
 
-### BF-10. Theorem 1: linear-payoff convergence of I₁/I₂ — not ok as assembled
+### BF-10. Theorem 1: linear-payoff convergence under Definition 4 — ok
 
 The source explicitly assumes $g(x)=x$ immediately before Theorem 1
 (line 351). Its limit is the characteristic scale of Definition 4.
@@ -2303,9 +2401,17 @@ The general RV branch is now assembled in BF-12, for the actual survival
 and conditional laws as well as the density `I1/I2` expression.
 The actual standard Gaussian limit is proved in BF-14.
 
-**Missing:** the general operational thin-tail class interface and its
-linear-payoff implication, including the density-to-law identification.
-An extension to arbitrary payoffs would need additional hypotheses:
+`thinTail_I1_div_I2_tendsto` and `fatTail_I1_div_I2_tendsto` now prove
+both named implications for the source's actual operational classes.
+They identify the written nonnegative measurable density with its actual
+finite law and derive eventual tail normalization, conditional L1 and
+population-tail L1. The transfer from the actual conditional-mean ratio
+to the written density ratio matches the source's **From Eq. chscale**
+proof. Actual Exp(2) and supported Pareto(2,3) PDFs satisfy every hypothesis.
+
+**Missing:** nothing for this named theorem with its stated operational
+classes and linear payoff. Independent analytical class identifications
+remain in BF-04a. An extension to arbitrary payoffs needs more hypotheses:
 for an Exp(1) density and $g(x)=exp(x/2)$, at $K≥0$,
 $I₁=2exp(-K/2)$ and $I₂=exp(-K/2)$, so their ratio is two.
 The underlying law has characteristic scale one. This example is an
@@ -3438,7 +3544,7 @@ are distinguished where necessary.
 | Tail Option Pricing | Result 2, line 230: relative pricing under a return tail | **ok** | OP-11; exact affine-return Pareto parameterization |
 | Tail Option Pricing | Result 3, line 272: put pricing | **not ok** literally | OP-12–OP-14; correct signed powers/dimensional terms, then use the proved integral/cross-multiplied core and state nonzero denominators for quotient pricing |
 | How Much Data Do You Need? | Proposition 1, line 562: κ of an iid cubic Student sum | **not ok** | K-19–K-22; identify the supplied closed expression with the actual MAD of the iid sum |
-| Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **not ok** completely | BF-10–BF-14; general RV branch and standard Gaussian case proved for actual laws and identified densities; operational thin-tail class interface remains |
+| Binary Forecasts | Theorem 1, line 353: convergence of I₁/I₂ | **ok** with its Definition 4 classes | BF-10–BF-14; both operational class implications, actual density/law and L1 bridges, general RV branch and standard Gaussian case; independent analytical class identifications remain BF-04a |
 | Binary Forecasts | Theorem 2, line 629: all finite-sample Brier-score moments | **ok** | BF-26; measurable score construction, average bound and actual moment integrability proved without independence |
 | Hidden Moments | Proposition 1, line 189: hidden-moment density | **not ok** | HM-04–HM-06; iid maximum law, asymptotic qualification and hidden-moment pushforward density |
 | Epistemic Uncertainty | No active named Theorem/Proposition/Result | — | EU-01–EU-34 cover both numbered Remarks and the mathematical claims |
