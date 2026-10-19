@@ -1,42 +1,114 @@
-# Project instructions
+# AGENTS.md
 
-Write source comments, documentation, notebooks, and commit messages in English.
+Lean in `src/` formalizes the manuscripts in `papers/` (gitignored; `./make.py papers`
+fetches missing ones; read them there, not on the web). The lab in `python/` runs the
+experiments in `experiments/`. `./make.py` runs every task.
 
-## Lean declaration search
+## Always
 
-Use `dt` (discrtree) as the primary tool for finding Lean declarations by name,
-statement shape, constants, or text. Check `dt status`, use `dt find` to locate
-candidates, and inspect their exact types and required imports with `dt show`.
-The project configuration is in `discrtree.toml`. If the index is missing or
-stale, build the relevant modules and use `dt dump`, `dt index`, or `dt refresh`
-as appropriate. Text-only search results are not elaborated declarations. If
-`dt` cannot be made usable, explain the concrete limitation before falling back
-to other declaration-search tools.
+- Work solo: no subagents, no parallel agents of your own; the user's other agents
+  share the work only through the board.
+- English in code, docstrings, comments, filenames, commits.
+- One commit per logical change, as soon as its checks pass.
+- Never stage `.discrtree/`, `discrtree.toml`, `.claude/skills/discrtree/`,
+  `.kanban/`.
 
-## Comparison with the papers
+## Board
 
-Before every commit that implements or describes a paper's mathematical claim,
-reread the corresponding statement and definitions in the original paper under
-`papers/`. Check parameters, hypotheses, support, integrability, normalization,
-and the conclusion against the Lean statement. In particular, distinguish an
-actual probabilistic quantity from a formula or proxy defined to have the
-desired value. Record the source location and any remaining gaps in `REVIEW.md`.
-If a source statement needs correction, document the corrected claim explicitly
-instead of presenting it as a literal formalization of the printed statement.
+- `agent-kanban` keeps the work in `.kanban/board.db` at the root, untracked: one
+  task per `sorry` of `INDEX.md`. Run `agent-kanban guide` first.
+- Register once, `agent-kanban agent register <name> --role developer|reviewer`;
+  pass `--agent <name>` to the claim, release, submit and review commands.
+- Take a `sorry` only by claiming its task: `claim-next`, or `claim ID`. After an
+  hour another agent may take it over: claim again to renew, `release ID` to give up.
+- Each agent works in its own worktree, made when it starts and removed with its
+  branch when it stops: `git worktree add -b <name> .claude/worktrees/<name> main`.
+  One that trains nothing leaves out `experiments/` (43 MB instead of 1.3 GB): add
+  `--no-checkout`, then run `git sparse-checkout set --no-cone '/*' '!/experiments/'`
+  and `git checkout` in it. `agent-kanban` and `dt` find their files from there.
+- A worktree's ignored files die with it: link its `papers`, `.lake/packages` and
+  the `runs` of every experiment it trains to the root's. Its first `lake build`
+  links into `.lake/build`, read-only, every module that Lake's artifact cache
+  (`lakefile.toml`) holds: all of `main`, in seconds. `lake` runs with
+  `LAKE_ARTIFACT_CACHE=false` (`~/.profile`, `make.py`), which keeps Mathlib out of
+  the cache. `lake update`, `lake clean`, `lake exe cache` and a build with a
+  `lake-manifest.json` other than the root's change the shared packages: never in a
+  worktree. A Mathlib bump is made in the root while none exists, after
+  `lake cache clean` and `chmod -R u+w .lake/packages`.
+- The cache keeps every module version ever built, a removed worktree's too. When
+  the disk runs short and no `lake` runs: `lake cache clean`, then `lake build` in
+  the root to refill it.
+- Land each commit on `main` at once: `git rebase main` (regenerate a conflicting
+  `INDEX.md`), rerun the checks if `main` had moved, and fast-forward the root:
+  `git -C <root> merge --ff-only <name>`. The root holds no uncommitted work.
+- Done: once landed, `submit-review ID` with `--pass` or `--fail IDX EVIDENCE` for
+  every test; evidence cites the commit and the command output. Fix a reviewer's
+  `changes` in a new commit and submit again.
+- Review: rerun every test at the submitted commit; `approve ID` if all hold, else
+  `request-changes ID --notes`.
+- A `sorry` entering `INDEX.md` gets its task when committed: tags `sorry`, arXiv id,
+  namespace (`open-problem` and priority `low` if the source leaves it open); tests:
+  module build, `#print axioms`, statement beside the source, pre-commit checks;
+  `--after` every task whose result the source's proof uses.
 
-## Module size and compilation
+## Lean
 
-Split large Lean files into smaller modules organized around definitions and
-related results. Prefer adding a focused module to extending an already large
-file. Keep imports narrow and dependencies acyclic; expose the modules through
-the appropriate umbrella file. This should reduce the amount of code that must
-be recompiled after a change. When splitting an existing file, preserve its
-public declarations and check the downstream imports and default build.
+- Every paper claim, open ones included, is a `theorem`; unproved = `sorry` in proof
+  position. Never a claim as `def _ : Prop`, `axiom` or structure field; a
+  `def _ : Prop` is only a predicate of its arguments.
+- Before each commit, reread every touched statement beside its source: hypotheses,
+  quantifiers, constants, indices, conclusion. Docstring cites paper and § or equation.
+- Source fixable (missing hypothesis, wrong constant, index): prove the corrected
+  statement; docstring gives the source's wording and the change. Source false: prove
+  a counterexample; docstring names the claim. Never weaken a statement under the
+  paper's name.
+- Every theorem with hypotheses gets an `example` satisfying them.
+- Stuck: compare the statement and its definitions with the paper before stronger
+  tactics. Never move a difficulty into a definition.
+- Forbidden: `axiom`, `native_decide`, `set_option linter.* false`, `autoImplicit`, a
+  conclusion `True`, a definition ignoring an argument, an unused binder renamed `_h`
+  (delete it). `rfl`/`trivial`/one-line `simp` closing a substantive theorem: suspect
+  the definitions. A file without `sorry` has no warnings.
+- `sorry` in `INDEX.md` only falls, except for a new paper's statements entering
+  `src/Transformer.lean` in that commit. `vacuous` and `placeholder` stay 0.
+- `./make.py audit`: 0 `rests`, 0 extra axioms (only `propext`, `Classical.choice`,
+  `Quot.sound`). A result needing an unproved input takes it as a hypothesis.
+- Read the statement, hypotheses and instances of every library lemma used. Find
+  lemmas with `dt find '<pattern>'`, `dt find --name <part>`, `dt show <name>`, not
+  grep or memory. A Reservoir package only if compatible; prefer copying the needed
+  proofs, attributed.
+- A paper: `Section<§>_<Topic>.lean` files mirroring the manuscript. Otherwise by
+  import depth, never by declaration kind: `Foo/Defs.lean` → `Foo/Basic.lean` →
+  `Foo/<Topic>.lean` → `Foo.lean` (imports and docstring only).
+- Namespace `Transformer.` + directory: `Transformer/Metastability/Staircase.lean` →
+  `Transformer.Metastability`; `Transformer/XSA.lean` → `Transformer.XSA`;
+  `Transformer/Basic.lean` → `Transformer`.
+- Files of 150–200 lines. Every module reachable from `src/Transformer.lean`.
+- `INDEX.md` locates declarations. Never edit it; regenerate it in the commit of
+  every `src/` change.
+- Iterate with `lake build Transformer.<Module>`. Before committing: `lake build`,
+  `./make.py audit`, `./make.py index`, `./make.py forbidden`.
+- A Mathlib bump fixes its deprecations in the same commit.
 
-## Commits and verification
+## Python
 
-Make frequent, small commits for completed repairs. Commit each mathematical
-change together with its relevant review updates and regression certificates.
-Run the Lean checks appropriate to the change before committing. Do not add
-unfinished proofs (`sorry` or `admit`) or extra axioms. After a group of repairs,
-run the default `lake build` and the project's transitive axiom audit.
+- Experiment: `experiments/<name>/experiment.py` and `README.md`, and a row in
+  `experiments/README.md`. The file: `from lab.dsl import *`, then
+  `experiments = {label: Experiment(...)}`; variants by `swap(base, "path", value)`,
+  `substitute(base, Block, block)`, `grid`, never by flags. `./make.py blocks` lists
+  the words.
+- README: the question, a table of how the runs differ, what they found.
+- `./make.py check experiments/<name>`, `show … <label>`, `run … [labels]`,
+  `report … [labels]`, `profile … <label>`. `run` trains into `runs/<label>/` beside
+  the file (gitignored) and resumes on rerun; `report` prints JSON; `profile` trains
+  one run afresh under Scalene.
+- `EXPERIMENT_PLAN.md` is the plan; obey its status.
+- New block: spec in `python/src/lab/domain/`, PyTorch in `infrastructure/`, word in
+  `dsl.py`, test in `python/tests/`. Layers domain → application → infrastructure →
+  interfaces import only their own or earlier ones; third-party packages only in the
+  last two.
+- A block's docstring cites its source (paper §, Lean declaration, ported module and
+  commit) and every deviation from it.
+- uv only through `./make.py` or plain `uv run --locked` inside `python/`; never
+  `--active`, never at the root.
+- Before committing: `./make.py test`.
