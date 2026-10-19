@@ -1465,8 +1465,9 @@ moment and strict inequality.
 
 This closes the population-law bridge for the specified two-point
 Gaussian uncertainty model in BF-18. Arbitrary mixing distributions,
-other families and higher-kurtosis comparisons still require their
-own actual-law hypotheses and proofs.
+other families and general higher-kurtosis comparisons still require
+their own actual-law hypotheses and proofs. The next result computes
+the actual kurtosis of this same two-point population.
 
 **Verification:** all 3984 default-build jobs pass without warnings.
 The standalone audit covers 1883 declarations and 1620 theorem declarations,
@@ -1478,6 +1479,63 @@ The refreshed declaration index has 997 distinct public names: all 976
 previous names and types are unchanged, with twenty-one additions and no
 duplicate names. The generic mixture and Gaussian specialization modules
 are 125 and 132 lines.
+
+### Compute the same Gaussian mixture's actual moments and kurtosis
+
+Reread arXiv:1907.11162v3, the distributional-uncertainty footnote and
+Remark 1 (lines 461–466), and arXiv:1802.05495v3, the switching-Gaussian
+model and Eq. 17 (`kappa-n-final.tex`, lines 805–814). A scalar kurtosis
+formula alone does not identify a probability population's kurtosis.
+
+[GaussianMoments.lean](Stats/Probability/GaussianMoments.lean) proves
+L1 of every natural power of the genuine Gaussian observation. For
+the actual centered Gaussian with variance `v`, differentiating the
+actual MGF twice and four times gives the actual moments `v` and
+`3*v^2`. Variance zero is allowed in these component facts; no desired
+moment is supplied as a definition or as an unproved hypothesis.
+
+[GaussianMixtureMoments.lean](Stats/BinaryForecasts/GaussianMixtureMoments.lean)
+uses the genuine scale-law identification and the actual integration
+rule for the already constructed independent two-point mixture. It
+proves L1 of all natural mixture powers, mean zero, actual variance
+`(a^2+b^2)/2` and actual fourth central moment `3*(a^4+b^4)/2`.
+Pearson kurtosis is defined using those actual central moments and
+variance, and its closed form is then proved under nondegeneracy:
+
+```text
+Kurt(a,b) = 6*(a^4+b^4)/(a^2+b^2)^2.
+```
+
+This ratio equals the earlier `gaussianMixtureKurtosis 0 0 a b`
+expression, establishing the actual-law bridge for the centered case
+of Eq. 17. Positive distinct scales give actual kurtosis strictly
+above three. The baseline positive-scale Gaussian is separately
+proved to have actual kurtosis three. A joint theorem certifies that
+the same uncertain-scale population has both a larger actual payoff
+gap than the Gaussian at mean scale and actual kurtosis above three.
+It does not infer a payoff ordering from kurtosis alone.
+
+The scales-three/seven model has actual variance 29, fourth central
+moment 3723, and kurtosis `3723/841>3`. Its threshold-three gap still
+exceeds the actual scale-five Gaussian gap. Concrete witnesses also
+verify the actual fourth-power L1, Gaussian baseline kurtosis and
+the Eq. 17 moment identification.
+
+BF-18 now includes this actual higher-kurtosis certificate for the
+specified two-point model. K-43 still lacks the actual general
+switching-mean Gaussian moment theorem; this centered specialization
+does not close that broader claim.
+
+**Verification:** all 3986 default-build jobs pass without warnings.
+The standalone audit covers 1915 declarations and 1651 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 183 other
+Stats modules, including private declarations. The regenerated index has
+185 modules and 914 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1016 distinct public names: all 997
+previous names and types are unchanged, with nineteen additions and no
+duplicate names. The Gaussian MGF-moment and actual mixture-moment modules
+are 111 and 171 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -2346,8 +2404,14 @@ As a distributional statement this remains **not ok** until K-41 is established.
 [Kappa/GaussianMixture.lean](Stats/Kappa/GaussianMixture.lean):
 `gaussianMixtureKurtosis` is defined by the closed expression.
 
-**Missing:** the actual mixture measure, its second/fourth central moments
-and their ratio equal to this expression.
+For the centered case, `gaussianScaleMixture` now constructs the genuine
+equal mixture, and its actual variance and fourth central moment are
+proved. `gaussianScaleMixtureKurtosis_eq_eq17` identifies their ratio
+with `gaussianMixtureKurtosis 0 0 a b` under nondegeneracy. Distinct
+positive scales give actual kurtosis strictly above three.
+
+**Missing:** the general switching-mean mixture, its second/fourth
+central moments and their ratio equal to the four-parameter expression.
 
 ### K-44. Kurtosis ≥ 3 threshold for the defined formula — ok
 
@@ -2679,11 +2743,14 @@ its actual survival and first tail moment are computed, and its actual
 payoff gap equals the mean of the component actual gaps. For distinct
 positive scales and positive threshold, the actual mixture gap is
 strictly greater than the Gaussian gap at the actual mean scale.
+The same law now has proved actual variance, fourth central moment and
+Pearson kurtosis strictly above three when its positive scales differ.
+The baseline Gaussian's actual kurtosis is proved to be three.
 
 **Missing:** arbitrary mixing distributions and other distribution
 families, with integrability and the corresponding actual-law Jensen
-bridge. Higher-kurtosis comparisons require actual moment calculations
-and their own hypotheses and proofs.
+bridge. General higher-kurtosis comparisons require their own actual
+moment calculations, hypotheses and proofs beyond this two-point model.
 
 ### BF-19. Eq. 8: displayed Gaussian derivative expression — ok for A − B
 

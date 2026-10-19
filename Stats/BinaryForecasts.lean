@@ -50,6 +50,8 @@ module
     scale laws and corrected A-K*B derivatives, convexity and two-scale Jensen.
   * `Stats.BinaryForecasts.GaussianMixture` — an actual independent
     two-point scale model and its strictly larger actual payoff gap.
+  * `Stats.BinaryForecasts.GaussianMixtureMoments` — actual variance,
+    fourth central moment and higher kurtosis of that same population.
   * `Stats.Probability.IntegralTransform` — Appendix B's probability
     integral transform, proved for the actual continuous-CDF law.
   * `Stats.BinaryForecasts.PayoffGap` and `ConflationCounterexample` —
@@ -72,6 +74,7 @@ public import Stats.BinaryForecasts.SigmaCounterexample
 public import Stats.BinaryForecasts.GaussianScale
 public import Stats.BinaryForecasts.GaussianGap
 public import Stats.BinaryForecasts.GaussianMixture
+public import Stats.BinaryForecasts.GaussianMixtureMoments
 public import Stats.Probability.IntegralTransform
 public import Stats.BinaryForecasts.PayoffGap
 public import Stats.BinaryForecasts.ConflationCounterexample
