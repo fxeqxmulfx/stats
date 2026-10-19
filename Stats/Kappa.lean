@@ -25,9 +25,10 @@ module
     * Cumulant: actual CGF derivatives and the hypotheses needed for
       cumulant identities. LognormalCumulants: candidate closed cumulants
       and excess-kurtosis proxy limits.
-    * GaussianMixture and GaussianSwitchingMean: candidate moment/MAD
-      expressions and their algebraic inequalities; mixture-law bridges
-      remain open.
+    * GaussianMixture and GaussianMixtureLaw: Eq. 17's actual normalized
+      switching population, L1, central moments, kurtosis and thresholds.
+      GaussianSwitchingMean's actual MAD bridge for one observation and
+      for the sum of two observations remains open.
     * PearsonIV: a differentiability/ODE predicate, conditional IBP
       algebra and candidate coefficients. Normalization, mean, actual
       cumulant matching and the density's MAD remain open.
@@ -55,6 +56,7 @@ public import Stats.Kappa.Cumulant
 public import Stats.Kappa.Lognormal
 public import Stats.Kappa.LognormalCumulants
 public import Stats.Kappa.GaussianMixture
+public import Stats.Kappa.GaussianMixtureLaw
 public import Stats.Kappa.GaussianSwitchingMean
 public import Stats.Kappa.TableI
 public import Stats.Kappa.PearsonIV

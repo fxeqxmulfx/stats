@@ -18,7 +18,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | Paper and reviewed version | Complete? | Established coverage | Main remaining gap |
 | --- | --- | --- | --- |
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
-| [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
+| [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
@@ -1522,9 +1522,8 @@ verify the actual fourth-power L1, Gaussian baseline kurtosis and
 the Eq. 17 moment identification.
 
 BF-18 now includes this actual higher-kurtosis certificate for the
-specified two-point model. K-43 still lacks the actual general
-switching-mean Gaussian moment theorem; this centered specialization
-does not close that broader claim.
+specified two-point model. This is the centered part of K-43; the
+following result supplies the general switching-mean Gaussian moments.
 
 **Verification:** all 3986 default-build jobs pass without warnings.
 The standalone audit covers 1915 declarations and 1651 theorem declarations,
@@ -1536,6 +1535,68 @@ The refreshed declaration index has 1016 distinct public names: all 997
 previous names and types are unchanged, with nineteen additions and no
 duplicate names. The Gaussian MGF-moment and actual mixture-moment modules
 are 111 and 171 lines.
+
+### Identify Eq. 17 with the full switching-Gaussian population
+
+Reread `papers/arXiv-1802.05495v3/kappa-n-final.tex`, the model and
+Eq. 17 (lines 805–811) and the equal-scale observation and threshold
+(lines 814–816). The model chooses between two actual Gaussian laws
+with equal probability; the component means can differ.
+
+[GaussianShiftedMoments.lean](Stats/Probability/GaussianShiftedMoments.lean)
+proves L1 of powers about arbitrary finite centers under the genuine
+Gaussian law. Reflection of the actual centered Gaussian gives its
+third moment zero. Pushing that law through addition of the actual
+mean and integrating the polynomial expansions gives
+
+```text
+E[(X-c)^2] = v + (mu-c)^2,
+E[(X-c)^4] = 3*v^2 + 6*v*(mu-c)^2 + (mu-c)^4.
+```
+
+All polynomial terms have independent actual-law L1 proofs; these
+equalities are actual integrals, including degenerate variance cases.
+
+[GaussianMixtureLaw.lean](Stats/Kappa/GaussianMixtureLaw.lean) constructs
+the full equal mixture of `N(mu1,sigma1^2)` and `N(mu2,sigma2^2)` as
+a normalized measure. Every natural power about every center is L1.
+Its actual mean is `(mu1+mu2)/2`. Writing `d=mu1-mu2`, its actual
+variance and fourth central moment are proved to be
+
+```text
+V = (d^2 + 2*(sigma1^2+sigma2^2))/4,
+M4 = 3*(sigma1^4+sigma2^4)/2
+     + 3*d^2*(sigma1^2+sigma2^2)/4 + d^4/16.
+```
+
+Under `d^2+2*(sigma1^2+sigma2^2)>0`, their actual Pearson ratio
+`M4/V^2` equals the full four-parameter `gaussianMixtureKurtosis`
+expression printed in Eq. 17. Both the polynomial and fourth-root
+thresholds for actual kurtosis at least three follow. With equal
+scales and distinct means, the actual kurtosis is strictly below
+three, as the source states.
+
+Concrete proper-law witnesses use means minus two and two and scales
+one: actual mean zero, variance five, fourth central moment 43, and
+kurtosis `43/25<3`. The common-center scales-three/seven model verifies
+the other side of the threshold. L1, normalization, nondegeneracy and
+the fourth-root threshold all have concrete certificates.
+
+This closes K-43's actual mixture-moment identification and K-44's
+probability interpretation. The actual MAD-based kappa, its sign and
+the source's necessity-of-bimodality assertion remain separate in
+K-45 and K-46. Kurtosis below three alone does not prove them.
+
+**Verification:** all 3988 default-build jobs pass without warnings.
+The standalone audit covers 1933 declarations and 1667 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 185 other
+Stats modules, including private declarations. The regenerated index has
+187 modules and 926 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1031 distinct public names: all 1016
+previous names and types are unchanged, with fifteen additions and no
+duplicate names. The shifted-Gaussian and full mixture-law modules are
+123 and 159 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -2399,28 +2460,36 @@ formula and its Gamma/Stirling limit.
 **Missing:** nothing for `kappa (expSumMAD λ)`.
 As a distributional statement this remains **not ok** until K-41 is established.
 
-### K-43. Eq. 17: Gaussian-mixture kurtosis — not ok as a mixture moment theorem
+### K-43. Eq. 17: actual Gaussian-mixture kurtosis — ok
 
 [Kappa/GaussianMixture.lean](Stats/Kappa/GaussianMixture.lean):
 `gaussianMixtureKurtosis` is defined by the closed expression.
 
-For the centered case, `gaussianScaleMixture` now constructs the genuine
-equal mixture, and its actual variance and fourth central moment are
-proved. `gaussianScaleMixtureKurtosis_eq_eq17` identifies their ratio
-with `gaussianMixtureKurtosis 0 0 a b` under nondegeneracy. Distinct
-positive scales give actual kurtosis strictly above three.
+`gaussianMixtureLaw` constructs the full equal mixture of the actual
+Gaussian laws, with arbitrary means and squared real scales. It is a
+probability measure with L1 powers about every center. Its actual mean,
+variance and fourth central moment are proved. Under nondegeneracy,
+`gaussianMixtureLawKurtosis_eq_eq17` identifies their actual Pearson
+ratio with the complete four-parameter Eq. 17 expression. Concrete
+positive-scale witnesses cover higher and lower kurtosis than three.
 
-**Missing:** the general switching-mean mixture, its second/fourth
-central moments and their ratio equal to the four-parameter expression.
+**Missing:** nothing for this actual moment identity. It implies no
+actual MAD-based kappa calculation, which remains K-45.
 
-### K-44. Kurtosis ≥ 3 threshold for the defined formula — ok
+### K-44. Actual kurtosis ≥ 3 threshold — ok
 
 `gaussianMixtureKurtosis_ge_three_iff_poly` and
 `gaussianMixtureKurtosis_ge_three_iff` prove the stated threshold under
 a nondegenerate denominator.
 
-**Missing:** nothing for the algebraic equivalence.
-Its probability interpretation requires K-43.
+`gaussianMixtureLawKurtosis_ge_three_iff_poly` and
+`gaussianMixtureLawKurtosis_ge_three_iff` transfer both thresholds to
+actual central moments using K-43. Equal scales with distinct means
+give actual kurtosis strictly below three; the means-minus-two/two,
+unit-scale population has actual kurtosis `43/25`.
+
+**Missing:** nothing for the actual moment equivalence under the stated
+nondegeneracy condition.
 
 ### K-45. Eq. 18: κ for Gaussian switching means — not ok as a mixture metric
 
@@ -3812,7 +3881,7 @@ as a substitute for this source-to-statement mapping.
    interpretation needs the actual MAD functions and approximation proof.
 2. **Add probability-law and MAD bridges.**
    Prioritize the exponential MAD integral, Student and stable sum laws,
-   Gaussian mixtures and actual iid maxima. The measurable Brier average
+   Branching Gaussian mixtures and remaining actual iid-sum laws. The measurable Brier average
    and its moment integrability are now proved.
    These are the most common missing links between proved algebra and paper
    theorems.
