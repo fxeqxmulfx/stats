@@ -181,6 +181,8 @@ import all Stats.EpistemicUncertainty.GammaCompoundStudentForm
 import all Stats.EpistemicUncertainty.GammaCompoundStudent
 import all Stats.EpistemicUncertainty.GammaCompoundMomentDomain
 import all Stats.EpistemicUncertainty.GammaMatch
+import all Stats.EpistemicUncertainty.GammaTailIndex
+import all Stats.EpistemicUncertainty.GammaOutcomeTail
 import all Stats.Probability.GammaTail
 import all Stats.Probability.GammaCalculus
 import all Stats.Probability.GammaHazard

@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, actual Normal–Gamma/Student law with corrected scale and sharp moment/mean domains | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and Student tail asymptotics |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, corrected actual Normal–Gamma/Student law and sharp moments, actual Student tails and epistemic-variance tail comparison | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation and its Gaussian boundary limit |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -3006,6 +3006,46 @@ power and density exponents, positive coefficients, two-sided reflection
 and strict df comparison were checked beside local Section VI. The
 paper's matched variance-parameter composition remains in EU-32.
 
+### 2026-10-19: epistemic variance and actual matched-compound tails
+
+[GammaTailIndex.lean](Stats/EpistemicUncertainty/GammaTailIndex.lean)
+proves that the source's matched Gamma shape and Student tail index
+`2/(exp(v)-1)` decrease strictly with positive epistemic log variance.
+The conventional scale is exactly `exp(-v/4)`. As v tends to zero
+from above, df tends to infinity and scale tends to one; as v tends
+to infinity both parameters tend to zero through positive values.
+The literal division-at-zero values are separately shown to be singular
+formula values, rather than valid finite-df boundary parameters.
+
+[GammaOutcomeTail.lean](Stats/EpistemicUncertainty/GammaOutcomeTail.lean)
+constructs the actual matched Gamma-compound law and identifies it with
+the conventional Student law at those parameters. Its actual right
+survival has the proved positive-coefficient power asymptotic, and
+both tails are regularly varying with the source exponent. For any
+`0<v<w`, the smaller-variance actual right tail divided by the
+larger-variance one tends to zero; an eventual strict inequality and
+the same reflected left-tail ratio are proved. The changing scale
+is accounted for by the general actual Student df comparison.
+
+At exactly zero variance, the original Normal--Lognormal precision
+construction is proved to be the unit-variance Gaussian: its actual
+precision prior is the atom at one. This boundary identity and the
+parameter limits do not prove weak convergence of the matched Gamma
+approximation; that remains explicit in EU-32. The exact matched family
+also refutes the unrestricted mean claim: at `v=log(5)`, the proper
+centered outcome law has shape one quarter and no finite first moment.
+
+Verification: all 4,177 default-build jobs pass without warnings. The
+audit checks 2,655 declarations and 2,303 theorems with zero non-core
+axioms. The index records 247 modules and 1,368 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,516 previous
+indexed names and types are preserved, with 25 additions and no
+duplicates; the audit imports all 245 other `Stats/` modules.
+The new modules have 156 and 172 lines. Their exact matched parameters,
+positive-variance domain, actual two-sided probabilities and Gaussian
+zero-error model were reread beside local Sections V and VI.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -5102,6 +5142,9 @@ the corrected actual mean equals the location on this domain.
 `epistemicNormalGamma_mean_counterexample` supplies a proper small-shape
 law with no finite first moment and refutes the literal unrestricted
 mean-equals-location formula at location one.
+`epistemicMatchedGammaOutcomeLaw_mean_counterexample` strengthens the
+failure on the source's exact matched family: `v=log(5)` gives shape
+one quarter and a proper centered outcome with no finite first moment.
 
 **Missing:** nothing for this item. The Student scale is corrected to
 `sqrt(beta/alpha)`, and a finite mean requires `alpha>1/2`; the printed
@@ -5120,9 +5163,22 @@ and `studentMeasure_survival_ratio_tendsto_zero` proves actual strict
 tail domination when df decreases, at arbitrary locations and scales.
 The actual normalized compound/Student identification is proved in EU-31.
 
-**Missing:** the matched variance-parameter monotonicity theorem and
-its composition with these actual tail results. At $S²=0$ the parameter
-formula also requires a limiting interpretation.
+`epistemicGammaTailIndex_strictAnti` proves strict decrease of the
+actual Student exponent in positive log variance. The matched-compound
+law is proper and equals the correctly scaled Student law. For every
+`0<v<w`, its actual smaller-variance right tail divided by the larger-
+variance tail tends to zero, with an eventual strict inequality and
+the same actual reflected left-tail comparison. The actual matched
+tails are regularly varying with index `-2/(exp(v)-1)`.
+
+The parameter right limits at zero are infinite df and unit scale.
+`epistemicNormalLognormalLaw_zero_variance` separately proves the
+original zero-error population is Gaussian with variance one.
+
+**Missing:** weak convergence of the actual matched Gamma-compound
+laws to that Gaussian as `v` tends to zero from above. The positive-
+variance tail claim, parameter limits and exact original boundary
+model are proved; they do not by themselves establish this law limit.
 
 ### EU-33. Exponential–Gamma, Gamma–Gamma and Poisson–Gamma extensions — not ok
 

@@ -152,6 +152,8 @@ public import Stats.EpistemicUncertainty.GammaCompoundStudentForm
 public import Stats.EpistemicUncertainty.GammaCompoundStudent
 public import Stats.EpistemicUncertainty.GammaCompoundMomentDomain
 public import Stats.EpistemicUncertainty.GammaMatch
+public import Stats.EpistemicUncertainty.GammaTailIndex
+public import Stats.EpistemicUncertainty.GammaOutcomeTail
 public import Stats.Probability.GammaTail
 public import Stats.Probability.GammaCalculus
 public import Stats.Probability.GammaHazard
