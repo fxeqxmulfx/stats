@@ -25,6 +25,8 @@ module
   Gaussian population measures. BinomialDensity proves the actual
   constant-error density and its normalization on the positive-scale domain.
   BinomialSurvival proves actual centered Gaussian and erfc exceedance sums.
+  LayerLaw and LayerMoments construct actual varying-error populations and
+  prove their dispersion moments, variance and fourth central moment products.
   General layer-dependent sign constructions and densities, nested kernels,
   a CLT and the Normal-Gamma compound-law theorem remain separate.
   Higher kurtosis alone does not establish a power-law tail.

@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | General layer-dependent constructions and densities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Explicit sign-vector densities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2000,6 +2000,55 @@ names and types are preserved; nine are added without duplicates. The
 audit explicitly imports all 196 other `Stats/` modules. The survival
 and error-function modules are 142 and 150 lines, respectively.
 
+### Construct actual varying-error laws and derive the decaying moment products
+
+Reread arXiv:1912.00277v2, Section II's varying fair branches (lines
+234–276) and Section IV's variance and fourth central moment products
+(`FatTailsEpistemic2019.tex`, lines 416–441).
+
+[LayerLaw.lean](Stats/EpistemicUncertainty/LayerLaw.lean) constructs
+actual finite dispersion and Gaussian populations for arbitrary real
+layer errors. Both are independently normalized probability measures;
+every real dispersion test and every natural outcome power about any
+center are L1. The outcome mean stays `mu`. Sampling the actual dispersion
+independently of a standard Gaussian under `mu+scale*z` generates exactly
+the recursive outcome population. The actual dispersion is positive a.e.
+for positive base scale and source errors in `[0,1)`. Constant errors
+recover the previous whole-law populations.
+
+[LayerMoments.lean](Stats/EpistemicUncertainty/LayerMoments.lean) integrates
+the actual laws. Natural dispersion moments are products of the individual
+layer factors. Outcome moments about every center give the true variance
+and fourth central moment as the source's varying-error products. Geometric
+errors `epsilon_1*kappa^i` identify the actual variance with the older
+scalar `decayingErrorVariance`, and give the displayed actual fourth central
+moment product. The earlier lower bound and monotonicity are transferred
+to actual variances. A proper scale-two, mean-one, depth-two law with errors
+one-half and one-quarter has variance `85/16` and fourth central moment
+`43419/256`.
+
+The zero-based model index represents the source's error `epsilon_(i+1)`.
+Thus its prose `epsilon_n=kappa^n*epsilon_1` needs exponent `n-1`, while
+the displayed product's zero-based powers are correct. The source's
+negative q-Pochhammer argument also conflicts with its printed plus-sign
+product definition. A genuine one-layer variance counterexample gives
+`5/4` against that convention's `3/4`. The usual minus-sign convention
+repairs the notation without changing the actual proved variance product.
+
+EU-19's corrected actual variance product, EU-20's actual comparisons and
+EU-21's actual fourth central moment are proved. Explicit sign-vector
+densities, infinite-product limits and numerical coefficients remain separate.
+
+Verification: the full build passes 4,074 jobs without warnings. The
+audit checks 2,102 declarations and 1,812 theorems with zero non-core
+axioms. The regenerated index has 200 modules and 1,018 named theorems,
+with zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. The declaration index
+preserves all 1,107 old names and types and adds 23 without duplicates.
+The audit explicitly imports all 198 other `Stats/` modules. The law and
+moment modules are 151 and 188 lines; the source statements, zero-based
+indices and sign correction were checked against the local manuscript.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3432,7 +3481,7 @@ Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 Gaussian mixture, its whole-law binomial collapse, normalized density and
 corrected exceedance formula, first four outcome moments, symmetry and
 kurtosis are proved.
-General layer-dependent sign constructions and densities, nested kernels,
+Explicit layer-dependent sign constructions and densities, nested kernels,
 general infinite constructions and decaying-error limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
@@ -3456,10 +3505,16 @@ model under `mu+scale*z`.
 `epistemicBranchLaw_eq_binomial_mixture` now also prove the actual
 constant-error Binomial count representation and Gaussian mixture.
 
-**Missing:** the explicit general nonconstant-error sign-vector model
-and its equality with the general Section II representation. The
-constant-error recursive population and its whole-law random-scale
-and Binomial representations are proved.
+`epistemicLayerScaleLaw` and `epistemicLayerBranchLaw` now construct
+actual varying-error populations too; both are probability measures.
+`epistemicLayerScaleLaw_outcome_model` proves the actual independent
+random-dispersion/Gaussian representation. On positive base scale and
+finite errors in `[0,1)`, the actual dispersion is positive a.e. Constant
+errors recover the previous actual populations as whole measures.
+
+**Missing:** the explicit general nonconstant-error sign-vector product
+space and its equality with the general Section II density representation.
+The actual varying-error recursive and random-scale models are proved.
 
 ### EU-02. Remark 2: uncertainty around a zero probability implies a positive floor — not ok
 
@@ -3708,35 +3763,57 @@ one-half.
 of which error parameter belongs to each printed table. The corrected
 analytic exceedance formula and its integral-erfc interpretation are proved.
 
-### EU-19. Section IV: decaying-error variance product — not ok as a variance derivation
+### EU-19. Section IV: actual decaying-error variance product — corrected
 
-`decayingErrorVariance` is defined as
-$σ²∏_{i<n}(1+ε₁²κ^{2i})$.
+`epistemicLayerBranchLaw_variance` derives the genuine varying-error
+population variance as `sigma^2 * prod_{i<n}(1+epsilon_i^2)` by actual
+mixture integration, independent L1 and the actual mean.
+`epistemicLayerBranchLaw_variance_decaying` identifies the geometrically
+decaying case with the earlier `decayingErrorVariance` expression.
+This is now an actual-law equality, beyond a directly defined scalar product.
+The law is independently proved normalized and generated by an actual
+random dispersion and independent standard Gaussian.
 
-**Missing:** derive this product from independent nonidentical sign errors
-and identify it with the mixture's variance. The product formula is currently
-the definition of the quantity being bounded.
+Source index `i=0` corresponds to its first error `epsilon_1`, so the
+sequence is `epsilon_1*kappa^i`. The prose `epsilon_n=kappa^n*epsilon_1`
+needs exponent `n-1`. The displayed q-Pochhammer expression also conflicts
+with the source's own plus-sign definition of `[a;q]_n`.
+`epistemic_decaying_pochhammer_sign_counterexample` proves the actual
+one-layer variance is 5/4 while the literal negative-argument, plus-sign
+convention gives 3/4. The variance product is proved as displayed; using
+the usual minus-sign Pochhammer convention repairs that notation.
 
-### EU-20. Decaying-error product is above the base and increases with depth — ok
+**Missing:** nothing for the actual recursive-law variance product with
+these source notation/index corrections. The explicit sign-vector
+product space remains in EU-01.
+
+### EU-20. Actual decaying-error variance exceeds the base and increases with depth — ok
 
 `decayingErrorVariance_ge_base` and `decayingErrorVariance_mono`
-prove the finite-product inequalities.
+prove the finite-product inequalities. Their actual-law bridges
+`epistemicLayerBranchLaw_variance_decaying_ge_base` and
+`epistemicLayerBranchLaw_variance_decaying_monotone` now transfer both
+claims to genuine outcome population variances. Nonzero base scale
+also gives positive actual variance at every finite varying-error depth.
 
-**Missing:** nothing for the scalar function. Their hypotheses and conclusions
-do not construct or compare outcome probability laws.
+**Missing:** nothing for these actual finite-population comparisons.
 
-### EU-21. Decaying-error fourth central moment — not ok
+### EU-21. Actual decaying-error fourth central moment — ok
 
-The source gives
-$3σ⁴∏_{i<n}(1+6ε₁²κ^{2i}+ε₁⁴κ^{4i})$.
+`epistemicLayerBranchLaw_momentAbout_four` computes the actual varying-error
+fourth moment about every center. At the actual mean,
+`epistemicLayerBranchLaw_centralMoment_four_decaying` proves the printed
+`3*sigma^4*prod_{i<n}(1+6*epsilon_1^2*kappa^(2*i)+epsilon_1^4*kappa^(4*i))`.
+All integrated powers are independently L1 under genuine Gaussian mixtures.
+A proper depth-two population with different errors one-half and one-quarter
+has actual variance `85/16` and fourth central moment `43419/256`.
 
-**Missing:** the product-moment calculation and its identification with the
-actual fourth central moment. The constant-error binomial theorem does not
-prove this nonidentical-error result.
+**Missing:** nothing for the finite varying-error fourth central moment.
 
 ### EU-22. Capped moments and convergence for decaying errors — not ok
 
-Only finite-product monotonicity is proved.
+Actual finite-population variance and fourth central moments are now
+identified with the products. Their infinite-depth limits remain separate.
 
 **Missing:** infinite-product convergence, quantitative bounds and the
 limiting moment theorems. Require actual decay, such as $0≤κ<1$;

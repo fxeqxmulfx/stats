@@ -56,6 +56,8 @@ import all Stats.EpistemicUncertainty.BranchingKurtosis
 import all Stats.EpistemicUncertainty.BranchingLimits
 import all Stats.EpistemicUncertainty.ScaleLaw
 import all Stats.EpistemicUncertainty.FractionalMoments
+import all Stats.EpistemicUncertainty.LayerLaw
+import all Stats.EpistemicUncertainty.LayerMoments
 import all Stats.EpistemicUncertainty.ScaleConcentration
 import all Stats.EpistemicUncertainty.OutcomeLimit
 import all Stats.EpistemicUncertainty.BinomialCollapse

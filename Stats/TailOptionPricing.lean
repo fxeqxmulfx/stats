@@ -112,6 +112,8 @@ public import Stats.EpistemicUncertainty.OutcomeLimit
 public import Stats.EpistemicUncertainty.BinomialCollapse
 public import Stats.EpistemicUncertainty.BinomialDensity
 public import Stats.EpistemicUncertainty.BinomialSurvival
+public import Stats.EpistemicUncertainty.LayerLaw
+public import Stats.EpistemicUncertainty.LayerMoments
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
