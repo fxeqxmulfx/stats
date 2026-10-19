@@ -1,5 +1,12 @@
 # TODO2 — Action items after strict review
 
+Historical planning and audit notes. For the current verified scope,
+use [REVIEW.md](REVIEW.md) and the generated [INDEX.md](INDEX.md).
+Checked items below may record formula identities or conditional
+results; they do not certify complete probability-law formalizations.
+References to former axioms or unfinished steps describe the state
+at that audit, rather than the current source.
+
 Follow-up to `todo.md`.  This file lists *concrete next-step items*
 ordered by effort/value, after the strict reviews of all six papers
 revealed specific gaps and after the trading-framework discussion

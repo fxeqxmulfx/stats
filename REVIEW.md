@@ -447,6 +447,64 @@ markers. Its exhaustive audit imports all 134 other modules. The refreshed
 simplified parameter lists. The supported exponential-survival bridge
 adds one public theorem.
 
+### Repair 6: consistent module summaries and historical status
+
+The consistency pass found remaining descriptions that contradicted the
+claim registry. `Stats.Kappa` still called the Cauchy reference curve a
+finite-MAD result, called two completed analytic lemmas axioms and described
+the completed lognormal Loulakis proof as conditional. Its overview now
+separates supplied special-law formulas, genuine probability infrastructure,
+the actual large-volatility result and the outstanding MAD bridges.
+
+Reread `kappa-n-final.tex`, Definition 1 and Eq. 4 (lines 272–325),
+the Loulakis argument (lines 689–699), and Pearson Eq. 13 (lines 710–749).
+The stable-function descriptions now state the actual conclusions: a
+formula predicate, a conditional power identity, and an assumed MAD power
+curve. The former unproved alternative location-shift formula in the
+index-one docstring is removed. Its theorem only multiplies an exponential
+argument; no rescaled-law identity is inferred from that theorem.
+
+Reread `FatTailsEpistemic2019.tex`, Section III's binomial mixture and
+moment displays (lines 318–346), and Section IV's finite product
+(lines 416–437). The inner epistemic-uncertainty docstrings now agree with
+the module header: the proved quantities are weighted scale sums and
+candidate kurtosis/variance expressions. A scalar lower bound neither
+identifies outcome moments nor proves a tail comparison or an equality
+criterion absent from the theorem.
+
+Reread `MaxHiddenTail.tex`, the maximum/decomposition and Proposition 1
+(lines 159–219), and Remark 1. The hidden-moment CDF/PDF polynomials are
+explicitly restricted to their candidate role; their derivative and mean
+integral are not described as a proved pushforward-law identification.
+The risk-module summaries likewise distinguish actual integrability
+thresholds from scalar portfolio, maximum-tail, drawdown, Kelly and MLE
+expressions. In particular, a polynomial union bound does not itself prove
+a path-drawdown scaling law, a maximum-law theorem or FDR control. Negative
+homogeneity of a supplied portfolio formula is not negative homogeneity
+of an actual CVaR functional. These risk-module extensions do not gain a
+paper-law theorem by changing their descriptions.
+
+The main overview now includes Repair 4's actual exponential-growth law
+and empirical-survival estimates, with the paper's corrected error rate.
+Historical TODO files point to this review for current scope; their old
+checkmarks and former-axiom notes are not presented as current completeness
+certificates. The summary table in `todo.md` no longer calls any paper
+complete. The copied project instructions now use this repository's
+`Stats/` modules, existing public namespaces and `master` branch.
+
+All eleven touched Lean files have identical code after comments and
+whitespace are removed. No definition, proof body, declaration type or
+import changes in this pass, and no missing distributional bridge is
+claimed to have been proved by these documentation corrections.
+
+**Verification:** all 3915 default-build jobs pass without warnings. The
+standalone transitive audit again checks 1449 declarations, including
+1246 theorem declarations, with zero non-core axioms. The 27 Python tests,
+forbidden-construct check and whitespace check pass. All 761 elaborated
+public names and types are unchanged after `dt refresh project`. Index
+regeneration reports 135 modules, 670 named theorems and zero sorry,
+vacuous or placeholder markers.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -920,8 +978,9 @@ prove the function algebra.
 `h_iid : ∀ t, Sn_charfun t = (φ t)^n`.
 
 **Missing:** deriving that assumption from actual independence and identical
-laws, then identifying the sum distribution. The $α=1$ location correction
-also needs to be assembled into a probability theorem.
+laws, then identifying the sum distribution. At $α=1$, the existing
+theorem only proves an exponential-multiple identity; a rescaled function
+identity and the associated sum-law theorem are not assembled.
 
 ### K-07. Eq. 6: κ = 2 − ᾱ for stable laws — not ok completely
 
@@ -2521,7 +2580,7 @@ as a substitute for this source-to-statement mapping.
    cumulant and large-$σ$ surrogate formulas. Derive limits for the same
    distributional object whose finite-$n$ behavior is being discussed.
 4. **Correct literal source formulas before formalizing them.**
-   The put ratio, general payoff-ratio theorem, Gaussian gap, noncentered
+   The put ratio, Gaussian gap, noncentered
    fourth moment, finite-sample exponential law and Gaussian hidden-mass
    evaluation need the corrections described above. Impossible statements
    should be replaced by explicit corrected propositions, with their scope

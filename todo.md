@@ -1,5 +1,11 @@
 # TODO — Pareto-native statistical inference (Taleb fat-tails project)
 
+Current coverage is assessed in [REVIEW.md](REVIEW.md); declarations and
+compiled-proof markers are listed in [INDEX.md](INDEX.md). The planning
+items below include historical completion claims. A checked formula does
+not establish its probability-law interpretation, and none of the six
+papers is fully formalized under the current review criteria.
+
 A Lean 4 / Mathlib formalisation of several papers from Taleb's
 fat-tails / statistical-consequences-of-fat-tails project, with a
 unified Pareto-native infrastructure for option pricing, calibration,
@@ -7,23 +13,23 @@ risk measures, and tail-sensitive statistical inference.
 
 ## Status
 
-- **208 theorems** verified axiom-clean
-  (`[propext, Classical.choice, Quot.sound]` only) in `Stats/Verify.lean`.
-- **~11.6 k lines** across `Stats/`, including `Stats/RegularVariation/*`
-  and `Stats/BlackScholes/*` sub-libraries.
-- **Zero `sorry`.**
-- Build: `lake build` green; verify: `lake env lean Stats/Verify.lean`.
+- The default `lake build` and exhaustive transitive `./run.py audit`
+  pass with only `propext`, `Classical.choice` and `Quot.sound`.
+- See the generated index for current module/theorem counts and compiled
+  sorry, vacuous and placeholder markers.
+- These checks validate the written Lean statements; the claim registry
+  in `REVIEW.md` records remaining probability and paper-coverage gaps.
 
-## Papers formalised
+## Paper coverage
 
 | Paper | Lean module(s) | Status |
 |---|---|---|
-| **1908.02347v3** — Tail Option Pricing Under Power Laws | `Pareto`, `Calculus`, `Arbitrage`, `Theorem1`, `LayerCake`, `BlackScholes/*`, `CarrMadan` | ✓ **paper + extensions**; 3 paper typos corrected |
-| **1802.05495v3** — A pre-asymptotic metric for fat-tailedness (κ) | `Kappa` | ✓ **paper-complete**; Sections I–VI |
-| **1907.11162v3** — Binary forecasts vs real-world payoffs | `BinaryForecasts` | ✓ **paper + extensions**; Eq. 8 σ-derivation deferred |
-| **1912.00277v2** — Branching epistemic uncertainty | `EpistemicUncertainty` | ✓ Sections III–V; Section VI Student-t deferred |
-| **2004.05894v1** — Hidden moments of a probability distribution | `HiddenMoments` | ✓ Eq. 2 + exact sample-survival-ratio distribution; corrects paper's 1/n to exact 1/(n+1) |
-| **2007.16096v1** — Single-point forecasts for fat-tailed variables | `SinglePointForecasts` | ✓ formalisable kernel (paper is mostly policy/commentary) |
+| **1908.02347v3** — Tail Option Pricing Under Power Laws | `Pareto`, `Calculus`, `Arbitrage`, `Theorem1`, `LayerCake`, `BlackScholes/*`, `CarrMadan` | Corrected analytic core and returns-tail smile bound; full paper coverage incomplete |
+| **1802.05495v3** — A pre-asymptotic metric for fat-tailedness (κ) | `Kappa` | Abstract algebra and actual Loulakis limit; several MAD/sum-law bridges incomplete |
+| **1907.11162v3** — Binary forecasts vs real-world payoffs | `BinaryForecasts` | Integral/derivative identities and actual Theorem 2; general Theorem 1 and CLTs incomplete |
+| **1912.00277v2** — Branching epistemic uncertainty | `EpistemicUncertainty` | Weighted scale-moment algebra; outcome-mixture law and limiting results incomplete |
+| **2004.05894v1** — Hidden moments of a probability distribution | `HiddenMoments` | Tail-moment integral and candidate Beta function identities; maximum/pushforward laws incomplete |
+| **2007.16096v1** — Single-point forecasts for fat-tailed variables | `SinglePointForecasts` | Actual exponential-growth law and empirical-survival MSE/RMSE; general limits and risk models incomplete |
 
 ## Paper typos found and corrected
 

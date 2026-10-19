@@ -83,14 +83,14 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`epistemicVariance_eq`](Stats/EpistemicUncertainty.lean#L107) | theorem | proved |
 | [`epistemicSigmaFourthMoment_eq`](Stats/EpistemicUncertainty.lean#L113) | theorem | proved |
 | [`epistemicKurtosis`](Stats/EpistemicUncertainty.lean#L122) | def |  |
-| [`epistemicKurtosis_eq`](Stats/EpistemicUncertainty.lean#L129) | theorem | proved |
-| [`epistemicMomentFactor_four_ge_two_sq`](Stats/EpistemicUncertainty.lean#L150) | theorem | proved |
-| [`epistemicMomentFactor_four_strict`](Stats/EpistemicUncertainty.lean#L155) | theorem | proved |
-| [`epistemicKurtosis_ge_three`](Stats/EpistemicUncertainty.lean#L166) | theorem | proved |
-| [`epistemicExcessKurtosis`](Stats/EpistemicUncertainty.lean#L187) | def |  |
-| [`epistemicExcessKurtosis_eq`](Stats/EpistemicUncertainty.lean#L193) | theorem | proved |
-| [`epistemicExcessKurtosis_nonneg`](Stats/EpistemicUncertainty.lean#L202) | theorem | proved |
-| [`epistemicKurtosis_gt_three`](Stats/EpistemicUncertainty.lean#L210) | theorem | proved |
+| [`epistemicKurtosis_eq`](Stats/EpistemicUncertainty.lean#L130) | theorem | proved |
+| [`epistemicMomentFactor_four_ge_two_sq`](Stats/EpistemicUncertainty.lean#L151) | theorem | proved |
+| [`epistemicMomentFactor_four_strict`](Stats/EpistemicUncertainty.lean#L156) | theorem | proved |
+| [`epistemicKurtosis_ge_three`](Stats/EpistemicUncertainty.lean#L165) | theorem | proved |
+| [`epistemicExcessKurtosis`](Stats/EpistemicUncertainty.lean#L186) | def |  |
+| [`epistemicExcessKurtosis_eq`](Stats/EpistemicUncertainty.lean#L192) | theorem | proved |
+| [`epistemicExcessKurtosis_nonneg`](Stats/EpistemicUncertainty.lean#L201) | theorem | proved |
+| [`epistemicKurtosis_gt_three`](Stats/EpistemicUncertainty.lean#L209) | theorem | proved |
 | [`decayingErrorVariance`](Stats/EpistemicUncertainty.lean#L236) | def |  |
 | [`decayingErrorVariance_ge_base`](Stats/EpistemicUncertainty.lean#L241) | theorem | proved |
 | [`decayingErrorVariance_mono`](Stats/EpistemicUncertainty.lean#L264) | theorem | proved |
@@ -116,7 +116,7 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`paretoVega_relative_tendsto_atBot`](Stats/Hedging.lean#L311) | theorem | proved |
 | [`bsVega_tendsto_zero_atTop`](Stats/Hedging.lean#L348) | theorem | proved |
 
-**[Stats.HiddenMoments](Stats/HiddenMoments.lean)** — 279 lines
+**[Stats.HiddenMoments](Stats/HiddenMoments.lean)** — 281 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
@@ -124,14 +124,14 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`paretoTailMoment_eq`](Stats/HiddenMoments.lean#L53) | theorem | proved |
 | [`paretoTailMoment_at_zero`](Stats/HiddenMoments.lean#L84) | theorem | proved |
 | [`paretoTailMoment_at_one`](Stats/HiddenMoments.lean#L99) | theorem | proved |
-| [`paretoSampleSurvivalRatioCDF`](Stats/HiddenMoments.lean#L122) | def |  |
-| [`paretoSampleSurvivalRatioPDF`](Stats/HiddenMoments.lean#L126) | def |  |
-| [`paretoSampleSurvivalRatioCDF_eq_one_sub_maxCDF`](Stats/HiddenMoments.lean#L136) | theorem | proved |
-| [`paretoSampleSurvivalRatioPDF_eq_deriv`](Stats/HiddenMoments.lean#L160) | theorem | proved |
-| [`paretoSampleSurvivalRatio_mean`](Stats/HiddenMoments.lean#L184) | theorem | proved |
-| [`paretoSampleSurvivalRatio_mean_asymptotic_gap`](Stats/HiddenMoments.lean#L269) | theorem | proved |
+| [`paretoSampleSurvivalRatioCDF`](Stats/HiddenMoments.lean#L123) | def |  |
+| [`paretoSampleSurvivalRatioPDF`](Stats/HiddenMoments.lean#L128) | def |  |
+| [`paretoSampleSurvivalRatioCDF_eq_one_sub_maxCDF`](Stats/HiddenMoments.lean#L138) | theorem | proved |
+| [`paretoSampleSurvivalRatioPDF_eq_deriv`](Stats/HiddenMoments.lean#L162) | theorem | proved |
+| [`paretoSampleSurvivalRatio_mean`](Stats/HiddenMoments.lean#L187) | theorem | proved |
+| [`paretoSampleSurvivalRatio_mean_asymptotic_gap`](Stats/HiddenMoments.lean#L271) | theorem | proved |
 
-**[Stats.Kappa](Stats/Kappa.lean)** — 149 lines, no indexed declarations
+**[Stats.Kappa](Stats/Kappa.lean)** — 76 lines, no indexed declarations
 
 **[Stats.LayerCake](Stats/LayerCake.lean)** — 68 lines
 
@@ -157,11 +157,11 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`n_min_zero_mad_eq_one`](Stats/ReviewChecks.lean#L95) | theorem | proved |
 | [`n_min_unit_mad_eq_three`](Stats/ReviewChecks.lean#L108) | theorem | proved |
 
-**[Stats.RiskMeasures](Stats/RiskMeasures.lean)** — 42 lines, no indexed declarations
+**[Stats.RiskMeasures](Stats/RiskMeasures.lean)** — 26 lines, no indexed declarations
 
 **[Stats.SinglePointForecasts](Stats/SinglePointForecasts.lean)** — 14 lines, no indexed declarations
 
-**[Stats.TailOptionPricing](Stats/TailOptionPricing.lean)** — 100 lines, no indexed declarations
+**[Stats.TailOptionPricing](Stats/TailOptionPricing.lean)** — 101 lines, no indexed declarations
 
 **[Stats.Theorem1](Stats/Theorem1.lean)** — 363 lines
 
@@ -220,7 +220,7 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`characteristicScale_pareto`](Stats/BinaryForecasts/CharacteristicScale.lean#L45) | theorem | proved |
 | [`characteristicScale_pareto_gt_one`](Stats/BinaryForecasts/CharacteristicScale.lean#L65) | theorem | proved |
 
-**[Stats.BinaryForecasts.Conflation](Stats/BinaryForecasts/Conflation.lean)** — 223 lines
+**[Stats.BinaryForecasts.Conflation](Stats/BinaryForecasts/Conflation.lean)** — 222 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
@@ -230,11 +230,11 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`heaviside`](Stats/BinaryForecasts/Conflation.lean#L60) | def |  |
 | [`I1_eq_I2_heaviside`](Stats/BinaryForecasts/Conflation.lean#L67) | theorem | proved |
 | [`I1_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L81) | theorem | proved |
-| [`I2_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L89) | theorem | proved |
-| [`pareto_I1_div_I2_eq`](Stats/BinaryForecasts/Conflation.lean#L131) | theorem | proved |
-| [`pareto_I1_div_I2_tendsto`](Stats/BinaryForecasts/Conflation.lean#L143) | theorem | proved |
-| [`gaussian_I1_id_eq`](Stats/BinaryForecasts/Conflation.lean#L170) | theorem | proved |
-| [`correctedProbability_pareto`](Stats/BinaryForecasts/Conflation.lean#L207) | theorem | proved |
+| [`I2_pareto_id_eq`](Stats/BinaryForecasts/Conflation.lean#L88) | theorem | proved |
+| [`pareto_I1_div_I2_eq`](Stats/BinaryForecasts/Conflation.lean#L130) | theorem | proved |
+| [`pareto_I1_div_I2_tendsto`](Stats/BinaryForecasts/Conflation.lean#L142) | theorem | proved |
+| [`gaussian_I1_id_eq`](Stats/BinaryForecasts/Conflation.lean#L169) | theorem | proved |
+| [`correctedProbability_pareto`](Stats/BinaryForecasts/Conflation.lean#L206) | theorem | proved |
 
 **[Stats.BinaryForecasts.Exponential](Stats/BinaryForecasts/Exponential.lean)** — 201 lines
 
@@ -913,16 +913,16 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`tendsto_pow_exp_div_factorial`](Stats/Kappa/PoissonCDF.lean#L230) | theorem | proved |
 | [`poisson_cdf_at_mean_tendsto_half`](Stats/Kappa/PoissonCDF.lean#L267) | theorem | proved |
 
-**[Stats.Kappa.Stable](Stats/Kappa/Stable.lean)** — 230 lines
+**[Stats.Kappa.Stable](Stats/Kappa/Stable.lean)** — 192 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`stableCharacteristicFunction`](Stats/Kappa/Stable.lean#L77) | def |  |
-| [`StableClass`](Stats/Kappa/Stable.lean#L100) | structure |  |
-| [`stable_charfun_pow_alpha_ne_one`](Stats/Kappa/Stable.lean#L120) | theorem | proved |
-| [`stable_charfun_pow_alpha_eq_one`](Stats/Kappa/Stable.lean#L161) | theorem | proved |
-| [`stable_sum_stable`](Stats/Kappa/Stable.lean#L191) | theorem | proved |
-| [`stable_class_kappa_invariance`](Stats/Kappa/Stable.lean#L223) | theorem | proved |
+| [`stableCharacteristicFunction`](Stats/Kappa/Stable.lean#L55) | def |  |
+| [`StableClass`](Stats/Kappa/Stable.lean#L80) | structure |  |
+| [`stable_charfun_pow_alpha_ne_one`](Stats/Kappa/Stable.lean#L100) | theorem | proved |
+| [`stable_charfun_pow_alpha_eq_one`](Stats/Kappa/Stable.lean#L132) | theorem | proved |
+| [`stable_sum_stable`](Stats/Kappa/Stable.lean#L155) | theorem | proved |
+| [`stable_class_kappa_invariance`](Stats/Kappa/Stable.lean#L185) | theorem | proved |
 
 **[Stats.Kappa.SumMaxBound](Stats/Kappa/SumMaxBound.lean)** — 76 lines
 
@@ -1365,20 +1365,20 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`paretoCVaR_scale`](Stats/RiskMeasures/CVaR.lean#L90) | theorem | proved |
 | [`paretoCVaR_ge_paretoVaR`](Stats/RiskMeasures/CVaR.lean#L97) | theorem | proved |
 
-**[Stats.RiskMeasures.Drawdown](Stats/RiskMeasures/Drawdown.lean)** — 200 lines
+**[Stats.RiskMeasures.Drawdown](Stats/RiskMeasures/Drawdown.lean)** — 191 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`paretoSampleMaxCDF`](Stats/RiskMeasures/Drawdown.lean#L43) | def |  |
-| [`paretoSampleMaxSurvival`](Stats/RiskMeasures/Drawdown.lean#L47) | def |  |
-| [`paretoSampleMaxSurvival_eq_one_sub_pow`](Stats/RiskMeasures/Drawdown.lean#L52) | theorem | proved |
-| [`paretoSampleMaxSurvival_at_l`](Stats/RiskMeasures/Drawdown.lean#L61) | theorem | proved |
-| [`paretoSampleMaxSurvival_union_bound`](Stats/RiskMeasures/Drawdown.lean#L80) | theorem | proved |
-| [`paretoSampleMaxSurvival_le_n_survival`](Stats/RiskMeasures/Drawdown.lean#L110) | theorem | proved |
-| [`paretoMaxDrawdownVaR`](Stats/RiskMeasures/Drawdown.lean#L122) | def |  |
-| [`paretoMaxDrawdownVaR_eq`](Stats/RiskMeasures/Drawdown.lean#L127) | theorem | proved |
-| [`paretoSampleMax_threshold_for_FDR`](Stats/RiskMeasures/Drawdown.lean#L138) | theorem | proved |
-| [`multivariate_sample_max_fdr_bound`](Stats/RiskMeasures/Drawdown.lean#L190) | theorem | proved |
+| [`paretoSampleMaxCDF`](Stats/RiskMeasures/Drawdown.lean#L40) | def |  |
+| [`paretoSampleMaxSurvival`](Stats/RiskMeasures/Drawdown.lean#L45) | def |  |
+| [`paretoSampleMaxSurvival_eq_one_sub_pow`](Stats/RiskMeasures/Drawdown.lean#L50) | theorem | proved |
+| [`paretoSampleMaxSurvival_at_l`](Stats/RiskMeasures/Drawdown.lean#L59) | theorem | proved |
+| [`paretoSampleMaxSurvival_union_bound`](Stats/RiskMeasures/Drawdown.lean#L76) | theorem | proved |
+| [`paretoSampleMaxSurvival_le_n_survival`](Stats/RiskMeasures/Drawdown.lean#L103) | theorem | proved |
+| [`paretoMaxDrawdownVaR`](Stats/RiskMeasures/Drawdown.lean#L111) | def |  |
+| [`paretoMaxDrawdownVaR_eq`](Stats/RiskMeasures/Drawdown.lean#L116) | theorem | proved |
+| [`paretoSampleMax_threshold_for_FDR`](Stats/RiskMeasures/Drawdown.lean#L128) | theorem | proved |
+| [`multivariate_sample_max_fdr_bound`](Stats/RiskMeasures/Drawdown.lean#L181) | theorem | proved |
 
 **[Stats.RiskMeasures.Kelly](Stats/RiskMeasures/Kelly.lean)** — 110 lines
 
@@ -1413,18 +1413,18 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`paretoMLE_data_hasDerivAt`](Stats/RiskMeasures/MLE.lean#L189) | theorem | proved |
 | [`paretoMLE_joint_hasFDerivAt`](Stats/RiskMeasures/MLE.lean#L294) | theorem | proved |
 
-**[Stats.RiskMeasures.MarkowitzFailure](Stats/RiskMeasures/MarkowitzFailure.lean)** — 137 lines
+**[Stats.RiskMeasures.MarkowitzFailure](Stats/RiskMeasures/MarkowitzFailure.lean)** — 120 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`markowitz_objective_ill_defined`](Stats/RiskMeasures/MarkowitzFailure.lean#L55) | theorem | proved |
-| [`paretoPortfolioMean`](Stats/RiskMeasures/MarkowitzFailure.lean#L64) | def |  |
-| [`paretoPortfolioCVaR`](Stats/RiskMeasures/MarkowitzFailure.lean#L72) | def |  |
-| [`paretoPortfolioCVaR_eq_rescaled`](Stats/RiskMeasures/MarkowitzFailure.lean#L79) | theorem | proved |
-| [`paretoPortfolio_meanCVaR_ratio`](Stats/RiskMeasures/MarkowitzFailure.lean#L93) | theorem | proved |
-| [`paretoPortfolioMean_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L103) | theorem | proved |
-| [`paretoPortfolioCVaR_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L111) | theorem | proved |
-| [`paretoPortfolio_frontier_degenerate`](Stats/RiskMeasures/MarkowitzFailure.lean#L125) | theorem | proved |
+| [`markowitz_objective_ill_defined`](Stats/RiskMeasures/MarkowitzFailure.lean#L41) | theorem | proved |
+| [`paretoPortfolioMean`](Stats/RiskMeasures/MarkowitzFailure.lean#L49) | def |  |
+| [`paretoPortfolioCVaR`](Stats/RiskMeasures/MarkowitzFailure.lean#L55) | def |  |
+| [`paretoPortfolioCVaR_eq_rescaled`](Stats/RiskMeasures/MarkowitzFailure.lean#L61) | theorem | proved |
+| [`paretoPortfolio_meanCVaR_ratio`](Stats/RiskMeasures/MarkowitzFailure.lean#L75) | theorem | proved |
+| [`paretoPortfolioMean_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L85) | theorem | proved |
+| [`paretoPortfolioCVaR_scale`](Stats/RiskMeasures/MarkowitzFailure.lean#L94) | theorem | proved |
+| [`paretoPortfolio_frontier_degenerate`](Stats/RiskMeasures/MarkowitzFailure.lean#L108) | theorem | proved |
 
 **[Stats.RiskMeasures.Moments](Stats/RiskMeasures/Moments.lean)** — 175 lines
 

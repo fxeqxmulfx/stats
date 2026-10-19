@@ -114,7 +114,7 @@ theorem epistemicSigmaFourthMoment_eq (n : ℕ) (σ ε : ℝ) :
     epistemicSigmaMoment n 4 σ ε = σ^4 * (1 + 6 * ε^2 + ε^4)^n := by
   rw [epistemicSigmaMoment_eq, epistemicMomentFactor_four]
 
-/-! ### Kurtosis formula and the tail-thickening inequality. -/
+/-! ### Candidate kurtosis formula and its scalar inequality. -/
 
 /-- **Candidate raw kurtosis expression.** The factor 3 is motivated
     by a centered Gaussian conditional fourth moment. This definition
@@ -122,10 +122,11 @@ theorem epistemicSigmaFourthMoment_eq (n : ℕ) (σ ε : ℝ) :
 noncomputable def epistemicKurtosis (n : ℕ) (σ ε : ℝ) : ℝ :=
   3 * epistemicSigmaMoment n 4 σ ε / (epistemicSigmaMoment n 2 σ ε)^2
 
-/-- **Kurtosis closed form (paper Section III).**  For `σ ≠ 0`,
-        Kurt(X) = 3 · (1 + 6ε² + ε^4)^n / (1 + ε²)^{2n}.
-    Direct algebra from `epistemicVariance_eq` and
-    `epistemicSigmaFourthMoment_eq`. -/
+/-- Closed form of the candidate raw kurtosis (paper Section III).
+    For `σ ≠ 0`, its expression is
+        `3*(1 + 6ε² + ε^4)^n / (1 + ε²)^(2*n)`.
+    Direct algebra on weighted scale moments; an outcome-mixture
+    moment theorem remains separate. -/
 theorem epistemicKurtosis_eq (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
     epistemicKurtosis n σ ε
       = 3 * (1 + 6 * ε^2 + ε^4)^n / (1 + ε^2)^(2 * n) := by
@@ -144,25 +145,23 @@ theorem epistemicKurtosis_eq (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
   rw [h_sq_expand]
   field_simp
 
-/-- **Tail-thickening kernel: `M_4(ε) ≥ M_2(ε)²`.**  Algebraic
+/-- **Moment-factor inequality: `M_4(ε) ≥ M_2(ε)²`.** Algebraic
     inequality `1 + 6ε² + ε⁴ ≥ (1 + ε²)²`, with strict inequality for
     `ε ≠ 0`.  Equivalent to `4ε² ≥ 0`. -/
 theorem epistemicMomentFactor_four_ge_two_sq (ε : ℝ) :
     (1 + ε^2)^2 ≤ 1 + 6 * ε^2 + ε^4 := by
   nlinarith [sq_nonneg ε, sq_nonneg (ε^2)]
 
-/-- **Strict tail-thickening** for `ε ≠ 0`: `M_4(ε) > M_2(ε)²`. -/
+/-- Strict moment-factor inequality for `ε ≠ 0`: `M_4(ε) > M_2(ε)²`. -/
 theorem epistemicMomentFactor_four_strict {ε : ℝ} (hε : ε ≠ 0) :
     (1 + ε^2)^2 < 1 + 6 * ε^2 + ε^4 := by
   have hε_sq_pos : 0 < ε^2 := by positivity
   nlinarith [hε_sq_pos]
 
-/-- **Kurtosis ≥ 3 (fat-tail signature, paper claim).**  For any `n`
-    and `σ ≠ 0`, the epistemic kurtosis satisfies
-        Kurt(X) ≥ 3
-    with equality iff `ε = 0` (no uncertainty) or `n = 0` (no layers).
-    Strict inequality for any `ε ≠ 0` and `n ≥ 1` — the headline
-    "uncertainty thickens tails" result. -/
+/-- The candidate raw kurtosis is at least three for every depth
+    and nonzero scale. This proves a scalar lower bound; it does not
+    identify a mixture's moments, prove an equality criterion or
+    establish a probability-tail comparison. -/
 theorem epistemicKurtosis_ge_three (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
     3 ≤ epistemicKurtosis n σ ε := by
   rw [epistemicKurtosis_eq n σ ε hσ]
@@ -187,9 +186,9 @@ theorem epistemicKurtosis_ge_three (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
 noncomputable def epistemicExcessKurtosis (n : ℕ) (σ ε : ℝ) : ℝ :=
   epistemicKurtosis n σ ε - 3
 
-/-- **Excess kurtosis closed form (paper convention, Section III).**
-        ExcessKurt(X) = 3 · ((1 + 6ε² + ε⁴)^n / (1 + ε²)^{2n} − 1).
-    Direct subtraction `Kurt − 3` from `epistemicKurtosis_eq`. -/
+/-- Closed form of the candidate excess-kurtosis expression (paper
+    convention, Section III), by subtracting three from the raw formula.
+    No outcome probability law is identified by this algebra. -/
 theorem epistemicExcessKurtosis_eq (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
     epistemicExcessKurtosis n σ ε
       = 3 * ((1 + 6 * ε^2 + ε^4)^n / (1 + ε^2)^(2 * n) - 1) := by
@@ -197,8 +196,8 @@ theorem epistemicExcessKurtosis_eq (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
   rw [epistemicKurtosis_eq n σ ε hσ]
   ring
 
-/-- **Excess kurtosis ≥ 0** (paper Section III claim, in paper's
-    naming).  Direct corollary of `epistemicKurtosis_ge_three`. -/
+/-- The candidate excess-kurtosis expression is nonnegative, by
+    `epistemicKurtosis_ge_three`. -/
 theorem epistemicExcessKurtosis_nonneg (n : ℕ) (σ ε : ℝ) (hσ : σ ≠ 0) :
     0 ≤ epistemicExcessKurtosis n σ ε := by
   unfold epistemicExcessKurtosis
@@ -226,18 +225,19 @@ theorem epistemicKurtosis_gt_three {n : ℕ} {σ ε : ℝ}
 
     Take `ε_i = κ^(i-1) · ε_1` for some `κ ∈ [0, 1]`.  At layer `i` the
     error term has variance `σ²(ε_i) = κ^{2(i-1)} · σ²(ε_1)`, so the
-    cumulative variance contribution multiplies as
-        Var(X) = σ² · ∏_{i=0}^{n-1} (1 + ε_1² · κ^{2i}).
-    The right-hand side is the truncated `q`-Pochhammer symbol
-    `[-ε_1²; κ²]_n`. -/
+    source proposes the outcome variance expression
+        `σ² * ∏ i < n, (1 + ε_1² * κ^(2*i))`.
+    Below it is a finite scalar product, with bounds and monotonicity.
+    Its mixture-variance identification and infinite-depth limit
+    remain open; see REVIEW.md, EU-19–EU-22. -/
 
-/-- **Decaying-error variance (paper Eq. 5):**
-        σ² · ∏_{i=0}^{n-1} (1 + ε_1² · κ^{2i}). -/
+/-- Candidate decaying-error variance expression (paper Eq. 5):
+    `σ² * ∏ i < n, (1 + ε_1² * κ^(2*i))`. -/
 noncomputable def decayingErrorVariance (n : ℕ) (σ ε₁ κ : ℝ) : ℝ :=
   σ^2 * ∏ i ∈ Finset.range n, (1 + ε₁^2 * κ^(2 * i))
 
-/-- **Each factor is at least 1.**  Therefore the product is at least
-    `σ²` — the variance only grows under decaying-error layering. -/
+/-- Each factor is at least one, so the candidate product is at
+    least `σ²`. This is a finite-product inequality. -/
 theorem decayingErrorVariance_ge_base (n : ℕ) (σ ε₁ κ : ℝ) (hσ : 0 ≤ σ^2) :
     σ^2 ≤ decayingErrorVariance n σ ε₁ κ := by
   unfold decayingErrorVariance
@@ -259,8 +259,8 @@ theorem decayingErrorVariance_ge_base (n : ℕ) (σ ε₁ κ : ℝ) (hσ : 0 ≤
     _ ≤ σ^2 * ∏ i ∈ Finset.range n, (1 + ε₁^2 * κ^(2 * i)) :=
         mul_le_mul_of_nonneg_left h_prod_ge hσ
 
-/-- **Monotonicity in `n`** (each additional layer multiplies by a
-    factor ≥ 1).  Variance only grows with depth. -/
+/-- The candidate product is monotone in depth, because each
+    additional factor is at least one. -/
 theorem decayingErrorVariance_mono (σ ε₁ κ : ℝ) {n m : ℕ} (hnm : n ≤ m)
     (hσ : 0 ≤ σ^2) :
     decayingErrorVariance n σ ε₁ κ ≤ decayingErrorVariance m σ ε₁ κ := by

@@ -33,9 +33,10 @@ module
                               final unconditional dominance theorem.
     Stats/CarrMadan.lean    — finite-strip Carr–Madan static-replication
                               identity for `C²` payoffs.
-    Stats/RiskMeasures.lean — Pareto-native risk measures and portfolio
-                              theory: CVaR / spectral / moment-finiteness /
-                              Mean-CVaR frontier / drawdown / Kelly / MLE-CI.
+    Stats/RiskMeasures.lean — risk-expression identities, spectral and
+                              moment integrals, portfolio/max-tail formulas,
+                              pointwise Kelly derivatives and MLE candidates;
+                              optimization and estimator-law bridges remain.
     Stats/Hedging.lean      — hedging under fat tails: gamma-P&L
                               distribution, Pareto-priced static replication,
                               and K-decay rates of Greeks (Pareto vs BS).
@@ -66,12 +67,12 @@ module
                               and its mean integral 1/(n+1). Actual iid
                               maximum and pushforward-law bridges remain.
     Stats/SinglePointForecasts.lean — single-point forecasts for fat-tailed
-                              variables (arXiv:2007.16096v1): exponential
-                              growth/Pareto density-expression equality;
-                              scalar reciprocal index/variance identity;
-                              scalar std bound 1/(2√n) via
-                              Bernoulli p(1−p) ≤ 1/4; Pareto mean diverges
-                              at α ≤ 1 (Remark 3).
+                              variables (arXiv:2007.16096v1): actual supported
+                              exponential-growth/Pareto law; unbiased iid
+                              empirical survival with exact MSE p(1-p)/n and
+                              RMSE bound 1/(2√n); actual Pareto and Bernoulli
+                              counterexamples to the printed o(1/n) rate;
+                              strong-Pareto first-moment threshold.
 
   Two paper typos found and the corrected formulas formalised:
     • Eq. (7): `(K − S₀)^(1−α)` → `(S₀ − K)^(1−α)`, `S₀^(1−α)` → `S₀^(−α)`.

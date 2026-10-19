@@ -78,8 +78,7 @@ theorem I1_eq_I2_heaviside {f : ℝ → ℝ} {K : ℝ} :
 
 /-- **`I_1` for the Pareto payoff `g(x) = x`.**  Reduces to the strong
     Pareto tail expectation `E[S; S > K] = paretoTailExpectation l α K`. -/
-theorem I1_pareto_id_eq {l α K : ℝ}
-      :
+theorem I1_pareto_id_eq {l α K : ℝ} :
     I1 id (paretoDensity l α) K = paretoTailExpectation l α K := by
   unfold I1 paretoTailExpectation paretoDensity
   rfl

@@ -63,7 +63,7 @@ private theorem hasDerivAt_neg_σ_phi_div {σ : ℝ} (hσ : σ ≠ 0) (x : ℝ) 
 open ProbabilityTheory MeasureTheory in
 /-- **Antiderivative for `φ_σ(x)`.**
         `d/dx [Φ(x/σ)] = φ_σ(x)`. -/
-private theorem hasDerivAt_stdNormalCdf_div {σ : ℝ}  (x : ℝ) :
+private theorem hasDerivAt_stdNormalCdf_div {σ : ℝ} (x : ℝ) :
     HasDerivAt (fun y : ℝ => stdNormalCdf (y / σ))
       (gaussianPDF_σ σ x) x := by
   have h_inner : HasDerivAt (fun y : ℝ => y / σ) (1 / σ) x :=

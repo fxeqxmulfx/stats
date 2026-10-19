@@ -1,5 +1,12 @@
 # TODO3 — Strict review of `1802.05495v3.pdf` (Taleb κ-metric)
 
+Historical planning and audit notes. For the current verified scope,
+use [REVIEW.md](REVIEW.md) and the generated [INDEX.md](INDEX.md).
+Checked items below may record formula identities or conditional
+results; they do not certify complete probability-law formalizations.
+References to former axioms or unfinished steps describe the state
+at that audit, rather than the current source.
+
 Status at the start of this audit: `Stats/Kappa.lean` covers Eq. 1, 2,
 5, 6, 8, 9, 10, 14, 15, 16, 17 verbatim, plus the Loulakis abstract
 bound, the Gaussian/Cauchy specialisations, and **two asymptotics**:

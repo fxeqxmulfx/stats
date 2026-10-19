@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Lean in `src/` formalizes the manuscripts in `papers/` (gitignored; `./run.py papers`
+Lean in `Stats/` formalizes the manuscripts in `papers/` (gitignored; `./run.py papers`
 fetches missing ones; read them there, not on the web). The lab in `python/` runs the
 experiments in `experiments/`. `./run.py` runs every task.
 
@@ -22,14 +22,14 @@ experiments in `experiments/`. `./run.py` runs every task.
 - Take a `sorry` only by claiming its task: `claim-next`, or `claim ID`. After an
   hour another agent may take it over: claim again to renew, `release ID` to give up.
 - Each agent works in its own worktree, made when it starts and removed with its
-  branch when it stops: `git worktree add -b <name> .claude/worktrees/<name> main`.
+  branch when it stops: `git worktree add -b <name> .claude/worktrees/<name> master`.
   One that trains nothing leaves out `experiments/` (43 MB instead of 1.3 GB): add
   `--no-checkout`, then run `git sparse-checkout set --no-cone '/*' '!/experiments/'`
   and `git checkout` in it. `agent-kanban` and `dt` find their files from there.
 - A worktree's ignored files die with it: link its `papers`, `.lake/packages` and
   the `runs` of every experiment it trains to the root's. Its first `lake build`
   links into `.lake/build`, read-only, every module that Lake's artifact cache
-  (`lakefile.toml`) holds: all of `main`, in seconds. `lake` runs with
+  (`lakefile.toml`) holds: all of `master`, in seconds. `lake` runs with
   `LAKE_ARTIFACT_CACHE=false` (`~/.profile`, `run.py`), which keeps Mathlib out of
   the cache. `lake update`, `lake clean`, `lake exe cache` and a build with a
   `lake-manifest.json` other than the root's change the shared packages: never in a
@@ -38,8 +38,8 @@ experiments in `experiments/`. `./run.py` runs every task.
 - The cache keeps every module version ever built, a removed worktree's too. When
   the disk runs short and no `lake` runs: `lake cache clean`, then `lake build` in
   the root to refill it.
-- Land each commit on `main` at once: `git rebase main` (regenerate a conflicting
-  `INDEX.md`), rerun the checks if `main` had moved, and fast-forward the root:
+- Land each commit on `master` at once: `git rebase master` (regenerate a conflicting
+  `INDEX.md`), rerun the checks if `master` had moved, and fast-forward the root:
   `git -C <root> merge --ff-only <name>`. The root holds no uncommitted work.
 - Done: once landed, `submit-review ID` with `--pass` or `--fail IDX EVIDENCE` for
   every test; evidence cites the commit and the command output. Fix a reviewer's
@@ -70,7 +70,7 @@ experiments in `experiments/`. `./run.py` runs every task.
   (delete it). `rfl`/`trivial`/one-line `simp` closing a substantive theorem: suspect
   the definitions. A file without `sorry` has no warnings.
 - `sorry` in `INDEX.md` only falls, except for a new paper's statements entering
-  `src/Transformer.lean` in that commit. `vacuous` and `placeholder` stay 0.
+  `Stats.lean` in that commit. `vacuous` and `placeholder` stay 0.
 - `./run.py audit`: 0 `rests`, 0 extra axioms (only `propext`, `Classical.choice`,
   `Quot.sound`). A result needing an unproved input takes it as a hypothesis.
 - Read the statement, hypotheses and instances of every library lemma used. Find
@@ -80,13 +80,13 @@ experiments in `experiments/`. `./run.py` runs every task.
 - A paper: `Section<§>_<Topic>.lean` files mirroring the manuscript. Otherwise by
   import depth, never by declaration kind: `Foo/Defs.lean` → `Foo/Basic.lean` →
   `Foo/<Topic>.lean` → `Foo.lean` (imports and docstring only).
-- Namespace `Transformer.` + directory: `Transformer/Metastability/Staircase.lean` →
-  `Transformer.Metastability`; `Transformer/XSA.lean` → `Transformer.XSA`;
-  `Transformer/Basic.lean` → `Transformer`.
-- Files of 150–200 lines. Every module reachable from `src/Transformer.lean`.
+- Module names follow the `Stats/` directory. Preserve existing public namespaces
+  (`TailOptionPricing` and its subnamespaces) and declaration names.
+- Files of 150–200 lines. Expose production modules through `Stats.lean` and
+  import every module explicitly in `Stats/AxiomAudit.lean`, including diagnostics.
 - `INDEX.md` locates declarations. Never edit it; regenerate it in the commit of
-  every `src/` change.
-- Iterate with `lake build Transformer.<Module>`. Before committing: `lake build`,
+  every `Stats/` change.
+- Iterate with `lake build Stats.<Module>`. Before committing: `lake build`,
   `./run.py audit`, `./run.py index`, `./run.py forbidden`.
 - A Mathlib bump fixes its deprecations in the same commit.
 

@@ -1,17 +1,13 @@
 module
 
 /-
-  Risk measures & portfolio theory under Pareto.
+  Pareto-motivated portfolio expressions and a tail-integrability threshold.
 
-  ## Stats.RiskMeasures.MarkowitzFailure — mean-CVaR frontier (Item 4).
-
-  Two-asset Pareto under comonotone and independent dependence,
-  abstract no-arbitrage feasibility.  Under strong Pareto with
-  `α ≤ 2`, variance is infinite and the standard Markowitz
-  variance-based framework collapses; the Mean-CVaR frontier
-  provides a tail-aware substitute.
-
-  See `Stats/RiskMeasures.lean` for the umbrella module.
+  The portfolio mean and CVaR functions below are supplied scalar formulas.
+  Their scaling and ratio identities do not construct a portfolio law or
+  solve an optimization problem. A comonotone interpretation requires a
+  valid driver law, finite first moment and positive aggregate loading;
+  independence and a general diversification theorem are not proved here.
 -/
 public import Stats.RiskMeasures.CVaR
 public import Stats.RiskMeasures.Moments
@@ -30,52 +26,38 @@ namespace TailOptionPricing
     optimisation is ill-defined.  The Pareto-native replacement is
     Mean-CVaR.
 
-    Without full multivariate distribution machinery, we work in the
-    **comonotone factor model**: a single Pareto driver `S ~ Pareto(l,
-    α)` with assets `S_i := c_i · S` for component loadings `c_i`.
-    Under this model:
+    The scalar formulas are motivated by a comonotone driver
+    `S ~ Pareto(l,α)` and assets `S_i = c_i*S`. Their law and moment
+    identifications are not constructed here. The code establishes
+    linear scaling and a loading-invariant ratio for the supplied
+    expressions. It neither analyzes independent assets nor proves a
+    general diversification or optimization theorem. -/
 
-    * Portfolio mean scales linearly in the aggregate loading
-      `w · c := w₁·c₁ + w₂·c₂` (positive homogeneity of the mean).
-    * Portfolio CVaR scales linearly in `w · c` (by `paretoCVaR_scale`).
-    * **The Mean-CVaR ratio is invariant in `(w₁, w₂)`** — every
-      portfolio lies on a single line through the origin in the
-      mean-CVaR plane.  Diversification yields no improvement; this is
-      the comonotone version of the diversification-breakdown theorem.
-
-    This captures the failure of risk-reduction in the presence of
-    perfect tail dependence, which is the principal obstacle to
-    Markowitz / Sharpe optimisation under Pareto. -/
-
-/-- **Markowitz mean-variance is ill-defined for `α ≤ 2`.**  The
-    layer-cake integrand of `Var(S)` (i.e. `s · survival l α s`) is
+/-- For `α ≤ 2`, the second-moment tail integrand `s*survival l α s` is
     not integrable on `(l, ∞)`.  Direct restatement of
     `variance_layerCake_not_integrable` in the portfolio-theory
-    context. -/
+    context. A genuine Pareto-law interpretation requires `α > 0`;
+    an ordinary centered variance additionally requires a finite mean. -/
 theorem markowitz_objective_ill_defined {l α : ℝ}
     (hα_le : α ≤ 2) (hl : 0 < l) :
     ¬ IntegrableOn (fun s => s * survival l α s) (Ioi l) volume :=
   variance_layerCake_not_integrable hα_le hl
 
-/-- **Comonotone portfolio mean.**  With weights `(w₁, w₂)` on assets
-    `S_i = c_i · S` driven by `S ~ Pareto(l, α)`, the portfolio mean is
-        E[w₁·S₁ + w₂·S₂] = (w₁·c₁ + w₂·c₂) · l · α / (α − 1).
-    Derived from `paretoMoment` at `k = 1`. -/
+/-- Candidate portfolio-mean expression
+    `(w₁*c₁ + w₂*c₂)*α*l/(α-1)`. Its expected-value interpretation
+    requires a valid integrable comonotone driver and a law bridge. -/
 noncomputable def paretoPortfolioMean (w₁ w₂ c₁ c₂ l α : ℝ) : ℝ :=
   (w₁ * c₁ + w₂ * c₂) * (α * l / (α - 1))
 
-/-- **Comonotone portfolio CVaR.**  With weights `(w₁, w₂)` on
-    comonotone components, portfolio CVaR equals
-    `(w₁·c₁ + w₂·c₂) · paretoCVaR(l, α, p)`, since
-    `w₁·S₁ + w₂·S₂ = (w₁·c₁ + w₂·c₂) · S` is itself Pareto with scale
-    `(w₁·c₁ + w₂·c₂) · l`. -/
+/-- Candidate portfolio-CVaR expression. Interpreting the aggregate
+    as a positively scaled Pareto law requires positive loading and
+    valid model parameters, beyond this scalar definition. -/
 noncomputable def paretoPortfolioCVaR (w₁ w₂ c₁ c₂ l α p : ℝ) : ℝ :=
   (w₁ * c₁ + w₂ * c₂) * paretoCVaR l α p
 
-/-- **Comonotone portfolio CVaR via the scale transformation.**  The
-    portfolio is itself Pareto(`(w·c)·l`, `α`), so its CVaR can be
-    computed via `paretoCVaR` at the rescaled location.  Algebraic
-    consequence of `paretoCVaR_scale`. -/
+/-- The portfolio-CVaR expression equals the same formula at the
+    rescaled location, by scalar homogeneity. This identity holds
+    outside the domain of an actual positive-scale portfolio law. -/
 theorem paretoPortfolioCVaR_eq_rescaled {w₁ w₂ c₁ c₂ l α p : ℝ} :
     paretoPortfolioCVaR w₁ w₂ c₁ c₂ l α p
       = paretoCVaR ((w₁ * c₁ + w₂ * c₂) * l) α p := by
@@ -88,8 +70,8 @@ theorem paretoPortfolioCVaR_eq_rescaled {w₁ w₂ c₁ c₂ l α p : ℝ} :
     on the portfolio weights.  Every comonotone-Pareto portfolio lies
     on the **same line through the origin** in mean-CVaR coordinates.
 
-    Pareto diversification-breakdown: under perfect tail dependence,
-    no choice of weights improves the mean-to-risk ratio. -/
+    This is a ratio identity for the defined functions; an actual
+    portfolio-risk interpretation requires their law bridges. -/
 theorem paretoPortfolio_meanCVaR_ratio {w₁ w₂ c₁ c₂ l α p : ℝ}
     (h_pos : 0 < w₁ * c₁ + w₂ * c₂) (hcvar_ne : paretoCVaR l α p ≠ 0) :
     paretoPortfolioMean w₁ w₂ c₁ c₂ l α / paretoPortfolioCVaR w₁ w₂ c₁ c₂ l α p
@@ -98,30 +80,31 @@ theorem paretoPortfolio_meanCVaR_ratio {w₁ w₂ c₁ c₂ l α p : ℝ}
   have h_pos_ne : (w₁ * c₁ + w₂ * c₂ : ℝ) ≠ 0 := h_pos.ne'
   field_simp
 
-/-- **Positive homogeneity of the comonotone portfolio mean.**  Scaling
-    weights by `λ` scales the mean by `λ`. -/
+/-- The candidate portfolio-mean expression is homogeneous for
+    every real scale `lam`. No expectation occurs in this identity. -/
 theorem paretoPortfolioMean_scale (lam w₁ w₂ c₁ c₂ l α : ℝ) :
     paretoPortfolioMean (lam * w₁) (lam * w₂) c₁ c₂ l α
       = lam * paretoPortfolioMean w₁ w₂ c₁ c₂ l α := by
   unfold paretoPortfolioMean
   ring
 
-/-- **Positive homogeneity of the comonotone portfolio CVaR.**  Scaling
-    weights by `λ` scales the CVaR by `λ`. -/
+/-- The candidate portfolio-CVaR expression is homogeneous for
+    every real scale `lam`; this does not assert negative-scale
+    homogeneity of an actual CVaR risk functional. -/
 theorem paretoPortfolioCVaR_scale (lam w₁ w₂ c₁ c₂ l α p : ℝ) :
     paretoPortfolioCVaR (lam * w₁) (lam * w₂) c₁ c₂ l α p
       = lam * paretoPortfolioCVaR w₁ w₂ c₁ c₂ l α p := by
   unfold paretoPortfolioCVaR
   ring
 
-/-- **Pareto-native efficient frontier is degenerate under comonotone
-    factors.**  The frontier in Mean-CVaR space, parameterised by
+/-- Equality of ratios of the two supplied portfolio formulas.
+    The candidate curve in mean/CVaR coordinates, parameterised by
     aggregate loading `m := w₁·c₁ + w₂·c₂`, is the line
         (paretoPortfolioMean = m · α·l/(α−1),
          paretoPortfolioCVaR = m · paretoCVaR(l, α, p))
-    — slope independent of `m`.  Replacing variance with CVaR does
-    not, by itself, restore diversification under perfect tail
-    dependence; that requires `λ_U < 1` (Tier 5). -/
+    has slope independent of `m`. This scalar identity does not
+    construct an efficient frontier or prove a criterion involving
+    a tail-dependence coefficient. -/
 theorem paretoPortfolio_frontier_degenerate {l α p : ℝ}
     {w₁ w₂ c₁ c₂ w₁' w₂' c₁' c₂' : ℝ}
     (h_pos : 0 < w₁ * c₁ + w₂ * c₂)

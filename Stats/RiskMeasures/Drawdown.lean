@@ -1,14 +1,13 @@
 module
 
 /-
-  Risk measures & portfolio theory under Pareto.
+  Candidate maximum-tail and drawdown-scale expressions under Pareto.
 
-  ## Stats.RiskMeasures.Drawdown — drawdown distribution (Item 5).
-
-  Closed form for the asymptotic tail of the maximum drawdown
-  under iid Pareto returns.
-
-  See `Stats/RiskMeasures.lean` for the umbrella module.
+  The theorems prove polynomial union bounds and threshold substitutions
+  for explicit scalar formulas. This module does not construct an iid
+  sample maximum, an additive walk, a path drawdown, a quantile law or a
+  false-discovery procedure. Those probability interpretations require
+  separate law and model bridges.
 -/
 public import Stats.Pareto
 
@@ -18,7 +17,7 @@ open Real Set MeasureTheory Filter Topology intervalIntegral
 
 namespace TailOptionPricing
 
-/-! ## Item 5 — Drawdown distribution under Pareto returns.
+/-! ## Item 5 — Candidate Pareto maximum expressions.
 
     For an iid sample `X_1, …, X_n` from strong Pareto(`l`, `α`), the
     sample maximum `M_n := max_i X_i` controls the worst single
@@ -27,23 +26,22 @@ namespace TailOptionPricing
     * `paretoSampleMaxCDF n l α x = (1 − (l/x)^α)^n`  for `x ≥ l`,
     * `paretoSampleMaxSurvival n l α x = 1 − (1 − (l/x)^α)^n`.
 
-    The union bound and Bernoulli's inequality give
+    The polynomial analog of the union bound gives
         `paretoSampleMaxSurvival n l α x ≤ n · survival l α x`,
-    and the leading-order asymptotic
-        `paretoSampleMaxSurvival n l α x ∼ n · survival l α x` as
-        `x → ∞`,
-    so the sample maximum scales as `n^(1/α)`.  This recovers the
-    standard Fréchet-type tail behaviour and underlies the
-    Calmar / MAR-ratio asymptotics: the max drawdown over `T` periods
-    is dominated by the maximum loss leg, scaling as `T^(1/α)`. -/
+    on positive scale/index and `x ≥ l`. The code below establishes
+    that inequality and substitutes a threshold. It does not prove
+    an asymptotic equivalence, an actual maximum law or a path-drawdown
+    scaling law. A maximum sample value and an additive walk's maximum
+    drawdown are different random variables. -/
 
-/-- **CDF of the maximum of `n` iid strong Pareto samples** (on the
-    Pareto regime `x ≥ l`):
-        `P(max X_i ≤ x) = (1 − (l/x)^α)^n`. -/
+/-- Candidate maximum-CDF expression `(1-(l/x)^α)^n`. A probability
+    interpretation requires valid positive parameters, the supported
+    domain and an actual iid maximum-law bridge. -/
 noncomputable def paretoSampleMaxCDF (n : ℕ) (l α x : ℝ) : ℝ :=
   (1 - (l / x) ^ α) ^ n
 
-/-- **Survival function of the sample maximum.** -/
+/-- Candidate maximum-survival expression, complementary to the
+    candidate CDF. It is not a supported survival law on all reals. -/
 noncomputable def paretoSampleMaxSurvival (n : ℕ) (l α x : ℝ) : ℝ :=
   1 - paretoSampleMaxCDF n l α x
 
@@ -59,7 +57,7 @@ every real `α`, positive scale and nonempty sample. Interpreting it as
 an actual Pareto-maximum probability additionally needs a positive index
 and an iid-law bridge; those facts are not assumed or proved here. -/
 theorem paretoSampleMaxSurvival_at_l {n : ℕ} {l α : ℝ}
-    (hl : 0 < l)  (hn : 1 ≤ n) :
+    (hl : 0 < l) (hn : 1 ≤ n) :
     paretoSampleMaxSurvival n l α l = 1 := by
   have h_l_l : (l / l) ^ α = 1 := by
     rw [div_self hl.ne']
@@ -70,9 +68,7 @@ theorem paretoSampleMaxSurvival_at_l {n : ℕ} {l α : ℝ}
   · ring
   · exact Nat.one_le_iff_ne_zero.mp hn
 
-/-- **Union bound (Bonferroni / Bernoulli inequality).**  For `n` iid
-    Pareto samples, the survival of the maximum is bounded by `n` times
-    the marginal survival:
+/-- Polynomial union-bound inequality for the candidate maximum tail:
         `paretoSampleMaxSurvival n l α x ≤ n · survival l α x`.
 
     Direct from `(1 − p)^n ≥ 1 − n·p` (Bernoulli's inequality) for
@@ -102,23 +98,16 @@ theorem paretoSampleMaxSurvival_union_bound {n : ℕ} {l α x : ℝ}
   rw [paretoSampleMaxSurvival_eq_one_sub_pow]
   linarith
 
-/-- **Sample-maximum survival is dominated by `n · survival`.**  Same
-    statement as `paretoSampleMaxSurvival_union_bound`, expressed
-    asymptotically: the leading-order tail behaviour is exactly `n` times
-    the marginal Pareto survival, so the maximum-loss leg over `n`
-    periods scales as `n^(1/α)`. -/
+/-- The same pointwise candidate-tail bound with `survival` expanded.
+    It does not assert asymptotic equivalence or maximum-loss scaling. -/
 theorem paretoSampleMaxSurvival_le_n_survival {n : ℕ} {l α x : ℝ}
     (hl : 0 < l) (hα_pos : 0 < α) (hx : l ≤ x) :
     paretoSampleMaxSurvival n l α x ≤ n * (l / x) ^ α :=
   paretoSampleMaxSurvival_union_bound hl hα_pos hx
 
-/-- **Maximum drawdown scaling** (for an additive iid Pareto walk).
-    The maximum-drawdown's `p`-quantile is bounded above by a positive
-    function of `n^(1/α)`: define
-        `paretoMaxDrawdownVaR(n, l, α, p) := paretoVaR(l, α, p) · n^(1/α)`
-    which dominates the actual `p`-quantile of the maximum of `n` iid
-    Pareto draws.  Connects to the Calmar / MAR ratio's `T^(1/α)`
-    decay claim. -/
+/-- Drawdown-VaR proxy `paretoVaR(l,α,p)*n^(1/α)`. No path drawdown
+    or quantile is constructed, and no comparison with an actual
+    drawdown or maximum quantile is proved here. -/
 noncomputable def paretoMaxDrawdownVaR (n : ℕ) (l α p : ℝ) : ℝ :=
   paretoVaR l α p * (n : ℝ) ^ ((1:ℝ) / α)
 
@@ -129,12 +118,13 @@ theorem paretoMaxDrawdownVaR_eq (n : ℕ) (l α p : ℝ) :
   unfold paretoMaxDrawdownVaR
   ring
 
-/-- **Sample-bag FDR threshold form.**  Inverting the union bound
+/-- Threshold substitution for the candidate-tail bound. Inverting
 `paretoSampleMaxSurvival_le_n_survival`: choosing
 `t = l · (n/ε)^(1/α)` makes the bag-survival at most `ε`.
 
-This is the threshold one picks to control the false-discovery rate
-at level `ε` for a sample of size `n` from `Pareto(l, α)`. -/
+An actual exceedance interpretation needs a maximum-law bridge. A
+false-discovery rate additionally needs a testing procedure, null model
+and the expected false-discovery proportion; none appears here. -/
 theorem paretoSampleMax_threshold_for_FDR {n : ℕ} {l α ε : ℝ}
     (hl : 0 < l) (hα : 0 < α) (hn_pos : 0 < n) (hε_pos : 0 < ε)
     (hε_le : (ε : ℝ) ≤ n) :
@@ -177,7 +167,8 @@ theorem paretoSampleMax_threshold_for_FDR {n : ℕ} {l α ε : ℝ}
     _ = (n : ℝ) * (ε / (n : ℝ)) := by rw [h_pow_eq]
     _ = ε := by field_simp
 
-/-- **Multivariate per-coordinate FDR bound (Bonferroni union).**
+/-- Scalar multiple of the candidate-tail bound, motivated by a
+Bonferroni union estimate:
 For a `k`-dimensional Pareto sample bag, the union bound over `k`
 independent coordinate-wise maxima inflates the single-coordinate
 sample-max survival by a factor of `k`:
@@ -185,8 +176,8 @@ sample-max survival by a factor of `k`:
   `k · paretoSampleMaxSurvival n l α t  ≤  k · n · (l/t)^α`.
 
 In probability terms: `ℙ(∃ i ∈ Fin n, ∃ j ∈ Fin k, Y_{i,j} > t) ≤ k · n · (l/t)^α`,
-which is the FDR-control threshold for joint detection across `k`
-output coordinates.  Direct corollary of `paretoSampleMaxSurvival_le_n_survival`. -/
+This is a deterministic inequality. No joint coordinate law or FDR
+procedure is constructed. The historical declaration name is retained. -/
 theorem multivariate_sample_max_fdr_bound
     {k n : ℕ} {l α t : ℝ} (hl : 0 < l) (hα : 0 < α) (ht : l ≤ t) :
     (k : ℝ) * paretoSampleMaxSurvival n l α t ≤ (k : ℝ) * (n : ℝ) * (l / t) ^ α := by

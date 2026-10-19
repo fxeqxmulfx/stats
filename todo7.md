@@ -1,5 +1,12 @@
 # TODO7 — Heavy-tail-aware bad-point detection: formal foundations
 
+Historical planning and audit notes. For the current verified scope,
+use [REVIEW.md](REVIEW.md) and the generated [INDEX.md](INDEX.md).
+Checked items below may record formula identities or conditional
+results; they do not certify complete probability-law formalizations.
+References to former axioms or unfinished steps describe the state
+at that audit, rather than the current source.
+
 > **New direction (2026-05-19)**: With todo3–todo6 the κ-metric paper
 > (arXiv:1802.05495v3) and the slowly-varying machinery are end-to-end
 > formalised.  This file proposes the next layer: turn that machinery

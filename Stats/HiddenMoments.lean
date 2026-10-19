@@ -109,20 +109,22 @@ theorem paretoTailMoment_at_one {l α K : ℝ}
         ℙ(K_n > k) = 1 − paretoSampleMaxCDF n l α k
                    = 1 − (1 − (l/k)^α)^n      for k ≥ l.
 
-    The *sample survival ratio* `Y := (l/K_n)^α` thus has CDF
+    The corresponding candidate survival-ratio CDF is
         ℙ(Y ≤ y) = 1 − (1 − y)^n,
-    i.e., `Y ∼ Beta(1, n)` on `[0, 1]` (not exponential).  The paper's
-    Remark 1 — "exponential pdf `g_{n,0}(z) = n·e^{−nz}`" — is the
-    *Fréchet asymptotic*, where `(1−y)^n ≈ e^{−ny}` for small `y`;
-    the **exact** distribution is Beta(1, n), with exact mean
-    `1/(n+1)` rather than the paper's `1/n`. -/
+    the Beta(1, n) formula on `[0, 1]` for `n > 0`. The source's
+    Remark 1 uses the Fréchet approximation `n*exp(-n*y)` and `1/n`.
+    Here the polynomial formulas, derivative and mean integral
+    `1/(n+1)` are proved. The actual iid maximum and pushforward-law
+    identifications are not assembled; see REVIEW.md, HM-04–HM-11. -/
 
-/-- **CDF of the sample survival ratio `(L/K_n)^α`** (paper Remark 1,
-    exact form): `1 − (1 − y)^n` on `[0, 1]`. -/
+/-- Candidate CDF polynomial from paper Remark 1's finite-sample
+    correction: `1 - (1-y)^n`. It is used as a Beta(1,n) CDF only
+    for `n > 0` on `[0,1]`; it is not a supported CDF on all reals. -/
 noncomputable def paretoSampleSurvivalRatioCDF (n : ℕ) (y : ℝ) : ℝ :=
   1 - (1 - y) ^ n
 
-/-- **PDF of the sample survival ratio**: `n · (1 − y)^(n − 1)`. -/
+/-- Candidate PDF polynomial: `n*(1-y)^(n-1)`. An actual density
+    uses support `[0,1]` and positive sample size. -/
 noncomputable def paretoSampleSurvivalRatioPDF (n : ℕ) (y : ℝ) : ℝ :=
   (n : ℝ) * (1 - y) ^ (n - 1)
 
@@ -173,14 +175,15 @@ theorem paretoSampleSurvivalRatioPDF_eq_deriv (n : ℕ) (y : ℝ) :
 
 /-! ### Exact mean of the sample survival ratio. -/
 
-/-- **Exact mean of `(L/K_n)^α = 1 / (n + 1)`** (paper Remark 1,
-    exact form).  Computed as
+/-- **Candidate PDF mean integral** for paper Remark 1's finite-sample
+    correction. Computed as
         `∫_0^1 y · n · (1 − y)^(n−1) dy = 1 / (n+1)`
     via FTC with antiderivative
         `F(y) = − y · (1 − y)^n − (1 − y)^(n+1) / (n+1)`.
 
-    The paper's claim "1/n" is the Fréchet asymptotic
-    `(1−y)^n ≈ e^{−ny}`; the *exact* value is `1/(n+1)`. -/
+    Identifying this integral with the mean of an actual transformed
+    sample maximum still needs the probability-law bridge. The integral
+    value is `1/(n+1)`, whereas the Fréchet approximation uses `1/n`. -/
 theorem paretoSampleSurvivalRatio_mean (n : ℕ) (hn : 1 ≤ n) :
     ∫ y in (0:ℝ)..1, y * paretoSampleSurvivalRatioPDF n y
       = 1 / ((n : ℝ) + 1) := by
@@ -261,11 +264,10 @@ theorem paretoSampleSurvivalRatio_mean (n : ℕ) (hn : 1 ≤ n) :
   · exact Continuous.intervalIntegrable (by continuity) _ _
   · exact Continuous.intervalIntegrable (by continuity) _ _
 
-/-- **Fréchet asymptotic ≈ exact mean.**  As `n → ∞`, the exact mean
-    `1/(n+1)` and the Fréchet asymptotic `1/n` agree to leading order:
-        `1/n − 1/(n+1) = 1/(n(n+1))` is `O(1/n²)`.
-    Quantifies the gap between the paper's stated 1/n and the exact
-    1/(n+1). -/
+/-- Reciprocal-formula gap: `1/n - 1/(n+1) = 1/(n*(n+1))`.
+    This exact scalar identity compares the candidate finite-sample
+    mean with the source's Fréchet mean expression. No random-variable
+    expectation or asymptotic filter occurs in this theorem. -/
 theorem paretoSampleSurvivalRatio_mean_asymptotic_gap (n : ℕ) (hn : 1 ≤ n) :
     (1 / (n : ℝ)) - 1 / ((n : ℝ) + 1) = 1 / ((n : ℝ) * ((n : ℝ) + 1)) := by
   have hn_pos : 0 < n := hn

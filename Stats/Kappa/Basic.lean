@@ -112,9 +112,9 @@ theorem kappa_stable_invariance {M : ℕ → ℝ} {c ᾱ : ℝ}
     stable index `ᾱ > 0`.  Paper Eq. 5 *defines* `ᾱ` by clipping the
     raw stable index `α` at 2:
         ᾱ := α · 𝟙_{α<2} + 2 · 𝟙_{α≥2}.
-    The clip captures the dichotomy between the proper stable regime
-    `α ∈ (0, 2)` (where `ᾱ = α` and `κ = 2 − α > 0`) and the Gaussian
-    basin `α ≥ 2` (where the CLT applies and `ᾱ = 2`, so `κ = 0`). -/
+    This definition records the proposed clipped index only. A
+    domain-of-attraction theorem, a CLT or a limit for an actual sum's
+    MAD does not follow from clipping; see REVIEW.md, K-05 and K-07. -/
 
 /-- **Effective stable index (paper Eq. 5).**  Piecewise:
         ᾱ(α) := α   if α < 2,

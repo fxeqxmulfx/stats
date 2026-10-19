@@ -1,5 +1,12 @@
 # TODO5 — Discharging the two structural shells in `Stats.Kappa.Lognormal`
 
+Historical planning and audit notes. For the current verified scope,
+use [REVIEW.md](REVIEW.md) and the generated [INDEX.md](INDEX.md).
+Checked items below may record formula identities or conditional
+results; they do not certify complete probability-law formalizations.
+References to former axioms or unfinished steps describe the state
+at that audit, rather than the current source.
+
 > **Status (2026-05-13, FINAL)**: **All Phases A, B.1–B.7, C.1–C.3b complete**.  Both `Stats.Kappa.Lognormal` structural shells now derive from first principles.
 >
 > Old status block:

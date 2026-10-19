@@ -1,5 +1,12 @@
 # TODO6 — Lognormal-specific assembly of the Loulakis liminf
 
+Historical planning and audit notes. For the current verified scope,
+use [REVIEW.md](REVIEW.md) and the generated [INDEX.md](INDEX.md).
+Checked items below may record formula identities or conditional
+results; they do not certify complete probability-law formalizations.
+References to former axioms or unfinished steps describe the state
+at that audit, rather than the current source.
+
 **Pass 8 finding (2026-05-13)**: project is fully axiom-clean
 (274/274 in [Stats/Verify.lean](Stats/Verify.lean)), but the paper's
 actual Loulakis claim is *not* assembled as a single theorem — only

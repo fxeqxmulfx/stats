@@ -1,41 +1,19 @@
 module
 
 /-
-  Taleb's κ-metric for pre-asymptotic fat-tailedness.
-    "How Much Data Do You Need?  A Pre-asymptotic Metric for Fat-tailedness"
-    arXiv:1802.05495v3 (Nov 2018).
+  Explicit stable-function formulas from arXiv:1802.05495v3, Eq. 4.
 
-  ## Stats.Kappa.Stable — α-stable distribution infrastructure.
+  StableClass records parameter ranges and equality to a complex-valued
+  expression. It does not assert that the function is the characteristic
+  function of an actual probability law.
 
-  Paper Eq. 4 defines the α-stable characteristic function in two
-  cases:
-      α ≠ 1:  ϕ(t) = exp(i μ t − σ^α |t|^α (1 − i β · sgn(t) · tan(π α/2)))
-      α = 1:  ϕ(t) = exp(i μ t − σ |t| (1 + (2 i / π) β · sgn(t) · log|t|))
-
-  The stable class is closed under iid summation with `σ_n = n^(1/α) σ`
-  and `μ_n = n μ`: a direct consequence of `ϕ_X(t)^n` evaluation
-  combined with the characteristic-function multiplicativity for iid
-  sums (Mathlib has `ProbabilityTheory.charFun` infrastructure for the
-  iid step; we take the multiplicativity as a hypothesis here, in the
-  same shell-out pattern used for the Loulakis lognormal bound and the
-  Pearson IV integration-by-parts step).
-
-  Combined with `kappa_stable_invariance` (Stats.Kappa.Basic), the
-  stable class has constant κ_{n₀, n} = 2 − ᾱ across all `(n₀, n)`.
-
-  Theorems delivered (paper Section IV-A, todo B.4):
-
-  * `stableCharacteristicFunction` — Eq. 4 closed form (todo B.4.1).
-  * `StableClass` — class membership predicate (todo B.4.2).
-  * `stable_charfun_pow_alpha_ne_one` — algebraic `ϕ(t)^n` identity for
-    α ≠ 1 (algebraic content of todo B.4.3).
-  * `stable_charfun_pow_alpha_eq_one` — same for the α = 1 case.
-  * `stable_sum_stable` — full sum-of-stable closure given iid charfun
-    multiplicativity (todo B.4.3).
-  * `stable_class_kappa_invariance` — κ_{n₀, n} = 2 − ᾱ for stable
-    iid sums (todo B.4.4).
-
-  See `Stats/Kappa.lean` for the umbrella module.
+  The power identity for α ≠ 1 is proved with rescaled parameters. At
+  α = 1 only the exponential-multiple identity is proved. The conditional
+  stable_sum_stable theorem assumes pointwise multiplicativity; no iid
+  random variables or sum law are constructed. The final κ identity
+  separately assumes the real function M has the required power scaling.
+  An actual finite-mean stable MAD theorem needs α > 1 and the missing
+  probability and integrability bridges. See REVIEW.md, K-03, K-06–K-09.
 -/
 public import Stats.Kappa.Basic
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
@@ -90,13 +68,15 @@ noncomputable def stableCharacteristicFunction (α β μ σ : ℝ) (t : ℝ) : �
 
 /-! ## Stable class predicate (paper Section IV-A, todo B.4.2). -/
 
-/-- **Stable class membership predicate** (paper Section IV-A, todo B.4.2).
-    `StableClass φ α β μ σ` asserts that the (complex-valued)
-    characteristic function `φ : ℝ → ℂ` matches the paper-Eq. 4 stable
+/-- **Stable function-form predicate** (paper Section IV-A, todo B.4.2).
+    `StableClass φ α β μ σ` asserts that a complex-valued function
+    `φ : ℝ → ℂ` matches the paper-Eq. 4 stable
     closed form with parameters
         `α ∈ (0, 2]`, `β ∈ [−1, 1]`, `μ ∈ ℝ`, `σ > 0`.
-    Encodes the parameter constraints plus the verbatim equality
-    `φ t = stableCharacteristicFunction α β μ σ t` for every `t : ℝ`. -/
+    Encodes the parameter constraints and the equality
+    `φ t = stableCharacteristicFunction α β μ σ t` for every `t : ℝ`.
+    Probability-law existence or characteristic-function identification
+    is not a field of this predicate. -/
 structure StableClass (φ : ℝ → ℂ) (α β μ σ : ℝ) : Prop where
   alpha_pos : 0 < α
   alpha_le_two : α ≤ 2
@@ -145,19 +125,10 @@ theorem stable_charfun_pow_alpha_ne_one
 /-- **Stable charfun `ϕ(t)^n` identity, α = 1 case** (paper Section IV-A).
     For `α = 1`, raising the stable charfun to the `n`-th power gives
     `exp(n · z)` where `z` is the α = 1 exponent of `ϕ(t)`.  Stated as
-    an `exp(n · z)` form rather than as a rescaled `stableCharacteristicFunction`
-    because the iid sum's α = 1 closure has a non-trivial location-parameter
-    rescaling involving an extra `2β log(n) · σ · t / π` term coming from
-    the `log|tσ|` factor (not a simple `μ_n = n μ`, `σ_n = nσ` scaling).
-
-    Specifically, expanding `n · z = it·n·(2β log σ/π + μ)
-                                     − n|tσ|·(1 + (2iβ/π) sgn(t) log|tσ|)`
-    and matching against `Stable(1, β, μ_n, n σ)` would require
-        `μ_n = nμ + 2β log σ (n − 1)/π − 2β log n/π + 2β nσ log n/π`,
-    which is the correct paper-form rescaling but cumbersome to maintain
-    as a separate theorem.  We leave the α = 1 closure here in the
-    `exp(n · z)` form; the κ-metric application uses only α ≠ 1 (via
-    `stable_sum_stable`). -/
+    an `exp(n · z)` form. No equality to a rescaled function or actual
+    sum law is concluded by this theorem. The explicit location shift
+    in the definition must be retained when analyzing its parametrization;
+    the former unproved alternative shift formula has been removed. -/
 theorem stable_charfun_pow_alpha_eq_one
     (β μ σ : ℝ) (n : ℕ) (t : ℝ) :
     (stableCharacteristicFunction 1 β μ σ t) ^ n
@@ -173,21 +144,14 @@ theorem stable_charfun_pow_alpha_eq_one
   push_cast
   ring_nf
 
-/-! ## Sum of iid stable r.v.'s is stable (paper Section IV-A, todo B.4.3). -/
+/-! ## Conditional stable-function closure (paper Section IV-A, todo B.4.3). -/
 
-/-- **Iid sum of stable r.v.'s is stable** (paper Section IV-A, todo B.4.3).
-    Given a charfun `φ` in the α-stable class with `α ≠ 1`, and a
-    `Sn_charfun` representing the iid n-fold sum's characteristic
-    function (i.e. `Sn_charfun(t) = φ(t)^n`, the hypothesis below), the
-    sum's charfun is itself in the stable class with rescaled
-    parameters `μ_n = n μ`, `σ_n = n^(1/α) σ`.
-
-    The iid-sum hypothesis `h_iid : Sn_charfun(t) = φ(t)^n` for all `t`
-    is precisely the iid-characteristic-function multiplicativity
-    statement (Mathlib `ProbabilityTheory.charFun_iid_sum`-style fact);
-    by passing it in we sidestep the Mathlib gap of formalising iid
-    random vectors and their joint charfun.  The algebraic remainder is
-    a direct application of `stable_charfun_pow_alpha_ne_one`. -/
+/-- Function-form closure under supplied pointwise multiplicativity
+    (paper Section IV-A, todo B.4.3). For `α ≠ 1`, the output satisfies
+    the stable formula with `μ_n = n μ`, `σ_n = n^(1/α) σ`.
+    The hypothesis `h_iid` is an equality of functions; deriving it
+    from actual iid samples and identifying their sum law remain
+    separate probability steps. No library limitation is asserted. -/
 theorem stable_sum_stable
     {φ Sn_charfun : ℝ → ℂ} {α β μ σ : ℝ} {n : ℕ}
     (hn : 0 < n) (hα_ne_one : α ≠ 1)
@@ -210,16 +174,14 @@ theorem stable_sum_stable
 
 /-- **Stable-class κ invariance** (paper Eq. 6, todo B.4.4).
     Specialisation of `kappa_stable_invariance_alphaBar` to the stable
-    class: any MAD oracle `M` that scales as `c · n^(1/ᾱ(α))` (the iid
-    sum's MAD scaling, derived from the `n^(1/α)·σ` scale parameter of
-    `stable_sum_stable`) has constant κ-metric `2 − ᾱ(α)` across all
+    class: any supplied real function `M` that scales as
+    `c · n^(1/ᾱ(α))` has constant κ-metric `2 − ᾱ(α)` across all
     `(n₀, n)` baselines.
 
-    The MAD-scaling hypothesis `hM_form` is the operational input from
-    the probability side; for a stable iid sum it follows from the
-    `σ_n = n^(1/α) σ` scale of `stable_sum_stable` combined with the
-    `MAD(c·X) = c·MAD(X)` scaling property of any non-degenerate
-    distribution. -/
+    The power-scaling premise `hM_form` is an input. Deriving it for
+    an actual sum's MAD requires a law, integrability, nondegeneracy
+    and the sum-law/scaling bridge. This theorem proves none of those
+    additional identifications. -/
 theorem stable_class_kappa_invariance {M : ℕ → ℝ} {c α : ℝ}
     (hc : 0 < c) (hα : 0 < α)
     (hM_form : ∀ k : ℕ, 0 < k → M k = c * (k : ℝ) ^ ((1 : ℝ) / stableAlphaBar α))
