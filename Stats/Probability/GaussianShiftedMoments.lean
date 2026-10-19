@@ -13,6 +13,18 @@ open Real Set MeasureTheory ProbabilityTheory
 
 namespace TailOptionPricing
 
+/-- Actual Gaussian generation by an independent standard innovation,
+as in arXiv:1912.00277v2, Section II's scale-mixture construction.
+The map identity is valid for all real scales, including zero. -/
+theorem gaussianReal_map_affine_scale (μ σ : ℝ) :
+    (gaussianReal 0 1).map (fun x : ℝ => μ + σ * x) =
+      gaussianReal μ (NNReal.mk (σ ^ 2) (sq_nonneg σ)) := by
+  have h := congrArg (fun ν : Measure ℝ => ν.map (fun x : ℝ => μ + x))
+    (gaussianReal_map_const_mul (μ := 0) (v := 1) σ)
+  rw [Measure.map_map (measurable_const_add μ) (measurable_const_mul σ),
+    gaussianReal_map_const_add] at h
+  simpa only [mul_zero, mul_one, zero_add, Function.comp_def] using h
+
 /-- L1 of every power about any finite center for the actual Gaussian
 components in arXiv:1802.05495v3, Eq. 17. -/
 theorem gaussianReal_integrable_sub_pow (μ c : ℝ) (v : NNReal) (n : ℕ) :

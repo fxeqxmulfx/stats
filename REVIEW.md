@@ -1712,6 +1712,54 @@ The refreshed declaration index has 1065 distinct public names: all 1058
 previous names and types are unchanged, with seven additions and no
 duplicate names. The new limits module is 110 lines.
 
+### Identify the actual dispersion law and independent Gaussian model
+
+Reread arXiv:1912.00277v2, Section II's positive random dispersion
+with expected value `sigma` (lines 204–214), its equiprobable
+multiplicative branches (lines 234–276), and Section III's natural
+dispersion-moment formula (lines 318–332).
+
+[ScaleLaw.lean](Stats/EpistemicUncertainty/ScaleLaw.lean) constructs the
+actual finite dispersion distribution by starting from a Dirac mass at
+`sigma` and recursively mixing the two perturbed base scales equally.
+It is a probability measure at every finite depth. Every natural
+dispersion power is independently proved L1 before its genuine integral
+is evaluated. The actual moment is `sigma^k*M_k(epsilon)^n`, and hence
+equals the existing `epistemicSigmaMoment` for every natural order.
+The actual expected dispersion is `sigma`, as the source requires.
+For positive base scale and `0<=epsilon<1`, the actual dispersion is
+strictly positive almost everywhere.
+
+The actual outcome population is identified with the pushforward of
+the product of this dispersion law and the actual standard Gaussian
+under `(s,z) -> mu+s*z`. Thus the dispersion and innovation are
+independent, and this genuine random-scale construction equals the
+previously built recursive Gaussian population at every finite depth.
+The base case uses a proved affine Gaussian pushforward identity;
+the recursion uses compatibility of actual mixture, product and map.
+This identifies the whole outcome law, rather than only its moments.
+
+A proper depth-two, base-scale-two, half-error model verifies actual
+fourth-power L1, mean dispersion two, fourth dispersion moment `1681/16`,
+positive actual standard deviation and the independent-product law
+identity with the mean-one outcome population.
+
+This closes EU-06's actual natural-order dispersion-moment bridge and
+the constant-error random-scale interpretation in EU-01. The explicit
+equiprobable sign-vector space, binomial count pushforward, density
+identity and general nested uncertainty kernels remain separate.
+
+**Verification:** all 3993 default-build jobs pass without warnings.
+The standalone audit covers 1997 declarations and 1720 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 190 other
+Stats modules, including private declarations. The regenerated index has
+192 modules and 964 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 1074 distinct public names: all 1065
+previous names and types are unchanged, with nine additions and no
+duplicate names. The scale-law module and extended Gaussian helper are
+123 and 168 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3155,10 +3203,16 @@ numbered Remarks and the mathematical claims are audited below.
 `epistemicSigmaMoment` defines a binomial-weighted finite sum.
 `epistemicBranchLaw` now constructs the actual normalized recursive
 constant-error Gaussian population, with actual moments and symmetry.
+`epistemicScaleLaw` constructs its actual dispersion distribution,
+with unbiased mean, natural-order L1 moments and positive dispersion
+on the source domain. `epistemicScaleLaw_outcome_model` identifies the
+whole outcome law with an independent dispersion/Gaussian product
+model under `mu+scale*z`.
 
-**Missing:** the probability space of branches, its pushforward to a dispersion
-law, the Gaussian mixture measure, and proof that the branching construction
-and collapsed representation have the same law.
+**Missing:** the explicit sign-vector probability space and its count
+pushforward, and the corresponding general nonconstant-error collapse.
+The recursive constant-error population and its whole-law random-scale
+representation are proved.
 
 ### EU-02. Remark 2: uncertainty around a zero probability implies a positive floor — not ok
 
@@ -3197,14 +3251,20 @@ The binomial weights and scale values are present in `epistemicSigmaMoment`.
 the equiprobable sign tree and the resulting Gaussian mixture density.
 The weighted expression is defined directly.
 
-### EU-06. Arbitrary natural-order dispersion moment — ok for the weighted sum
+### EU-06. Actual natural-order dispersion moment — ok for the finite constant-error law
 
 `epistemicSigmaMoment_eq` proves, for all natural $n,k$,
 $epistemicSigmaMoment(n,k,σ,ε)=σ^k M_k(ε)^n$, where
 $M_k(ε)=((1+ε)^k+(1-ε)^k)/2$.
 
-**Missing:** nothing for this finite-sum identity. It is a binomial-theorem
-calculation, not an integral against a constructed Gaussian mixture.
+`epistemicScaleLaw_moment` now proves the same value for the actual
+dispersion expectation, with independent actual-law L1 at every order.
+`epistemicScaleLaw_moment_eq_sigmaMoment` identifies the genuine moment
+with the earlier weighted expression. The actual dispersion has mean
+`sigma` and is positive a.e. on the source's standard-deviation domain.
+
+**Missing:** nothing for the actual natural-order dispersion moments of
+this finite constant-error model. The binomial count pushforward is EU-05.
 
 ### EU-07. Second- and fourth-order layer factors — ok
 
@@ -3213,7 +3273,7 @@ $M₂=1+ε²$ and $M₄=1+6ε²+ε⁴$.
 
 **Missing:** nothing for these polynomial identities.
 
-### EU-08. Dispersion second and fourth moments — ok for the defined sum
+### EU-08. Actual dispersion second and fourth moments — ok for the finite constant-error law
 
 `epistemicVariance_eq` and `epistemicSigmaFourthMoment_eq` prove
 the weighted second/fourth powers of the scale.
@@ -3222,8 +3282,12 @@ the weighted second/fourth powers of the scale.
 scale sum with the actual outcome variance. Three times the fourth
 scale sum is proved to be the actual fourth central outcome moment.
 
-**Missing:** nothing for these identities. An explicit scale random
-variable and binomial pushforward remain separate in EU-05–EU-06.
+`epistemicScaleLaw_moment_eq_sigmaMoment` identifies both scale sums
+with genuine moments of the actual dispersion law, which independently
+generates the recursive outcome population with a standard Gaussian.
+
+**Missing:** nothing for these actual dispersion/outcome identities.
+The explicit binomial count pushforward remains EU-05.
 
 ### EU-09. First raw outcome moment and preservation of μ — ok for the finite recursive law
 
