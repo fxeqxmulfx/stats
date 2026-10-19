@@ -18,6 +18,7 @@ import all Stats.BinaryForecasts.PayoffGap
 import all Stats.BinaryForecasts.RegularVariation
 import all Stats.BinaryForecasts.RegularVariationLaw
 import all Stats.BinaryForecasts.SigmaClosures
+import all Stats.BinaryForecasts.SigmaCounterexample
 import all Stats.BinaryForecasts.SigmaSensitivity
 import all Stats.BlackScholes
 import all Stats.BlackScholes.CallPrice

@@ -236,8 +236,9 @@ open ProbabilityTheory MeasureTheory in
 
     Positivity for `K > 0`, `σ > 0`: at `σ = 1` the numerator equals the
     polynomial `K⁴ − K³ − K² + 2K = K · ((K−1)²·(K+1) + 1) > 0`
-    (`gaussian_eq8_polynomial_pos`).  General `σ` follows by the same
-    factorisation up to `σ²` scaling. -/
+    (`gaussian_eq8_polynomial_pos`). For general positive `σ`, the
+    printed expression can be negative: `K=3`, `σ=5` gives numerator
+    `-21`. See `SigmaCounterexample.lean` for the formal refutation. -/
 theorem gaussianEq8_sigmaSensitivity_eq {K σ : ℝ} (hσ : 0 < σ) :
     HasDerivAt
       (fun s : ℝ =>

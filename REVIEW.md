@@ -1322,6 +1322,39 @@ all 940 previous names and types are unchanged, with fourteen additions and
 no duplicate names. The class and shared-density modules are 193 and
 64 lines. The moved density integration proof is byte-for-byte unchanged.
 
+### Refute Eq. 8's universal positivity assertion
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Remark 1 and the Gaussian proof (lines 463–475). The sentence following
+Eq. 8 asserts positivity for all positive thresholds, using the
+unit-scale polynomial as its reason. The printed expression also depends
+on the positive scale; that polynomial does not determine its general sign.
+
+[SigmaCounterexample.lean](Stats/BinaryForecasts/SigmaCounterexample.lean)
+proves strict negativity of the exact printed right-hand side at `K=3`,
+`sigma=5`: its numerator is `54-75=-21`, while the exponential and
+denominator are strictly positive. It formally refutes the universal
+positive-parameter assertion. A further certificate applies the existing
+`gaussianEq8_sigmaSensitivity_eq` theorem and obtains a negative
+`HasDerivAt` value for the same first-derivative expression that theorem
+checks. Both constants satisfy the source's positive-parameter domain.
+
+The old docstring claiming that general-scale positivity follows from
+the unit-scale factorization has been corrected. The scalar derivative
+theorems and their public types are preserved. This refutation concerns
+the printed `A-B` expression; Definition 5's linear-payoff gap is `A-K*B`.
+Its corrected sensitivity theorem remains the separate repair in BF-20.
+
+**Verification:** all 3980 default-build jobs pass without warnings.
+The standalone audit covers 1814 declarations and 1556 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 178 other
+project modules, including private declarations. The regenerated index has
+179 modules and 857 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 957 distinct public names: all 954
+previous names and types are unchanged, with three additions and no
+duplicate names. The new counterexample module is 50 lines.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -2544,16 +2577,20 @@ $K²φ(K/σ)/σ³$, which is positive for $K>0$, $σ>0$.
 The existing derivative lemmas can support this repair; the complete corrected
 gap theorem has not been assembled.
 
-### BF-21. Eq. 8's asserted positivity for all σ > 0 — not ok
+### BF-21. Eq. 8's universal positivity — false; formal counterexample proved
 
 `gaussian_eq8_polynomial_pos` proves positivity at $σ=1$.
 
-**Missing:** a valid general sign statement. The displayed expression is not
-positive for all positive parameters: at $K=1/2$, $σ=1/10$, its numerator
-$(K-1)K³-(K-2)Kσ²$ is $-11/200$.
-The unit-variance factorization cannot establish the general claim.
-This issue concerns the displayed $A-B$ expression; the corrected $A-KB$ gap
-has the positive derivative described in BF-20.
+`gaussianEq8_negative_at_three_five` proves the exact printed expression
+is strictly negative at `K=3`, `sigma=5`, where its numerator is `-21`.
+`gaussianEq8_not_always_positive` formally refutes universal positivity
+over positive thresholds and scales. The existing derivative certificate
+also supplies an actual negative derivative value of its checked
+first-derivative expression at those parameters.
+
+**Missing:** nothing for this literal refutation. The unit-scale
+polynomial result remains valid. The corrected `A-K*B` payoff-gap
+sensitivity is a separate statement in BF-20.
 
 ### BF-22. Eq. 9: Pareto conditional-tail-mean sensitivity — ok
 
