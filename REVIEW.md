@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive Gaussian population, corrected moments, symmetry, kurtosis, moment divergence and constant-error point-mass weak limit | Branch-counting and density identities, general nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian populations, corrected moments, symmetry, kurtosis, moment divergence and point-mass weak limit | General layer-dependent construction and density identities, nested kernels and decaying-error limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -1860,6 +1860,66 @@ previous names and types are unchanged, with eight additions and no
 duplicate names. The concentration and outcome-limit modules are 114 and
 101 lines.
 
+### Prove the actual binomial collapse of dispersion and Gaussian populations
+
+Reread arXiv:1912.00277v2, the fair branching construction (lines
+234–276) and Section III's binomial collapse (`FatTailsEpistemic2019.tex`,
+lines 318–324). The claim concerns the actual distribution, beyond
+the earlier equality of its natural moments.
+
+[BinomialCollapse.lean](Stats/EpistemicUncertainty/BinomialCollapse.lean)
+first integrates any real-valued test function against the actual
+recursive dispersion law. Pascal's identity and the two actual branch
+expectations yield the printed binomial-weighted finite sum. Component
+L1 is supplied by the genuine finite atomic law. Comparing every bounded
+continuous test function with Mathlib's actual Binomial(n,1/2) measure
+then proves the whole measure identity
+
+```text
+actual dispersion law = Binomial(n,1/2).map
+  (j -> sigma*(1+epsilon)^j*(1-epsilon)^(n-j)).
+```
+
+This is a whole-law proof using the actual recursive expectation;
+it does not assume moment determinacy or define the dispersion law
+by the desired binomial distribution.
+
+The independent Gaussian product model carries this actual count
+representation to the actual outcome population. Mapping the finite
+Binomial Dirac expansion, multiplying by the standard Gaussian law,
+and applying the proved affine Gaussian map gives
+
+```text
+actual outcome law = sum_{j=0}^n [choose(n,j)/2^n] *
+  N(mu, (sigma*(1+epsilon)^j*(1-epsilon)^(n-j))^2).
+```
+
+The coefficients are explicitly reduced from the genuine Binomial
+probabilities, and every intermediate weighted Dirac measure has
+proved finiteness. All real means and scales are allowed in the measure
+identity; the source's positive standard-deviation domain is included.
+The density identity under positive scales remains separate.
+
+For depth two, base scale two and error one-half, a concrete actual
+probability calculation gives dispersion `3/2` with probability
+exactly one-half. Further witnesses verify a natural test-function
+expectation, the Binomial measure pushforward and the genuine Gaussian
+mixture with mean one.
+
+This closes EU-05's constant-error binomial collapse for the actual
+recursive populations. General nonconstant-error sign constructions
+and density formulas remain in EU-01 and EU-04.
+
+Verification: the full build passes 4,070 jobs without warnings. The
+axiom audit checks 2,034 declarations and 1,755 theorems with zero
+non-core axioms. The regenerated index has 196 modules and 980 named
+theorems, with zero `sorry`, vacuous or placeholder entries. All 27
+Python tests, forbidden-pattern and whitespace checks pass. The refreshed
+declaration index preserves all 1,086 previous names and types, adding
+three without duplicates. The audit explicitly imports all 194 other
+`Stats/` modules. The new module is 180 lines; its statements were checked
+against the local Section III source and the finite fair-branch model.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -3289,9 +3349,9 @@ Source: [arXiv:1912.00277v2](https://arxiv.org/abs/1912.00277v2).
 Main module: [EpistemicUncertainty.lean](Stats/EpistemicUncertainty.lean).
 
 **Paper verdict: not ok.** The actual finite recursive constant-error
-Gaussian mixture, corrected first four outcome moments, symmetry and
-kurtosis are proved, along with the binomial scale algebra. Explicit
-branch counting, density identities, general nested kernels,
+Gaussian mixture, its whole-law binomial collapse, corrected first four
+outcome moments, symmetry and kurtosis are proved. General layer-dependent
+sign constructions, density identities and nested kernels,
 general infinite constructions and decaying-error limits, the CLT
 argument and the Normal–Gamma compound law remain open. Actual
 finite-population variance, fourth central moment and kurtosis divergence
@@ -3311,10 +3371,14 @@ on the source domain. `epistemicScaleLaw_outcome_model` identifies the
 whole outcome law with an independent dispersion/Gaussian product
 model under `mu+scale*z`.
 
-**Missing:** the explicit sign-vector probability space and its count
-pushforward, and the corresponding general nonconstant-error collapse.
-The recursive constant-error population and its whole-law random-scale
-representation are proved.
+`epistemicScaleLaw_eq_binomial` and
+`epistemicBranchLaw_eq_binomial_mixture` now also prove the actual
+constant-error Binomial count representation and Gaussian mixture.
+
+**Missing:** the explicit general nonconstant-error sign-vector model
+and its equality with the general Section II representation. The
+constant-error recursive population and its whole-law random-scale
+and Binomial representations are proved.
 
 ### EU-02. Remark 2: uncertainty around a zero probability implies a positive floor — not ok
 
@@ -3345,13 +3409,24 @@ recursively constructed measure. For Gaussian standard deviations, require posit
 scale and positive multiplicative factors; the algebraic Lean identities alone
 permit parameter values outside that density model.
 
-### EU-05. Section III: constant-error collapse to binomial weights — not ok fully
+### EU-05. Section III: actual constant-error collapse to binomial weights — ok
 
-The binomial weights and scale values are present in `epistemicSigmaMoment`.
+`epistemicScaleLaw_integral_binomial` derives the actual binomial-weighted
+expectation of every real-valued dispersion test function by recursive
+mixture integration and Pascal's identity.
 
-**Missing:** the counting/pushforward theorem identifying those weights with
-the equiprobable sign tree and the resulting Gaussian mixture density.
-The weighted expression is defined directly.
+`epistemicScaleLaw_eq_binomial` identifies the actual recursive
+dispersion measure with the genuine Binomial(n,1/2) count pushforward
+through the printed scale function. The whole-law conclusion uses
+all bounded continuous test functions, rather than a few moment values.
+`epistemicBranchLaw_eq_binomial_mixture` proves the actual Gaussian
+population is the corresponding binomial-weighted sum of genuine
+Gaussian measures. Concrete depth-two positive-scale witnesses include
+an actual middle-scale probability of one-half.
+
+**Missing:** nothing for the actual constant-error measure collapse.
+The positive-scale density identity and the general layer-dependent
+sign construction remain separately recorded in EU-04 and EU-01.
 
 ### EU-06. Actual natural-order dispersion moment — ok for the finite constant-error law
 
@@ -3366,7 +3441,8 @@ with the earlier weighted expression. The actual dispersion has mean
 `sigma` and is positive a.e. on the source's standard-deviation domain.
 
 **Missing:** nothing for the actual natural-order dispersion moments of
-this finite constant-error model. The binomial count pushforward is EU-05.
+this finite constant-error model. The actual Binomial whole-law
+representation is proved in EU-05.
 
 ### EU-07. Second- and fourth-order layer factors — ok
 
@@ -3389,7 +3465,7 @@ with genuine moments of the actual dispersion law, which independently
 generates the recursive outcome population with a standard Gaussian.
 
 **Missing:** nothing for these actual dispersion/outcome identities.
-The explicit binomial count pushforward remains EU-05.
+The actual Binomial whole-law representation is proved in EU-05.
 
 ### EU-09. First raw outcome moment and preservation of μ — ok for the finite recursive law
 

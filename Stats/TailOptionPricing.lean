@@ -61,6 +61,7 @@ module
                               population and outcome moments, actual
                               kurtosis inequalities and symmetry,
                               constant-error point-mass weak limit,
+                              whole-law binomial Gaussian collapse,
                               decaying-error product bounds,
                               log-additivity of multiplicative errors.
     Stats/HiddenMoments.lean  — hidden moments of a probability distribution
@@ -108,6 +109,7 @@ public import Stats.EpistemicUncertainty.ScaleLaw
 public import Stats.EpistemicUncertainty.FractionalMoments
 public import Stats.EpistemicUncertainty.ScaleConcentration
 public import Stats.EpistemicUncertainty.OutcomeLimit
+public import Stats.EpistemicUncertainty.BinomialCollapse
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
