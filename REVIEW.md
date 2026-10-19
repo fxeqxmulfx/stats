@@ -91,12 +91,12 @@ The outstanding gaps in K07–K11 and K14 remain open.
 Verification for this batch: `lake build Stats.ReviewChecks` compiled the ten
 new examples and printed the axioms of all seven diagnostic theorems; only
 `propext`, `Classical.choice` and `Quot.sound` occur. The default `lake build`
-passed all 3892 jobs without warnings or errors. `./make.py audit` again
+passed all 3892 jobs without warnings or errors. `./run.py audit` again
 covered 1279 declarations (1096 theorem declarations), with zero non-core
-axioms. `./make.py forbidden` passed, and `./make.py test` passed all 27 tests
+axioms. `./run.py forbidden` passed, and `./run.py test` passed all 27 tests
 without skips. Comparing Python syntax trees after removing docstrings
 confirms that executable numerical code is unchanged.
-`./make.py index` regenerated 105 modules and 593 named theorems with zero
+`./run.py index` regenerated 105 modules and 593 named theorems with zero
 sorry, vacuous or placeholder markers. After `dt refresh project`, all 670
 previously indexed public names and their elaborated types are unchanged.
 
@@ -205,7 +205,7 @@ a certified numerical error bound.
 sum MAD ratio. The new analytic certificates do not supply that missing
 bridge by definition; K14 remains incomplete in its distributional reading.
 
-**Verification:** the default `lake build` and standalone `./make.py audit`
+**Verification:** the default `lake build` and standalone `./run.py audit`
 pass without warnings. The transitive audit checks 1337 declarations,
 including 1146 theorem declarations, and finds only `Quot.sound`,
 `Classical.choice` and `propext`. All 27 Python tests, the forbidden-construct
@@ -380,8 +380,8 @@ all nine packages in `lake-manifest.json`; the Mathlib revision is
 `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 The Python checks and notebook now have a reproducible environment in
 `python/pyproject.toml` and `python/uv.lock`, including NumPy 2.5.4,
-SciPy 1.18.1 and Matplotlib 3.11.2. `./make.py setup` installs that lockfile,
-and `./make.py test` runs the repository's existing `kappa.py` tests.
+SciPy 1.18.1 and Matplotlib 3.11.2. `./run.py setup` installs that lockfile,
+and `./run.py test` runs the repository's existing `kappa.py` tests.
 All 27 tests passed; all 11 notebook code cells also executed successfully.
 
 The 105 Lean modules now use the module system, with public imports and
@@ -429,12 +429,12 @@ limitations. No paper is promoted to complete by this upgrade.
 | Check on Lean/Mathlib 4.35.0 | Result |
 | --- | --- |
 | Default `lake build` | **ok**, 3892 jobs; no warnings or errors |
-| `./make.py audit` | **ok**, 1279 declarations, 1096 theorem declarations, zero non-core axioms |
+| `./run.py audit` | **ok**, 1279 declarations, 1096 theorem declarations, zero non-core axioms |
 | Compiled-sorry scanner scope | 1279 declarations, including 534 private declarations |
 | Audit imports versus the source tree | All 104 other modules explicitly imported |
-| `./make.py index` | **ok**, 105 modules, 593 named theorems, zero sorry/vacuous/placeholder markers |
-| `./make.py forbidden` | **ok** |
-| `./make.py test` | **ok**, 27 tests, no skips |
+| `./run.py index` | **ok**, 105 modules, 593 named theorems, zero sorry/vacuous/placeholder markers |
+| `./run.py forbidden` | **ok** |
+| `./run.py test` | **ok**, 27 tests, no skips |
 | Notebook execution | **ok**, all 11 code cells |
 | `dt refresh project` and `dt status` | **ok**, project/Mathlib/core current; 433152 indexed declarations |
 

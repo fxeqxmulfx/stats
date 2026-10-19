@@ -36,7 +36,7 @@ Implementation:
     * `n_g_of_n_nu`              - algebraic inverse of `n_nu`.
 
 Run tests:
-    ./make.py test
+    ./run.py test
 """
 
 from __future__ import annotations

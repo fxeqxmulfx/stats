@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Project tasks: one entry point for the Lean tree and the Python lab.
 
-    ./make.py <task> [arguments]
+    ./run.py <task> [arguments]
 
 Lean
     lean                          build the tree (lake build)
