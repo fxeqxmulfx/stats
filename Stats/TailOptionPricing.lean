@@ -145,6 +145,9 @@ public import Stats.EpistemicUncertainty.GammaCompoundLaw
 public import Stats.EpistemicUncertainty.GammaCompoundDensity
 public import Stats.EpistemicUncertainty.GammaCompoundIntegral
 public import Stats.Probability.StudentDensity
+public import Stats.Probability.StudentSurvival
+public import Stats.Probability.StudentDensityAsymptotic
+public import Stats.Probability.StudentTailAsymptotic
 public import Stats.EpistemicUncertainty.GammaCompoundStudentForm
 public import Stats.EpistemicUncertainty.GammaCompoundStudent
 public import Stats.EpistemicUncertainty.GammaCompoundMomentDomain

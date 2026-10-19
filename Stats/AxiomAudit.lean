@@ -174,6 +174,9 @@ import all Stats.EpistemicUncertainty.GammaCompoundLaw
 import all Stats.EpistemicUncertainty.GammaCompoundDensity
 import all Stats.EpistemicUncertainty.GammaCompoundIntegral
 import all Stats.Probability.StudentDensity
+import all Stats.Probability.StudentSurvival
+import all Stats.Probability.StudentDensityAsymptotic
+import all Stats.Probability.StudentTailAsymptotic
 import all Stats.EpistemicUncertainty.GammaCompoundStudentForm
 import all Stats.EpistemicUncertainty.GammaCompoundStudent
 import all Stats.EpistemicUncertainty.GammaCompoundMomentDomain

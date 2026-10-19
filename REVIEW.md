@@ -2970,6 +2970,42 @@ The new module has 183 lines. The actual outcome model, equality
 boundaries, corrected finite-mean hypothesis and concrete proper
 counterexample were reread beside the local Section VI claims.
 
+### 2026-10-19: actual Student power-law tails and regular variation
+
+[StudentSurvival.lean](Stats/Probability/StudentSurvival.lean) expresses
+actual Student event probabilities as real density integrals. Independent
+density L1 and continuity give the actual survival derivative minus the
+density, strict positivity at every threshold, and survival tending to
+zero. Reflection of actual event probabilities proves equality of the
+two tails at thresholds reflected about the location.
+
+[StudentDensityAsymptotic.lean](Stats/Probability/StudentDensityAsymptotic.lean)
+factors the outcome square out of the conventional density's power base.
+The remaining base tends to `1/(nu*s^2)`, proving that the actual density
+times `x^(nu+1)` tends to an explicit positive finite coefficient D.
+The coefficient is independent of location; the density tends to zero.
+
+[StudentTailAsymptotic.lean](Stats/Probability/StudentTailAsymptotic.lean)
+uses the actual survival derivative and L'Hopital against `x^(-nu)`.
+The actual survival divided by `x^(-nu)` tends to `D/nu>0`, for every
+positive df and scale, including cases without finite outcome means.
+Both actual tails are regularly varying with index `-nu`. A larger-df
+Student right tail divided by any smaller-df Student right tail tends
+to zero, independently of location and positive scale; an eventual
+strict tail-probability comparison follows.
+
+Verification: all 4,175 default-build jobs pass without warnings. The
+audit checks 2,625 declarations and 2,276 theorems with zero non-core
+axioms. The index records 245 modules and 1,346 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,491 previous
+indexed names and types are preserved, with 25 additions and no
+duplicates; the audit imports all 243 other `Stats/` modules.
+The new modules have 151, 152 and 161 lines. Their actual probabilities,
+power and density exponents, positive coefficients, two-sided reflection
+and strict df comparison were checked beside local Section VI. The
+paper's matched variance-parameter composition remains in EU-32.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -5076,9 +5112,17 @@ monotonicity remain separately tracked in EU-32.
 
 The source sets $α=1/(exp(S²)-1)$ and draws a heavier-tail conclusion.
 
-**Missing:** the parameter monotonicity theorem, the Student survival
-asymptotic and their composition with EU-31. At $S²=0$ the parameter formula
-also requires a limiting interpretation.
+`studentMeasure_survival_div_rpow_tendsto` proves the actual Student
+right survival is asymptotic to a positive explicit coefficient times
+`x^(-nu)`. Actual reflected left-tail probabilities have the same
+coefficient and exponent. Both tails are proved regularly varying,
+and `studentMeasure_survival_ratio_tendsto_zero` proves actual strict
+tail domination when df decreases, at arbitrary locations and scales.
+The actual normalized compound/Student identification is proved in EU-31.
+
+**Missing:** the matched variance-parameter monotonicity theorem and
+its composition with these actual tail results. At $S²=0$ the parameter
+formula also requires a limiting interpretation.
 
 ### EU-33. Exponential–Gamma, Gamma–Gamma and Poisson–Gamma extensions — not ok
 
