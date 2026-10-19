@@ -21,7 +21,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual Gaussian hierarchies, moments and bounds, weak limit, log remainders, corrected iid lognormal CLT, actual Normal–Lognormal compound density and kurtosis, Gamma/lognormal tails and exponential moments, corrected actual Normal–Gamma/Student law and sharp moments, actual Student tails and epistemic-variance tail comparison, actual matched Gamma Gaussian boundary limit | Infinite-law and higher-moment questions, numerical claims, maximum-domain claims, Gamma approximation bound |
-| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum, normalized Fréchet weak limit and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
+| [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum, normalized Fréchet weak limit and Beta hidden-mass law; general-p hidden-moment density with support/Jacobian, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Fréchet density approximation and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
@@ -3154,6 +3154,45 @@ audit. The new files have 158 and 190 lines. Their actual iid law,
 sample-size normalization, positive-index domain, supported CDFs and
 finite mismatch were reread beside the local Proposition 1 and proof.
 
+### 2026-10-19: derive the actual finite general-p hidden-moment density
+
+[PositivePower.lean](Stats/Probability/PositivePower.lean) proves the
+positive-axis scaled-power inverse, derivative, increasing behavior,
+event transformation and finite support relation.
+[PowerPushforward.lean](Stats/Probability/PowerPushforward.lean) applies
+the monotone one-dimensional Jacobian theorem to obtain whole-measure
+real-density change of variables. An inverse derivative unbounded
+near zero needs no extra restriction or assumed endpoint L1.
+
+[PowerBeta.lean](Stats/Probability/PowerBeta.lean) derives the actual
+density of `C*H^r` under the independently normalized Beta(1,n) law.
+It proves the explicit finite kernel on `(0,C)`, nonnegativity, strict
+interior positivity, normalization, L1 and integral one.
+[MomentDensity.lean](Stats/HiddenMoments/MomentDensity.lean) identifies
+the genuine iid hidden p-th moment with that density at
+`C=alpha*l^p/(alpha-p)` and `r=(alpha-p)/alpha`.
+All positive population scales/indices and every real `p<alpha` are
+covered, including negative moment orders. The actual random variable's
+finite support is also proved directly from the actual sample maximum
+and Eq. 2, independently of the density definition.
+
+This completes the exact finite density, support and Jacobian part
+of HM-06. The source's printed exponential factor uses a Frechet
+substitution and remains a separate approximation claim. Every paper
+verdict remains not ok.
+
+Verification: all 4,188 build jobs pass without warnings. The audit
+checks 2,754 declarations and 2,390 theorems with zero non-core axioms.
+The regenerated index has 258 modules and 1,445 named theorems, with
+zero sorry, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,594 previous
+indexed names and types are preserved, with 40 additions and no
+duplicates; the audit imports all 256 other Stats modules.
+The four new modules have 155, 157, 150 and 150 lines. The exact
+finite factor, scale constant, real-order domain, support endpoints
+and actual law equality were reread beside local Proposition 1 and
+its Eq. 2 transformation.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -5435,19 +5474,28 @@ printed transformed density; HM-06 tracks that separate calculation.
 
 ### HM-06. Proposition 1: density of the hidden p-th moment — not ok
 
-There is no Lean probability-law theorem for the density printed in
-Proposition 1.
-
-HM-04 supplies the actual exact maximum law.
-
 The actual general-p hidden moment is now a measurable integrable random
 variable, with Eq. 2 proved at the actual random maximum almost surely.
 `paretoHiddenMoment_map_beta_rpow` proves its genuine law as a scaled
 power pushforward of the normalized Beta(1,n) measure.
 
-**Missing:** the explicit density and its Jacobian/support calculation,
-and a justified Fréchet approximation for the printed density. The exact
-pushforward and its actual expectation are now proved.
+`paretoHiddenMoment_map_density` identifies that actual law with its
+explicit finite density. For `C=alpha*l^p/(alpha-p)` and
+`r=(alpha-p)/alpha`, the corrected PDF is
+`n/(r*C)*(z/C)^(1/r-1)*(1-(z/C)^(1/r))^(n-1)` on `(0,C)`, zero elsewhere.
+The inverse, its derivative and the support transformation are proved
+before applying the monotone one-dimensional Jacobian theorem.
+This covers every real `p<alpha`, including an inverse derivative
+unbounded near zero. Normalization, nonnegativity, L1 and integral one
+are independently verified from the actual Beta population.
+The actual hidden-moment variable's support `(0,C)` is also proved
+directly from the actual sample maximum and Eq. 2.
+
+The printed exponential factor comes from a Fréchet-model substitution;
+it is not the finite Beta factor in this proved density.
+
+**Missing:** a justified Fréchet approximation for the printed density.
+The actual finite density, support, Jacobian and expectation are proved.
 
 ### HM-07. Remark 1: sample survival ratio is exponential — not ok literally
 
