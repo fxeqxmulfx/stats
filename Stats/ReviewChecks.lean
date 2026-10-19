@@ -4,6 +4,13 @@ module
   Reproducible certificates for the semantic issues described in REVIEW.md.
   These theorems describe the current definitions; they do not validate the
   corresponding probabilistic claims in the papers.
+
+  Source: Taleb, arXiv:1802.05495v3, Table I's Pareto row and incomplete-Beta
+  footnote, Definition 1, "Equivalence for stable distributions", and the
+  positive-size criterion `md` in "Practical significance for sample
+  sufficiency". The historical zero-size defect was in this repository;
+  the paper already excludes zero. Constant MAD functions below are
+  synthetic checks of the definitions, without a distributional claim.
 -/
 public import Stats.Kappa.TableI
 public import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
@@ -122,5 +129,44 @@ theorem n_min_unit_mad_eq_three :
 #print axioms legacy_n_min_eq_zero_of_nonneg
 #print axioms n_min_zero_mad_eq_one
 #print axioms n_min_unit_mad_eq_three
+
+/-! Concrete witnesses for every diagnostic theorem's hypotheses. -/
+
+example : TailOptionPricing.incompleteBeta (1 / 2) (-2) (1 - 2) = 0 :=
+  incompleteBeta_pareto_eq_zero (α := 2) (by norm_num) (by norm_num) (by norm_num)
+
+example : TailOptionPricing.paretoIntegrand 2 0 = 0 :=
+  paretoIntegrand_eq_zero (by norm_num) (by norm_num)
+
+example : TailOptionPricing.paretoRatio 2 = 0 :=
+  paretoRatio_eq_zero (by norm_num)
+
+example : TailOptionPricing.paretoKappa 2 = 2 :=
+  paretoKappa_eq_two (by norm_num)
+
+example : legacyNMin (fun _ => 1) (fun _ => 1) 1 = 0 :=
+  legacy_n_min_eq_zero_of_nonneg (by norm_num [TailOptionPricing.sampleMeanMAD])
+
+/-! Reference curves witness the algebraic hypotheses, not probability laws. -/
+
+example : TailOptionPricing.kappa (fun k => Real.sqrt k) 1 2 = 0 :=
+  TailOptionPricing.kappa_gaussian (c := 1) (by norm_num)
+    (by intro k _; simp) (by norm_num) (by norm_num)
+
+example : TailOptionPricing.kappa (fun k => (k : ℝ)) 1 2 = 1 :=
+  TailOptionPricing.kappa_cauchy (c := 1) (by norm_num)
+    (by intro k _; simp) (by norm_num) (by norm_num)
+
+example : TailOptionPricing.kappa (fun k => (k : ℝ) ^ ((1 : ℝ) / (3 / 2))) 1 2 =
+    2 - (3 : ℝ) / 2 :=
+  TailOptionPricing.kappa_stable_invariance (c := 1) (ᾱ := 3 / 2)
+    (by norm_num) (by norm_num) (by intro k _; simp) (by norm_num) (by norm_num)
+
+example : TailOptionPricing.n_nu 30 0 = 30 :=
+  TailOptionPricing.n_nu_gaussian 30 (by norm_num)
+
+-- The singular parameter is a value of the total formula, not a sample-size claim.
+example : TailOptionPricing.n_nu 30 1 = 1 := by
+  norm_num [TailOptionPricing.n_nu]
 
 end StatsReview

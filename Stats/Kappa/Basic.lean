@@ -11,11 +11,16 @@ module
 
     1. Abstract κ-definition and ratio identity.
     2. Stable-basin invariance: `M(n) = c · n^(1/ᾱ)` ⇒ `κ(n₀, n) = 2 − ᾱ`.
-    3. Effective stable index `ᾱ` (paper Eq. 5) and the Gaussian /
-       Cauchy specialisations (`ᾱ = 2`, `ᾱ = 1`).
-    4. Sample-size translation `n_ν` (paper Eq. 7).
+    3. Effective stable index `ᾱ` (paper Eq. 5), square-root and linear
+       reference curves (`ᾱ = 2`, `ᾱ = 1`).
+    4. The paper's sample-size power expression `n_ν` (Eq. 7).
     5. κ additive decomposition (paper Eq. 2): telescoping the
        partial log-ratios.
+
+  The input `M` is a supplied real function. Identifying it with the actual
+  MAD of an iid sum is a separate probability theorem. In particular, the
+  linear reference curve is not a finite MAD for a Cauchy law: that law
+  lacks the finite mean required by the paper's Definition 1.
 
   See `Stats/Kappa.lean` for the umbrella module.
 -/
@@ -32,12 +37,14 @@ namespace TailOptionPricing
 
 /-! ## Abstract κ-metric. -/
 
-/-- **κ-metric (paper Eq. 1).**  For an MAD oracle `M : ℕ → ℝ` (the mean
-    absolute deviation of the iid partial sum), the κ-metric at base
+/-- **Abstract κ expression** from Taleb, arXiv:1802.05495v3, Definition 1.
+    For a supplied function `M : ℕ → ℝ`, the expression at base
     `n₀` and horizon `n` is
         κ(n₀, n) := 2 − log(n / n₀) / log(M(n) / M(n₀)).
     Encoded via `log(a) − log(b) = log(a/b)` for `a, b > 0` to keep the
-    division explicit at the syntactic level. -/
+    division explicit at the syntactic level. Its probability interpretation
+    requires `M` to be the genuine MAD of an iid partial sum. Lean's total
+    logarithm and division also give values outside the paper's domain. -/
 noncomputable def kappa (M : ℕ → ℝ) (n₀ n : ℕ) : ℝ :=
   2 - (Real.log n - Real.log n₀) / (Real.log (M n) - Real.log (M n₀))
 
@@ -55,13 +62,15 @@ theorem kappa_eq_ratio {M : ℕ → ℝ} {n₀ n : ℕ}
 
 /-! ## Stable-basin invariance: `M(n) = c · n^(1/ᾱ)` ⇒ `κ = 2 − ᾱ`. -/
 
-/-- **Stable invariance (paper Eq. 6).**  If the MAD scales as
+/-- **Power-curve identity**, corresponding to Taleb, arXiv:1802.05495v3,
+    subsection "Equivalence for stable distributions". If a supplied function
+    satisfies
         `M(n) = c · n^(1/ᾱ)`
-    for some scale `c > 0` and stable index `ᾱ > 0`, then the κ-metric
-    is *strike-invariant*:  `κ(n₀, n) = 2 − ᾱ` for any `n > n₀ ≥ 1`.
-    This is the stable-basin baseline — `ᾱ = 2` recovers the Gaussian
-    `κ = 0`; `ᾱ = 1` recovers the Cauchy `κ = 1`; and `ᾱ ∈ (1, 2)`
-    captures the pre-asymptotic Pareto regime. -/
+    for `c > 0` and `ᾱ > 0`, then `κ(n₀, n) = 2 − ᾱ` for every
+    `n > n₀ ≥ 1`. This proves an algebraic identity under `hM_form`;
+    deriving that hypothesis from an actual distribution remains separate.
+    A finite-mean stable-law interpretation requires index greater than 1,
+    despite the paper including the boundary index 1 in this subsection. -/
 theorem kappa_stable_invariance {M : ℕ → ℝ} {c ᾱ : ℝ}
     (hc : 0 < c) (hᾱ : 0 < ᾱ)
     (hM_form : ∀ k : ℕ, 0 < k → M k = c * (k:ℝ) ^ ((1:ℝ) / ᾱ))
@@ -147,9 +156,10 @@ theorem kappa_stable_invariance_alphaBar {M : ℕ → ℝ} {c α : ℝ}
     kappa M n₀ n = 2 - stableAlphaBar α :=
   kappa_stable_invariance hc (stableAlphaBar_pos hα) hM_form hn₀ h_lt
 
-/-- **Gaussian case (ᾱ = 2).**  When `M(n) = c · √n`, the κ-metric is
-    constantly `0` — the Gaussian basin has the "ideal" rate of
-    convergence. -/
+/-- **Square-root reference curve (ᾱ = 2).** Taleb, arXiv:1802.05495v3,
+    subsection "Equivalence for stable distributions". Under the supplied
+    identity `M(n) = c · √n`, the abstract κ expression is zero.
+    The MAD law for actual Gaussian iid sums is not established here. -/
 theorem kappa_gaussian {M : ℕ → ℝ} {c : ℝ}
     (hc : 0 < c) (hM_form : ∀ k : ℕ, 0 < k → M k = c * Real.sqrt k)
     {n₀ n : ℕ} (hn₀ : 0 < n₀) (h_lt : n₀ < n) :
@@ -163,8 +173,11 @@ theorem kappa_gaussian {M : ℕ → ℝ} {c : ℝ}
     hM_form' hn₀ h_lt
   linarith
 
-/-- **Cauchy case (ᾱ = 1).**  When `M(n) = c · n`, the κ-metric is
-    constantly `1` — the Cauchy basin saturates the κ-metric (no LLN). -/
+/-- **Linear reference curve (ᾱ = 1).** Taleb, arXiv:1802.05495v3,
+    subsection "Equivalence for stable distributions", includes index 1.
+    This theorem only proves that `M(n) = c · n` gives abstract κ equal to 1.
+    Its historical name does not identify `M` with a Cauchy MAD: a Cauchy
+    law lacks the finite mean required by the paper's Definition 1. -/
 theorem kappa_cauchy {M : ℕ → ℝ} {c : ℝ}
     (hc : 0 < c) (hM_form : ∀ k : ℕ, 0 < k → M k = c * (k:ℝ))
     {n₀ n : ℕ} (hn₀ : 0 < n₀) (h_lt : n₀ < n) :
@@ -178,27 +191,27 @@ theorem kappa_cauchy {M : ℕ → ℝ} {c : ℝ}
     hM_form' hn₀ h_lt
   linarith
 
-/-! ## n_ν approximation (paper Eq. 7).
+/-! ## The paper's sample-size power expression.
 
-    Given a target distribution with `κ_{1, n_g}` matching a Gaussian
-    sample of size `n_g`, the required sample size `n_ν` to achieve
-    equivalent variance reduction is approximately
-        n_ν = n_g^(1/(1 − κ_{1, n_g})).
-    Closed form follows by matching the stable-scaling `M(n)/M(1)
-    = n^(1/ᾱ)` and using `ᾱ = 2 − κ`. -/
+    Taleb, arXiv:1802.05495v3, subsection "Practical significance for sample
+    sufficiency", display `simpleequiv`, proposes `n_ν = n_g^(1/(1 − κ_g))`.
+    The actual criterion in display `md` compares mean absolute deviations
+    of sample means at positive integer sizes. The algebra below does not
+    identify this power expression with that minimum or bound its error. -/
 
-/-- **Required sample size for variance equivalence (Eq. 7).**  Under
-    the stable approximation, a target distribution with `κ = κ_g` at
-    Gaussian baseline `n_g` requires
-        `n_ν := n_g ^ (1 / (1 − κ_g))`
-    summands to match the Gaussian's variance reduction.  Defined for
-    arbitrary `κ_g < 1` (the LLN-regime).  Diverges as `κ_g → 1⁻`. -/
+/-- **The proposed sample-size power expression**, Taleb,
+    arXiv:1802.05495v3, display `simpleequiv`:
+        `n_ν := n_g ^ (1 / (1 − κ_g))`.
+    This is a real-valued formula on supplied parameters. Its connection to
+    the positive-integer minimum `n_min` requires a separate justification.
+    At `κ_g = 1`, Lean's total division gives exponent zero and value one;
+    this is outside the intended `κ_g < 1` regime. -/
 noncomputable def n_nu (n_g : ℕ) (κ_g : ℝ) : ℝ :=
   (n_g : ℝ) ^ ((1:ℝ) / (1 - κ_g))
 
-/-- **`n_nu` recovers Gaussian baseline** at `κ_g = 0`: when the target
-    distribution is Gaussian, no additional summands are required —
-    `n_ν = n_g`. -/
+/-- **The sample-size expression at κ = 0** equals its baseline.
+    This algebraic identity concerns Taleb's display `simpleequiv`
+    (arXiv:1802.05495v3); it does not identify a probability law. -/
 theorem n_nu_gaussian (n_g : ℕ) (_hn_g : 0 < n_g) :
     n_nu n_g 0 = (n_g : ℝ) := by
   unfold n_nu

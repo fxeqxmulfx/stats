@@ -1,33 +1,42 @@
-"""Implementation of Taleb's κ-metric (arXiv:1802.05495v3) with tests.
+"""Numerical κ estimators and reference-curve checks (arXiv:1802.05495v3).
 
-Definition (paper Eq. 1, book Chapter 3):
+Definition 1 of the paper, for iid variables with finite mean:
 
     κ(n0, n) := 2 − log(n / n0) / log(M(n) / M(n0)),
 
 where M(k) := E|S_k − k·E[X]|, S_k = X_1 + … + X_k, X_i iid ~ X.
+The logarithmic ratio requires n > n0 >= 1, positive MADs and a nonzero
+denominator. A supplied function M is not automatically the MAD of a law.
 
-Formalized properties (Stats.Kappa.*):
-    * kappa_gaussian:          κ = 0 for X ~ N(μ, σ²)  (M(k) = c·√k)
-    * kappa_cauchy:            κ = 1 for Cauchy        (M(k) ∝ k)
-    * kappa_stable_invariance: κ = 2 − ᾱ for α-stable  (ᾱ = min(α, 2))
-    * kappa_upper_bound_iid:   κ ≤ 1 under iid + integrable X + growing MAD
-    * n_nu (paper Eq. 7):      n_ν = n_g^(1/(1 − κ_g)), effective sample size
+Scope of the corresponding Lean results (Stats.Kappa.*):
+    * kappa_gaussian:          supplied M(k) = c·√k gives κ = 0.
+    * kappa_cauchy:            supplied M(k) = c·k gives κ = 1.
+    * kappa_stable_invariance: supplied M(k) = c·k^(1/ᾱ) gives κ = 2 − ᾱ.
+    * kappa_upper_bound_iid:   κ ≤ 1 for the actual sum MAD under its
+                               integrability and growth hypotheses.
+    * n_nu:                   algebra of the paper's proposed power formula;
+                               its actual minimum-size interpretation is open.
+
+The first three statements assume the reference curve; they do not derive
+it from a distribution. A Cauchy law has no finite mean or finite MAD for
+Definition 1. Its linear reference curve is only an algebraic benchmark.
+Bootstrap tests are numerical checks, not proofs of distributional laws.
 
 Implementation:
     * `mad_of_iid_sum`           - bootstrap estimate of M(k) with centering
                                    at k·plug-in-mean (matches the formal
-                                   definition; see note2.tex §4.2).
+                                   finite-mean target in Definition 1).
     * `mad_of_iid_sum_layercake` - alternative estimator via layer-cake
                                    E|Z| = ∫ P(|Z|>t) dt; cross-check.
     * `kappa`                    - main bootstrap κ estimator.
     * `kappa_with_ci`            - outer bootstrap for CI on κ̂.
     * `kappa_from_M`             - deterministic check of the definition on
                                    a closed-form k → M(k).
-    * `n_nu`                     - effective ν-sample size (paper Eq. 7).
+    * `n_nu`                     - proposed power expression (`simpleequiv`).
     * `n_g_of_n_nu`              - algebraic inverse of `n_nu`.
 
 Run tests:
-    python kappa.py
+    ./make.py test
 """
 
 from __future__ import annotations
@@ -102,10 +111,14 @@ def mad_of_iid_sum_layercake(
 ) -> float:
     """Alternative estimate of M(k) via the layer-cake formula.
 
-    Uses E|Z| = ∫_0^∞ P(|Z| > t) dt (theorem `mad_eq_two_tail_integral`).
+    Uses the layer-cake identity E|Z| = ∫_0^∞ P(|Z| > t) dt. The related
+    Lean theorem `MadLayerCake.mad_eq_two_tail_integral` integrates the
+    positive centered tail and multiplies by two; this implementation
+    instead integrates the survival function of the absolute deviation.
     The empirical survival of |S_k − k·μ| over B bootstrap samples is
-    integrated against a trapezoidal t-grid. Same expected value as
-    `mad_of_iid_sum`; useful as a cross-check.
+    integrated against a finite trapezoidal t-grid. This approximates the
+    direct empirical MAD in `mad_of_iid_sum`; finite-grid quadrature error
+    remains, so the two estimates need not have the same expected value.
 
     Args:
         x: One-dimensional sample.
@@ -265,16 +278,19 @@ def kappa_from_M(M_fun: Callable[[int], float], n0: int, n: int) -> float:
 
 
 def n_nu(n_g: float, kappa_g: float) -> float:
-    """Effective ν-sample size matching a Gaussian baseline (paper Eq. 7).
+    """The paper's proposed sample-size power expression (`simpleequiv`).
 
     Closed form, formalized as `n_nu` in Stats.Kappa.Basic:
 
         n_ν := n_g ^ (1 / (1 − κ_g)).
 
-    Diverges as κ_g → 1⁻ (no mean ⇒ infinitely many summands needed).
+    This formula is not a computed positive-integer minimum from actual MADs.
+    For fixed n_g > 1 it diverges as κ_g → 1⁻. The Python +∞ return at
+    κ_g >= 1 is a boundary convention; Lean's total real-valued `n_nu`
+    instead evaluates to 1 at κ_g = 1.
 
     Args:
-        n_g: Gaussian baseline sample size.
+        n_g: Positive baseline sample size.
         kappa_g: κ-value at the n_g anchor; requires κ_g < 1 for a finite
             answer.
 
@@ -293,8 +309,10 @@ def n_g_of_n_nu(n_nu_val: float, kappa_g: float) -> float:
 
         n_g_of_n_nu n_ν κ_g := n_ν ^ (1 − κ_g).
 
-    Round-trip identity (theorem `n_g_of_n_nu_n_nu` in
-    Stats.Kappa.Basic): `n_g_of_n_nu(n_nu(n_g, κ), κ) = n_g`.
+    On positive finite inputs with κ < 1, the round-trip identity corresponds
+    to theorem `n_g_of_n_nu_n_nu` in Stats.Kappa.Basic:
+    `n_g_of_n_nu(n_nu(n_g, κ), κ) = n_g`. The Python infinity convention at
+    κ >= 1 is outside this round-trip statement.
 
     Args:
         n_nu_val: ν-sample size.
@@ -607,7 +625,7 @@ class TestKappaBootstrap(unittest.TestCase):
 
 class TestKappaLayerCakeConsistency(unittest.TestCase):
     """The layer-cake estimator should agree with the direct MC estimate
-    (same expected value, different numerical scheme)."""
+    within a tolerance allowing for finite-grid quadrature error."""
 
     def test_layercake_close_to_direct_mc(self):
         """Direct MC and layer-cake estimates agree to 1% relative error."""

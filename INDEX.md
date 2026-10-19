@@ -139,18 +139,18 @@ count or in `#print axioms`; see [Gaps](#gaps).
 
 **[Stats.RegularVariation](Stats/RegularVariation.lean)** — 79 lines, no indexed declarations
 
-**[Stats.ReviewChecks](Stats/ReviewChecks.lean)** — 126 lines
+**[Stats.ReviewChecks](Stats/ReviewChecks.lean)** — 172 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`incompleteBeta_pareto_eq_zero`](Stats/ReviewChecks.lean#L19) | theorem | proved |
-| [`paretoIntegrand_eq_zero`](Stats/ReviewChecks.lean#L41) | theorem | proved |
-| [`paretoRatio_eq_zero`](Stats/ReviewChecks.lean#L53) | theorem | proved |
-| [`paretoKappa_eq_two`](Stats/ReviewChecks.lean#L68) | theorem | proved |
-| [`legacyNMin`](Stats/ReviewChecks.lean#L73) | def |  |
-| [`legacy_n_min_eq_zero_of_nonneg`](Stats/ReviewChecks.lean#L78) | theorem | proved |
-| [`n_min_zero_mad_eq_one`](Stats/ReviewChecks.lean#L87) | theorem | proved |
-| [`n_min_unit_mad_eq_three`](Stats/ReviewChecks.lean#L100) | theorem | proved |
+| [`incompleteBeta_pareto_eq_zero`](Stats/ReviewChecks.lean#L26) | theorem | proved |
+| [`paretoIntegrand_eq_zero`](Stats/ReviewChecks.lean#L48) | theorem | proved |
+| [`paretoRatio_eq_zero`](Stats/ReviewChecks.lean#L60) | theorem | proved |
+| [`paretoKappa_eq_two`](Stats/ReviewChecks.lean#L75) | theorem | proved |
+| [`legacyNMin`](Stats/ReviewChecks.lean#L80) | def |  |
+| [`legacy_n_min_eq_zero_of_nonneg`](Stats/ReviewChecks.lean#L85) | theorem | proved |
+| [`n_min_zero_mad_eq_one`](Stats/ReviewChecks.lean#L94) | theorem | proved |
+| [`n_min_unit_mad_eq_three`](Stats/ReviewChecks.lean#L107) | theorem | proved |
 
 **[Stats.RiskMeasures](Stats/RiskMeasures.lean)** — 42 lines, no indexed declarations
 
@@ -460,37 +460,37 @@ count or in `#print axioms`; see [Gaps](#gaps).
 
 ### `Stats.Kappa`
 
-**[Stats.Kappa.Basic](Stats/Kappa/Basic.lean)** — 460 lines
+**[Stats.Kappa.Basic](Stats/Kappa/Basic.lean)** — 473 lines
 
 | declaration | kind | status |
 | --- | --- | --- |
-| [`kappa`](Stats/Kappa/Basic.lean#L41) | def |  |
-| [`kappa_eq_ratio`](Stats/Kappa/Basic.lean#L47) | theorem | proved |
-| [`kappa_stable_invariance`](Stats/Kappa/Basic.lean#L65) | theorem | proved |
-| [`stableAlphaBar`](Stats/Kappa/Basic.lean#L113) | def |  |
-| [`stableAlphaBar_of_lt`](Stats/Kappa/Basic.lean#L117) | theorem | proved |
-| [`stableAlphaBar_of_ge`](Stats/Kappa/Basic.lean#L121) | theorem | proved |
-| [`stableAlphaBar_le_two`](Stats/Kappa/Basic.lean#L125) | theorem | proved |
-| [`stableAlphaBar_pos`](Stats/Kappa/Basic.lean#L132) | theorem | proved |
-| [`kappa_stable_invariance_alphaBar`](Stats/Kappa/Basic.lean#L143) | theorem | proved |
-| [`kappa_gaussian`](Stats/Kappa/Basic.lean#L153) | theorem | proved |
-| [`kappa_cauchy`](Stats/Kappa/Basic.lean#L168) | theorem | proved |
-| [`n_nu`](Stats/Kappa/Basic.lean#L196) | def |  |
-| [`n_nu_gaussian`](Stats/Kappa/Basic.lean#L202) | theorem | proved |
-| [`n_nu_gt_n_g`](Stats/Kappa/Basic.lean#L210) | theorem | proved |
-| [`n_g_of_n_nu`](Stats/Kappa/Basic.lean#L241) | def |  |
-| [`n_g_of_n_nu_n_nu`](Stats/Kappa/Basic.lean#L246) | theorem | proved |
-| [`n_nu_n_g_of_n_nu`](Stats/Kappa/Basic.lean#L258) | theorem | proved |
-| [`n_nu_bidirectional`](Stats/Kappa/Basic.lean#L274) | theorem | proved |
-| [`sampleMeanMAD`](Stats/Kappa/Basic.lean#L305) | def |  |
-| [`n_min`](Stats/Kappa/Basic.lean#L316) | def |  |
-| [`n_min_le_of_witness`](Stats/Kappa/Basic.lean#L324) | theorem | proved |
-| [`n_min_mem`](Stats/Kappa/Basic.lean#L336) | theorem | proved |
-| [`n_min_pos`](Stats/Kappa/Basic.lean#L344) | theorem | proved |
-| [`n_min_eq_zero_iff`](Stats/Kappa/Basic.lean#L349) | theorem | proved |
-| [`log_MAD_telescope`](Stats/Kappa/Basic.lean#L379) | theorem | proved |
-| [`kappa_decomposition`](Stats/Kappa/Basic.lean#L402) | theorem | proved |
-| [`kappa_decomposition_local`](Stats/Kappa/Basic.lean#L421) | theorem | proved |
+| [`kappa`](Stats/Kappa/Basic.lean#L48) | def |  |
+| [`kappa_eq_ratio`](Stats/Kappa/Basic.lean#L54) | theorem | proved |
+| [`kappa_stable_invariance`](Stats/Kappa/Basic.lean#L74) | theorem | proved |
+| [`stableAlphaBar`](Stats/Kappa/Basic.lean#L122) | def |  |
+| [`stableAlphaBar_of_lt`](Stats/Kappa/Basic.lean#L126) | theorem | proved |
+| [`stableAlphaBar_of_ge`](Stats/Kappa/Basic.lean#L130) | theorem | proved |
+| [`stableAlphaBar_le_two`](Stats/Kappa/Basic.lean#L134) | theorem | proved |
+| [`stableAlphaBar_pos`](Stats/Kappa/Basic.lean#L141) | theorem | proved |
+| [`kappa_stable_invariance_alphaBar`](Stats/Kappa/Basic.lean#L152) | theorem | proved |
+| [`kappa_gaussian`](Stats/Kappa/Basic.lean#L163) | theorem | proved |
+| [`kappa_cauchy`](Stats/Kappa/Basic.lean#L181) | theorem | proved |
+| [`n_nu`](Stats/Kappa/Basic.lean#L209) | def |  |
+| [`n_nu_gaussian`](Stats/Kappa/Basic.lean#L215) | theorem | proved |
+| [`n_nu_gt_n_g`](Stats/Kappa/Basic.lean#L223) | theorem | proved |
+| [`n_g_of_n_nu`](Stats/Kappa/Basic.lean#L254) | def |  |
+| [`n_g_of_n_nu_n_nu`](Stats/Kappa/Basic.lean#L259) | theorem | proved |
+| [`n_nu_n_g_of_n_nu`](Stats/Kappa/Basic.lean#L271) | theorem | proved |
+| [`n_nu_bidirectional`](Stats/Kappa/Basic.lean#L287) | theorem | proved |
+| [`sampleMeanMAD`](Stats/Kappa/Basic.lean#L318) | def |  |
+| [`n_min`](Stats/Kappa/Basic.lean#L329) | def |  |
+| [`n_min_le_of_witness`](Stats/Kappa/Basic.lean#L337) | theorem | proved |
+| [`n_min_mem`](Stats/Kappa/Basic.lean#L349) | theorem | proved |
+| [`n_min_pos`](Stats/Kappa/Basic.lean#L357) | theorem | proved |
+| [`n_min_eq_zero_iff`](Stats/Kappa/Basic.lean#L362) | theorem | proved |
+| [`log_MAD_telescope`](Stats/Kappa/Basic.lean#L392) | theorem | proved |
+| [`kappa_decomposition`](Stats/Kappa/Basic.lean#L415) | theorem | proved |
+| [`kappa_decomposition_local`](Stats/Kappa/Basic.lean#L434) | theorem | proved |
 
 **[Stats.Kappa.CubicStudent](Stats/Kappa/CubicStudent.lean)** — 374 lines
 

@@ -53,6 +53,52 @@ Commented-out LaTeX environments are excluded. Empirical and normative claims
 are identified separately: absence of a Lean model does not establish their
 falsehood.
 
+## Renewed review: first batch (2026-10-19)
+
+This starts a new pass using the Transformer review procedure: compare the
+written statement and every substantive definition with the source, compile
+the certificates, inspect their axioms, and record the remaining probability
+bridges. This batch covers the seven existing diagnostics in
+[Stats/ReviewChecks.lean](Stats/ReviewChecks.lean), the three reference-curve
+theorems and the sample-size expression in
+[Stats/Kappa/Basic.lean](Stats/Kappa/Basic.lean), and their descriptions in
+`kappa.py`. It is not a new complete review of all 593 named theorems.
+
+Reread `papers/arXiv-1802.05495v3/kappa-n-final.tex`: Table I's Pareto entry
+and incomplete-Beta footnote (line 209), Definition 1 (lines 272–287),
+**Equivalence for stable distributions** (lines 342–353), and **Practical
+significance for sample sufficiency**, displays `md` and `simpleequiv`
+(lines 389–397). These are the source locations for K07–K11 and K14 below.
+
+| Checked claim | Assessment in this batch |
+| --- | --- |
+| Pareto Beta/ratio/κ diagnostics | **ok** as certificates about the current definitions. For `α > 1`, each separate Beta integral diverges, so Lean's total integral is zero; the resulting κ expression is 2. **Issue remains:** this is not the actual Pareto MAD or a counterexample to a correctly defined probabilistic κ. |
+| Historical zero-size minimum | **ok** as a certificate of the old repository bug. The paper already requires positive size. The existing zero-MAD and unit-MAD regression theorems check the repaired definition on synthetic functions. |
+| Power, square-root and linear reference curves | **Fixed descriptions:** all three theorems assume `hM_form`. Their parameters are satisfiable, but those witnesses do not establish an iid-sum law. The linear case is not a Cauchy finite-MAD theorem. The paper's finite-mean interpretation needs stable index greater than 1. |
+| Proposed sample-size power formula | **Fixed descriptions:** `n_nu` is the supplied power expression from `simpleequiv`, not a proved minimum or a variance-matching theorem. **Issue remains:** identification with the integer criterion `md`, and an approximation-error bound. |
+| Singular κ = 1 | **ok** as a boundary diagnostic: Lean's total `n_nu 30 1` is 1. Python returns infinity by convention at κ ≥ 1; its documentation now states this difference and restricts its round-trip interpretation to κ < 1. |
+| Finite-grid layer-cake estimator | **Fixed descriptions:** the absolute-tail integral and the centered positive-tail Lean theorem are distinguished. Finite-grid quadrature need not have the direct empirical MAD's expected value. No numerical algorithm or tolerance was changed. |
+
+Ten new Lean examples instantiate the hypotheses with `α = 2`, `z = 1/2`,
+`y = 0`, a nonnegative unit-MAD baseline, and explicit square-root, linear
+and power reference curves. They also check the κ = 0 sample-size identity
+and the κ = 1 boundary value. Together with the two existing concrete
+minimum-size certificates, these exercise the definitions without adding
+distributional assumptions or asserting that synthetic curves are actual MADs.
+The outstanding gaps in K07–K11 and K14 remain open.
+
+Verification for this batch: `lake build Stats.ReviewChecks` compiled the ten
+new examples and printed the axioms of all seven diagnostic theorems; only
+`propext`, `Classical.choice` and `Quot.sound` occur. The default `lake build`
+passed all 3892 jobs without warnings or errors. `./make.py audit` again
+covered 1279 declarations (1096 theorem declarations), with zero non-core
+axioms. `./make.py forbidden` passed, and `./make.py test` passed all 27 tests
+without skips. Comparing Python syntax trees after removing docstrings
+confirms that executable numerical code is unchanged.
+`./make.py index` regenerated 105 modules and 593 named theorems with zero
+sorry, vacuous or placeholder markers. After `dt refresh project`, all 670
+previously indexed public names and their elaborated types are unchanged.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
