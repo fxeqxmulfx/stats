@@ -2685,6 +2685,35 @@ The new module has 156 lines. Its positive-parameter domain, rate
 convention and classification correction were checked against the
 local Section VI density and slower-than-exponential claim.
 
+### 2026-10-19: actual incomplete-Gamma survival and rate/scale formulas
+
+[GammaHazardFormula.lean](Stats/Probability/GammaHazardFormula.lean)
+derives the genuine Gamma survival
+`Gamma(a,r*x)/Gamma(a)` from its actual density by the change of
+variables `t=r*x`. Here the numerator is the existing upper
+incomplete-Gamma Euler integral. Its positivity follows from the
+proved positive survival of a proper unit-rate Gamma population.
+
+The actual hazard in rate parameters is
+`r*(r*x)^(a-1)*exp(-r*x)/Gamma(a,r*x)`.
+Substituting the explicit scale `b=1/r` proves the source's literal
+finite display `exp(-x/b)*(x/b)^(a-1)/(b*Gamma(a,x/b))`.
+The reciprocal limiting hazard is valid for this scale b, while the
+limit in the source's earlier density convention is the rate r.
+Positive shape two, rate three and scale three examples exercise
+both actual laws and all parameter conditions.
+
+Verification: all 4,162 default-build jobs pass without warnings. The
+audit checks 2,466 declarations and 2,125 theorems with zero non-core
+axioms. The index records 232 modules and 1,237 named theorems, with
+zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,391 previous
+indexed names and types are preserved, with eight additions and no
+duplicates; the audit imports all 230 other `Stats/` modules.
+The new module has 150 lines. Its Euler integral, threshold rescaling,
+scale prefactor and explicit rate/scale distinction were reread beside
+the local Section VI density and hazard displays.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4693,10 +4722,17 @@ and a proper `Gamma(1,rate=2)` counterexample formally refute the
 source's heavy-tail classification under the standard no-positive-
 exponential-moment criterion. The density's beta is consistently a rate.
 
-**Missing:** the resulting Gamma/lognormal tail-probability domination,
-their maximum-domain claims, and the Gamma incomplete-Gamma display in
-the stated rate convention. Lognormal nonintegrability of every positive
-exponential moment is also not yet formal.
+`gammaMeasure_survival_eq_incompleteGamma` derives the actual survival
+`Gamma(alpha,beta*x)/Gamma(alpha)` by scaling the genuine Euler tail
+integral. `gammaHazard_eq_incompleteGamma` proves the corresponding
+rate formula. `gammaHazard_scale_eq_incompleteGamma` recovers the
+source's literal finite display for the actual rate `1/b`, making
+its scale b explicit. `gammaHazard_scale_tendsto_inverse` proves
+the reciprocal limit for that scale convention.
+
+**Missing:** the resulting Gamma/lognormal tail-probability domination
+and their maximum-domain claims. Lognormal nonintegrability of every
+positive exponential moment is also not yet formal.
 
 ### EU-30. Gamma as a lower bound for Lognormal, then for the outcome mixture — not ok
 
