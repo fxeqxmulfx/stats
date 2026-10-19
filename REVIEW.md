@@ -1343,7 +1343,7 @@ The old docstring claiming that general-scale positivity follows from
 the unit-scale factorization has been corrected. The scalar derivative
 theorems and their public types are preserved. This refutation concerns
 the printed `A-B` expression; Definition 5's linear-payoff gap is `A-K*B`.
-Its corrected sensitivity theorem remains the separate repair in BF-20.
+The following repair supplies its corrected actual sensitivity theorem in BF-20.
 
 **Verification:** all 3980 default-build jobs pass without warnings.
 The standalone audit covers 1814 declarations and 1556 theorem declarations,
@@ -1354,6 +1354,80 @@ markers. All 27 Python tests, the forbidden check and whitespace check pass.
 The refreshed declaration index has 957 distinct public names: all 954
 previous names and types are unchanged, with three additions and no
 duplicate names. The new counterexample module is 50 lines.
+
+### Correct the actual Gaussian payoff gap and its scale sensitivity
+
+Reread `papers/arXiv-1907.11162v3/forecastingsubmissionjournalV3ArXiv.tex`,
+Definition 5 (lines 342–346), the `g(x)=x` restriction (line 351), and
+Remark 1's Gaussian argument and Eq. 8 (lines 463–475). Definition 5
+requires `I2=K*P(X>K)`. The subsequent Gaussian proof subtracts the
+unweighted probability, so its `A-B` derivative is not the derivative
+of the defined `A-K*B` gap. This repair proves the corrected claim and
+keeps the printed-expression counterexample separate.
+
+[GaussianScale.lean](Stats/BinaryForecasts/GaussianScale.lean) constructs
+`gaussianScaleLaw sigma` by pushing the actual standard Gaussian through
+`x -> sigma*x`. It is proved to be the actual centered Gaussian with
+variance `sigma^2`, a probability measure with an L1 observation. On
+positive scales its actual survival is `Q(K/sigma)` and its actual first
+tail moment is `sigma*phi(K/sigma)`, for every finite real threshold.
+These follow from measure-map integration and the actual standard
+Gaussian moment, not from definitions assigning a desired moment value.
+
+`gaussianPayoffGap` is defined by the two actual law quantities in
+Definition 5. It equals the genuine restricted excess expectation
+`integral_{X>K}(X-K) dnu`, is nonnegative, and has the proved closed form
+
+```text
+G(K,sigma) = sigma*phi(K/sigma) - K*Q(K/sigma).
+```
+
+The written density `I1-I2`, with its threshold factor retained, is
+identified with this actual gap for `sigma>0`, `K>=0`. The source itself
+uses positive thresholds. At positive scales the actual-law closed form
+permits every real threshold; normalization and L1 hold for all real
+scales, including the separate zero-scale degenerate Gaussian construction.
+
+[GaussianGap.lean](Stats/BinaryForecasts/GaussianGap.lean) differentiates
+the actual gap by transferring the proved closed form on a neighborhood
+of each positive scale. It proves
+
+```text
+partial_sigma G = phi(K/sigma),
+partial_sigma^2 G = K^2*phi(K/sigma)/sigma^3.
+```
+
+Both first and second derivatives of the original written density gap
+are also proved on its stated domain. The actual gap is strictly
+increasing on positive scales for every finite threshold. Its second
+derivative is strictly positive for `K>0`, `sigma>0`, giving strict
+convexity in positive scale. The two-scale Jensen inequality compares
+the actual gap at the arithmetic mean scale with the average of the
+two actual gaps, strictly when the positive scales differ.
+
+Concrete certificates use `K=3`, `sigma=5`, variance 25 and scales
+three and seven around their mean five. The actual second derivative
+is `(9/125)*phi(3/5)>0`. A joint certificate checks the already refuted
+printed sensitivity is negative at the same parameters. Further
+examples identify the actual excess integral, density/law gap,
+normalization, L1 and each derivative hypothesis family.
+
+This establishes the corrected Gaussian linear-payoff sensitivity in
+BF-20 and its two-scale functional Jensen consequence. The general
+uncertain-parameter probability model, mixture-law interpretation and
+higher-kurtosis assertions remain in BF-18; they are not inferred from
+the scalar convexity certificate alone.
+
+**Verification:** all 3982 default-build jobs pass without warnings.
+The standalone audit covers 1857 declarations and 1597 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 179 other
+Stats modules, including private declarations. The regenerated index has
+181 modules and 877 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 976 distinct public names: all 957
+previous names and types are unchanged, with nineteen additions and no
+duplicate names. The scale-law and gap-sensitivity modules are 139 and
+177 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -2548,11 +2622,15 @@ mean constraint.
 
 Positive second derivatives and a finite two-point Jensen example are proved
 in narrower settings.
+For the corrected Gaussian linear-payoff gap, BF-20 now proves actual
+normalization, L1, both derivatives, strict convexity and a two-scale
+Jensen inequality for genuine actual-law expectations.
 
 **Missing:** a probability model for the uncertain parameter, integrability,
-convexity of the actual target quantity, and Jensen's inequality applied to
-that parameter law. Higher kurtosis alone does not establish every asserted
-comparison of payoff gaps.
+identification with the parameter mixture law, and Jensen's inequality
+applied to that law beyond the proved two-scale functional comparison.
+General distribution families and higher-kurtosis comparisons require
+their own hypotheses and proofs.
 
 ### BF-19. Eq. 8: displayed Gaussian derivative expression — ok for A − B
 
@@ -2565,17 +2643,30 @@ $φ(K/σ)((K-1)K³-(K-2)Kσ²)/σ⁵$.
 **Missing:** nothing for the derivative of the displayed $A-B$ expression.
 The integral closures are proved separately in BF-13.
 
-### BF-20. Eq. 8 as a proof about the originally defined I₁ − I₂ — not ok
+### BF-20. Corrected actual Gaussian I₁ − I₂ sensitivity — ok
 
 For the linear payoff, the definition gives $I₂=K B$, whereas the proof in the
 source and the existing Gaussian derivative module subtract $B$.
 
-**Missing:** restore the factor $K$, identify the actual gap as $A-KB$, and
-prove its second derivative and the stochastic-parameter comparison.
-The corrected derivative simplifies analytically to
-$K²φ(K/σ)/σ³$, which is positive for $K>0$, $σ>0$.
-The existing derivative lemmas can support this repair; the complete corrected
-gap theorem has not been assembled.
+`gaussianScaleLaw` is now the actual normalized `N(0,sigma^2)` law,
+constructed as a standard-Gaussian pushforward. Its L1 observation and
+actual tail moments are proved. `gaussianPayoffGap` is the actual gap
+`A-K*B`, also identified with the actual restricted excess expectation
+and with the original density `I1-I2` on `sigma>0`, `K>=0`.
+
+`gaussianPayoffGap_hasDerivAt` and
+`gaussianPayoffGap_deriv_hasDerivAt` prove the corrected first and second
+derivatives `phi(K/sigma)` and `K^2*phi(K/sigma)/sigma^3`.
+Corresponding derivatives of the written density gap are proved as well.
+The second derivative is positive for positive threshold and scale;
+strict convexity and a strict two-scale Jensen inequality follow.
+Actual scale-five, threshold-three certificates and the scales-three/seven
+comparison satisfy all hypotheses.
+
+**Missing:** nothing for this corrected Gaussian sensitivity and specified
+functional comparison. It is not a literal formalization of the printed
+`A-B` expression. The arbitrary stochastic-parameter and mixture-law
+claims remain in BF-18.
 
 ### BF-21. Eq. 8's universal positivity — false; formal counterexample proved
 
@@ -3610,11 +3701,11 @@ as a substitute for this source-to-statement mapping.
    cumulant and large-$σ$ surrogate formulas. Derive limits for the same
    distributional object whose finite-$n$ behavior is being discussed.
 4. **Correct literal source formulas before formalizing them.**
-   The put ratio, Gaussian gap, noncentered
-   fourth moment, finite-sample exponential law and Gaussian hidden-mass
-   evaluation need the corrections described above. Impossible statements
-   should be replaced by explicit corrected propositions, with their scope
-   recorded.
+   The Gaussian payoff gap and finite-sample hidden-mass law now have
+   proved corrections. The put ratio, noncentered fourth moment and
+   Gaussian hidden-mass evaluation still need their source-to-law repairs.
+   Impossible statements should be replaced by explicit corrected
+   propositions, with their scope recorded.
 5. **Finish distributional limits.**
    The corrected return-tail smile bound is now assembled (OP-19).
    Prove actual estimator convergence and the intended CLT, infinite-product

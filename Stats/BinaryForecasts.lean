@@ -46,6 +46,8 @@ module
     via `stdNormalCdf` and Gaussian PDF.
   * `Stats.BinaryForecasts.SigmaCounterexample` — formal refutation
     of Eq. 8's claimed positivity for every positive scale and threshold.
+  * `Stats.BinaryForecasts.GaussianScale` and `GaussianGap` — actual
+    scale laws and corrected A-K*B derivatives, convexity and two-scale Jensen.
   * `Stats.Probability.IntegralTransform` — Appendix B's probability
     integral transform, proved for the actual continuous-CDF law.
   * `Stats.BinaryForecasts.PayoffGap` and `ConflationCounterexample` —
@@ -65,6 +67,8 @@ public import Stats.BinaryForecasts.ExponentialLaw
 public import Stats.BinaryForecasts.SigmaSensitivity
 public import Stats.BinaryForecasts.SigmaClosures
 public import Stats.BinaryForecasts.SigmaCounterexample
+public import Stats.BinaryForecasts.GaussianScale
+public import Stats.BinaryForecasts.GaussianGap
 public import Stats.Probability.IntegralTransform
 public import Stats.BinaryForecasts.PayoffGap
 public import Stats.BinaryForecasts.ConflationCounterexample

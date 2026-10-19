@@ -12,7 +12,9 @@ import all Stats.BinaryForecasts.ConflationCounterexample
 import all Stats.BinaryForecasts.ConflationCounterexampleExamples
 import all Stats.BinaryForecasts.Exponential
 import all Stats.BinaryForecasts.ExponentialLaw
+import all Stats.BinaryForecasts.GaussianGap
 import all Stats.BinaryForecasts.GaussianLaw
+import all Stats.BinaryForecasts.GaussianScale
 import all Stats.BinaryForecasts.ParetoSensitivity
 import all Stats.BinaryForecasts.PayoffGap
 import all Stats.BinaryForecasts.RegularVariation
