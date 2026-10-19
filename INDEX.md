@@ -52,7 +52,7 @@ count or in `#print axioms`; see [Gaps](#gaps).
 | [`callPrice_slope_bounds`](Stats/Arbitrage.lean#L230) | theorem | proved |
 | [`callPrice_butterfly_asymmetric`](Stats/Arbitrage.lean#L260) | theorem | proved |
 
-**[Stats.AxiomAudit](Stats/AxiomAudit.lean)** — 200 lines, no indexed declarations
+**[Stats.AxiomAudit](Stats/AxiomAudit.lean)** — 178 lines, no indexed declarations
 
 **[Stats.BinaryForecasts](Stats/BinaryForecasts.lean)** — 64 lines, no indexed declarations
 

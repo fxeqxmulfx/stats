@@ -17,3 +17,6 @@ rev = "v4.35.0"
 name = "Stats"
 globs = ["Stats.*"]
 allowImportAll = true
+
+[[lean_lib]]
+name = "StatsAuditSupport"

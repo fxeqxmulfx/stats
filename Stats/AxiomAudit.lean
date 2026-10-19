@@ -173,28 +173,6 @@ import all Stats.SinglePointForecasts.ParetoError
 import all Stats.TailOptionPricing
 import all Stats.Theorem1
 import all Stats.Verify
-meta import Lean.Elab.Command
-meta import Lean.Util.CollectAxioms
-open Lean in
-run_cmd do
-  let env ← getEnv
-  let statsModules := env.header.moduleNames.map fun n => n == `Stats || n.toString.startsWith "Stats."
-  let mut declarations : Nat := 0
-  let mut theorems : Nat := 0
-  let mut failures : Nat := 0
-  let mut axioms : NameSet := {}
-  for (name, info) in env.constants.toList do
-    let some idx := env.getModuleIdxFor? name | continue
-    unless statsModules[idx.toNat]! do
-      continue
-    declarations := declarations + 1
-    match info with
-    | .thmInfo _ => theorems := theorems + 1
-    | _ => pure ()
-    for ax in ← collectAxioms name do
-      axioms := axioms.insert ax
-  for ax in axioms do
-    unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
-      failures := failures + 1
-      logError m!"NON_CORE_AXIOM {ax}"
-  logInfo m!"STATS_AUDIT declarations={declarations} theorems={theorems} non_core_axioms={failures} axioms={axioms.toArray}"
+meta import StatsAuditSupport
+
+audit_stats

@@ -1169,6 +1169,27 @@ with twelve additions and no duplicate names. The expanded layer-cake
 module and new RV modules are 176, 149 and 189 lines respectively;
 the exhaustive audit aggregator remains 200 lines.
 
+### Separate the audit engine from its exhaustive import list
+
+[StatsAuditSupport.lean](StatsAuditSupport.lean) now contains the operational
+`audit_stats` command. The audit aggregator retains the same 173 explicit
+`import all` statements, in the same order, and invokes that command.
+The extracted scanner body is byte-for-byte identical to the preceding
+version: declaration-origin selection, private coverage, per-root
+`Lean.collectAxioms` traversal and non-core-axiom rejection are unchanged.
+The tooling module is a Lake dependency of the aggregator, so changing the
+engine invalidates its compiled audit. Mathematical modules and their
+proof dependencies are unchanged. The import aggregator is now 178 lines,
+leaving room for further explicit proof-module imports.
+
+**Verification:** all 3974 default-build jobs pass without warnings.
+The standalone audit retains 1777 declarations, 1523 theorem declarations
+and only the three core axioms. The generated index retains 174 modules,
+834 named theorems and zero sorry, vacuous or placeholder markers.
+All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index retains the same 930 public names and
+exact types, with no duplicate names.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
