@@ -41,13 +41,15 @@ module
   * `Stats.BinaryForecasts.ExponentialLaw` — Definition 4's actual
     conditional means, integrability, normalization and scale limits.
   * `Stats.BinaryForecasts.SigmaSensitivity` — paper Eq. 8 σ-derivation
-    (polynomial positivity + full derivation).
+    (printed A-B derivative and positivity at unit scale).
   * `Stats.BinaryForecasts.SigmaClosures` — Eq. 8 integral closures
     via `stdNormalCdf` and Gaussian PDF.
   * `Stats.BinaryForecasts.SigmaCounterexample` — formal refutation
     of Eq. 8's claimed positivity for every positive scale and threshold.
   * `Stats.BinaryForecasts.GaussianScale` and `GaussianGap` — actual
     scale laws and corrected A-K*B derivatives, convexity and two-scale Jensen.
+  * `Stats.BinaryForecasts.GaussianMixture` — an actual independent
+    two-point scale model and its strictly larger actual payoff gap.
   * `Stats.Probability.IntegralTransform` — Appendix B's probability
     integral transform, proved for the actual continuous-CDF law.
   * `Stats.BinaryForecasts.PayoffGap` and `ConflationCounterexample` —
@@ -69,6 +71,7 @@ public import Stats.BinaryForecasts.SigmaClosures
 public import Stats.BinaryForecasts.SigmaCounterexample
 public import Stats.BinaryForecasts.GaussianScale
 public import Stats.BinaryForecasts.GaussianGap
+public import Stats.BinaryForecasts.GaussianMixture
 public import Stats.Probability.IntegralTransform
 public import Stats.BinaryForecasts.PayoffGap
 public import Stats.BinaryForecasts.ConflationCounterexample

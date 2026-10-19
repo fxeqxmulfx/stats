@@ -1414,9 +1414,8 @@ normalization, L1 and each derivative hypothesis family.
 
 This establishes the corrected Gaussian linear-payoff sensitivity in
 BF-20 and its two-scale functional Jensen consequence. The general
-uncertain-parameter probability model, mixture-law interpretation and
-higher-kurtosis assertions remain in BF-18; they are not inferred from
-the scalar convexity certificate alone.
+uncertain-parameter and higher-kurtosis assertions remain in BF-18; the
+following result supplies the two-point mixture-law interpretation.
 
 **Verification:** all 3982 default-build jobs pass without warnings.
 The standalone audit covers 1857 declarations and 1597 theorem declarations,
@@ -1428,6 +1427,57 @@ The refreshed declaration index has 976 distinct public names: all 957
 previous names and types are unchanged, with nineteen additions and no
 duplicate names. The scale-law and gap-sensitivity modules are 139 and
 177 lines.
+
+### Identify the actual two-point random-scale Gaussian population
+
+Reread arXiv:1907.11162v3, Definition 5 and Remark 1, at the source
+locations above. The scalar Jensen comparison needs an actual population
+model before it implies a larger population payoff gap.
+
+[EqualMixture.lean](Stats/Probability/EqualMixture.lean) constructs the
+genuine sum of two half-weighted measures. It proves probability
+normalization, real event averaging, an exact L1 criterion, actual
+expectation and restricted-expectation averaging, and compatibility
+with measurable maps and independent product sampling. The expectation
+rule requires component L1, so the result does not use a totalized
+nonintegrable integral as a purported moment. Dirac-scale witnesses
+verify the proper uncertainty distribution and its actual mean.
+
+[GaussianMixture.lean](Stats/BinaryForecasts/GaussianMixture.lean)
+constructs the actual equal mixture of the scale-a and scale-b Gaussian
+laws. It identifies this population with the pushforward of the product
+of the actual two-point scale law and the standard Gaussian, under
+`(scale,z) -> scale*z`. This explicitly makes the scale and Gaussian
+innovation independent. The scale's actual expectation is `(a+b)/2`.
+The mixture is a probability measure with an L1 observation, and its
+actual survival and first tail moment are proved from the component
+laws, rather than assigned closed forms.
+
+The actual mixture payoff gap, defined by its actual first tail moment
+minus `K` times its actual survival, equals its actual restricted excess
+expectation. It is proved to equal the mean of the two component actual
+gaps. Consequently, for `K>0` and distinct positive scales, it is
+strictly larger than the actual gap of the Gaussian at the mean scale.
+The source's omitted threshold factor is corrected throughout. Concrete
+certificates use threshold three, scales three and seven, and mean scale
+five, verifying the latent model, normalization, L1, survival, first tail
+moment and strict inequality.
+
+This closes the population-law bridge for the specified two-point
+Gaussian uncertainty model in BF-18. Arbitrary mixing distributions,
+other families and higher-kurtosis comparisons still require their
+own actual-law hypotheses and proofs.
+
+**Verification:** all 3984 default-build jobs pass without warnings.
+The standalone audit covers 1883 declarations and 1620 theorem declarations,
+with only the three core axioms. Its explicit imports cover all 181 other
+Stats modules, including private declarations. The regenerated index has
+183 modules and 892 named theorems, with zero sorry, vacuous or placeholder
+markers. All 27 Python tests, the forbidden check and whitespace check pass.
+The refreshed declaration index has 997 distinct public names: all 976
+previous names and types are unchanged, with twenty-one additions and no
+duplicate names. The generic mixture and Gaussian specialization modules
+are 125 and 132 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -2620,17 +2670,20 @@ mean constraint.
 
 ### BF-18. Remark 1: uncertainty increases the payoff gap — not ok generally
 
-Positive second derivatives and a finite two-point Jensen example are proved
-in narrower settings.
-For the corrected Gaussian linear-payoff gap, BF-20 now proves actual
-normalization, L1, both derivatives, strict convexity and a two-scale
-Jensen inequality for genuine actual-law expectations.
+For the corrected Gaussian linear-payoff gap, BF-20 proves actual
+normalization, L1, both derivatives and strict convexity. The actual
+two-point scale model is now proved as well: `gaussianScaleMixture` is
+the actual law of an independent standard Gaussian multiplied by a
+scale taking two values with equal probability. Its observation is L1,
+its actual survival and first tail moment are computed, and its actual
+payoff gap equals the mean of the component actual gaps. For distinct
+positive scales and positive threshold, the actual mixture gap is
+strictly greater than the Gaussian gap at the actual mean scale.
 
-**Missing:** a probability model for the uncertain parameter, integrability,
-identification with the parameter mixture law, and Jensen's inequality
-applied to that law beyond the proved two-scale functional comparison.
-General distribution families and higher-kurtosis comparisons require
-their own hypotheses and proofs.
+**Missing:** arbitrary mixing distributions and other distribution
+families, with integrability and the corresponding actual-law Jensen
+bridge. Higher-kurtosis comparisons require actual moment calculations
+and their own hypotheses and proofs.
 
 ### BF-19. Eq. 8: displayed Gaussian derivative expression — ok for A − B
 

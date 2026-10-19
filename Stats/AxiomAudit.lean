@@ -13,6 +13,7 @@ import all Stats.BinaryForecasts.ConflationCounterexampleExamples
 import all Stats.BinaryForecasts.Exponential
 import all Stats.BinaryForecasts.ExponentialLaw
 import all Stats.BinaryForecasts.GaussianGap
+import all Stats.BinaryForecasts.GaussianMixture
 import all Stats.BinaryForecasts.GaussianLaw
 import all Stats.BinaryForecasts.GaussianScale
 import all Stats.BinaryForecasts.ParetoSensitivity
@@ -124,6 +125,7 @@ import all Stats.Probability.BetaAsymptotic
 import all Stats.Probability.BetaMoments
 import all Stats.Probability.CDFTransform
 import all Stats.Probability.DensityIntegration
+import all Stats.Probability.EqualMixture
 import all Stats.Probability.Exponential
 import all Stats.Probability.ExponentialIntegration
 import all Stats.Probability.HiddenMass
