@@ -1600,22 +1600,11 @@ theorem exp_growth_tail_index_variance_relation {t lam : ℝ}
     (lam / t) * t * Real.sqrt (1 / lam ^ 2) = 1
 -/
 #print axioms TailOptionPricing.exp_growth_tail_index_variance_relation
-/-
-theorem bernoulli_variance_bound {p : ℝ} (hp_lb : 0 ≤ p) (hp_ub : p ≤ 1) :
-    p * (1 - p) ≤ 1 / 4
--/
+-- The scalar polynomial bound holds for every real p; no probability hypotheses are needed.
 #print axioms TailOptionPricing.bernoulli_variance_bound
-/-
-theorem empirical_survival_variance_bound {p : ℝ} {n : ℕ}
-    (hp_lb : 0 ≤ p) (hp_ub : p ≤ 1) (hn_pos : 0 < n) :
-    p * (1 - p) / n ≤ 1 / (4 * n)
--/
+-- The scalar variance expression is bounded for every p and positive n; actual estimator results are separate.
 #print axioms TailOptionPricing.empirical_survival_variance_bound
-/-
-theorem empirical_survival_std_bound {p : ℝ} {n : ℕ}
-    (hp_lb : 0 ≤ p) (hp_ub : p ≤ 1) (hn_pos : 0 < n) :
-    Real.sqrt (p * (1 - p) / n) ≤ 1 / (2 * Real.sqrt n)
--/
+-- The scalar square-root expression is bounded for every p and positive n.
 #print axioms TailOptionPricing.empirical_survival_std_bound
 /-
 theorem paretoMean_not_integrable_when_alpha_le_one {l α : ℝ}

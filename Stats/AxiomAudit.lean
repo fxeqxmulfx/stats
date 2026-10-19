@@ -127,6 +127,13 @@ import all Stats.RiskMeasures.MarkowitzFailure
 import all Stats.RiskMeasures.Moments
 import all Stats.RiskMeasures.Spectral
 import all Stats.SinglePointForecasts
+import all Stats.SinglePointForecasts.Basic
+import all Stats.SinglePointForecasts.EmpiricalSurvival
+import all Stats.SinglePointForecasts.EventAverage
+import all Stats.SinglePointForecasts.Examples
+import all Stats.SinglePointForecasts.ExponentialLaw
+import all Stats.SinglePointForecasts.FairCoin
+import all Stats.SinglePointForecasts.ParetoError
 import all Stats.TailOptionPricing
 import all Stats.Theorem1
 import all Stats.Verify

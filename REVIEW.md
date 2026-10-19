@@ -22,7 +22,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Pareto and exponential cases, Gaussian integrals and sensitivities, probabilistic Theorem 2, Bernoulli CGF derivatives | General Theorem 1, CLT and appendices |
 | [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Binomial scale-moment calculations and algebraic kurtosis inequalities | Gaussian-mixture moment bridge, infinite limits, CLT and Normal–Gamma mixture |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Deterministic tail-moment integral and Beta(1,n) function identities | Main Proposition 1, actual iid maximum law, asymptotics and Gaussian comparison |
-| [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Pointwise density algebra, scalar variance bounds, infinite first moment of strong Pareto | Distribution transformation, actual empirical-survival variance, LLN/rates and formal risk models |
+| [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
 ## Meaning of ok and not ok
 
@@ -292,6 +292,84 @@ strengthenings, and eighteen declarations are added. The changed interfaces
 are the survival continuity/bounds/monotonicity, Gaussian/CDF/erfc bridges,
 smooth survival/call derivatives, lognormal butterfly comparison, call
 expectation and put–call parity. Their downstream uses compile.
+
+### Repair 4: actual empirical-survival error and the exponential-growth law
+
+Reread `papers/arXiv-2007.16096v1/coronaIJF_paperArXiv.tex`, the
+survival-forecast paragraph at line 235, **Uncertainty goes one way**
+(lines 250–260), and the regular-variation definition in the footnote at
+line 181. The paper prints an estimation error of **`o(1/n)`**, without
+specifying an error measure. The former Lean comments incorrectly called
+this an `O(1/sqrt n)` claim and only bounded a scalar formula.
+
+[SinglePointForecasts/ExponentialLaw.lean](Stats/SinglePointForecasts/ExponentialLaw.lean)
+constructs the actual law of `X₀ * exp(t*r)` from Mathlib's supported
+exponential rate law. For `X₀ > 0`, elapsed time `t > 0`, and rate parameter
+`λ > 0`, its full survival is proved to be
+
+```text
+P(X > s) = 1                  if s < X₀,
+           (X₀/s)^(λ/t)       if s ≥ X₀.
+```
+
+This proves the Pareto-law transformation, including support and
+normalization; it does not just match two proposed densities. The general
+claim about the variance of arbitrary growth-rate families remains
+separate from this specified exponential family.
+
+[SinglePointForecasts/EventAverage.lean](Stats/SinglePointForecasts/EventAverage.lean)
+and [EmpiricalSurvival.lean](Stats/SinglePointForecasts/EmpiricalSurvival.lean)
+define the actual observed average of threshold indicators on a probability
+space. Measurable samples with a common marginal law give an unbiased
+estimator. Pairwise independence suffices for the exact variance and MSE;
+no moment assumptions on the underlying sampled values are needed.
+The indicator average is square integrable, and its squared error is
+proved integrable. For the strict-tail probability `p = ν(Ioi x)` and
+positive sample size, the corrected claims are
+
+```text
+E[Ŝ_n(x)] = p
+Var(Ŝ_n(x)) = E[(Ŝ_n(x) - p)^2] = p(1-p)/n ≤ 1/(4n)
+RMSE(Ŝ_n(x)) ≤ 1/(2 sqrt n).
+```
+
+The source sometimes uses the non-strict convention. The same indicator
+argument works for closed threshold events; at the counterexample's
+threshold there is no atom, so the conventions agree. These are
+fixed-threshold estimates, not uniform empirical-process bounds or CLTs.
+
+[SinglePointForecasts/FairCoin.lean](Stats/SinglePointForecasts/FairCoin.lean)
+first constructs a nondegenerate iid Bernoulli product law and calculates
+its actual squared-error integral as `1/(4n)`.
+[ParetoError.lean](Stats/SinglePointForecasts/ParetoError.lean) then proves
+the same failure within the source's heavy-tailed setting: the actual law
+of `exp(r)`, `r ~ Exp(1)`, has survival `1/s` above one, and its actual
+survival is regularly varying with index `-1`. An independent product
+sample estimates its survival at two, where `p = 1/2`. Its genuine MSE
+is again exactly `1/(4n)`. Theorems `unitParetoMSE_not_littleO` and
+`unitParetoRMSE_not_littleO` refute the printed `o(1/n)` under both MSE
+and RMSE interpretations. They use sample size `n+1` to keep every sample
+nonempty and compare with `1/(n+1)`. The estimator is not defined by its
+desired error rate.
+
+The old scalar inequalities are retained under their public names, with
+their algebraic scope made explicit. Their unused probability-range
+hypotheses are deleted: the polynomial upper bound holds for every real
+`p`. The actual-estimator theorems have distinct names and genuinely
+mention the variance or squared-error integral. Concrete examples check
+all new hypothesis families, including independent product samples,
+positive exponential parameters and both branches of the support formula.
+
+**Verification:** all 3911 default-build jobs pass without warnings. The
+standalone axiom audit checks 1441 declarations, including 1238 theorem
+declarations, with only `Quot.sound`, `Classical.choice` and `propext`.
+All 27 Python tests, the forbidden-construct check and `git diff --check`
+pass. The regenerated index contains 131 modules and 669 named theorems,
+with zero sorry, vacuous or placeholder markers; the exhaustive audit
+imports all 130 other modules. `dt refresh project` indexes 760 public
+declarations. All 717 previous names remain, with 714 unchanged types and
+the three documented stronger scalar inequalities; 43 declarations are
+added. Each new module has at most 138 lines.
 
 ## Lean upgrade and reproducible verification
 
@@ -2079,10 +2157,12 @@ A hidden population moment is not by itself an estimator guarantee.
 Source: [arXiv:2007.16096v1](https://arxiv.org/abs/2007.16096v1).
 Main module: [SinglePointForecasts.lean](Stats/SinglePointForecasts.lean).
 
-**Paper verdict: not ok.** Seven closed Lean theorems provide useful algebraic
-bounds and the nonintegrability of the strong-Pareto first moment. They do not
-formalize the paper's empirical or normative claims, a general forecasting
-impossibility, or its complete distribution transformations.
+**Paper verdict: not ok.** The exponential-growth law, actual finite-sample
+survival mean/variance/MSE, corrected RMSE bound and heavy-tailed rate
+counterexample are proved, alongside scalar formulas and the strong-Pareto
+moment threshold. The paper's empirical and normative claims, general
+forecasting impossibility, LLN/CLT and general rate-family assertions
+remain separate.
 The source has no active named Theorem or Proposition; all nine numbered
 Remarks and nine Main Statements are covered here.
 
@@ -2094,14 +2174,20 @@ and $x>0$.
 
 **Missing:** nothing for the pointwise algebraic identity.
 
-### SP-02. Exponential growth of an exponential rate has a Pareto law — not ok
+### SP-02. Exponential growth of an exponential rate has a Pareto law — ok on the positive domain
 
 The source considers $X=X₀ exp(tr)$ with $r∼Exp(λ)$.
 
-**Missing:** a rate random variable, its supported exponential law, the
-measurable transformation, the resulting CDF or density pushforward, and
-equality with the Pareto probability measure. SP-01's identity alone does not
-establish that law or its zero density below $X₀$.
+[SinglePointForecasts/ExponentialLaw.lean](Stats/SinglePointForecasts/ExponentialLaw.lean)
+constructs the actual pushforward of Mathlib's supported `expMeasure λ`.
+For positive initial value, elapsed time and rate parameter, the full
+survival is one below $X₀$ and $(X₀/s)^{λ/t}$ above it. The law is proved
+normalized. This identifies an actual supported Pareto probability law,
+independently of SP-01's candidate density identity.
+
+**Missing:** nothing for this specified exponential-law transformation.
+The source's broader phrase “or part of that family” needs a precise family
+and is not established by this result.
 
 ### SP-03. Tail-index/variance scalar identity — ok
 
@@ -2114,8 +2200,8 @@ $(λ/t)t sqrt(1/λ²)=1$ for $t,λ>0$.
 
 SP-03 supplies the proposed reciprocal relation.
 
-**Missing:** identify $1/λ²$ with the actual rate variance, establish the
-outcome law in SP-02, and prove the monotonic tail-index relation for the
+**Missing:** identify $1/λ²$ with the actual rate variance and prove the
+monotonic tail-index relation for the
 specified family. Variance alone does not characterize the transformed tail
 for an arbitrary rate distribution.
 
@@ -2125,28 +2211,41 @@ for an arbitrary rate distribution.
 `empirical_survival_variance_bound` and
 `empirical_survival_std_bound` prove
 $p(1-p)≤1/4$, $p(1-p)/n≤1/(4n)$ and the corresponding square-root
-bound for $p∈[0,1]$, $n>0$.
+bound for $n>0$. The range assumptions on $p$ were unused and are now
+deleted: these scalar upper bounds hold for every real $p$.
 
 **Missing:** nothing for these scalar inequalities.
 
-### SP-06. Actual empirical-survival variance equals p(1−p)/n — not ok
+### SP-06. Actual empirical-survival variance equals p(1−p)/n — ok
 
-The formula appears in comments; the theorem conclusion only bounds an
-algebraic expression.
+[SinglePointForecasts/EmpiricalSurvival.lean](Stats/SinglePointForecasts/EmpiricalSurvival.lean)
+defines the actual observed indicator average. Common marginal law and
+measurability give its expectation; pairwise independence gives the exact
+variance. Square integrability of the estimator and integrability of its
+squared error are proved without moment assumptions on the sample values.
 
-**Missing:** the iid indicator sample, the empirical survival random variable,
-and its variance calculation using independence. A theorem named
-`empirical_survival_variance_bound` does not currently mention a variance
-operator or random variable.
+`empiricalSurvival_variance` and `empiricalSurvival_mse` prove the actual-law
+identities. `empiricalSurvival_variance_bound` and
+`empiricalSurvival_rmse_bound` give the stated bounds. The older names
+with underscores remain scalar lemmas with explicitly algebraic scope.
+Independent Bernoulli and Pareto product samples witness the hypotheses.
 
-### SP-07. Empirical survival converges at the claimed rate — not ok fully
+**Missing:** nothing for these fixed-threshold iid or pairwise-independent
+calculations. No uniform or dependent-sample rate is asserted.
 
-The square-root expression is bounded as in SP-05.
+### SP-07. Printed o(1/n) error rate — false for MSE and RMSE; corrected bounds proved
 
-**Missing:** a specified notion of estimation error, consistency or
-concentration/CLT theorem for the actual estimator, and the iid assumptions.
-A pointwise standard-error bound is distinct from a uniform empirical-process
-guarantee.
+The source prints `o(1/n)` at line 235, without defining the error metric.
+The actual estimator has MSE $p(1-p)/n$ and RMSE at most $1/(2\sqrt n)$.
+For the actual scale-one/index-one Pareto law, independent samples at
+threshold two have $p=1/2$, hence MSE exactly $1/(4n)$.
+`unitParetoLaw_regularlyVarying` checks the source's heavy-tail hypothesis;
+`unitParetoMSE_not_littleO` and `unitParetoRMSE_not_littleO` refute the
+printed rate under both specified error interpretations.
+
+**Correction:** use the proved MSE and RMSE formulas/bounds with explicit
+common-law and independence assumptions. They are fixed-threshold results.
+Concentration, CLT and uniform empirical-process guarantees remain separate.
 
 ### SP-08. Strong-Pareto first moment is nonintegrable for 0 < α ≤ 1 — ok
 
