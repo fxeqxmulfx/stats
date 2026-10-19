@@ -20,7 +20,7 @@ Global consistency of an arbitrary central-model/tail splice remains separate.
 | [Tail Option Pricing Under Power Laws, 1908.02347v3](https://arxiv.org/abs/1908.02347v3) | **not ok** | Corrected analytic core, returns-tail smile bound, slowly varying log-return theorem and call asymptotics | General-tail versus exact-tail interpretation, literal source errors and empirical claims |
 | [How Much Data Do You Need?, 1802.05495v3](https://arxiv.org/abs/1802.05495v3) | **not ok** | Abstract κ algebra, corrected minimum-size and finite-Beta expressions, special-function identities, genuine probabilistic Loulakis lognormal limit, actual switching-Gaussian kurtosis | Distributional MAD/sample-size bridges; finite-sum law identifications; proxy limits |
 | [On the Statistical Differences between Binary Forecasts and Real World Payoffs, 1907.11162v3](https://arxiv.org/abs/1907.11162v3) | **not ok** | Both Theorem 1 operational class implications, actual general RV and Gaussian limits, Pareto and exponential cases, corrected payoff converse, probabilistic Brier bounds, Bernoulli CGF derivatives and PIT | Independent tail-class identifications, nonlinear/distributional claims, CLT and Brier-score distribution |
-| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial-collapsed Gaussian laws, normalized density, corrected exceedance formula and moments, kurtosis, moment divergence and point-mass weak limit | Higher-moment and limit-law questions, numerical claims, CLT and Normal–Gamma mixture |
+| [Branching epistemic uncertainty and thickness of tails, 1912.00277v2](https://arxiv.org/abs/1912.00277v2) | **not ok** | Actual recursive and binomial Gaussian laws, finite conditional-density hierarchy, corrected exceedance and moments, moment bounds and weak limit, iid counterexample to uncentered lognormal approximation | Higher-moment and limit-law questions, numerical claims, corrected CLT and compound mixtures |
 | [What You See and What You Don't See: The Hidden Moments of a Probability Distribution, 2004.05894v1](https://arxiv.org/abs/2004.05894v1) | **not ok** | Actual finite iid Pareto maximum and Beta hidden-mass law; general-p hidden-moment pushforward, exact Gamma-ratio mean and asymptotic; distribution-free hidden-mass law for continuous CDFs; sample-mean refutation | Explicit general-p density and Gaussian comparison |
 | [On Single Point Forecasts for Fat-Tailed Variables, 2007.16096v1](https://arxiv.org/abs/2007.16096v1) | **not ok** | Actual exponential-growth/Pareto law, exact empirical-survival variance and MSE, corrected RMSE bound and a heavy-tailed rate counterexample, strong-Pareto moment threshold | General moment boundary, LLN/CLT and formal risk or policy models |
 
@@ -2290,6 +2290,55 @@ input-integral and positive-input modules have 164, 190 and 195 lines;
 their source normalization domain and conditional parameter correction
 were checked against the local Section II manuscript.
 
+### 2026-10-19: actual iid counterexample to the uncentered lognormal approximation
+
+Section V replaces `log(1+epsilon_i)` by `epsilon_i` and proposes
+`log(lambda_n) ~ N(0,S_n^2)` as depth grows. The omitted log-factor
+centering changes the claimed asymptotic behavior even for genuinely iid,
+bounded, mean-zero errors of arbitrarily small fixed magnitude.
+
+[PrecisionErrors.lean](Stats/EpistemicUncertainty/PrecisionErrors.lean)
+constructs one infinite product probability space of independent fair signs.
+The actual signed errors have the same two-point law, actual mean zero,
+finite second moment and variance `epsilon^2`. The first n coordinates
+have precisely the finite uniform sign-vector law. Thus this is one iid
+process, with all of the paper's error assumptions independently proved.
+
+[PrecisionLaw.lean](Stats/EpistemicUncertainty/PrecisionLaw.lean)
+pushes that process through the literal finite product
+`lambda_hat * product(1+epsilon_i)`. Its whole law equals the previously
+proved recursive multiplicative scale law. Positive initial precision and
+errors in `[0,1)` give an actual positive probability law. The precision's
+mean stays `lambda_hat`; its logarithm is an actual measurable pushforward.
+For initial precision one and every fixed `0<epsilon<1`,
+`P(log(lambda_n)>=0)=P(lambda_n>=1)` tends to zero by the proved
+fractional-moment bound on the actual multiplicative population.
+
+[PrecisionCounterexample.lean](Stats/EpistemicUncertainty/PrecisionCounterexample.lean)
+constructs the proposed centered Gaussian with variance `n*epsilon^2`.
+This sums all n actual error variances, correcting the printed summation
+upper index 2 to n. At every positive depth this Gaussian assigns
+probability one half to nonnegative values. The absolute difference from
+the actual log-precision upper-tail probability tends to one half and
+provably does not tend to zero. The concrete signed error `epsilon=1/100`
+has actual variance `1/10000`, is bounded in magnitude by `1/100`, and
+satisfies all independence and mean assumptions on the same process.
+
+This refutes the printed uncentered asymptotic approximation. A CLT for
+the actual centered and normalized log factors remains a separate claim;
+so do uniform remainder bounds and the compound-law approximation.
+
+Verification: all 4,099 default-build jobs pass without warnings. The
+audit checks 2,302 declarations and 1,970 theorems with zero non-core
+axioms. The regenerated index has 214 modules and 1,117 named theorems,
+with zero `sorry`, vacuous or placeholder entries. All 27 Python tests,
+forbidden-pattern and whitespace checks pass. All 1,233 previous indexed
+names and types are preserved; 36 declarations are added without
+duplicates. The audit imports all 212 other `Stats/` modules. The three
+precision modules have 141, 126 and 100 lines; their source assumptions
+and the exact scope of the counterexample were checked against local
+Section V, Eqs. errorn through lerrornapprox.
+
 ## Lean upgrade and reproducible verification
 
 ### 2026-10-19: dependencies and module compatibility
@@ -4168,9 +4217,19 @@ $ε-ε²/2≤log(1+ε)$ for arbitrary small signed errors has been removed
 from the old code comment: that inequality fails for negative $ε$
 sufficiently close to zero.
 
-### EU-26. CLT for the errors and lognormal precision law — not ok
+### EU-26. CLT and lognormal precision law — false as printed; corrected CLT not ok
 
 The source appeals to independent errors with finite variances bounded below.
+
+`epistemicPrecisionGaussianTailGap_tendsto_half` and
+`epistemicPrecisionGaussianTailGap_not_tendsto_zero` refute the proposed
+uncentered Gaussian approximation under a genuine infinite iid process.
+Each error is a fair signed `epsilon`, with actual mean zero, finite second
+moment and variance `epsilon^2`. For every fixed `0<epsilon<1`, including
+`1/100`, the actual log-precision upper-tail probability at zero tends to
+zero, whereas the proposed `N(0,n*epsilon^2)` probability is always one half
+at positive depths. Their discrepancy tends to one half. The actual
+product's whole law and positive support are proved before taking this limit.
 
 **Missing:** a normalized convergence-in-distribution theorem, centering and
 an appropriate Lindeberg/Lyapunov or iid hypothesis, as well as log-factor

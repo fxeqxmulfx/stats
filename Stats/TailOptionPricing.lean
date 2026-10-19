@@ -125,6 +125,9 @@ public import Stats.EpistemicUncertainty.HierarchyDensity
 public import Stats.EpistemicUncertainty.DensityKernel
 public import Stats.EpistemicUncertainty.DensityInputs
 public import Stats.EpistemicUncertainty.PositiveDensityInputs
+public import Stats.EpistemicUncertainty.PrecisionErrors
+public import Stats.EpistemicUncertainty.PrecisionLaw
+public import Stats.EpistemicUncertainty.PrecisionCounterexample
 public import Stats.HiddenMoments
 public import Stats.SinglePointForecasts
 public import Stats.RegularVariation
